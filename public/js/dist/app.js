@@ -22856,9 +22856,9 @@ module.exports = Collection.extend({
         var jade_mixins = {};
         var jade_interp;
         var locals_for_with = locals || {};
-        (function(player_name) {
-            buf.push('<div class="player_scores"><h2>' + jade.escape(null == (jade_interp = player_name) ? "" : jade_interp) + '</h2><ul class="course_tiles"><li data-attr="score" data-title="Strokes"><a href="#"><div class="meta">Strokes</div><div role="pretty_score" class="hole_num"></div></a></li><li data-attr="putts" data-title="Putts"><a href="#"><div class="meta">Putts</div><div role="pretty_putts" class="hole_num"></div></a></li><li data-attr="fairway" data-title="Fairway"><a href="#"><div class="meta">Fairway</div><div role="pretty_fairway" class="hole_num"></div></a></li></ul></div>');
-        })("player_name" in locals_for_with ? locals_for_with.player_name : typeof player_name !== "undefined" ? player_name : undefined);
+        (function(player_name, fairway_label) {
+            buf.push('<div class="player_scores"><h2>' + jade.escape(null == (jade_interp = player_name) ? "" : jade_interp) + '</h2><ul class="course_tiles"><li data-attr="score" data-title="Strokes"><a href="#"><div class="meta">Strokes</div><div role="pretty_score" class="hole_num"></div></a></li><li data-attr="putts" data-title="Putts"><a href="#"><div class="meta">Putts</div><div role="pretty_putts" class="hole_num"></div></a></li><li data-attr="fairway"' + jade.attr("data-title", fairway_label, true, false) + '><a href="#"><div class="meta">' + jade.escape(null == (jade_interp = fairway_label) ? "" : jade_interp) + '</div><div role="pretty_fairway" class="hole_num"></div></a></li></ul></div>');
+        })("player_name" in locals_for_with ? locals_for_with.player_name : typeof player_name !== "undefined" ? player_name : undefined, "fairway_label" in locals_for_with ? locals_for_with.fairway_label : typeof fairway_label !== "undefined" ? fairway_label : undefined);
         return buf.join("");
     };
 
@@ -31173,7 +31173,8 @@ var PlayerView = View.extend({
     return {
       player_name: this.player.name,
       putts: this.score.pretty_putts,
-      fairway: this.score.pretty_fairway
+      fairway: this.score.pretty_fairway,
+      fairway_label: this.hole.par == 3 ? "Green" : "Fairway"
     }
   },
   render: function() {

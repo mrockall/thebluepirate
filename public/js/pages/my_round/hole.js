@@ -27,7 +27,8 @@ var PlayerView = View.extend({
     return {
       player_name: this.player.name,
       putts: this.score.pretty_putts,
-      fairway: this.score.pretty_fairway
+      fairway: this.score.pretty_fairway,
+      fairway_label: this.hole.par == 3 ? "Green" : "Fairway"
     }
   },
   render: function() {
