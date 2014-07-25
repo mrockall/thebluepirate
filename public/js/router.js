@@ -24,11 +24,10 @@ module.exports = Router.extend({
 
   // ------- ROUTE HANDLERS ---------
   home: function () {
-    this._loadTournamentData(_.bind(function(tournament){
-      this.trigger('newPage', new ViewTournamentPage({
-        model: tournament
-      }));
-    }, this));
+    var tournament = app.tournaments.first();
+    this.trigger('newPage', new ViewTournamentPage({
+      model: tournament
+    }), true);
   },
 
   me: function () {
@@ -50,16 +49,10 @@ module.exports = Router.extend({
   },
 
   tournament_player: function(tournament_id, player_id) {
-    if(app.scores.length > 0){
-      var tee_time = app.tee_times.findByTournamentAndPlayer(tournament_id, player_id);
-      this.trigger('newPage', new TournamentPlayerPage({
-        model: tee_time
-      }));
-    } else {
-      this._loadTournamentData(_.bind(function(tournament){
-        this.tournament_player(tournament_id, player_id);
-      }, this));
-    }
+    var tee_time = app.tee_times.findByTournamentAndPlayer(tournament_id, player_id);
+    this.trigger('newPage', new TournamentPlayerPage({
+      model: tee_time
+    }), app.scores.length == 0);
   },
 
   my_round: function() {
@@ -68,11 +61,9 @@ module.exports = Router.extend({
     if(!me.is_logged_in){ return this.redirectTo(''); }
     if(me.identity_type == 'tee_time'){ model = app.tee_times.findByID(me.id) }
 
-    this._loadTournamentData(_.bind(function(tournament){
-      this.trigger('newPage', new MyRoundPage({
-        model: model
-      }));
-    }, this));
+    this.trigger('newPage', new MyRoundPage({
+      model: model
+    }), true);
   },
 
   my_round_hole: function(hole_id) {
@@ -84,33 +75,7 @@ module.exports = Router.extend({
     this.trigger('newPage', new MyRoundHolePage({
       model: model,
       hole_id: hole_id
-    }));
-  },
-
-  _showLoading: function(){
-    $('.content').addClass('no-scroll');
-    $(".loading").fadeIn();
-  },
-
-  _hideLoading: function(){
-    $(".loading").fadeOut(function(){
-      $('.content').removeClass('no-scroll');
-    });
-  },
-
-  _loadTournamentData: function(cb){
-    var that = this;
-    this._showLoading();
-    var tournament = app.tournaments.first();
-    tournament.fetch({
-      success: function(model, data) {
-        app.tournaments.reset(data.tournaments);
-        app.tee_times.reset(data.tee_times);
-        app.scores.reset(data.scores);
-        that._hideLoading();
-        cb(tournament);
-      }
-    });
+    }), app.scores.length == 0);
   },
 
   catchAll: function (slug) {

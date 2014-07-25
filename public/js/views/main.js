@@ -50,7 +50,40 @@ module.exports = View.extend({
           }
         });
       },
-      show: function (newView, oldView) {
+
+      /*
+       * So this needs to be cleaned up..
+       * It should be moved into a custom module that extending view-switcher.
+       * For now the functionaility is edited straight into the view-switcher
+       * module.. ugh.. deadlines.
+       *
+       * It basically allows you to specify a function to be called
+       * before you show the new view, giving you a chance to reload models or
+       * whatever..
+       */
+      before_show: _.bind(function(newView, cb){
+        if(newView.reload_data){
+          var that = this;
+          this._show_loading(_.bind(function(){
+            // Fetch the latest data..
+            var tournament = app.tournaments.first();
+            tournament.fetch({
+              success: function(model, data) {
+                app.tournaments.reset(data.tournaments);
+                app.tee_times.reset(data.tee_times);
+                app.scores.reset(data.scores);
+                that._hide_loading();
+                cb();
+              }
+            });
+          }, this));
+        } else {
+          cb();
+        }
+      }, this),
+
+
+      show: function (newView) {
         // it's inserted and rendered for me
         document.title = _.result(newView.pageTitle) || "Blue Pirate";
         document.scrollTop = 0;
@@ -86,7 +119,22 @@ module.exports = View.extend({
     return this;
   },
 
-  setPage: function (view) {
+  _show_loading: function(cb){
+    $('.content').addClass('no-scroll');
+    $(".loading").fadeIn(100, function(){
+      cb();
+    });
+  },
+
+  _hide_loading: function(){
+    $(".loading").hide();
+    $('.content').removeClass('no-scroll');
+  },
+
+  setPage: function (view, reload_data) {
+    // Set the reload data on the view..
+    view.reload_data = reload_data || false;
+
     // tell the view switcher to render the new one
     this.pageSwitcher.set(view);
 

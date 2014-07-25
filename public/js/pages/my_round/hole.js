@@ -76,7 +76,6 @@ module.exports = View.extend({
     };
   },
   render: function () {
-    console.log(this.hole_id);
     this.hole = this.model.tournament().findHoleById(this.hole_id);
 
     this.renderWithTemplate(this.serialize());
