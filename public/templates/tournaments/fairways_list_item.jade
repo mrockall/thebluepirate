@@ -1,0 +1,8 @@
+li
+  a(href=model.player_url)= model.player().name
+    .cell.left= collection.indexOf(model) + 1
+    .cell.big
+      if model.fairways_played != 0
+        = model.fairways + "/" + model.fairways_played
+      else
+        = "-"

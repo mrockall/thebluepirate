@@ -22,5 +22,26 @@ module.exports = Collection.extend({
 
   findByTime: function(time) {
     return this.where({time: time});
+  },
+
+  sortByPutts: function() {
+    this.comparator = function(a,b){
+      return a.putts < b.putts;
+    };
+    return this.sort();
+  },
+
+  sortByFairways: function() {
+    this.comparator = function(a,b){
+      return a.fairway_percentage < b.fairway_percentage;
+    };
+    return this.sort();
+  },
+
+  sortByGreens: function() {
+    this.comparator = function(a,b){
+      return a.green_percentage < b.green_percentage;
+    };
+    return this.sort();
   }
 });

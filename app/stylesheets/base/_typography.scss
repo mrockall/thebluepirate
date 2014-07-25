@@ -15,3 +15,14 @@ h2{
   padding-right: .4em;
   margin: 0;
 }
+
+h3{
+  font-size: 2em;
+  line-height: 2;
+  font-weight: normal;
+  color: $text-light;
+  padding-left: .4em;
+  padding-right: .4em;
+  margin: 1em 0 0;
+  border-bottom: 1px solid $light-grey;
+}

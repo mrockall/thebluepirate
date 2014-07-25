@@ -22,20 +22,7 @@ var HoleListItem = View.extend({
 });
 
 var LeaderboardItem = View.extend({
-  template: templates.tournaments.player_list_item,
-  serialize: function(){
-    var player = this.model.player();
-    return {
-      position: this.model.through > 0 ? this.model.position : "-",
-      player_url: this.model.player_url,
-      player_name: player.name,
-      holes_through: this.model.through,
-      points_scored: this.model.points
-    }
-  },
-  render: function() {
-    return this.renderWithTemplate(this.serialize());
-  }
+  template: templates.tournaments.player_list_item
 });
 
 module.exports = View.extend({

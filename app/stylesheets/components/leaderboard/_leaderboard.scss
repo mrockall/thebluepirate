@@ -1,6 +1,6 @@
 .leaderboard, .headers{
   list-style: none;
-  margin: 3em 0 0;
+  margin: 1em 0 3em;
   padding: 0;
 
   li{
@@ -33,6 +33,10 @@
       &.score{
         color: $text-dark;
         right: 1.75em;
+      }
+
+      &.big{
+        width: 3.5em;
       }
 
       &.time{

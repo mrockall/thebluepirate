@@ -22749,6 +22749,27 @@ module.exports = Collection.extend({
 
   findByTime: function(time) {
     return this.where({time: time});
+  },
+
+  sortByPutts: function() {
+    this.comparator = function(a,b){
+      return a.putts < b.putts;
+    };
+    return this.sort();
+  },
+
+  sortByFairways: function() {
+    this.comparator = function(a,b){
+      return a.fairway_percentage < b.fairway_percentage;
+    };
+    return this.sort();
+  },
+
+  sortByGreens: function() {
+    this.comparator = function(a,b){
+      return a.green_percentage < b.green_percentage;
+    };
+    return this.sort();
   }
 });
 },{"../models/tee_time":118,"ampersand-rest-collection":48}],107:[function(require,module,exports){
@@ -22899,6 +22920,42 @@ module.exports = Collection.extend({
         return '<div class="page"><div class="col8 push2"><form role="person-form"><fieldset role="field-container"></fieldset><div class="buttons"><button type="submit" class="btn">Submit</button></div></form></div></div>';
     };
 
+    // tournaments/fairways_list_item.jade compiled template
+    templatizer["tournaments"]["fairways_list_item"] = function tmpl_tournaments_fairways_list_item(locals) {
+        var buf = [];
+        var jade_mixins = {};
+        var jade_interp;
+        var locals_for_with = locals || {};
+        (function(model, collection) {
+            buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + ">" + jade.escape(null == (jade_interp = model.player().name) ? "" : jade_interp) + '<div class="cell left">' + jade.escape(null == (jade_interp = collection.indexOf(model) + 1) ? "" : jade_interp) + '</div><div class="cell big">');
+            if (model.fairways_played != 0) {
+                buf.push(jade.escape(null == (jade_interp = model.fairways + "/" + model.fairways_played) ? "" : jade_interp));
+            } else {
+                buf.push("-");
+            }
+            buf.push("</div></a></li>");
+        })("model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined, "collection" in locals_for_with ? locals_for_with.collection : typeof collection !== "undefined" ? collection : undefined);
+        return buf.join("");
+    };
+
+    // tournaments/greens_list_item.jade compiled template
+    templatizer["tournaments"]["greens_list_item"] = function tmpl_tournaments_greens_list_item(locals) {
+        var buf = [];
+        var jade_mixins = {};
+        var jade_interp;
+        var locals_for_with = locals || {};
+        (function(model, collection) {
+            buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + ">" + jade.escape(null == (jade_interp = model.player().name) ? "" : jade_interp) + '<div class="cell left">' + jade.escape(null == (jade_interp = collection.indexOf(model) + 1) ? "" : jade_interp) + '</div><div class="cell big">');
+            if (model.greens_played != 0) {
+                buf.push(jade.escape(null == (jade_interp = model.greens_hit + "/" + model.greens_played) ? "" : jade_interp));
+            } else {
+                buf.push("-");
+            }
+            buf.push("</div></a></li>");
+        })("model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined, "collection" in locals_for_with ? locals_for_with.collection : typeof collection !== "undefined" ? collection : undefined);
+        return buf.join("");
+    };
+
     // tournaments/hole_list_item.jade compiled template
     templatizer["tournaments"]["hole_list_item"] = function tmpl_tournaments_hole_list_item(locals) {
         var buf = [];
@@ -22941,9 +22998,21 @@ module.exports = Collection.extend({
         var jade_mixins = {};
         var jade_interp;
         var locals_for_with = locals || {};
-        (function(player_url, player_name, position, holes_through, points_scored, time) {
-            buf.push("<li><a" + jade.attr("href", player_url, true, false) + ">" + jade.escape(null == (jade_interp = player_name) ? "" : jade_interp) + '<div class="cell left">' + jade.escape(null == (jade_interp = position) ? "" : jade_interp) + '</div><div class="cell thru">' + jade.escape(null == (jade_interp = holes_through) ? "" : jade_interp) + '</div><div class="cell score">' + jade.escape(null == (jade_interp = points_scored) ? "" : jade_interp) + '</div><div class="cell time">' + jade.escape(null == (jade_interp = time) ? "" : jade_interp) + "</div></a></li>");
-        })("player_url" in locals_for_with ? locals_for_with.player_url : typeof player_url !== "undefined" ? player_url : undefined, "player_name" in locals_for_with ? locals_for_with.player_name : typeof player_name !== "undefined" ? player_name : undefined, "position" in locals_for_with ? locals_for_with.position : typeof position !== "undefined" ? position : undefined, "holes_through" in locals_for_with ? locals_for_with.holes_through : typeof holes_through !== "undefined" ? holes_through : undefined, "points_scored" in locals_for_with ? locals_for_with.points_scored : typeof points_scored !== "undefined" ? points_scored : undefined, "time" in locals_for_with ? locals_for_with.time : typeof time !== "undefined" ? time : undefined);
+        (function(model) {
+            buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + ">" + jade.escape(null == (jade_interp = model.player().name) ? "" : jade_interp) + '<div class="cell left">' + jade.escape(null == (jade_interp = model.through > 0 ? model.position : "-") ? "" : jade_interp) + '</div><div class="cell thru">' + jade.escape(null == (jade_interp = model.through) ? "" : jade_interp) + '</div><div class="cell score">' + jade.escape(null == (jade_interp = model.through > 0 ? model.golf_score : "") ? "" : jade_interp) + '</div><div class="cell time">' + jade.escape(null == (jade_interp = model.time_parsed) ? "" : jade_interp) + "</div></a></li>");
+        })("model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
+        return buf.join("");
+    };
+
+    // tournaments/putts_list_item.jade compiled template
+    templatizer["tournaments"]["putts_list_item"] = function tmpl_tournaments_putts_list_item(locals) {
+        var buf = [];
+        var jade_mixins = {};
+        var jade_interp;
+        var locals_for_with = locals || {};
+        (function(model, collection) {
+            buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + ">" + jade.escape(null == (jade_interp = model.player().name) ? "" : jade_interp) + '<div class="cell left">' + jade.escape(null == (jade_interp = collection.indexOf(model) + 1) ? "" : jade_interp) + '</div><div class="cell big">' + jade.escape(null == (jade_interp = model.putts) ? "" : jade_interp) + "</div></a></li>");
+        })("model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined, "collection" in locals_for_with ? locals_for_with.collection : typeof collection !== "undefined" ? collection : undefined);
         return buf.join("");
     };
 
@@ -22966,7 +23035,7 @@ module.exports = Collection.extend({
         var jade_interp;
         var locals_for_with = locals || {};
         (function(tournament_name, course_name, tournament_date) {
-            buf.push('<div class="page"><h1>' + jade.escape(null == (jade_interp = tournament_name) ? "" : jade_interp) + "</h1><h2>" + jade.escape(null == (jade_interp = course_name) ? "" : jade_interp) + "</h2><h2>" + jade.escape(null == (jade_interp = tournament_date) ? "" : jade_interp) + '</h2><ul class="leaderboard"></ul></div>');
+            buf.push('<div class="page"><h1>' + jade.escape(null == (jade_interp = tournament_name) ? "" : jade_interp) + "</h1><h2>" + jade.escape(null == (jade_interp = course_name) ? "" : jade_interp) + "</h2><h2>" + jade.escape(null == (jade_interp = tournament_date) ? "" : jade_interp) + '</h2><h3>Leaderboard</h3><ul class="leaderboard players"></ul><h3>Putts</h3><ul class="leaderboard putts"></ul><h3>Fairways</h3><ul class="leaderboard fairways"></ul><h3>Greens</h3><ul class="leaderboard greens"></ul></div>');
         })("tournament_name" in locals_for_with ? locals_for_with.tournament_name : typeof tournament_name !== "undefined" ? tournament_name : undefined, "course_name" in locals_for_with ? locals_for_with.course_name : typeof course_name !== "undefined" ? course_name : undefined, "tournament_date" in locals_for_with ? locals_for_with.tournament_date : typeof tournament_date !== "undefined" ? tournament_date : undefined);
         return buf.join("");
     };
@@ -31003,6 +31072,12 @@ module.exports = AmpersandModel.extend({
     score: ['integer', true, 0],
     points: ['integer', true, 0],
     position: ['integer', true, 0],
+    putts: ['integer', false, 0],
+    fairways: ['integer', false, 0],
+    greens_played: ['integer', false, 0],
+    fairways_played: ['integer', false, 0],
+    greens_hit: ['integer', false, 0],
+    fairways_hit: ['integer', false, 0],
     time_parsed: ['string']
   },
 
@@ -31010,6 +31085,28 @@ module.exports = AmpersandModel.extend({
     player_url: {
       fn: function(){
         return 'tournaments/' + this.tournament_id + '/player/' + this.player_id;
+      }
+    },
+    golf_score: {
+      deps: ['points', 'through'],
+      fn: function(){
+        if(this.points == this.through*2) return 'E';
+        if(this.points > this.through*2) return '-' + (this.points - this.through*2);
+        if(this.points < this.through*2) return '+' + (this.through*2 - this.points);
+      }
+    },
+    fairway_percentage: {
+      deps: ['fairways_hit', 'fairways_played'],
+      fn: function(){
+        if(this.fairways_played == 0) return 0;
+        return (this.fairways_hit/this.fairways_played)*100;
+      }
+    },
+    green_percentage: {
+      deps: ['greens_hit', 'greens_played'],
+      fn: function(){
+        if(this.greens_played == 0) return 0;
+        return (this.greens_hit/this.greens_played)*100;
       }
     }
   },
@@ -31165,7 +31262,7 @@ var PlayerView = View.extend({
     'score.pretty_fairway': '[role=pretty_fairway]'
   },
   events: {
-    'click .course_tiles li' : 'show_model'
+    'click .course_tiles li' : 'show_modal_overlay'
   },
   serialize: function(){
     this.player = this.model.player();
@@ -31186,14 +31283,14 @@ var PlayerView = View.extend({
     }, this);
     return this;
   },
-  show_model: function(ev) {
+  show_modal_overlay: function(ev) {
     ev.preventDefault();
     ev.stopPropagation();
 
     this.modal = new NineBoxModal({
       title: $(ev.target).parents('li').data('title')
     });
-    this.modal.on('option:selected', this.option_selected, this);
+    this.modal.once('option:selected', this.option_selected, this);
     this.modal.attribute = $(ev.target).parents('li').data('attr');
     this.modal.show();
   },
@@ -31228,6 +31325,7 @@ module.exports = View.extend({
     this.renderWithTemplate(this.serialize());
 
     var tee_times = this.model.findAllTeeTimes();
+    tee_times = tee_times.sort(function(a,b){return a.id > b.id;});
     this.renderCollection(
       new Collection(tee_times), 
       PlayerView, 
@@ -31261,20 +31359,7 @@ var HoleListItem = View.extend({
 });
 
 var LeaderboardItem = View.extend({
-  template: templates.tournaments.player_list_item,
-  serialize: function(){
-    var player = this.model.player();
-    return {
-      position: this.model.through > 0 ? this.model.position : "-",
-      player_url: this.model.player_url,
-      player_name: player.name,
-      holes_through: this.model.through,
-      points_scored: this.model.points
-    }
-  },
-  render: function() {
-    return this.renderWithTemplate(this.serialize());
-  }
+  template: templates.tournaments.player_list_item
 });
 
 module.exports = View.extend({
@@ -31474,6 +31559,7 @@ var velocity = require('velocity-animate');
 var velocity_ui = require('velocity-animate/velocity.ui');
 
 // ---- BP Modules ----
+var TeeTimes = require('../../collections/tee_times');
 var View = require('ampersand-view');
 var templates = require('../../dist/templates');
 
@@ -31482,22 +31568,23 @@ var templates = require('../../dist/templates');
 // model -> Player
 var PlayerListItem = View.extend({
   template: templates.tournaments.player_list_item,
-  serialize: function(){
-    var player = this.model.player();
-    return {
-      position: this.model.through > 0 ? this.model.position : "-",
-      player_url: this.model.player_url,
-      player_name: player.name,
-      holes_through: this.model.through,
-      points_scored: this.model.points > 0 ? this.model.points : "",
-      time: this.model.time_parsed
-    }
-  },
   render: function() {
-    this.renderWithTemplate(this.serialize());
+    this.renderWithTemplate();
     if(this.model.through == 0) $(this.el).addClass('pre'); 
     return this;
   }
+});
+
+var PuttsLeaderboardItem = View.extend({
+  template: templates.tournaments.putts_list_item
+});
+
+var FairwaysLeaderboardItem = View.extend({
+  template: templates.tournaments.fairways_list_item
+});
+
+var GreensLeaderboardItem = View.extend({
+  template: templates.tournaments.greens_list_item
 });
 
 // ---- TournamentView ----
@@ -31514,22 +31601,34 @@ module.exports = View.extend({
     };
   },
   render: function () {
-    this.views = [];
     this.renderWithTemplate(this.serialize());
-    this.$leaderboard = $(this.el).find('.leaderboard');
 
-    _(this.model.tee_times()).each(_.bind(this.add_player_view, this));
-  },
-  add_player_view: function(model){
-    var v = new PlayerListItem({
-      model: model
-    }).render();
+    this.renderCollection(
+      new TeeTimes(this.model.tee_times()), 
+      PlayerListItem, 
+      '.players'
+    );
 
-    this.views.push(v);
-    this.$leaderboard.append(v.el);
+    this.renderCollection(
+      new TeeTimes(this.model.tee_times()).sortByPutts(), 
+      PuttsLeaderboardItem, 
+      '.putts'
+    );
+
+    this.renderCollection(
+      new TeeTimes(this.model.tee_times()).sortByFairways(), 
+      FairwaysLeaderboardItem, 
+      '.fairways'
+    );
+
+    this.renderCollection(
+      new TeeTimes(this.model.tee_times()).sortByGreens(), 
+      GreensLeaderboardItem, 
+      '.greens'
+    );
   }
 });
-},{"../../dist/templates":108,"ampersand-view":70,"jquery":97,"underscore":98,"velocity-animate":99,"velocity-animate/velocity.ui":100}],128:[function(require,module,exports){
+},{"../../collections/tee_times":106,"../../dist/templates":108,"ampersand-view":70,"jquery":97,"underscore":98,"velocity-animate":99,"velocity-animate/velocity.ui":100}],128:[function(require,module,exports){
 /*global me, app*/
 var _ = require('underscore');
 var Router = require('ampersand-router');

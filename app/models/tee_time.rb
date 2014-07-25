@@ -42,13 +42,19 @@ class TeeTime < ActiveRecord::Base
     self.through ||= 0
     self.score ||= 0
     self.points ||= 0
+    self.putts ||= 0
+    self.fairways ||= 0
   end
 
   # Public: Updates the cached scores on the tee time
   def update_scores
-    self.score = self.scores.map(&:score).reject {|s| s.nil? }.reduce(:+)
-    self.points = self.scores.map(&:points).reject {|s| s.nil? }.reduce(:+)
-    self.through = self.scores.map {|s| s.score.nil? ? nil : s.hole.number }.reject {|s| s.nil? }.max
+    self.score = self.scores.map(&:score).reject {|s| s.nil? }.reduce(:+) || 0
+    self.points = self.scores.map(&:points).reject {|s| s.nil? }.reduce(:+) || 0
+    self.putts = self.scores.map(&:putts).reject {|s| s.nil? }.reduce(:+) || 0
+    self.through = self.scores.map {|s| s.score.nil? ? nil : s.hole.number }.reject {|s| s.nil? }.max || 0
+    self.fairways = self.scores.map{|s|
+      s.fairway ? 1 : 0
+    }.reject {|s| s.nil? }.reduce(:+) || 0
     self.save
   end
 
@@ -56,6 +62,34 @@ class TeeTime < ActiveRecord::Base
   def position
     event_tee_times = TeeTime.find_all_by_tournament_id self.tournament_id
     (event_tee_times.find_index { |t| t.id == self.id }) + 1
+  end
+
+  # Public: Counts the amount of fairways played (excludes par 3)
+  def fairways_played
+    self.scores.map {|score|
+      1 if score.hole.par != 3 and !score.fairway.nil?
+    }.reject {|s| s.nil? }.reduce(:+) || 0
+  end
+
+  # Public: Counts the amount of fairways hit (excludes par 3)
+  def fairways_hit
+    self.scores.map {|score|
+      (score.fairway ? 1 : 0) if score.hole.par != 3
+    }.reject {|s| s.nil? }.reduce(:+) || 0
+  end
+
+  # Public: Counts the amount of greens played (only par 3)
+  def greens_played
+    self.scores.map {|score|
+      1 if score.hole.par == 3 and !score.fairway.nil?
+    }.reject {|s| s.nil? }.reduce(:+) || 0
+  end
+
+  # Public: Counts the amount of greens hit (only par 3)
+  def greens_hit
+    self.scores.map {|score|
+      (score.fairway ? 1 : 0) if score.hole.par == 3
+    }.reject {|s| s.nil? }.reduce(:+) || 0
   end
 
 end

@@ -12,6 +12,12 @@ module.exports = AmpersandModel.extend({
     score: ['integer', true, 0],
     points: ['integer', true, 0],
     position: ['integer', true, 0],
+    putts: ['integer', false, 0],
+    fairways: ['integer', false, 0],
+    greens_played: ['integer', false, 0],
+    fairways_played: ['integer', false, 0],
+    greens_hit: ['integer', false, 0],
+    fairways_hit: ['integer', false, 0],
     time_parsed: ['string']
   },
 
@@ -19,6 +25,28 @@ module.exports = AmpersandModel.extend({
     player_url: {
       fn: function(){
         return 'tournaments/' + this.tournament_id + '/player/' + this.player_id;
+      }
+    },
+    golf_score: {
+      deps: ['points', 'through'],
+      fn: function(){
+        if(this.points == this.through*2) return 'E';
+        if(this.points > this.through*2) return '-' + (this.points - this.through*2);
+        if(this.points < this.through*2) return '+' + (this.through*2 - this.points);
+      }
+    },
+    fairway_percentage: {
+      deps: ['fairways_hit', 'fairways_played'],
+      fn: function(){
+        if(this.fairways_played == 0) return 0;
+        return (this.fairways_hit/this.fairways_played)*100;
+      }
+    },
+    green_percentage: {
+      deps: ['greens_hit', 'greens_played'],
+      fn: function(){
+        if(this.greens_played == 0) return 0;
+        return (this.greens_hit/this.greens_played)*100;
       }
     }
   },

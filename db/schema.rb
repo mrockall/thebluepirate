@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 12) do
+ActiveRecord::Schema.define(:version => 13) do
 
   create_table "courses", :force => true do |t|
     t.string   "name"
@@ -63,9 +63,11 @@ ActiveRecord::Schema.define(:version => 12) do
     t.integer  "through"
     t.integer  "score"
     t.integer  "points"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
     t.string   "login_slug"
+    t.integer  "putts",         :default => 0
+    t.integer  "fairways",      :default => 0
   end
 
   create_table "tournaments", :force => true do |t|

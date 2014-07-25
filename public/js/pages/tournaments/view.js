@@ -5,6 +5,7 @@ var velocity = require('velocity-animate');
 var velocity_ui = require('velocity-animate/velocity.ui');
 
 // ---- BP Modules ----
+var TeeTimes = require('../../collections/tee_times');
 var View = require('ampersand-view');
 var templates = require('../../dist/templates');
 
@@ -13,22 +14,23 @@ var templates = require('../../dist/templates');
 // model -> Player
 var PlayerListItem = View.extend({
   template: templates.tournaments.player_list_item,
-  serialize: function(){
-    var player = this.model.player();
-    return {
-      position: this.model.through > 0 ? this.model.position : "-",
-      player_url: this.model.player_url,
-      player_name: player.name,
-      holes_through: this.model.through,
-      points_scored: this.model.points > 0 ? this.model.points : "",
-      time: this.model.time_parsed
-    }
-  },
   render: function() {
-    this.renderWithTemplate(this.serialize());
+    this.renderWithTemplate();
     if(this.model.through == 0) $(this.el).addClass('pre'); 
     return this;
   }
+});
+
+var PuttsLeaderboardItem = View.extend({
+  template: templates.tournaments.putts_list_item
+});
+
+var FairwaysLeaderboardItem = View.extend({
+  template: templates.tournaments.fairways_list_item
+});
+
+var GreensLeaderboardItem = View.extend({
+  template: templates.tournaments.greens_list_item
 });
 
 // ---- TournamentView ----
@@ -45,18 +47,30 @@ module.exports = View.extend({
     };
   },
   render: function () {
-    this.views = [];
     this.renderWithTemplate(this.serialize());
-    this.$leaderboard = $(this.el).find('.leaderboard');
 
-    _(this.model.tee_times()).each(_.bind(this.add_player_view, this));
-  },
-  add_player_view: function(model){
-    var v = new PlayerListItem({
-      model: model
-    }).render();
+    this.renderCollection(
+      new TeeTimes(this.model.tee_times()), 
+      PlayerListItem, 
+      '.players'
+    );
 
-    this.views.push(v);
-    this.$leaderboard.append(v.el);
+    this.renderCollection(
+      new TeeTimes(this.model.tee_times()).sortByPutts(), 
+      PuttsLeaderboardItem, 
+      '.putts'
+    );
+
+    this.renderCollection(
+      new TeeTimes(this.model.tee_times()).sortByFairways(), 
+      FairwaysLeaderboardItem, 
+      '.fairways'
+    );
+
+    this.renderCollection(
+      new TeeTimes(this.model.tee_times()).sortByGreens(), 
+      GreensLeaderboardItem, 
+      '.greens'
+    );
   }
 });

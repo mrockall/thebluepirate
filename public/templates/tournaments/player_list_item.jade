@@ -1,6 +1,6 @@
 li
-  a(href=player_url)= player_name
-    .cell.left= position
-    .cell.thru= holes_through
-    .cell.score= points_scored
-    .cell.time= time
+  a(href=model.player_url)= model.player().name
+    .cell.left= model.through > 0 ? model.position : "-"
+    .cell.thru= model.through
+    .cell.score= model.through > 0 ? model.golf_score : ""
+    .cell.time= model.time_parsed

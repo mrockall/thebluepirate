@@ -19,7 +19,7 @@ var PlayerView = View.extend({
     'score.pretty_fairway': '[role=pretty_fairway]'
   },
   events: {
-    'click .course_tiles li' : 'show_model'
+    'click .course_tiles li' : 'show_modal_overlay'
   },
   serialize: function(){
     this.player = this.model.player();
@@ -40,14 +40,14 @@ var PlayerView = View.extend({
     }, this);
     return this;
   },
-  show_model: function(ev) {
+  show_modal_overlay: function(ev) {
     ev.preventDefault();
     ev.stopPropagation();
 
     this.modal = new NineBoxModal({
       title: $(ev.target).parents('li').data('title')
     });
-    this.modal.on('option:selected', this.option_selected, this);
+    this.modal.once('option:selected', this.option_selected, this);
     this.modal.attribute = $(ev.target).parents('li').data('attr');
     this.modal.show();
   },
@@ -82,6 +82,7 @@ module.exports = View.extend({
     this.renderWithTemplate(this.serialize());
 
     var tee_times = this.model.findAllTeeTimes();
+    tee_times = tee_times.sort(function(a,b){return a.id > b.id;});
     this.renderCollection(
       new Collection(tee_times), 
       PlayerView, 
