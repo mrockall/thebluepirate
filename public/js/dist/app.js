@@ -31578,10 +31578,16 @@ module.exports = Router.extend({
   },
 
   tournament_player: function(tournament_id, player_id) {
-    var tee_time = app.tee_times.findByTournamentAndPlayer(tournament_id, player_id);
-    this.trigger('newPage', new TournamentPlayerPage({
-      model: tee_time
-    }));
+    if(app.scores.length > 0){
+      var tee_time = app.tee_times.findByTournamentAndPlayer(tournament_id, player_id);
+      this.trigger('newPage', new TournamentPlayerPage({
+        model: tee_time
+      }));
+    } else {
+      this._loadTournamentData(_.bind(function(tournament){
+        this.tournament_player(tournament_id, player_id);
+      }, this));
+    }
   },
 
   my_round: function() {
