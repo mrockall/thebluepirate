@@ -1,0 +1,36 @@
+.course_tiles {
+  @include clearfix();
+  list-style: none;
+  margin: 3em .5em .6em;
+  padding: 0;
+
+  li {
+    float: left;
+    width: 33.3333%;
+
+    a{
+      @include box-sizing(border-box);
+      display: block;
+      margin: .25em;
+      padding: 1em;
+      background: #e6e6e6;
+      border: 3px solid #ddd;
+      text-align: center;
+      text-decoration: none;
+      color: $text-dark;
+
+      .hole_num{
+        font-size: 2.5em;
+      }
+      .meta{
+        font-size: 1em;
+      }
+
+      &:active{
+        background: $blue;
+        border-color: darken($blue, 15%);
+        color: white;
+      }
+    }
+  }
+}

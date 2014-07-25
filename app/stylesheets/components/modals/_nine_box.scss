@@ -1,0 +1,60 @@
+.modals .nine_box{
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 0; right: 0;
+
+  .meta{
+    @include clearfix();
+    display: none;
+    background: $blue;
+    color: darken($blue, 20%);
+    padding: .5em 0;
+    height: 6em;
+    line-height: 6em;
+
+    .title{
+      font-size: 4em;
+      padding: 0 .5em;
+      float: left;
+    }
+
+    .back{
+      font-size: 2em;
+      padding: 0 1em;
+      line-height: 3em;
+      float: right;
+    }
+  }
+
+  .options{
+    position: absolute;
+    top: 7em; bottom: 0;
+    left: 0; right: 0;
+  }
+
+  .box{
+    @include box-sizing(border-box);
+    display: none;
+    position: absolute;
+    width: 50%;
+    background: $blue;
+    color: white;
+
+    .value{
+      @include transform(translateX(-50%) translateY(-50%));
+      position: absolute;
+      top: 50%; left: 50%;
+      font-size: 4em;
+    }
+
+    &:active{
+      background: white;
+      color: $text-dark;
+    }
+  }
+
+  @import 'stroke_boxes';
+  @import 'putt_boxes';
+  @import 'fairway_boxes';
+
+}

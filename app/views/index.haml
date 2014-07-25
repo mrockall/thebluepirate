@@ -1,0 +1,7 @@
+= partial "elements/header"
+
+- content_for :view_javascript do
+  :javascript
+
+= yield_content :view_javascript
+/ %script{:data => {:main => "javascripts/main"}, :src => '/components/requirejs/require.js'}

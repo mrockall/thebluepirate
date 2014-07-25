@@ -1,0 +1,15 @@
+.player_scores
+  h2= player_name
+  ul.course_tiles
+    li(data-attr="score", data-title="Strokes")
+      a(href="#")
+        .meta Strokes
+        .hole_num(role="pretty_score")
+    li(data-attr="putts", data-title="Putts")
+      a(href="#")
+        .meta Putts
+        .hole_num(role="pretty_putts")
+    li(data-attr="fairway", data-title="Fairway")
+      a(href="#")
+        .meta Fairway
+        .hole_num(role="pretty_fairway")

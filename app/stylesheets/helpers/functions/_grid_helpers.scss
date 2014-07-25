@@ -1,0 +1,36 @@
+////////////////////////////////////////////////////////////////////////////////
+// GRID MATH
+////////////////////////////////////////////////////////////////////////////////
+
+@function element_width($column_index){
+  @if ($total_width == 100%){
+      $not_rounded_value: (((100% + $gutter_width)/$total_columns)*$column_index)-$gutter_width;
+      $not_rounded_value: $not_rounded_value * 100;
+      $rounded_value: round($not_rounded_value)/100;
+      @return $rounded_value;
+  }@else{
+    @return ((($total_width + $gutter_width)/$total_columns)*$column_index)-$gutter_width;
+  }
+}
+
+@function column_width(){
+  @if ($total_width == 100%){
+      $not_rounded_value: (((100 + $gutter_width)/$total_columns))-$gutter_width;
+      $not_rounded_value: $not_rounded_value * 100;
+      $rounded_value: round($not_rounded_value)/100;
+      @return $rounded_value * 1%;
+  }@else{
+    @return ($total_width - ($gutter_width*($total_columns - 1)))/$total_columns;
+  }
+}
+
+@function container_width(){
+  @if ($total_width == 100%){
+    @if ($container_margin == auto){
+      @return 100%;
+    }
+    @return 100% - 2*$container_margin;
+  } @else {
+    @return $total_width;
+  }
+}

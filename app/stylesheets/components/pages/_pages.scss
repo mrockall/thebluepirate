@@ -1,0 +1,8 @@
+.container{
+  @include container();
+}
+
+.profile_pic{
+  width: 50px;
+  margin: 0 auto;
+}

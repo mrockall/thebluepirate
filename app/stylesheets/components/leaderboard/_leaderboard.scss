@@ -1,0 +1,63 @@
+.leaderboard, .headers{
+  list-style: none;
+  margin: 3em 0 0;
+  padding: 0;
+
+  li{
+    @include clearfix();
+    position: relative;
+    margin: .5em;
+    font-size: 1.5em;
+    line-height: 2.5em;
+
+    a{
+      text-decoration: none;
+      display: block;
+      color: $text-dark;
+      padding: 0 3.5em 0 1.5em;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .cell{
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 1.5em;
+      text-align: center;
+      color: $text-light;
+      padding: 0 0 0 0.25em;
+
+      &.score{
+        color: $text-dark;
+        right: 1.75em;
+      }
+
+      &.time{
+        display: none;
+        color: $text-dark;
+        width: 2.5em;
+      }
+
+      &.left{
+        left: 0;
+        right: auto;
+        text-align: left;
+        padding: 0 0.25em 0 0;
+        width: 1.2em;
+      }
+    }
+
+    &.pre{
+      .score, .thru{
+        display: none;
+      }
+
+      .time{
+        display: block;
+      }
+    }
+  }
+}

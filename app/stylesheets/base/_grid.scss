@@ -1,0 +1,21 @@
+$max_width:        1180px;
+$total_columns:    12;
+$total_width:      100%;
+$gutter_width:     2%;
+$container_margin: auto;
+
+$class_container:  'row';
+$class_column:     'col';
+$class_push:       'push';
+
+@include generate_helper_classes();
+
+/* All Mobile Widths */
+@include bp(mobile) {
+  $total_columns:     12;
+  $total_width:     100%;
+  $gutter_width:      2%;
+  $container_margin:  auto;
+
+  @include generate_responsive_classes();
+}

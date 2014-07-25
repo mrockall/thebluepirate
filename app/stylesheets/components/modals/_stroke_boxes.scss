@@ -1,0 +1,42 @@
+.score{
+  .box:nth-child(1){
+    top: 0;
+    left: 0;
+  }
+  .box:nth-child(2){
+    top: 0;
+    left: 50%;
+  }
+  .box:nth-child(3){
+    top: 20%;
+    left: 0;
+  }
+  .box:nth-child(4){
+    top: 20%;
+    left: 50%;
+  }
+  .box:nth-child(5){
+    top: 40%;
+    left: 0;
+  }
+  .box:nth-child(6){
+    top: 40%;
+    left: 50%;
+  }
+  .box:nth-child(7){
+    top: 60%;
+    left: 0;
+  }
+  .box:nth-child(8){
+    top: 60%;
+    left: 50%;
+  }
+  .box:nth-child(9){
+    top: 80%;
+    left: 0;
+  }
+  .box:nth-child(10){
+    top: 80%;
+    left: 50%;
+  }
+}

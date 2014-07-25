@@ -1,0 +1,45 @@
+body
+  .content
+    header.container
+      a.logo(href='/')
+      a.button.icon.hamburger-icon
+        svg(height='36', version='1.1', width='36', xmlns='http://www.w3.org/2000/svg', viewbox='0 0 64 64')
+          g
+            path(d='M5.0916789,20.818994C5.0916789,20.818994,58.908321,20.818994,58.908321,20.818994')
+            path(d='m 5.1969746,31.909063 53.8166424,0', transform='matrix(1,0,0,1,0,0)', style='opacity: 1;')
+            path(d='M5.0916788,42.95698C5.0916788,42.95698,58.908321,42.95698,58.908321,42.95698')
+      .nav
+        ul
+          if is_logged_in == true
+            if identity_type == 'user'
+              li
+                a(href='/') Dashboard
+              li
+                a(href='/tournaments/new') Add a Tournament
+              li
+                a(href='/logout', data-bypass='true') Logout
+              li.profile_pic
+                img(src=image_url)
+            else if identity_type == 'tee_time'
+              li
+                a(href='/') Leaderboard
+              li
+                a(href='/my-round') My Round
+          else
+            li
+              a(href='/login', data-bypass='true') Login
+
+    .container.pages(role='page-container')
+    .loading
+      .loader
+        .loader-block
+        .loader-block
+        .loader-block
+        .loader-block
+        .loader-block
+        .loader-block
+        .loader-block
+        .loader-block
+        .loader-block
+  .modals(role='modal-container')
+    .modal

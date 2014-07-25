@@ -1,0 +1,13 @@
+@import 'course_tiles';
+@import 'hole';
+
+.player_scores{
+  margin-top:  2em;
+  
+  h2{
+    color: $text-dark;
+  }
+  .course_tiles{
+    margin-top: 1em;
+  }
+}

@@ -1,0 +1,41 @@
+.next_prev_nav{
+  @include clearfix();
+  margin: 2em .5em 0;
+
+  a{
+    position: relative;
+    color: $text-light;
+    font-size: 2em;
+    text-decoration: none;
+
+    svg{
+      position: absolute;
+      top: 50%;
+      height: 20px;
+      width: 20px;
+      margin-top: -10px;
+      fill: $text-light;
+    }
+    .number{
+      float: left;
+    }
+  }
+
+  .prev{
+    float: left;
+    padding: .5em 1.35em;
+
+    svg {
+      left: .25em;
+      @include transform(rotate(180deg));
+    }
+  }
+  .next{
+    float: right;
+    padding: .5em 1.35em;
+
+    svg {
+      right: .25em;
+    }
+  }
+}

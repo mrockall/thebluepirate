@@ -1,0 +1,54 @@
+/**
+ * Establish the grid-containing element.
+ */
+@mixin container(){
+  width: container_width(); 
+  max-width: $max-width;
+  margin: 0 auto;
+}
+
+/**
+ * Align an element to the grid.
+ */
+@mixin column($_columns_width, $_padding_columns:null){
+  @include box-sizing(border-box);
+  float: left; 
+  margin-right: -100%;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+
+  @include bp(mobile){
+    padding-left: .75em;
+    padding-right: .75em;
+  }
+
+  $_width_perc: element_width($_columns_width);
+  width: $_width_perc;       
+
+  @if($_padding_columns != null){
+    @include push($_padding_columns);
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// MARGIN MIXINS
+////////////////////////////////////////////////////////////////////////////////
+
+@mixin pre(){}
+@mixin post(){}
+@mixin squish(){}
+
+@mixin push($_column_index){
+  $_width_perc: 0;
+  @if ($total_width == 100%){
+    $_width_perc: ($gutter_width + element_width($_column_index));
+  }@else{
+    //$_width_perc: (column_width() + $gutter_width)*$_column_index;
+    $_width_perc: ($gutter_width + element_width($_column_index));
+  }
+  
+  margin-left: $_width_perc;       
+}
+
+@mixin pull(){}

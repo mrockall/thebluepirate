@@ -1,0 +1,52 @@
+header{
+  @include clearfix();
+
+  .logo{
+    float: left;
+    width: 77px;
+    height: 80px;
+    margin: 0 15px;
+    background: url(images/logo.png) left center no-repeat;
+  }
+
+  @media screen and (-webkit-min-device-pixel-ratio: 1.3), screen and (min--moz-device-pixel-ratio: 1.3), screen and (-o-min-device-pixel-ratio: 2 / 1), screen and (min-device-pixel-ratio: 1.3), screen and (min-resolution: 192dpi), screen and (min-resolution: 2dppx) {
+    .logo{
+      background-image: url(images/logo-big.png);
+      -webkit-background-size: 77px 80px;
+      -moz-background-size: 77px 80px;
+      -o-background-size: 77px 80px;
+      background-size: 77px 80px;
+    }
+  }
+
+  @import "nav";
+
+  .icon {
+    float: right;
+    display: none;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: center center;
+    padding: 0 20px;
+    line-height: 63px;
+    color: #444;
+    height: 64px;
+
+    @include bp(mobile){
+      display: block;
+    }
+  }
+  .hamburger-icon svg{
+    display: none;
+    float: left;
+    margin: 22px 0;
+    fill: none;
+    stroke: #505050;
+    stroke-linejoin: bevel;
+    stroke-width: 5px;
+
+    @include bp(mobile){
+      display: block;
+    }
+  }
+}

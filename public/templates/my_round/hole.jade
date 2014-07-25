@@ -1,0 +1,19 @@
+.page
+  h1= "#" + hole_number + " - Par " + hole_par
+  h2= "Length " + hole_length + "m"
+  h2= "Index " + hole_index
+
+  .players
+
+  .next_prev_nav
+    if prev_hole
+      a.prev(href="/my-round/" + prev_hole_id)
+        svg(version="1.1", xmlns="http://www.w3.org/2000/svg", xmlns:xlink="http://www.w3.org/1999/xlink", x="0px", y="0px", viewBox="0 0 512 512", xml:space="preserve")
+          polygon(points="142.332,104.886 197.48,50 402.5,256 197.48,462 142.332,407.113 292.727,256 ")
+        .number= "#" + prev_hole
+
+    if next_hole
+      a.next(href="/my-round/" + next_hole_id)
+        .number= "#" + next_hole
+        svg(version="1.1", xmlns="http://www.w3.org/2000/svg", xmlns:xlink="http://www.w3.org/1999/xlink", x="0px", y="0px", viewBox="0 0 512 512", xml:space="preserve")
+          polygon(points="142.332,104.886 197.48,50 402.5,256 197.48,462 142.332,407.113 292.727,256 ")

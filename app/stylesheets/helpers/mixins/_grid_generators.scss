@@ -1,0 +1,74 @@
+@import "../functions/grid_helpers";
+
+////////////////////////////////////////////////////////////////////////////////
+// HELPER CLASSES
+////////////////////////////////////////////////////////////////////////////////
+
+@mixin generate_responsive_classes(){
+
+  /* Helper Class: Container */
+  .#{$class_container}{
+    @include container();
+  }
+
+  /* Helper Class: Columns */ 
+  @for $i from 1 through $total_columns{
+    .#{$class_column}#{$i} {
+      float: none;
+      margin-right: 0;
+      width: auto;
+    }
+  }
+
+  /* Helper Class: Horizontal Position */ 
+  @for $i from 0 through ($total_columns - 1){
+    .#{$class_push}#{$i} {
+      margin-left: 0;
+    }
+  }
+
+}
+
+@mixin generate_helper_classes(){
+
+  /* Helper Class: Container */
+  .#{$class_container}{
+    @include container();
+  }
+
+  /* Helper Class: Columns */ 
+  @for $i from 1 through $total_columns{
+    .#{$class_column}#{$i} {
+      @include column($i)
+    }
+  }
+
+  /* Helper Class: Horizontal Position */ 
+  @for $i from 0 through ($total_columns - 1){
+    .#{$class_push}#{$i} {
+      @include push($i);
+    }
+  }
+
+}
+
+@mixin generate_grid_positions($_column_selector, $_element_width){
+
+  $_cols_per_row: floor($total_columns / $_element_width);
+
+  // create rule for each element
+  @for $i from 1 through $_cols_per_row{
+
+    #{$_column_selector}:nth-child(#{$_cols_per_row}n+#{$i}){
+      @include push((($i - 1)*$_element_width));
+      margin-bottom: $gutter_width;
+
+      @if ($i == 1) {
+        clear: both;
+        @include clearfix();
+      }@else{
+        clear: none;
+      }
+    } 
+  }
+}

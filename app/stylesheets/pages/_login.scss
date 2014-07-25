@@ -1,0 +1,54 @@
+.login-block{
+  @include box-sizing(border-box);
+
+  width: 100%;
+  max-width: 330px;
+  margin: 50px auto 30px;
+
+  font-size: 18px;
+  line-height: 26px;
+  background: white url(images/logo-big.png) center 10px no-repeat;
+  padding: 180px 20px 20px;
+
+  .sep{
+    height: 1px;
+    background: #ddd;
+    margin: 20px 100px;
+  }
+
+  a{
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: $blue;
+    margin: 10px 0 0;
+    font-size: 15px;
+  }
+
+  .button{
+    display: block;
+    font-size: 18px;
+    line-height: 26px;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    color: white;
+    padding: 10px 20px;
+    margin: 0 0 15px;
+    background: #888;
+    @include border-radius(5px);
+
+    &.facebook{
+      background: #3b5998;
+      &:hover{
+        background: #4467b0;
+      }
+    }
+    &.twitter{
+      background: #00acee; 
+      &:hover{
+        background: #22c2ff;
+      }
+    }
+  }
+}

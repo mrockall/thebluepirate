@@ -1,0 +1,8 @@
+- content_for :view_javascript do
+  :javascript
+    this.InitialData = this.InitialData || {};
+    this.InitialData.development_mode = #{Padrino.env == :development};
+    this.InitialData.me = #{@current_user.to_json}
+
+= yield_content :view_javascript
+%script{:src => '/js/dist/app.js', :type => 'text/javascript'}

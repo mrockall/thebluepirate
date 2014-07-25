@@ -1,0 +1,23 @@
+/**
+ * Clearfix
+ */
+@mixin clearfix(){
+  overflow: hidden;
+  *zoom: 1;
+}
+
+/**
+ * Legacy Clearfix
+ */
+@mixin legacy-pie-clearfix(){
+  *zoom: 1;
+
+  :after {
+    content: "\0020";
+    display: block;
+    height: 0;
+    clear: both;
+    overflow: hidden;
+    visibility: hidden;
+  }
+}
