@@ -31610,11 +31610,14 @@ module.exports = Router.extend({
   },
 
   _showLoading: function(){
+    $('.content').addClass('no-scroll');
     $(".loading").fadeIn();
   },
 
   _hideLoading: function(){
-    $(".loading").fadeOut();
+    $(".loading").fadeOut(function(){
+      $('.content').removeClass('no-scroll');
+    });
   },
 
   _loadTournamentData: function(cb){
@@ -31827,7 +31830,7 @@ module.exports = View.extend({
     return this;
   },
   show: function() {
-    $('body, html').addClass('no-scroll');
+    $('.content').addClass('no-scroll');
     this.$boxes = $(this.el).find('.' + this.attribute + ' .box');
 
     var rows = 2;
@@ -31857,7 +31860,7 @@ module.exports = View.extend({
       complete: _.bind(function(){
         app.router.off('route', this.hide, this);
         this.remove();
-        $('body, html').removeClass('no-scroll');
+        $('.content').removeClass('no-scroll');
       }, this)
     });
   },

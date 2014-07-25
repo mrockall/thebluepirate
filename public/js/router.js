@@ -82,11 +82,14 @@ module.exports = Router.extend({
   },
 
   _showLoading: function(){
+    $('.content').addClass('no-scroll');
     $(".loading").fadeIn();
   },
 
   _hideLoading: function(){
-    $(".loading").fadeOut();
+    $(".loading").fadeOut(function(){
+      $('.content').removeClass('no-scroll');
+    });
   },
 
   _loadTournamentData: function(cb){

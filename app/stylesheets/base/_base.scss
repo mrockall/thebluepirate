@@ -38,11 +38,6 @@ html{
   @include box-sizing(border-box);
 }
 
-.no-scroll{
-  height: 100%;
-  overflow: hidden;
-}
-
 .content{
   @include box-sizing(border-box);
   position: absolute;
@@ -51,6 +46,11 @@ html{
   width: 100%;
   padding: .5em;
   overflow: scroll;
+}
+
+.no-scroll{
+  height: 100%;
+  overflow: hidden;
 }
 
 .page{
