@@ -18,8 +18,16 @@ module.exports = function(grunt) {
       }
     },
 
+    uglify: {
+      js: {
+        src: ['public/js/dist/app.js'],
+        dest: 'public/js/dist/app.js',
+      }
+    }
+
   });
 
   grunt.registerTask("default", ['watch']);
+  grunt.registerTask("build", ['uglify']);
 
 };

@@ -23,7 +23,6 @@ gem 'compass'
 gem 'puma'
 gem 'mysql2'
 gem 'sqlite3'
-gem 'rabl'
 
 # Auth
 gem 'warden'
@@ -48,3 +47,6 @@ gem 'padrino-gen', '0.12.2'
 # %w(core gen helpers cache mailer admin).each do |g|
 #   gem 'padrino-' + g, '0.11.4'
 # end
+
+# Must be listed after Padrino to register as template engine
+gem 'rabl'
