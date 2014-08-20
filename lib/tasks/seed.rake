@@ -264,11 +264,18 @@ namespace :blue_pirate do
     def find_or_create_player(name, handicap, facebook_id = nil)
       player = Player.find_by_name name
 
-      player = Player.create do |player|
-        player.name = name
-        player.handicap = handicap
-        player.facebook_id = facebook_id
-      end if player.nil?
+      if player.nil?
+        player = Player.create do |player|
+          player.name = name
+          player.handicap = handicap
+          player.facebook_id = facebook_id
+        end
+      else 
+        player.update_attributes({
+            :handicap => handicap,
+            :facebook_id => facebook_id
+          })
+      end
 
       player
     end
@@ -282,6 +289,9 @@ namespace :blue_pirate do
         :time => '09:00:00'
       },{
         :player => find_or_create_player("Conor O'Hagan", 28, 572455127),
+        :time => '09:00:00'
+      },{
+        :player => find_or_create_player("Phil Staunton", 18, 788629318),
         :time => '09:00:00'
       }])
 
