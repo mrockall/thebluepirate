@@ -5,7 +5,8 @@ module.exports = AmpersandModel.extend({
   props: {
     id: ['integer', true],
     name: ['string', true, ''],
-    handicap: ['integer', true, 28]
+    handicap: ['integer', true, 28],
+    facebook_id: ['string', true, ''],
   },
 
   holes: function(){

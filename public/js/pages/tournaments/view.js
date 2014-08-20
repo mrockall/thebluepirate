@@ -3,6 +3,7 @@ var _ = require('underscore');
 var $ = require('jquery');
 var velocity = require('velocity-animate');
 var velocity_ui = require('velocity-animate/velocity.ui');
+var quicksand = require('../../helpers/quicksand');
 
 // ---- BP Modules ----
 var TeeTimes = require('../../collections/tee_times');
@@ -14,9 +15,16 @@ var templates = require('../../dist/templates');
 // model -> Player
 var PlayerListItem = View.extend({
   template: templates.tournaments.player_list_item,
+  bindings: {
+    'model.pretty_through': '[role=pretty_through]',
+    'model.pretty_score': '[role=pretty_score]',
+    'model.points': '[role=points]',
+    'model.through': '[role=through]'
+  },
   render: function() {
     this.renderWithTemplate();
-    if(this.model.through == 0) $(this.el).addClass('pre'); 
+    if(this.model.through == 0) $(this.el).addClass('pre');
+    else $(this.el).removeClass('pre');
     return this;
   }
 });
@@ -48,29 +56,43 @@ module.exports = View.extend({
   },
   render: function () {
     this.renderWithTemplate(this.serialize());
+    this.show_loading();
 
-    this.renderCollection(
-      new TeeTimes(this.model.tee_times()), 
-      PlayerListItem, 
-      '.players'
-    );
+    this.tee_times = new TeeTimes(this.model.tee_times());
 
-    this.renderCollection(
-      new TeeTimes(this.model.tee_times()).sortByPutts(), 
-      PuttsLeaderboardItem, 
-      '.putts'
-    );
+    // this.tee_times.on('all', function(a,b,c){console.log(a,b,c);}, this);
+    this.tee_times.on('request', this.show_loading, this);
+    this.tee_times.on('sync', this.hide_loading, this);
+    this.tee_times.on('error', this.try_again, this);
 
-    this.renderCollection(
-      new TeeTimes(this.model.tee_times()).sortByFairways(), 
-      FairwaysLeaderboardItem, 
-      '.fairways'
-    );
+    this.views = []
+    var $players = $(this.el).find('.players');
+    this.tee_times.each(_.bind(function(m){
+      var view = new PlayerListItem({
+        model: m
+      }).render();
 
-    this.renderCollection(
-      new TeeTimes(this.model.tee_times()).sortByGreens(), 
-      GreensLeaderboardItem, 
-      '.greens'
-    );
+      $players.append(view.el);
+      this.views.push(view);
+    }, this));
+
+    this.tee_times.fetch();
+  },
+  transitionIn: function(cb){
+    $(this.el).show();
+
+    $(this.el).find('.players li').hide().velocity('transition.slideUpIn', {
+      duration: 200,
+      stagger: 60
+    });
+  },
+  show_loading: function(){
+    $(this.el).find(".list-loading").show();
+  },
+  hide_loading: function(){
+    $(this.el).find(".list-loading").slideUp();
+  },
+  try_again: function(){
+    this.tee_times.fetch();
   }
 });

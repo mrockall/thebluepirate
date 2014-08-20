@@ -1,3 +1,3 @@
 object @course
 
-attributes :id, :name, :handicap
+attributes :id, :name, :handicap, :facebook_id

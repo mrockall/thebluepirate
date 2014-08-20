@@ -12,6 +12,11 @@ module BluePirate
 
     set :haml, {:format => :html5}
 
+    Rabl.configure do |config|
+      config.include_json_root = false
+      config.include_child_root = false
+    end
+
     # Load OmniAuth
     use OmniAuth::Builder do
       provider :twitter,  '8t2RRALbWML9RhMAeBGSg', 'FMaVBc4E74DWEJqmKsm74WPJfyvlZkCpK7mxeZQ2w'
@@ -44,6 +49,13 @@ module BluePirate
     end
     
     get :index, :map => '/*page', :priority => :low do
+      t = Tournament.last
+      @tournaments = Rabl.render(t, 'tournaments/view', :view_path => 'app/views', :format => 'json')
+      @tee_times = Rabl.render(t.tee_times, 'tee_times/view', :view_path => 'app/views', :format => 'json')
+      @players = Rabl.render(t.players, 'players/view', :view_path => 'app/views', :format => 'json')
+      @courses = Rabl.render(t.course, 'courses/view', :view_path => 'app/views', :format => 'json')
+      @holes = Rabl.render(t.course.holes, 'holes/view', :view_path => 'app/views', :format => 'json')
+      @scores = Rabl.render(t.scores, 'scores/view', :view_path => 'app/views', :format => 'json')
       render :app
     end
   end

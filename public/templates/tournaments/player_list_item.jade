@@ -1,6 +1,11 @@
 li
-  a(href=model.player_url)= model.player().name
-    .cell.left= model.through > 0 ? model.position : "-"
-    .cell.thru= model.through
-    .cell.score= model.through > 0 ? model.golf_score : ""
-    .cell.time= model.time_parsed
+  a(href=model.player_url)
+    .cell.one(role='pretty_through')= model.pretty_through
+    .cell.one
+      img(src='http://graph.facebook.com/' + model.player().facebook_id + '/picture?type=square&height=100&width=100')
+    .cell.five.ellipsis.name= model.player().name
+    .cell.one.score(role='pretty_score')= model.pretty_score
+    .cell.one.score(role='points')= model.points
+    .cell.one.thru(role='through')= model.through
+
+    .cell.three.time= model.time_parsed

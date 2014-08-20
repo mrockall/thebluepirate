@@ -5,6 +5,11 @@ module.exports = Collection.extend({
   model: TeeTime,
   url: '/tee_times',
 
+  comparator: function(a, b){
+    // console.log(a.golf_score, b.golf_score);
+    return a.golf_score > b.golf_score;
+  },
+
   findByID: function(id) {
     return this.findWhere({id: id});
   },
@@ -25,23 +30,29 @@ module.exports = Collection.extend({
   },
 
   sortByPutts: function() {
+    var old_comparator = this.comparator;
     this.comparator = function(a,b){
       return a.putts < b.putts;
     };
-    return this.sort();
+    this.sort();
+    this.comparator = old_comparator;
   },
 
   sortByFairways: function() {
+    var old_comparator = this.comparator;
     this.comparator = function(a,b){
       return a.fairway_percentage < b.fairway_percentage;
     };
-    return this.sort();
+    this.sort();
+    this.comparator = old_comparator;
   },
 
   sortByGreens: function() {
+    var old_comparator = this.comparator;
     this.comparator = function(a,b){
       return a.green_percentage < b.green_percentage;
     };
-    return this.sort();
+    this.sort();
+    this.comparator = old_comparator;
   }
 });

@@ -22,7 +22,8 @@
         line-height: 18px;
         font-weight: bold;
         text-decoration: none;
-        color: $text-dark;
+        text-align: center;
+        color: white;
 
         &:hover{
           border-color: $dark-grey;
@@ -35,7 +36,7 @@
 
       &.active {
         a {
-          border-color: $blue;
+          display: none;
         }
       }
 
@@ -60,7 +61,6 @@
     clear: both;
     display: none;
     float: none;
-    padding-top: 2em;
 
     ul li {
       float: none;
@@ -72,10 +72,9 @@
 
       a {
         display: block;
-        padding: .75em 0 .75em 1em;
+        padding: .75em 1em;
         margin-bottom: 1em;
         border-bottom: 0 none;
-        border-left: 5px solid white;
       }
 
       &.profile_pic{

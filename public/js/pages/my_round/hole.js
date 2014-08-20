@@ -52,8 +52,7 @@ var PlayerView = View.extend({
     this.modal.show();
   },
   option_selected: function(value) {
-    this.score.set(this.modal.attribute, value);
-    this.score.save();
+    this.score.save(this.modal.attribute, value);
   }
 });
 

@@ -30,6 +30,13 @@ module.exports = AmpersandModel.extend({
     golf_score: {
       deps: ['points', 'through'],
       fn: function(){
+        if(this.through == 0) return 9999;
+        return this.through*2 - this.points;
+      }
+    },
+    golf_score_pretty: {
+      deps: ['points', 'through', 'golf_score'],
+      fn: function(){
         if(this.points == this.through*2) return 'E';
         if(this.points > this.through*2) return '-' + (this.points - this.through*2);
         if(this.points < this.through*2) return '+' + (this.through*2 - this.points);
@@ -47,6 +54,18 @@ module.exports = AmpersandModel.extend({
       fn: function(){
         if(this.greens_played == 0) return 0;
         return (this.greens_hit/this.greens_played)*100;
+      }
+    },
+    pretty_through: {
+      deps: ['through', 'position'],
+      fn: function(){
+        return this.through > 0 ? this.position : "-"
+      }
+    },
+    pretty_score: {
+      deps: ['through', 'golf_score'],
+      fn: function(){
+        return this.through > 0 ? this.golf_score_pretty : "";
       }
     }
   },

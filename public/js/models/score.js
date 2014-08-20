@@ -33,5 +33,13 @@ module.exports = AmpersandModel.extend({
         return _.isNull(this.fairway) ? "-" : (this.fairway ? "Y" : "N")
       }
     }
+  },
+  toJSON: function(options){
+    return {
+      id: this.id,
+      score: this.score,
+      putts: this.putts,
+      fairway: this.fairway
+    }
   }
 });

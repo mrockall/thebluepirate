@@ -6,8 +6,8 @@
   .meta{
     @include clearfix();
     display: none;
-    background: $blue;
-    color: darken($blue, 20%);
+    background: $dark-blue;
+    color: white;
     padding: .5em 0;
     height: 6em;
     line-height: 6em;
@@ -37,7 +37,7 @@
     display: none;
     position: absolute;
     width: 50%;
-    background: $blue;
+    background: $dark-blue;
     color: white;
 
     .value{

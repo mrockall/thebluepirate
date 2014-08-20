@@ -22,7 +22,7 @@
         var jade_interp;
         var locals_for_with = locals || {};
         (function(is_logged_in, identity_type, image_url) {
-            buf.push('<body><div class="content"><header class="container"><a href="/" class="logo"></a><a class="button icon hamburger-icon"><svg height="36" version="1.1" width="36" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 64 64"><g><path d="M5.0916789,20.818994C5.0916789,20.818994,58.908321,20.818994,58.908321,20.818994"></path><path d="m 5.1969746,31.909063 53.8166424,0" transform="matrix(1,0,0,1,0,0)" style="opacity: 1;"></path><path d="M5.0916788,42.95698C5.0916788,42.95698,58.908321,42.95698,58.908321,42.95698"></path></g></svg></a><div class="nav"><ul>');
+            buf.push('<body><div class="content"><header><a href="/" class="logo"></a><a class="button icon hamburger-icon"><svg height="36" version="1.1" width="36" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 64 64"><g><path d="M5.0916789,20.818994C5.0916789,20.818994,58.908321,20.818994,58.908321,20.818994"></path><path d="m 5.1969746,31.909063 53.8166424,0" transform="matrix(1,0,0,1,0,0)" style="opacity: 1;"></path><path d="M5.0916788,42.95698C5.0916788,42.95698,58.908321,42.95698,58.908321,42.95698"></path></g></svg></a><div class="nav"><ul>');
             if (is_logged_in == true) {
                 if (identity_type == "user") {
                     buf.push('<li><a href="/">Dashboard</a></li><li><a href="/tournaments/new">Add a Tournament</a></li><li><a href="/logout" data-bypass="true">Logout</a></li><li class="profile_pic"><img' + jade.attr("src", image_url, true, false) + "/></li>");
@@ -56,7 +56,7 @@
         var jade_interp;
         var locals_for_with = locals || {};
         (function(hole_number, hole_par, hole_length, hole_index, prev_hole, prev_hole_id, next_hole, next_hole_id) {
-            buf.push('<div class="page"><h1>' + jade.escape(null == (jade_interp = "#" + hole_number + " - Par " + hole_par) ? "" : jade_interp) + "</h1><h2>" + jade.escape(null == (jade_interp = "Length " + hole_length + "m") ? "" : jade_interp) + "</h2><h2>" + jade.escape(null == (jade_interp = "Index " + hole_index) ? "" : jade_interp) + '</h2><div class="players"></div><div class="next_prev_nav">');
+            buf.push('<div class="page"><div class="page_header"><h1>' + jade.escape(null == (jade_interp = "#" + hole_number + " - Par " + hole_par) ? "" : jade_interp) + "</h1><h2>" + jade.escape(null == (jade_interp = "Length " + hole_length + "m") ? "" : jade_interp) + "</h2><h2>" + jade.escape(null == (jade_interp = "Index " + hole_index) ? "" : jade_interp) + '</h2></div><div class="menu_stripe"></div><div class="players"></div><div class="next_prev_nav">');
             if (prev_hole) {
                 buf.push("<a" + jade.attr("href", "/my-round/" + prev_hole_id, true, false) + ' class="prev"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" xml:space="preserve"><polygon points="142.332,104.886 197.48,50 402.5,256 197.48,462 142.332,407.113 292.727,256 "></polygon></svg><div class="number">' + jade.escape(null == (jade_interp = "#" + prev_hole) ? "" : jade_interp) + "</div></a>");
             }
@@ -92,21 +92,9 @@
         return buf.join("");
     };
 
-    // my_round/leaderboard_record.jade compiled template
-    templatizer["my_round"]["leaderboard_record"] = function tmpl_my_round_leaderboard_record() {
-        return '<li><a href="player_url">Steve Horgan<div class="cell left">6</div><div class="cell">18</div><div class="cell score">39</div></a></li>';
-    };
-
     // my_round/view.jade compiled template
-    templatizer["my_round"]["view"] = function tmpl_my_round_view(locals) {
-        var buf = [];
-        var jade_mixins = {};
-        var jade_interp;
-        var locals_for_with = locals || {};
-        (function(tournament_name) {
-            buf.push('<div class="page"><h1>' + jade.escape(null == (jade_interp = tournament_name) ? "" : jade_interp) + '</h1><ul class="leaderboard"></ul><ul class="course_tiles"></ul></div>');
-        })("tournament_name" in locals_for_with ? locals_for_with.tournament_name : typeof tournament_name !== "undefined" ? tournament_name : undefined);
-        return buf.join("");
+    templatizer["my_round"]["view"] = function tmpl_my_round_view() {
+        return '<div class="page"><ul class="leaderboard"></ul><ul class="course_tiles"></ul></div>';
     };
 
     // pages/home.jade compiled template
@@ -196,7 +184,7 @@
         var jade_interp;
         var locals_for_with = locals || {};
         (function(player_name, player_handicap) {
-            buf.push('<div class="page"><h1>' + jade.escape(null == (jade_interp = player_name) ? "" : jade_interp) + "</h1><h2>" + jade.escape(null == (jade_interp = "Handicap " + player_handicap) ? "" : jade_interp) + '</h2><ul class="scorecard"></ul></div>');
+            buf.push('<div class="page"><div class="page_header"><h1>' + jade.escape(null == (jade_interp = player_name) ? "" : jade_interp) + "</h1><h2>" + jade.escape(null == (jade_interp = "Handicap " + player_handicap) ? "" : jade_interp) + '</h2></div><div class="menu_stripe"></div><ul class="scorecard"></ul></div>');
         })("player_name" in locals_for_with ? locals_for_with.player_name : typeof player_name !== "undefined" ? player_name : undefined, "player_handicap" in locals_for_with ? locals_for_with.player_handicap : typeof player_handicap !== "undefined" ? player_handicap : undefined);
         return buf.join("");
     };
@@ -208,7 +196,7 @@
         var jade_interp;
         var locals_for_with = locals || {};
         (function(model) {
-            buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + ">" + jade.escape(null == (jade_interp = model.player().name) ? "" : jade_interp) + '<div class="cell left">' + jade.escape(null == (jade_interp = model.through > 0 ? model.position : "-") ? "" : jade_interp) + '</div><div class="cell thru">' + jade.escape(null == (jade_interp = model.through) ? "" : jade_interp) + '</div><div class="cell score">' + jade.escape(null == (jade_interp = model.through > 0 ? model.golf_score : "") ? "" : jade_interp) + '</div><div class="cell time">' + jade.escape(null == (jade_interp = model.time_parsed) ? "" : jade_interp) + "</div></a></li>");
+            buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + '><div role="pretty_through" class="cell one">' + jade.escape(null == (jade_interp = model.pretty_through) ? "" : jade_interp) + '</div><div class="cell one"><img' + jade.attr("src", "http://graph.facebook.com/" + model.player().facebook_id + "/picture?type=square&height=100&width=100", true, false) + '/></div><div class="cell five ellipsis name">' + jade.escape(null == (jade_interp = model.player().name) ? "" : jade_interp) + '</div><div role="pretty_score" class="cell one score">' + jade.escape(null == (jade_interp = model.pretty_score) ? "" : jade_interp) + '</div><div role="points" class="cell one score">' + jade.escape(null == (jade_interp = model.points) ? "" : jade_interp) + '</div><div role="through" class="cell one thru">' + jade.escape(null == (jade_interp = model.through) ? "" : jade_interp) + '</div><div class="cell three time">' + jade.escape(null == (jade_interp = model.time_parsed) ? "" : jade_interp) + "</div></a></li>");
         })("model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
         return buf.join("");
     };
@@ -238,15 +226,8 @@
     };
 
     // tournaments/view.jade compiled template
-    templatizer["tournaments"]["view"] = function tmpl_tournaments_view(locals) {
-        var buf = [];
-        var jade_mixins = {};
-        var jade_interp;
-        var locals_for_with = locals || {};
-        (function(tournament_name, course_name, tournament_date) {
-            buf.push('<div class="page"><h1>' + jade.escape(null == (jade_interp = tournament_name) ? "" : jade_interp) + "</h1><h2>" + jade.escape(null == (jade_interp = course_name) ? "" : jade_interp) + "</h2><h2>" + jade.escape(null == (jade_interp = tournament_date) ? "" : jade_interp) + '</h2><h3>Leaderboard</h3><ul class="leaderboard players"></ul><h3>Putts</h3><ul class="leaderboard putts"></ul><h3>Fairways</h3><ul class="leaderboard fairways"></ul><h3>Greens</h3><ul class="leaderboard greens"></ul></div>');
-        })("tournament_name" in locals_for_with ? locals_for_with.tournament_name : typeof tournament_name !== "undefined" ? tournament_name : undefined, "course_name" in locals_for_with ? locals_for_with.course_name : typeof course_name !== "undefined" ? course_name : undefined, "tournament_date" in locals_for_with ? locals_for_with.tournament_date : typeof tournament_date !== "undefined" ? tournament_date : undefined);
-        return buf.join("");
+    templatizer["tournaments"]["view"] = function tmpl_tournaments_view() {
+        return '<div class="page"><div class="list-loading"><div class="loader"><div class="loader-block"></div><div class="loader-block"></div><div class="loader-block"></div></div></div><ul class="leaderboard players"></ul></div>';
     };
 
     return templatizer;

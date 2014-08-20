@@ -9,4 +9,9 @@ BluePirate::App.controllers :tournaments do
     }.to_json
   end
 
+  get :tee_times, :map => '/tee_times', :provides => :json do
+    t = Tournament.last
+    @tee_times = t.tee_times
+    render 'tee_times/view'
+  end
 end

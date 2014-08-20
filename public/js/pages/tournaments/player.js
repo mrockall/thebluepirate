@@ -14,8 +14,8 @@ var HoleListItem = View.extend({
       hole_par: this.model.par,
       hole_index: this.model.index,
       hole_length: this.model.length,
-      score: this.score.score,
-      points: this.score.points,
+      score: this.score.score ? this.score.score : "-",
+      points: this.score.points ? this.score.points : "-",
       result: this.score.result
     }
   },
@@ -60,6 +60,15 @@ module.exports = View.extend({
     _(this.model.tournament().holes()).each(_.bind(this.add_player_view, this));
 
     this.render_totals();
+  },
+
+  transitionIn: function(cb){
+    $(this.el).show();
+
+    $(this.el).find('.scorecard li').hide().velocity('transition.slideUpIn', {
+      duration: 200,
+      stagger: 100
+    });
   },
 
   add_player_view: function(model, index){

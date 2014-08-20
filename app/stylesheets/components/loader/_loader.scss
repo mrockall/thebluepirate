@@ -1,14 +1,14 @@
 
 // KUDOS -> http://codepen.io/Vestride/pen/vHzyk
 
-$blockSize: 1em;
+$blockSize: .75em;
 //$blockSize: 6vmin; // Try this in Firefox! Viewport based size, which doesn't work in Canary at the moment
 
 // Play with these to see what you get
 $delay: .065s;
 $duration: .88s;
 $startingColor: $light-grey;
-$endingColor: $blue;
+$endingColor: $dark-blue;
 
 // Calculate some values
 $blockMargin: $blockSize / 3;
@@ -41,6 +41,12 @@ $loaderSize: $blockSize * 3 + $blockMargin * 2;
   background: white;
 }
 
+.list-loading{
+  position: relative;
+  height: 12px;
+  padding: 1em 0 0;
+}
+
 .loader {
   position: absolute;
   top: 50%;
@@ -49,6 +55,10 @@ $loaderSize: $blockSize * 3 + $blockMargin * 2;
   height: $loaderSize;
   margin-left: -$loaderSize/2;
   margin-top: -$loaderSize/2;
+}
+
+.list-loading .loader {
+  margin-top: 0;
 }
 
 .loader-block {

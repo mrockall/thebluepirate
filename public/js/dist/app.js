@@ -22617,29 +22617,22 @@ module.exports = {
     this.scores = new Scores();
     this.holes = new Holes();
 
-    $.get('/bootstrap')
-     .done(function(data, status, xhr) {
+    self.tournaments.reset(InitialData.tournaments);
+    self.tee_times.reset(InitialData.tee_times);
+    self.players.reset(InitialData.players);
+    self.courses.reset(InitialData.courses);
+    self.holes.reset(InitialData.holes);
+    self.scores.reset(InitialData.scores);
 
-      self.tournaments.reset(data.tournaments);
-      self.tee_times.reset(data.tee_times);
-      self.players.reset(data.players);
-      self.courses.reset(data.courses);
-      self.holes.reset(data.holes);
-      self.players.reset(data.players);
-
-      domReady(function () {
-        var mainView = self.view = new MainView({
-          model: me,
-          el: document.body
-        });
-        mainView.render();
-
-        self.router.on('newPage', mainView.setPage, mainView);
-        self.router.history.start({pushState: true, root: '/'});
+    domReady(function () {
+      var mainView = self.view = new MainView({
+        model: me,
+        el: document.body
       });
-    })
-    .fail(function() {
-      alert( "error" );
+      mainView.render();
+
+      self.router.on('newPage', mainView.setPage, mainView);
+      self.router.history.start({pushState: true, root: '/'});
     });
   },
 
@@ -22660,7 +22653,7 @@ module.exports = {
 
 // lets go!
 module.exports.blastoff();
-},{"./collections/courses":102,"./collections/holes":103,"./collections/players":104,"./collections/scores":105,"./collections/tee_times":106,"./collections/tournaments":107,"./models/me":115,"./router":128,"./views/main":129,"domready":94,"jquery":97,"underscore":98}],102:[function(require,module,exports){
+},{"./collections/courses":102,"./collections/holes":103,"./collections/players":104,"./collections/scores":105,"./collections/tee_times":106,"./collections/tournaments":107,"./models/me":116,"./router":129,"./views/main":130,"domready":94,"jquery":97,"underscore":98}],102:[function(require,module,exports){
 var Collection = require('ampersand-rest-collection');
 var Course = require('../models/course');
 
@@ -22672,7 +22665,7 @@ module.exports = Collection.extend({
       return this.findWhere({id: id});
     }
 });
-},{"../models/course":113,"ampersand-rest-collection":48}],103:[function(require,module,exports){
+},{"../models/course":114,"ampersand-rest-collection":48}],103:[function(require,module,exports){
 var Collection = require('ampersand-rest-collection');
 var Holes = require('../models/hole');
 
@@ -22691,7 +22684,7 @@ module.exports = Collection.extend({
       return this.where({course_id: id});
     }
 });
-},{"../models/hole":114,"ampersand-rest-collection":48}],104:[function(require,module,exports){
+},{"../models/hole":115,"ampersand-rest-collection":48}],104:[function(require,module,exports){
 var Collection = require('ampersand-rest-collection');
 var Player = require('../models/player');
 
@@ -22703,7 +22696,7 @@ module.exports = Collection.extend({
       return this.findWhere({id: id});
     }
 });
-},{"../models/player":116,"ampersand-rest-collection":48}],105:[function(require,module,exports){
+},{"../models/player":117,"ampersand-rest-collection":48}],105:[function(require,module,exports){
 var Collection = require('ampersand-rest-collection');
 var Scores = require('../models/score');
 
@@ -22724,13 +22717,18 @@ module.exports = Collection.extend({
       })
     }
 });
-},{"../models/score":117,"ampersand-rest-collection":48}],106:[function(require,module,exports){
+},{"../models/score":118,"ampersand-rest-collection":48}],106:[function(require,module,exports){
 var Collection = require('ampersand-rest-collection');
 var TeeTime = require('../models/tee_time');
 
 module.exports = Collection.extend({
   model: TeeTime,
   url: '/tee_times',
+
+  comparator: function(a, b){
+    // console.log(a.golf_score, b.golf_score);
+    return a.golf_score > b.golf_score;
+  },
 
   findByID: function(id) {
     return this.findWhere({id: id});
@@ -22752,27 +22750,33 @@ module.exports = Collection.extend({
   },
 
   sortByPutts: function() {
+    var old_comparator = this.comparator;
     this.comparator = function(a,b){
       return a.putts < b.putts;
     };
-    return this.sort();
+    this.sort();
+    this.comparator = old_comparator;
   },
 
   sortByFairways: function() {
+    var old_comparator = this.comparator;
     this.comparator = function(a,b){
       return a.fairway_percentage < b.fairway_percentage;
     };
-    return this.sort();
+    this.sort();
+    this.comparator = old_comparator;
   },
 
   sortByGreens: function() {
+    var old_comparator = this.comparator;
     this.comparator = function(a,b){
       return a.green_percentage < b.green_percentage;
     };
-    return this.sort();
+    this.sort();
+    this.comparator = old_comparator;
   }
 });
-},{"../models/tee_time":118,"ampersand-rest-collection":48}],107:[function(require,module,exports){
+},{"../models/tee_time":119,"ampersand-rest-collection":48}],107:[function(require,module,exports){
 var Collection = require('ampersand-rest-collection');
 var Tournament = require('../models/tournament');
 
@@ -22788,7 +22792,7 @@ module.exports = Collection.extend({
       return this.findWhere({id: id});
     }
 });
-},{"../models/tournament":119,"ampersand-rest-collection":48}],108:[function(require,module,exports){
+},{"../models/tournament":120,"ampersand-rest-collection":48}],108:[function(require,module,exports){
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         define([], factory);
@@ -22813,7 +22817,7 @@ module.exports = Collection.extend({
         var jade_interp;
         var locals_for_with = locals || {};
         (function(is_logged_in, identity_type, image_url) {
-            buf.push('<body><div class="content"><header class="container"><a href="/" class="logo"></a><a class="button icon hamburger-icon"><svg height="36" version="1.1" width="36" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 64 64"><g><path d="M5.0916789,20.818994C5.0916789,20.818994,58.908321,20.818994,58.908321,20.818994"></path><path d="m 5.1969746,31.909063 53.8166424,0" transform="matrix(1,0,0,1,0,0)" style="opacity: 1;"></path><path d="M5.0916788,42.95698C5.0916788,42.95698,58.908321,42.95698,58.908321,42.95698"></path></g></svg></a><div class="nav"><ul>');
+            buf.push('<body><div class="content"><header><a href="/" class="logo"></a><a class="button icon hamburger-icon"><svg height="36" version="1.1" width="36" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 64 64"><g><path d="M5.0916789,20.818994C5.0916789,20.818994,58.908321,20.818994,58.908321,20.818994"></path><path d="m 5.1969746,31.909063 53.8166424,0" transform="matrix(1,0,0,1,0,0)" style="opacity: 1;"></path><path d="M5.0916788,42.95698C5.0916788,42.95698,58.908321,42.95698,58.908321,42.95698"></path></g></svg></a><div class="nav"><ul>');
             if (is_logged_in == true) {
                 if (identity_type == "user") {
                     buf.push('<li><a href="/">Dashboard</a></li><li><a href="/tournaments/new">Add a Tournament</a></li><li><a href="/logout" data-bypass="true">Logout</a></li><li class="profile_pic"><img' + jade.attr("src", image_url, true, false) + "/></li>");
@@ -22847,7 +22851,7 @@ module.exports = Collection.extend({
         var jade_interp;
         var locals_for_with = locals || {};
         (function(hole_number, hole_par, hole_length, hole_index, prev_hole, prev_hole_id, next_hole, next_hole_id) {
-            buf.push('<div class="page"><h1>' + jade.escape(null == (jade_interp = "#" + hole_number + " - Par " + hole_par) ? "" : jade_interp) + "</h1><h2>" + jade.escape(null == (jade_interp = "Length " + hole_length + "m") ? "" : jade_interp) + "</h2><h2>" + jade.escape(null == (jade_interp = "Index " + hole_index) ? "" : jade_interp) + '</h2><div class="players"></div><div class="next_prev_nav">');
+            buf.push('<div class="page"><div class="page_header"><h1>' + jade.escape(null == (jade_interp = "#" + hole_number + " - Par " + hole_par) ? "" : jade_interp) + "</h1><h2>" + jade.escape(null == (jade_interp = "Length " + hole_length + "m") ? "" : jade_interp) + "</h2><h2>" + jade.escape(null == (jade_interp = "Index " + hole_index) ? "" : jade_interp) + '</h2></div><div class="menu_stripe"></div><div class="players"></div><div class="next_prev_nav">');
             if (prev_hole) {
                 buf.push("<a" + jade.attr("href", "/my-round/" + prev_hole_id, true, false) + ' class="prev"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" xml:space="preserve"><polygon points="142.332,104.886 197.48,50 402.5,256 197.48,462 142.332,407.113 292.727,256 "></polygon></svg><div class="number">' + jade.escape(null == (jade_interp = "#" + prev_hole) ? "" : jade_interp) + "</div></a>");
             }
@@ -22883,21 +22887,9 @@ module.exports = Collection.extend({
         return buf.join("");
     };
 
-    // my_round/leaderboard_record.jade compiled template
-    templatizer["my_round"]["leaderboard_record"] = function tmpl_my_round_leaderboard_record() {
-        return '<li><a href="player_url">Steve Horgan<div class="cell left">6</div><div class="cell">18</div><div class="cell score">39</div></a></li>';
-    };
-
     // my_round/view.jade compiled template
-    templatizer["my_round"]["view"] = function tmpl_my_round_view(locals) {
-        var buf = [];
-        var jade_mixins = {};
-        var jade_interp;
-        var locals_for_with = locals || {};
-        (function(tournament_name) {
-            buf.push('<div class="page"><h1>' + jade.escape(null == (jade_interp = tournament_name) ? "" : jade_interp) + '</h1><ul class="leaderboard"></ul><ul class="course_tiles"></ul></div>');
-        })("tournament_name" in locals_for_with ? locals_for_with.tournament_name : typeof tournament_name !== "undefined" ? tournament_name : undefined);
-        return buf.join("");
+    templatizer["my_round"]["view"] = function tmpl_my_round_view() {
+        return '<div class="page"><ul class="leaderboard"></ul><ul class="course_tiles"></ul></div>';
     };
 
     // pages/home.jade compiled template
@@ -22987,7 +22979,7 @@ module.exports = Collection.extend({
         var jade_interp;
         var locals_for_with = locals || {};
         (function(player_name, player_handicap) {
-            buf.push('<div class="page"><h1>' + jade.escape(null == (jade_interp = player_name) ? "" : jade_interp) + "</h1><h2>" + jade.escape(null == (jade_interp = "Handicap " + player_handicap) ? "" : jade_interp) + '</h2><ul class="scorecard"></ul></div>');
+            buf.push('<div class="page"><div class="page_header"><h1>' + jade.escape(null == (jade_interp = player_name) ? "" : jade_interp) + "</h1><h2>" + jade.escape(null == (jade_interp = "Handicap " + player_handicap) ? "" : jade_interp) + '</h2></div><div class="menu_stripe"></div><ul class="scorecard"></ul></div>');
         })("player_name" in locals_for_with ? locals_for_with.player_name : typeof player_name !== "undefined" ? player_name : undefined, "player_handicap" in locals_for_with ? locals_for_with.player_handicap : typeof player_handicap !== "undefined" ? player_handicap : undefined);
         return buf.join("");
     };
@@ -22999,7 +22991,7 @@ module.exports = Collection.extend({
         var jade_interp;
         var locals_for_with = locals || {};
         (function(model) {
-            buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + ">" + jade.escape(null == (jade_interp = model.player().name) ? "" : jade_interp) + '<div class="cell left">' + jade.escape(null == (jade_interp = model.through > 0 ? model.position : "-") ? "" : jade_interp) + '</div><div class="cell thru">' + jade.escape(null == (jade_interp = model.through) ? "" : jade_interp) + '</div><div class="cell score">' + jade.escape(null == (jade_interp = model.through > 0 ? model.golf_score : "") ? "" : jade_interp) + '</div><div class="cell time">' + jade.escape(null == (jade_interp = model.time_parsed) ? "" : jade_interp) + "</div></a></li>");
+            buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + '><div role="pretty_through" class="cell one">' + jade.escape(null == (jade_interp = model.pretty_through) ? "" : jade_interp) + '</div><div class="cell one"><img' + jade.attr("src", "http://graph.facebook.com/" + model.player().facebook_id + "/picture?type=square&height=100&width=100", true, false) + '/></div><div class="cell five ellipsis name">' + jade.escape(null == (jade_interp = model.player().name) ? "" : jade_interp) + '</div><div role="pretty_score" class="cell one score">' + jade.escape(null == (jade_interp = model.pretty_score) ? "" : jade_interp) + '</div><div role="points" class="cell one score">' + jade.escape(null == (jade_interp = model.points) ? "" : jade_interp) + '</div><div role="through" class="cell one thru">' + jade.escape(null == (jade_interp = model.through) ? "" : jade_interp) + '</div><div class="cell three time">' + jade.escape(null == (jade_interp = model.time_parsed) ? "" : jade_interp) + "</div></a></li>");
         })("model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
         return buf.join("");
     };
@@ -23029,20 +23021,13 @@ module.exports = Collection.extend({
     };
 
     // tournaments/view.jade compiled template
-    templatizer["tournaments"]["view"] = function tmpl_tournaments_view(locals) {
-        var buf = [];
-        var jade_mixins = {};
-        var jade_interp;
-        var locals_for_with = locals || {};
-        (function(tournament_name, course_name, tournament_date) {
-            buf.push('<div class="page"><h1>' + jade.escape(null == (jade_interp = tournament_name) ? "" : jade_interp) + "</h1><h2>" + jade.escape(null == (jade_interp = course_name) ? "" : jade_interp) + "</h2><h2>" + jade.escape(null == (jade_interp = tournament_date) ? "" : jade_interp) + '</h2><h3>Leaderboard</h3><ul class="leaderboard players"></ul><h3>Putts</h3><ul class="leaderboard putts"></ul><h3>Fairways</h3><ul class="leaderboard fairways"></ul><h3>Greens</h3><ul class="leaderboard greens"></ul></div>');
-        })("tournament_name" in locals_for_with ? locals_for_with.tournament_name : typeof tournament_name !== "undefined" ? tournament_name : undefined, "course_name" in locals_for_with ? locals_for_with.course_name : typeof course_name !== "undefined" ? course_name : undefined, "tournament_date" in locals_for_with ? locals_for_with.tournament_date : typeof tournament_date !== "undefined" ? tournament_date : undefined);
-        return buf.join("");
+    templatizer["tournaments"]["view"] = function tmpl_tournaments_view() {
+        return '<div class="page"><div class="list-loading"><div class="loader"><div class="loader-block"></div><div class="loader-block"></div><div class="loader-block"></div></div></div><ul class="leaderboard players"></ul></div>';
     };
 
     return templatizer;
 }));
-},{"fs":132}],109:[function(require,module,exports){
+},{"fs":133}],109:[function(require,module,exports){
 var FormView = require('ampersand-form-view');
 var InputView = require('ampersand-input-view');
 var CheckboxView = require('ampersand-checkbox-view');
@@ -23100,6 +23085,476 @@ module.exports = FormView.extend({
   }
 });
 },{"ampersand-array-input-view":1,"ampersand-checkbox-view":27,"ampersand-form-view":36,"ampersand-input-view":40}],110:[function(require,module,exports){
+/*
+
+Quicksand 1.4
+
+Reorder and filter items with a nice shuffling animation.
+
+Copyright (c) 2010 Jacek Galanciak (razorjack.net) and agilope.com
+Big thanks for Piotr Petrus (riddle.pl) for deep code review and wonderful docs & demos.
+
+Dual licensed under the MIT and GPL version 2 licenses.
+http://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt
+http://github.com/jquery/jquery/blob/master/GPL-LICENSE.txt
+
+Project site: http://razorjack.net/quicksand
+Github site: http://github.com/razorjack/quicksand
+
+ */
+
+(function($) {
+  
+  var cloneWithCanvases = function(jqueryObject) {
+      var clonedJqueryObject =  jqueryObject.clone();
+      var canvases = jqueryObject.find('canvas');
+      if (canvases.length) {
+          var clonedCanvases = clonedJqueryObject.find('canvas');
+          clonedCanvases.each(function(index) {
+              var context = this.getContext('2d');
+              context.drawImage(canvases.get(index), 0, 0);
+          });
+      }
+      return clonedJqueryObject;
+  };
+    
+  $.fn.quicksand = function(collection, customOptions) {
+    var options = {
+      duration : 750,
+      easing : 'swing',
+      attribute : 'data-id',        // attribute to recognize same items within source and dest
+      adjustHeight : 'auto',        // 'dynamic' animates height during shuffling (slow), 'auto' adjusts it
+                                    // before or after the animation, false leaves height constant
+      adjustWidth : 'auto',         // 'dynamic' animates width during shuffling (slow), 
+                                    // 'auto' adjusts it before or after the animation, false leaves width constant
+      useScaling : false,           // enable it if you're using scaling effect
+      enhancement : function(c) {}, // Visual enhacement (eg. font replacement) function for cloned elements
+      selector : '> *',
+      atomic : false,
+      dx : 0,
+      dy : 0,
+      maxWidth : 0,
+      retainExisting : true         // disable if you want the collection of items to be replaced completely by incoming items.
+    },
+
+    nativeScaleSupport = (function() {
+      var prefixes = 'transform WebkitTransform MozTransform OTransform msTransform'.split(' '),
+        el = document.createElement('div');
+      for (var i = 0; i < prefixes.length; i++) {
+        if (typeof el.style[prefixes[i]] != 'undefined') {
+          return true;
+        }
+      }
+      return false;
+    })();
+
+    $.extend(options, customOptions);
+
+    // Can the browser do scaling?
+    if (!nativeScaleSupport || (typeof ($.fn.scale) == 'undefined')) {
+      options.useScaling = false;
+    }
+
+    var callbackFunction;
+    if (typeof (arguments[1]) == 'function') {
+      callbackFunction = arguments[1];
+    } else if (typeof (arguments[2] == 'function')) {
+      callbackFunction = arguments[2];
+    }
+
+    return this.each(function(i) {
+      var val;
+      var animationQueue = []; // used to store all the animation params before starting the animation;
+      // solves initial animation slowdowns
+      var $collection;
+      if (typeof(options.attribute) == 'function') {
+        $collection = $(collection);
+      } else {
+        $collection = cloneWithCanvases($(collection).filter('[' + options.attribute + ']')); // destination (target) collection
+      }
+      var $sourceParent = $(this); // source, the visible container of source collection
+      var sourceHeight = $(this).css('height'); // used to keep height and document flow during the animation
+      var sourceWidth = $(this).css('width'); // used to keep  width and document flow during the animation
+      var destHeight, destWidth;
+      var adjustHeightOnCallback = false;
+      var adjustWidthOnCallback = false;
+      var offset = $($sourceParent).offset(); // offset of visible container, used in animation calculations
+      var offsets = []; // coordinates of every source collection item
+      var $source = $(this).find(options.selector); // source collection items
+      var width = $($source).innerWidth(); // need for the responsive design
+
+      // Replace the collection and quit if IE6
+      if (navigator.userAgent.match(/msie [6]/i)) {
+        $sourceParent.html('').append($collection);
+        return;
+      }
+
+      // Gets called when any animation is finished
+      var postCallbackPerformed = 0; // prevents the function from being called more than one time
+      var postCallback = function() {
+        $(this).css('margin', '').css('position', '').css('top', '').css('left', '').css('opacity', '');
+        if (!postCallbackPerformed) {
+          postCallbackPerformed = 1;
+
+          if (!options.atomic) {
+            // hack: used to be: $sourceParent.html($dest.html()); 
+            // put target HTML into visible source container  
+            // but new webkit builds cause flickering when replacing the collections
+            var $toDelete = $sourceParent.find(options.selector);
+            if (!options.retainExisting) {
+              $sourceParent.prepend($dest.find(options.selector));
+              $toDelete.remove();
+            } else {
+              // Avoid replacing elements because we may have already altered items in significant
+              // ways and it would be bad to have to do it again. (i.e. lazy load images) 
+              // But $dest holds the correct ordering. So we must re-sequence items in $sourceParent to match.
+              var $keepElements = $([]);
+              $dest.find(options.selector).each(function(i) {
+                var $matchedElement = $([]);
+                if (typeof (options.attribute) == 'function') {
+                  var val = options.attribute($(this));
+                  $toDelete.each(function() {
+                    if (options.attribute(this) == val) {
+                      $matchedElement = $(this);
+                      return false;
+                    }
+                  });
+                } else {
+                  $matchedElement = $toDelete.filter(
+                    '[' + options.attribute + '="'+ 
+                    $(this).attr(options.attribute) + '"]');
+                }
+                if ($matchedElement.length > 0) {
+                  // There is a matching element in the $toDelete list and in $dest
+                  // list, so make sure it is in the right location within $sourceParent
+                  // and put it in the list of elements we need to not delete.
+                  $keepElements = $keepElements.add($matchedElement);
+                  if (i === 0) {
+                    $sourceParent.prepend($matchedElement);
+                  } else {
+                    $matchedElement.insertAfter($sourceParent.find(options.selector).get(i - 1));
+                  }
+                }
+              });
+              // Remove whatever is remaining from the DOM
+              $toDelete.not($keepElements).remove();
+            }
+
+            if (adjustHeightOnCallback) {
+              $sourceParent.css('height', destHeight);
+            }
+            if (adjustWidthOnCallback) {
+              $sourceParent.css('width', sourceWidth);
+            }
+          }
+          options.enhancement($sourceParent); // Perform custom visual enhancements on a newly replaced collection
+          if (typeof callbackFunction == 'function') {
+            callbackFunction.call(this);
+          }
+        }
+
+        if (false === options.adjustHeight) {
+          $sourceParent.css('height', 'auto');
+        }
+
+        if (false === options.adjustWidth) {
+          $sourceParent.css('width', 'auto');
+        }
+      };
+
+      // Position: relative situations
+      var $correctionParent = $sourceParent.offsetParent();
+      var correctionOffset = $correctionParent.offset();
+      if ($correctionParent.css('position') == 'relative') {
+        if ($correctionParent.get(0).nodeName.toLowerCase() != 'body') {
+          correctionOffset.top += (parseFloat($correctionParent.css('border-top-width')) || 0);
+          correctionOffset.left += (parseFloat($correctionParent.css('border-left-width')) || 0);
+        }
+      } else {
+        correctionOffset.top -= (parseFloat($correctionParent.css('border-top-width')) || 0);
+        correctionOffset.left -= (parseFloat($correctionParent.css('border-left-width')) || 0);
+        correctionOffset.top -= (parseFloat($correctionParent.css('margin-top')) || 0);
+        correctionOffset.left -= (parseFloat($correctionParent.css('margin-left')) || 0);
+      }
+
+      // perform custom corrections from options (use when Quicksand fails to detect proper correction)
+      if (isNaN(correctionOffset.left)) {
+        correctionOffset.left = 0;
+      }
+      if (isNaN(correctionOffset.top)) {
+        correctionOffset.top = 0;
+      }
+
+      correctionOffset.left -= options.dx;
+      correctionOffset.top -= options.dy;
+
+      // keeps nodes after source container, holding their position
+      $sourceParent.css('height', $(this).height());
+      $sourceParent.css('width', $(this).width());
+
+      // get positions of source collections
+      $source.each(function(i) {
+        offsets[i] = $(this).offset();
+      });
+
+      // stops previous animations on source container
+      $(this).stop();
+      var dx = 0;
+      var dy = 0;
+      $source.each(function(i) {
+        $(this).stop(); // stop animation of collection items
+        var rawObj = $(this).get(0);
+        if (rawObj.style.position == 'absolute') {
+          dx = -options.dx;
+          dy = -options.dy;
+        } else {
+          dx = options.dx;
+          dy = options.dy;
+        }
+
+        rawObj.style.position = 'absolute';
+        rawObj.style.margin = '0';
+
+        if (!options.adjustWidth) {
+          rawObj.style.width = (width + 'px'); // sets the width to the current element
+          // with even if it has been changed
+          // by a responsive design
+        }
+
+        rawObj.style.top = (offsets[i].top- parseFloat(rawObj.style.marginTop) - correctionOffset.top + dy) + 'px';
+        rawObj.style.left = (offsets[i].left- parseFloat(rawObj.style.marginLeft) - correctionOffset.left + dx) + 'px';
+
+        if (options.maxWidth > 0 && offsets[i].left > options.maxWidth) {
+          rawObj.style.display = 'none';
+        }
+      });
+
+      // create temporary container with destination collection
+      var $dest = cloneWithCanvases($($sourceParent));
+      var rawDest = $dest.get(0);
+      rawDest.innerHTML = '';
+      rawDest.setAttribute('id', '');
+      rawDest.style.height = 'auto';
+      rawDest.style.width = $sourceParent.width() + 'px';
+      $dest.append($collection);
+      // Inserts node into HTML. Note that the node is under visible source container in the exactly same position
+      // The browser render all the items without showing them (opacity: 0.0) No offset calculations are needed, 
+      // the browser just extracts position from underlayered destination items and sets animation to destination positions.
+      $dest.insertBefore($sourceParent);
+      $dest.css('opacity', 0.0);
+      rawDest.style.zIndex = -1;
+
+      rawDest.style.margin = '0';
+      rawDest.style.position = 'absolute';
+      rawDest.style.top = offset.top - correctionOffset.top + 'px';
+      rawDest.style.left = offset.left - correctionOffset.left + 'px';
+
+      if (options.adjustHeight === 'dynamic') {
+        // If destination container has different height than source container the height can be animated,
+        // adjusting it to destination height
+        $sourceParent.animate({ height : $dest.height() }, options.duration, options.easing);
+      } else if (options.adjustHeight === 'auto') {
+        destHeight = $dest.height();
+        if (parseFloat(sourceHeight) < parseFloat(destHeight)) {
+          // Adjust the height now so that the items don't move out of the container
+          $sourceParent.css('height', destHeight);
+        } else {
+          // Adjust later, on callback
+          adjustHeightOnCallback = true;
+        }
+      }
+
+      if (options.adjustWidth === 'dynamic') {
+        // If destination container has different width than source container the width can be animated, 
+        // adjusting it to destination width
+        $sourceParent.animate({ width : $dest.width() }, options.duration, options.easing);
+      } else if (options.adjustWidth === 'auto') {
+        destWidth = $dest.width();
+        if (parseFloat(sourceWidth) < parseFloat(destWidth)) {
+          // Adjust the height now so that the items don't move out of the container
+          $sourceParent.css('width', destWidth);
+        } else {
+          // Adjust later, on callback
+          adjustWidthOnCallback = true;
+        }
+      }
+
+      // Now it's time to do shuffling animation. First of all, we need to identify same elements within
+      // source and destination collections
+      $source.each(function(i) {
+        var destElement = [];
+        if (typeof (options.attribute) == 'function') {
+          val = options.attribute($(this));
+          $collection.each(function() {
+            if (options.attribute(this) == val) {
+              destElement = $(this);
+              return false;
+            }
+          });
+        } else {
+          destElement = $collection.filter('[' + options.attribute + '="' + $(this).attr(options.attribute) + '"]');
+        }
+        if (destElement.length) {
+          // The item is both in source and destination collections. It it's under different position, let's move it
+          if (!options.useScaling) {
+            animationQueue.push({
+              element : $(this), dest : destElement,
+              style : {
+                top : $(this).offset().top,
+                left : $(this).offset().left,
+                opacity : ""
+              },
+              animation : {
+                top : destElement.offset().top - correctionOffset.top,
+                left : destElement.offset().left - correctionOffset.left,
+                opacity : 1.0
+              }
+            });
+          } else {
+            animationQueue.push({
+              element : $(this), dest : destElement,
+              style : {
+                top : $(this).offset().top,
+                left : $(this).offset().left,
+                opacity : ""
+              },
+              animation : {
+                top : destElement.offset().top - correctionOffset.top,
+                left : destElement.offset().left - correctionOffset.left,
+                opacity : 1.0,
+                scale : '1.0'
+              }
+            });
+          }
+        } else {
+          // The item from source collection is not present in destination collections.  Let's remove it
+          if (!options.useScaling) {
+            animationQueue.push({
+              element : $(this),
+              style : {
+                top : $(this).offset().top,
+                left : $(this).offset().left,
+                opacity : ""
+              },
+              animation : {
+                opacity : '0.0'
+              }
+            });
+          } else {
+            animationQueue.push({
+              element : $(this),
+              animation : {
+                opacity : '0.0',
+                style : {
+                  top : $(this).offset().top,
+                  left : $(this).offset().left,
+                  opacity : ""
+                },
+                scale : '0.0'
+              }
+            });
+          }
+        }
+      });
+
+      $collection.each(function(i) {
+        // Grab all items from target collection not present in visible source collection
+        var sourceElement = [];
+        var destElement = [];
+        if (typeof (options.attribute) == 'function') {
+          val = options.attribute($(this));
+          $source.each(function() {
+            if (options.attribute(this) == val) {
+              sourceElement = $(this);
+              return false;
+            }
+          });
+
+          $collection.each(function() {
+            if (options.attribute(this) == val) {
+              destElement = $(this);
+              return false;
+            }
+          });
+        } else {
+          sourceElement = $source.filter('[' + options.attribute + '="' + $(this).attr(options.attribute) + '"]');
+          destElement = $collection.filter('[' + options.attribute + '="' + $(this).attr(options.attribute) + '"]');
+        }
+
+        var animationOptions;
+        if (sourceElement.length === 0 && destElement.length > 0) {
+
+          // No such element in source collection...
+          if (!options.useScaling) {
+            animationOptions = {opacity : '1.0'};
+          } else {
+            animationOptions = {opacity : '1.0', scale : '1.0'};
+          }
+
+          // Let's create it
+          var d = cloneWithCanvases(destElement);
+          var rawDestElement = d.get(0);
+          rawDestElement.style.position = 'absolute';
+          rawDestElement.style.margin = '0';
+
+          if (!options.adjustWidth) {
+            // sets the width to the current element with even if it has been changed by a responsive design
+            rawDestElement.style.width = width + 'px'; 
+          }
+
+          rawDestElement.style.top = destElement.offset().top - correctionOffset.top + 'px';
+          rawDestElement.style.left = destElement.offset().left - correctionOffset.left + 'px';
+
+          d.css('opacity', 0.0); // IE
+
+          if (options.useScaling) {
+            d.scale(0.0);
+          }
+          d.appendTo($sourceParent);
+
+          if (options.maxWidth === 0 || destElement.offset().left < options.maxWidth) {
+            animationQueue.push({element : $(d), dest : destElement,animation : animationOptions});
+          }
+        }
+      });
+
+      $dest.remove();
+      if (!options.atomic) {
+        options.enhancement($sourceParent); // Perform custom visual enhancements during the animation
+        for (i = 0; i < animationQueue.length; i++) {
+          animationQueue[i].element.animate(animationQueue[i].animation, options.duration, options.easing, postCallback);
+        }
+      } else {
+        $toDelete = $sourceParent.find(options.selector);
+        $sourceParent.prepend($dest.find(options.selector));
+        for (i = 0; i < animationQueue.length; i++) {
+          if (animationQueue[i].dest && animationQueue[i].style) {
+            var destElement = animationQueue[i].dest;
+            var destOffset = destElement.offset();
+
+            destElement.css({
+              position : 'relative',
+              top : (animationQueue[i].style.top - destOffset.top),
+              left : (animationQueue[i].style.left - destOffset.left)
+            });
+
+            destElement.animate({top : "0", left : "0"}, 
+                                options.duration, 
+                                options.easing, 
+                                postCallback);
+          } else {
+            animationQueue[i].element.animate(animationQueue[i].animation, 
+                                              options.duration, 
+                                              options.easing,
+                                              postCallback);
+          }
+        }
+        $toDelete.remove();
+      }
+    });
+  };
+})(jQuery);
+},{}],111:[function(require,module,exports){
 // Snap.svg 0.3.0
 // 
 // Copyright (c) 2013 Adobe Systems Incorporated. All rights reserved.
@@ -30364,7 +30819,7 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 });
 return Snap;
 }));
-},{"eve":95}],111:[function(require,module,exports){
+},{"eve":95}],112:[function(require,module,exports){
 module.exports = {
   clock : { 
     url : 'svg/clock.svg',
@@ -30788,7 +31243,7 @@ module.exports = {
     ]
   }
 };
-},{}],112:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 /**
  * svgicons.js v1.0.0
  * http://www.codrops.com
@@ -30943,7 +31398,7 @@ svgIcon.prototype.toggle = function( motion ) {
 
 // add to global namespace
 module.exports = svgIcon;
-},{"./snap":110}],113:[function(require,module,exports){
+},{"./snap":111}],114:[function(require,module,exports){
 var AmpersandModel = require('ampersand-model');
 
 module.exports = AmpersandModel.extend({
@@ -30961,7 +31416,7 @@ module.exports = AmpersandModel.extend({
     return app.holes.findByCourseIDAndHoleID(this.id, hole_id)
   }
 });
-},{"ampersand-model":41}],114:[function(require,module,exports){
+},{"ampersand-model":41}],115:[function(require,module,exports){
 var AmpersandModel = require('ampersand-model');
 
 module.exports = AmpersandModel.extend({
@@ -30975,7 +31430,7 @@ module.exports = AmpersandModel.extend({
     length: ['integer', true]
   }
 });
-},{"ampersand-model":41}],115:[function(require,module,exports){
+},{"ampersand-model":41}],116:[function(require,module,exports){
 var AmpersandModel = require('ampersand-model');
 
 module.exports = AmpersandModel.extend({
@@ -31004,7 +31459,7 @@ module.exports = AmpersandModel.extend({
     }
   }
 });
-},{"ampersand-model":41}],116:[function(require,module,exports){
+},{"ampersand-model":41}],117:[function(require,module,exports){
 var AmpersandModel = require('ampersand-model');
 
 module.exports = AmpersandModel.extend({
@@ -31012,14 +31467,15 @@ module.exports = AmpersandModel.extend({
   props: {
     id: ['integer', true],
     name: ['string', true, ''],
-    handicap: ['integer', true, 28]
+    handicap: ['integer', true, 28],
+    facebook_id: ['string', true, ''],
   },
 
   holes: function(){
     return app.holes.findByID(this.id)
   }
 });
-},{"ampersand-model":41}],117:[function(require,module,exports){
+},{"ampersand-model":41}],118:[function(require,module,exports){
 var _ = require('underscore');
 var AmpersandModel = require('ampersand-model');
 
@@ -31055,9 +31511,17 @@ module.exports = AmpersandModel.extend({
         return _.isNull(this.fairway) ? "-" : (this.fairway ? "Y" : "N")
       }
     }
+  },
+  toJSON: function(options){
+    return {
+      id: this.id,
+      score: this.score,
+      putts: this.putts,
+      fairway: this.fairway
+    }
   }
 });
-},{"ampersand-model":41,"underscore":98}],118:[function(require,module,exports){
+},{"ampersand-model":41,"underscore":98}],119:[function(require,module,exports){
 var _ = require('underscore');
 var AmpersandModel = require('ampersand-model');
 
@@ -31090,6 +31554,13 @@ module.exports = AmpersandModel.extend({
     golf_score: {
       deps: ['points', 'through'],
       fn: function(){
+        if(this.through == 0) return 9999;
+        return this.through*2 - this.points;
+      }
+    },
+    golf_score_pretty: {
+      deps: ['points', 'through', 'golf_score'],
+      fn: function(){
         if(this.points == this.through*2) return 'E';
         if(this.points > this.through*2) return '-' + (this.points - this.through*2);
         if(this.points < this.through*2) return '+' + (this.through*2 - this.points);
@@ -31107,6 +31578,18 @@ module.exports = AmpersandModel.extend({
       fn: function(){
         if(this.greens_played == 0) return 0;
         return (this.greens_hit/this.greens_played)*100;
+      }
+    },
+    pretty_through: {
+      deps: ['through', 'position'],
+      fn: function(){
+        return this.through > 0 ? this.position : "-"
+      }
+    },
+    pretty_score: {
+      deps: ['through', 'golf_score'],
+      fn: function(){
+        return this.through > 0 ? this.golf_score_pretty : "";
       }
     }
   },
@@ -31166,7 +31649,7 @@ module.exports = AmpersandModel.extend({
     return total;
   }
 });
-},{"ampersand-model":41,"underscore":98}],119:[function(require,module,exports){
+},{"ampersand-model":41,"underscore":98}],120:[function(require,module,exports){
 var AmpersandModel = require('ampersand-model');
 
 module.exports = AmpersandModel.extend({
@@ -31204,7 +31687,7 @@ module.exports = AmpersandModel.extend({
     return app.tee_times.findByTournamentID(this.id);
   }
 });
-},{"ampersand-model":41}],120:[function(require,module,exports){
+},{"ampersand-model":41}],121:[function(require,module,exports){
 var _ = require('underscore');
 var $ = require('jquery');
 var View = require('ampersand-view');
@@ -31231,7 +31714,7 @@ module.exports = View.extend({
     this.views.push(view);
   }
 });
-},{"../dist/templates":108,"../views/tournaments/list_item":131,"ampersand-view":70,"jquery":97,"underscore":98}],121:[function(require,module,exports){
+},{"../dist/templates":108,"../views/tournaments/list_item":132,"ampersand-view":70,"jquery":97,"underscore":98}],122:[function(require,module,exports){
 var _ = require('underscore');
 var $ = require('jquery');
 var View = require('ampersand-view');
@@ -31240,7 +31723,7 @@ var templates = require('../dist/templates');
 module.exports = View.extend({
   template: templates.pages.loading
 });
-},{"../dist/templates":108,"ampersand-view":70,"jquery":97,"underscore":98}],122:[function(require,module,exports){
+},{"../dist/templates":108,"ampersand-view":70,"jquery":97,"underscore":98}],123:[function(require,module,exports){
 // ---- Vendor ----
 var _ = require('underscore');
 var $ = require('jquery');
@@ -31295,8 +31778,7 @@ var PlayerView = View.extend({
     this.modal.show();
   },
   option_selected: function(value) {
-    this.score.set(this.modal.attribute, value);
-    this.score.save();
+    this.score.save(this.modal.attribute, value);
   }
 });
 
@@ -31334,7 +31816,7 @@ module.exports = View.extend({
     );
   }
 });
-},{"../../dist/templates":108,"../../views/modals/nine-box":130,"ampersand-collection":30,"ampersand-view":70,"jquery":97,"underscore":98}],123:[function(require,module,exports){
+},{"../../dist/templates":108,"../../views/modals/nine-box":131,"ampersand-collection":30,"ampersand-view":70,"jquery":97,"underscore":98}],124:[function(require,module,exports){
 // ---- Vendor ----
 var _ = require('underscore');
 var $ = require('jquery');
@@ -31404,7 +31886,7 @@ module.exports = View.extend({
     this.$leaderboard.append(v.el);
   }
 });
-},{"../../dist/templates":108,"ampersand-view":70,"jquery":97,"underscore":98}],124:[function(require,module,exports){
+},{"../../dist/templates":108,"ampersand-view":70,"jquery":97,"underscore":98}],125:[function(require,module,exports){
 var View = require('ampersand-view');
 var templates = require('../dist/templates');
 
@@ -31412,7 +31894,7 @@ module.exports = View.extend({
     pageTitle: 'profile',
     template: templates.pages.profile
 });
-},{"../dist/templates":108,"ampersand-view":70}],125:[function(require,module,exports){
+},{"../dist/templates":108,"ampersand-view":70}],126:[function(require,module,exports){
 var _ = require('underscore');
 var $ = require('jquery');
 var View = require('ampersand-view');
@@ -31443,7 +31925,7 @@ module.exports = View.extend({
     });
   }
 });
-},{"../../dist/templates":108,"../../forms/tournament":109,"ampersand-view":70,"jquery":97,"underscore":98}],126:[function(require,module,exports){
+},{"../../dist/templates":108,"../../forms/tournament":109,"ampersand-view":70,"jquery":97,"underscore":98}],127:[function(require,module,exports){
 var _ = require('underscore');
 var $ = require('jquery');
 var View = require('ampersand-view');
@@ -31460,8 +31942,8 @@ var HoleListItem = View.extend({
       hole_par: this.model.par,
       hole_index: this.model.index,
       hole_length: this.model.length,
-      score: this.score.score,
-      points: this.score.points,
+      score: this.score.score ? this.score.score : "-",
+      points: this.score.points ? this.score.points : "-",
       result: this.score.result
     }
   },
@@ -31508,6 +31990,15 @@ module.exports = View.extend({
     this.render_totals();
   },
 
+  transitionIn: function(cb){
+    $(this.el).show();
+
+    $(this.el).find('.scorecard li').hide().velocity('transition.slideUpIn', {
+      duration: 200,
+      stagger: 100
+    });
+  },
+
   add_player_view: function(model, index){
     var score = app.scores.findByTeeTimeAndHole(this.model.id, model.id);
 
@@ -31551,12 +32042,13 @@ module.exports = View.extend({
     this.$scorecard.append(view.el)
   }
 });
-},{"../../dist/templates":108,"ampersand-view":70,"jquery":97,"underscore":98}],127:[function(require,module,exports){
+},{"../../dist/templates":108,"ampersand-view":70,"jquery":97,"underscore":98}],128:[function(require,module,exports){
 // ---- Vendor ----
 var _ = require('underscore');
 var $ = require('jquery');
 var velocity = require('velocity-animate');
 var velocity_ui = require('velocity-animate/velocity.ui');
+var quicksand = require('../../helpers/quicksand');
 
 // ---- BP Modules ----
 var TeeTimes = require('../../collections/tee_times');
@@ -31568,9 +32060,16 @@ var templates = require('../../dist/templates');
 // model -> Player
 var PlayerListItem = View.extend({
   template: templates.tournaments.player_list_item,
+  bindings: {
+    'model.pretty_through': '[role=pretty_through]',
+    'model.pretty_score': '[role=pretty_score]',
+    'model.points': '[role=points]',
+    'model.through': '[role=through]'
+  },
   render: function() {
     this.renderWithTemplate();
-    if(this.model.through == 0) $(this.el).addClass('pre'); 
+    if(this.model.through == 0) $(this.el).addClass('pre');
+    else $(this.el).removeClass('pre');
     return this;
   }
 });
@@ -31602,33 +32101,48 @@ module.exports = View.extend({
   },
   render: function () {
     this.renderWithTemplate(this.serialize());
+    this.show_loading();
 
-    this.renderCollection(
-      new TeeTimes(this.model.tee_times()), 
-      PlayerListItem, 
-      '.players'
-    );
+    this.tee_times = new TeeTimes(this.model.tee_times());
 
-    this.renderCollection(
-      new TeeTimes(this.model.tee_times()).sortByPutts(), 
-      PuttsLeaderboardItem, 
-      '.putts'
-    );
+    // this.tee_times.on('all', function(a,b,c){console.log(a,b,c);}, this);
+    this.tee_times.on('request', this.show_loading, this);
+    this.tee_times.on('sync', this.hide_loading, this);
+    this.tee_times.on('error', this.try_again, this);
 
-    this.renderCollection(
-      new TeeTimes(this.model.tee_times()).sortByFairways(), 
-      FairwaysLeaderboardItem, 
-      '.fairways'
-    );
+    this.views = []
+    var $players = $(this.el).find('.players');
+    this.tee_times.each(_.bind(function(m){
+      var view = new PlayerListItem({
+        model: m
+      }).render();
 
-    this.renderCollection(
-      new TeeTimes(this.model.tee_times()).sortByGreens(), 
-      GreensLeaderboardItem, 
-      '.greens'
-    );
+      $players.append(view.el);
+      this.views.push(view);
+    }, this));
+
+    this.tee_times.fetch();
+  },
+  transitionIn: function(cb){
+    $(this.el).show();
+
+    $(this.el).find('.players li').hide().velocity('transition.slideUpIn', {
+      duration: 200,
+      stagger: 60
+    });
+  },
+  show_loading: function(){
+    $(this.el).find(".list-loading").show();
+  },
+  hide_loading: function(){
+    $(this.el).find(".list-loading").slideUp();
+  },
+  try_again: function(){
+    this.tee_times.fetch();
   }
 });
-},{"../../collections/tee_times":106,"../../dist/templates":108,"ampersand-view":70,"jquery":97,"underscore":98,"velocity-animate":99,"velocity-animate/velocity.ui":100}],128:[function(require,module,exports){
+
+},{"../../collections/tee_times":106,"../../dist/templates":108,"../../helpers/quicksand":110,"ampersand-view":70,"jquery":97,"underscore":98,"velocity-animate":99,"velocity-animate/velocity.ui":100}],129:[function(require,module,exports){
 /*global me, app*/
 var _ = require('underscore');
 var Router = require('ampersand-router');
@@ -31715,7 +32229,7 @@ module.exports = Router.extend({
     this.redirectTo('');
   }
 });
-},{"./pages/home":120,"./pages/loading":121,"./pages/my_round/hole":122,"./pages/my_round/view":123,"./pages/profile":124,"./pages/tournaments/edit":125,"./pages/tournaments/player":126,"./pages/tournaments/view":127,"ampersand-router":64,"underscore":98}],129:[function(require,module,exports){
+},{"./pages/home":121,"./pages/loading":122,"./pages/my_round/hole":123,"./pages/my_round/view":124,"./pages/profile":125,"./pages/tournaments/edit":126,"./pages/tournaments/player":127,"./pages/tournaments/view":128,"ampersand-router":64,"underscore":98}],130:[function(require,module,exports){
 /*global app, me, $*/
 
 // This app view is responsible for rendering all content that goes into
@@ -31761,43 +32275,16 @@ module.exports = View.extend({
     this.pageSwitcher = new ViewSwitcher(this.getByRole('page-container'), {
       waitForRemove: true,
       hide: function (oldView, newView, cb) {
-        $(oldView.el).velocity('transition.slideUpOut', {
-          duration: 150,
-          complete: function(){
-            cb();
-          }
-        });
-      },
-
-      /*
-       * So this needs to be cleaned up..
-       * It should be moved into a custom module that extending view-switcher.
-       * For now the functionaility is edited straight into the view-switcher
-       * module.. ugh.. deadlines.
-       *
-       * It basically allows you to specify a function to be called
-       * before you show the new view, giving you a chance to reload models or
-       * whatever..
-       */
-      before_show: _.bind(function(newView, cb){
-        if(newView.reload_data){
-          var that = this;
-          this._show_loading(_.bind(function(){
-            // Fetch the latest data..
-            var tournament = app.tournaments.first();
-            tournament.fetch({
-              success: function(model, data) {
-                app.tournaments.reset(data.tournaments);
-                app.tee_times.reset(data.tee_times);
-                app.scores.reset(data.scores);
-                that._hide_loading();
-                cb();
-              }
-            });
-          }, this));
+        if(_.isFunction(oldView.transitionOut)){
+          oldView.transitionOut(cb);
         } else {
+          $(oldView.el).hide();
           cb();
         }
+      },
+
+      before_show: _.bind(function(newView, cb){
+        cb();
       }, this),
 
 
@@ -31809,14 +32296,11 @@ module.exports = View.extend({
         // store an additional reference, just because
         app.currentPage = newView;
 
-        $(newView.el).velocity('transition.slideUpIn', {
-          duration: 150,
-          complete: function(){
-            if(_.isFunction(newView.animate_in)){
-              newView.animate_in();
-            }
-          }
-        });
+        if(_.isFunction(newView.transitionIn)){
+          newView.transitionIn();
+        } else {
+          $(newView.el).show();
+        }
       }
     });
 
@@ -31908,7 +32392,7 @@ module.exports = View.extend({
     }
   }
 });
-},{"../dist/templates.js":108,"../helpers/svg-icons":112,"../helpers/svg-icons-config":111,"ampersand-view":70,"ampersand-view-switcher":69,"favicon-setter":96,"underscore":98,"velocity-animate":99,"velocity-animate/velocity.ui":100}],130:[function(require,module,exports){
+},{"../dist/templates.js":108,"../helpers/svg-icons":113,"../helpers/svg-icons-config":112,"ampersand-view":70,"ampersand-view-switcher":69,"favicon-setter":96,"underscore":98,"velocity-animate":99,"velocity-animate/velocity.ui":100}],131:[function(require,module,exports){
 // ---- Vendor ----
 var _ = require('underscore');
 var $ = require('jquery');
@@ -31996,7 +32480,7 @@ module.exports = View.extend({
     this.hide();
   }
 });
-},{"../../dist/templates":108,"ampersand-view":70,"jquery":97,"underscore":98,"velocity-animate":99,"velocity-animate/velocity.ui":100}],131:[function(require,module,exports){
+},{"../../dist/templates":108,"ampersand-view":70,"jquery":97,"underscore":98,"velocity-animate":99,"velocity-animate/velocity.ui":100}],132:[function(require,module,exports){
 var _ = require('underscore');
 var View = require('ampersand-view');
 var templates = require('../../dist/templates');
@@ -32008,6 +32492,6 @@ module.exports = View.extend({
     return this;
   }
 });
-},{"../../dist/templates":108,"ampersand-view":70,"underscore":98}],132:[function(require,module,exports){
+},{"../../dist/templates":108,"ampersand-view":70,"underscore":98}],133:[function(require,module,exports){
 
 },{}]},{},[101])

@@ -10,8 +10,8 @@
   %meta{:name => :viewport, :content => "width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0, minimal-ui"}
   %meta{:name => :'csrf-token', :content => session[:csrf]}
   %title= @title
-  / %link{:href => 'http://fonts.googleapis.com/css?family=Montserrat:400,700', :rel => 'stylesheet', :type => 'text/css'}
+  %link{:href => 'http://fonts.googleapis.com/css?family=Montserrat:400,700', :rel => 'stylesheet', :type => 'text/css'}
   = stylesheet_link_tag  'application', :cache => true
 
 %body
-  #main=yield
+  =yield

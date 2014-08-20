@@ -46,29 +46,22 @@ module.exports = {
     this.scores = new Scores();
     this.holes = new Holes();
 
-    $.get('/bootstrap')
-     .done(function(data, status, xhr) {
+    self.tournaments.reset(InitialData.tournaments);
+    self.tee_times.reset(InitialData.tee_times);
+    self.players.reset(InitialData.players);
+    self.courses.reset(InitialData.courses);
+    self.holes.reset(InitialData.holes);
+    self.scores.reset(InitialData.scores);
 
-      self.tournaments.reset(data.tournaments);
-      self.tee_times.reset(data.tee_times);
-      self.players.reset(data.players);
-      self.courses.reset(data.courses);
-      self.holes.reset(data.holes);
-      self.players.reset(data.players);
-
-      domReady(function () {
-        var mainView = self.view = new MainView({
-          model: me,
-          el: document.body
-        });
-        mainView.render();
-
-        self.router.on('newPage', mainView.setPage, mainView);
-        self.router.history.start({pushState: true, root: '/'});
+    domReady(function () {
+      var mainView = self.view = new MainView({
+        model: me,
+        el: document.body
       });
-    })
-    .fail(function() {
-      alert( "error" );
+      mainView.render();
+
+      self.router.on('newPage', mainView.setPage, mainView);
+      self.router.history.start({pushState: true, root: '/'});
     });
   },
 

@@ -58,9 +58,15 @@ class TeeTime < ActiveRecord::Base
     self.save
   end
 
+  def golf_score
+    return 999 if self.through == 0
+    self.through*2 - self.points
+  end
+
   # Public: Determines the position within the leaderboard
   def position
     event_tee_times = TeeTime.find_all_by_tournament_id self.tournament_id
+    event_tee_times.sort! { |a,b| a.golf_score <=> b.golf_score }
     (event_tee_times.find_index { |t| t.id == self.id }) + 1
   end
 
