@@ -159,9 +159,9 @@
         var jade_mixins = {};
         var jade_interp;
         var locals_for_with = locals || {};
-        (function(hole_number, hole_length, hole_par, hole_index, result, score, points) {
-            buf.push('<li><div class="hole_information"><div class="cell number">' + jade.escape(null == (jade_interp = hole_number) ? "" : jade_interp) + '</div><div class="cell length">' + jade.escape(null == (jade_interp = hole_length) ? "" : jade_interp) + '</div><div class="cell par">' + jade.escape(null == (jade_interp = hole_par) ? "" : jade_interp) + '</div><div class="cell index">' + jade.escape(null == (jade_interp = hole_index) ? "" : jade_interp) + '</div></div><div class="score_information"><div class="cell score"><div' + jade.cls([ result ], [ true ]) + ">" + jade.escape(null == (jade_interp = score) ? "" : jade_interp) + '</div></div><div class="cell points">' + jade.escape(null == (jade_interp = points) ? "" : jade_interp) + "</div></div></li>");
-        })("hole_number" in locals_for_with ? locals_for_with.hole_number : typeof hole_number !== "undefined" ? hole_number : undefined, "hole_length" in locals_for_with ? locals_for_with.hole_length : typeof hole_length !== "undefined" ? hole_length : undefined, "hole_par" in locals_for_with ? locals_for_with.hole_par : typeof hole_par !== "undefined" ? hole_par : undefined, "hole_index" in locals_for_with ? locals_for_with.hole_index : typeof hole_index !== "undefined" ? hole_index : undefined, "result" in locals_for_with ? locals_for_with.result : typeof result !== "undefined" ? result : undefined, "score" in locals_for_with ? locals_for_with.score : typeof score !== "undefined" ? score : undefined, "points" in locals_for_with ? locals_for_with.points : typeof points !== "undefined" ? points : undefined);
+        (function(model, score) {
+            buf.push('<li><div class="hole_information"><div class="cell number">' + jade.escape(null == (jade_interp = model.number) ? "" : jade_interp) + '</div><div class="cell length">' + jade.escape(null == (jade_interp = model.length) ? "" : jade_interp) + '</div><div class="cell par">' + jade.escape(null == (jade_interp = model.par) ? "" : jade_interp) + '</div><div class="cell index">' + jade.escape(null == (jade_interp = model.index) ? "" : jade_interp) + '</div></div><div class="score_information"><div class="cell score"><div role="score"' + jade.cls([ score.result ], [ true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_score) ? "" : jade_interp) + '</div></div><div role="points" class="cell points">' + jade.escape(null == (jade_interp = score.pretty_points) ? "" : jade_interp) + "</div></div></li>");
+        })("model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined, "score" in locals_for_with ? locals_for_with.score : typeof score !== "undefined" ? score : undefined);
         return buf.join("");
     };
 
@@ -184,7 +184,7 @@
         var jade_interp;
         var locals_for_with = locals || {};
         (function(player_name, player_handicap) {
-            buf.push('<div class="page"><div class="page_header"><h1>' + jade.escape(null == (jade_interp = player_name) ? "" : jade_interp) + "</h1><h2>" + jade.escape(null == (jade_interp = "Handicap " + player_handicap) ? "" : jade_interp) + '</h2></div><div class="menu_stripe"></div><ul class="scorecard"></ul></div>');
+            buf.push('<div class="page"><div class="list-loading"><div class="loader"><div class="loader-block"></div><div class="loader-block"></div><div class="loader-block"></div></div></div><div class="page_header"><h1>' + jade.escape(null == (jade_interp = player_name) ? "" : jade_interp) + "</h1><h2>" + jade.escape(null == (jade_interp = "Handicap " + player_handicap) ? "" : jade_interp) + '</h2></div><ul class="scorecard"></ul></div>');
         })("player_name" in locals_for_with ? locals_for_with.player_name : typeof player_name !== "undefined" ? player_name : undefined, "player_handicap" in locals_for_with ? locals_for_with.player_handicap : typeof player_handicap !== "undefined" ? player_handicap : undefined);
         return buf.join("");
     };

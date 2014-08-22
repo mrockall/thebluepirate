@@ -169,99 +169,99 @@ namespace :blue_pirate do
       course.holes.create([{
         :number => 1,
         :par => 5,
-        :index => 15,
+        :index => 14,
         :length => 498
       },{
         :number => 2,
         :par => 3,
-        :index => 13,
+        :index => 16,
         :length => 167
       },{
         :number => 3,
         :par => 5,
-        :index => 11,
+        :index => 12,
         :length => 517
       },{
         :number => 4,
         :par => 4,
-        :index => 9,
+        :index => 4,
         :length => 391
       },{
         :number => 5,
         :par => 4,
-        :index => 3,
+        :index => 10,
         :length => 398
       },{
         :number => 6,
         :par => 3,
-        :index => 17,
+        :index => 18,
         :length => 145
       },{
         :number => 7,
         :par => 4,
-        :index => 5,
+        :index => 8,
         :length => 401
       },{
         :number => 8,
         :par => 4,
-        :index => 1,
+        :index => 2,
         :length => 416
       },{
         :number => 9,
         :par => 4,
-        :index => 7,
+        :index => 6,
         :length => 383
       },{
         :number => 10,
         :par => 5,
-        :index => 16,
+        :index => 17,
         :length => 483
       },{
         :number => 11,
         :par => 4,
-        :index => 8,
+        :index => 9,
         :length => 371
       },{
         :number => 12,
         :par => 3,
-        :index => 18,
+        :index => 15,
         :length => 163
       },{
         :number => 13,
         :par => 4,
-        :index => 4,
+        :index => 13,
         :length => 349
       },{
         :number => 14,
         :par => 4,
-        :index => 14,
+        :index => 1,
         :length => 409
       },{
         :number => 15,
         :par => 4,
-        :index => 6,
+        :index => 5,
         :length => 393
       },{
         :number => 16,
         :par => 3,
-        :index => 10,
+        :index => 7,
         :length => 151
       },{
         :number => 17,
         :par => 5,
-        :index => 12,
+        :index => 11,
         :length => 514
       },{
         :number => 18,
         :par => 4,
-        :index => 2,
+        :index => 3,
         :length => 425
       }])
 
       course
     end
 
-    def find_or_create_player(name, handicap, facebook_id = nil)
+    def find_or_create_player(name, handicap, facebook_id = '')
       player = Player.find_by_name name
 
       if player.nil?
@@ -282,17 +282,47 @@ namespace :blue_pirate do
 
     def create_tee_times(tournament)
       tournament.tee_times.create([{
-        :player => find_or_create_player('Mike Rockall', 16, 786518139),
-        :time => '09:00:00'
+        :player => find_or_create_player("Phil Staunton", 18, 788629318),
+        :time => '10:02:00'
       },{
-        :player => find_or_create_player('Brendan Considine', 20, 1818997307),
-        :time => '09:00:00'
+        :player => find_or_create_player('Jack Buckley', 9, 1445472060),
+        :time => '10:02:00'
       },{
         :player => find_or_create_player("Conor O'Hagan", 28, 572455127),
-        :time => '09:00:00'
+        :time => '10:02:00'
       },{
-        :player => find_or_create_player("Phil Staunton", 18, 788629318),
-        :time => '09:00:00'
+        :player => find_or_create_player('Mike Rockall', 16, 786518139),
+        :time => '10:10:00'
+      },{
+        :player => find_or_create_player('Ciaran Considine', 28, 1184451214),
+        :time => '10:10:00'
+      },{
+        :player => find_or_create_player('Liam Rockall', 20, 1826322379),
+        :time => '10:10:00'
+      },{
+        :player => find_or_create_player('Danny Finn', 26),
+        :time => '10:18:00'
+      },{
+        :player => find_or_create_player('David Flanagan', 20, 539111621),
+        :time => '10:18:00'
+      },{
+        :player => find_or_create_player('George Rahmani', 28, 691342540),
+        :time => '10:18:00'
+      },{
+        :player => find_or_create_player('Ryan Kelly', 28, 820247714),
+        :time => '10:18:00'
+      },{
+        :player => find_or_create_player('Alan Dempsey', 20, 1102887886),
+        :time => '10:26:00'
+      },{
+        :player => find_or_create_player('Seamus Keane', 25, 605055151),
+        :time => '10:26:00'
+      },{
+        :player => find_or_create_player('Steve Horgan', 21, 1336303403),
+        :time => '10:26:00'
+      },{
+        :player => find_or_create_player('Brendan Considine', 20, 1818997307),
+        :time => '10:26:00'
       }])
 
       find_or_create_player 'Cathal Finn', 22, 788368593
@@ -316,7 +346,7 @@ namespace :blue_pirate do
     tournament = Tournament.create do |t|
       t.name = "Test"
       t.course = course
-      t.date = "2014-07-26"
+      t.date = "2014-08-23"
     end
 
     create_tee_times tournament

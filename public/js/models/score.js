@@ -18,7 +18,13 @@ module.exports = AmpersandModel.extend({
     pretty_score: {
       deps: ['score'],
       fn: function() {
-        return this.score ? this.score : "-"
+        return _.isNull(this.score) ? "-" : this.score
+      }
+    },
+    pretty_points: {
+      deps: ['points'],
+      fn: function() {
+        return _.isNull(this.points) ? "-" : this.points
       }
     },
     pretty_putts: {
@@ -34,12 +40,13 @@ module.exports = AmpersandModel.extend({
       }
     }
   },
+
+  // This is a bit lazy..
+  // It's to prevent us sending the whole model to the server
+  // during a save.
   toJSON: function(options){
-    return {
-      id: this.id,
-      score: this.score,
-      putts: this.putts,
-      fairway: this.fairway
-    }
+    return _.extend(this.changedAttributes(), {
+      id: this.id
+    })
   }
 });

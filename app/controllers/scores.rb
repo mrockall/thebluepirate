@@ -7,7 +7,7 @@ BluePirate::App.controllers :scores do
 
     is_valid = score.update_attributes @json
     error 400, score.errors.to_json unless score.valid?
-    score.to_json
+    { :points => score.points, :result => score.result }.to_json
   end
 
 end

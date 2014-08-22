@@ -2,25 +2,16 @@ var _ = require('underscore');
 var $ = require('jquery');
 var View = require('ampersand-view');
 var templates = require('../../dist/templates');
+var Scores = require('../../collections/scores');
 
 var HoleListItem = View.extend({
   template: templates.tournaments.hole_list_item,
   initialize: function(options) {
     this.score = options.score;
   },
-  serialize: function() {
-    return {
-      hole_number: this.model.number,
-      hole_par: this.model.par,
-      hole_index: this.model.index,
-      hole_length: this.model.length,
-      score: this.score.score ? this.score.score : "-",
-      points: this.score.points ? this.score.points : "-",
-      result: this.score.result
-    }
-  },
-  render: function() {
-    return this.renderWithTemplate(this.serialize());
+  bindings: {
+    'score.pretty_score': '[role=score]',
+    'score.pretty_points': '[role=points]'
   }
 });
 
@@ -57,9 +48,20 @@ module.exports = View.extend({
     this.renderWithTemplate(this.serialize());
     this.$scorecard = $(this.el).find('.scorecard');
 
+    this.show_loading();
+
     _(this.model.tournament().holes()).each(_.bind(this.add_player_view, this));
 
     this.render_totals();
+
+    this.scores = new Scores(app.scores.findByTeeTime(this.model.id));
+    this.scores.on('request', this.show_loading, this);
+    this.scores.on('sync', this.hide_loading, this);
+    this.scores.on('error', this.try_again, this);
+
+    this.scores.url = '/scores/' + this.model.id;
+
+    this.scores.fetch();
   },
 
   transitionIn: function(cb){
@@ -112,5 +114,15 @@ module.exports = View.extend({
     }).render();
 
     this.$scorecard.append(view.el)
+  },
+
+  show_loading: function(){
+    $(this.el).find(".list-loading").show();
+  },
+  hide_loading: function(){
+    $(this.el).find(".list-loading").slideUp();
+  },
+  try_again: function(){
+    this.scores.fetch();
   }
 });

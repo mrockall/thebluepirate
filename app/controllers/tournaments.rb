@@ -14,4 +14,9 @@ BluePirate::App.controllers :tournaments do
     @tee_times = t.tee_times
     render 'tee_times/view'
   end
+
+  get :scores, :map => '/scores/:tee_time_id', :provides => :json do
+    @score = Score.find_all_by_tee_time_id params[:tee_time_id]
+    render 'scores/view'
+  end
 end

@@ -60,7 +60,6 @@ module.exports = View.extend({
 
     this.tee_times = new TeeTimes(this.model.tee_times());
 
-    // this.tee_times.on('all', function(a,b,c){console.log(a,b,c);}, this);
     this.tee_times.on('request', this.show_loading, this);
     this.tee_times.on('sync', this.hide_loading, this);
     this.tee_times.on('error', this.try_again, this);

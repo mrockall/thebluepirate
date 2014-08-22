@@ -1,10 +1,10 @@
 li
   .hole_information
-    .cell.number= hole_number
-    .cell.length= hole_length
-    .cell.par= hole_par
-    .cell.index= hole_index
+    .cell.number= model.number
+    .cell.length= model.length
+    .cell.par= model.par
+    .cell.index= model.index
   .score_information
     .cell.score
-      div(class=result)= score
-    .cell.points= points
+      div(class=score.result, role='score')= score.pretty_score
+    .cell.points(role='points')= score.pretty_points
