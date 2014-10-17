@@ -32,7 +32,7 @@
             } else {
                 buf.push('<li><a href="/login" data-bypass="true">Login</a></li>');
             }
-            buf.push('</ul></div></header><div role="page-container" class="container pages"></div><div class="loading"><div class="loader"><div class="loader-block"></div><div class="loader-block"></div><div class="loader-block"></div><div class="loader-block"></div><div class="loader-block"></div><div class="loader-block"></div><div class="loader-block"></div><div class="loader-block"></div><div class="loader-block"></div></div></div></div><div role="modal-container" class="modals"><div class="modal"></div></div></body>');
+            buf.push('</ul></div></header><div role="page-container" class="container pages"></div><div class="loading"><div class="loader"><div class="loader-block"></div><div class="loader-block"></div><div class="loader-block"></div></div></div></div><div role="modal-container" class="modals"><div class="modal"></div></div></body>');
         })("is_logged_in" in locals_for_with ? locals_for_with.is_logged_in : typeof is_logged_in !== "undefined" ? is_logged_in : undefined, "identity_type" in locals_for_with ? locals_for_with.identity_type : typeof identity_type !== "undefined" ? identity_type : undefined, "image_url" in locals_for_with ? locals_for_with.image_url : typeof image_url !== "undefined" ? image_url : undefined);
         return buf.join("");
     };
@@ -86,9 +86,9 @@
         var jade_mixins = {};
         var jade_interp;
         var locals_for_with = locals || {};
-        (function(player_name, fairway_label) {
-            buf.push('<div class="player_scores"><h2>' + jade.escape(null == (jade_interp = player_name) ? "" : jade_interp) + '</h2><ul class="course_tiles"><li data-attr="score" data-title="Strokes"><a href="#"><div class="meta">Strokes</div><div role="pretty_score" class="hole_num"></div></a></li><li data-attr="putts" data-title="Putts"><a href="#"><div class="meta">Putts</div><div role="pretty_putts" class="hole_num"></div></a></li><li data-attr="fairway"' + jade.attr("data-title", fairway_label, true, false) + '><a href="#"><div class="meta">' + jade.escape(null == (jade_interp = fairway_label) ? "" : jade_interp) + '</div><div role="pretty_fairway" class="hole_num"></div></a></li></ul></div>');
-        })("player_name" in locals_for_with ? locals_for_with.player_name : typeof player_name !== "undefined" ? player_name : undefined, "fairway_label" in locals_for_with ? locals_for_with.fairway_label : typeof fairway_label !== "undefined" ? fairway_label : undefined);
+        (function(player_name) {
+            buf.push('<div class="player_scores"><h2>' + jade.escape(null == (jade_interp = player_name) ? "" : jade_interp) + '</h2><ul class="course_tiles"><li data-attr="score" data-title="Strokes"><a href="#"><div class="meta">Strokes</div><div role="pretty_score" class="hole_num"></div></a></li><li data-attr="points" data-title="Points"><div><div class="meta">Points</div><div role="points" class="hole_num"></div></div></li></ul></div>');
+        })("player_name" in locals_for_with ? locals_for_with.player_name : typeof player_name !== "undefined" ? player_name : undefined);
         return buf.join("");
     };
 
@@ -196,7 +196,7 @@
         var jade_interp;
         var locals_for_with = locals || {};
         (function(model) {
-            buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + '><div role="pretty_through" class="cell one">' + jade.escape(null == (jade_interp = model.pretty_through) ? "" : jade_interp) + '</div><div class="cell one"><img' + jade.attr("src", "http://graph.facebook.com/" + model.player().facebook_id + "/picture?type=square&height=100&width=100", true, false) + '/></div><div class="cell five ellipsis name">' + jade.escape(null == (jade_interp = model.player().name) ? "" : jade_interp) + '</div><div role="pretty_score" class="cell one score">' + jade.escape(null == (jade_interp = model.pretty_score) ? "" : jade_interp) + '</div><div role="points" class="cell one score">' + jade.escape(null == (jade_interp = model.points) ? "" : jade_interp) + '</div><div role="through" class="cell one thru">' + jade.escape(null == (jade_interp = model.through) ? "" : jade_interp) + '</div><div class="cell three time">' + jade.escape(null == (jade_interp = model.time_parsed) ? "" : jade_interp) + "</div></a></li>");
+            buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + '><div role="pretty_through" class="cell one">' + jade.escape(null == (jade_interp = model.pretty_through) ? "" : jade_interp) + '</div><div class="cell six ellipsis name">' + jade.escape(null == (jade_interp = model.player().name) ? "" : jade_interp) + '</div><div role="pretty_score" class="cell one score blue">' + jade.escape(null == (jade_interp = model.pretty_score) ? "" : jade_interp) + '</div><div role="points" class="cell one score">' + jade.escape(null == (jade_interp = model.points) ? "" : jade_interp) + '</div><div role="through" class="cell one thru">' + jade.escape(null == (jade_interp = model.through) ? "" : jade_interp) + '</div><div class="cell three time">' + jade.escape(null == (jade_interp = model.time_parsed) ? "" : jade_interp) + "</div></a></li>");
         })("model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
         return buf.join("");
     };

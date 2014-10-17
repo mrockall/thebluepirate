@@ -351,4 +351,171 @@ namespace :blue_pirate do
 
     create_tee_times tournament
   end
+
+  task :setup_bp6 => :environment do
+    def create_elm_green
+      course = Course.create({:name => "Elm Green"})
+
+      course.holes.create([{
+        :number => 1,
+        :par => 4,
+        :index => 10,
+        :length => 274
+      },{
+        :number => 2,
+        :par => 3,
+        :index => 18,
+        :length => 111
+      },{
+        :number => 3,
+        :par => 4,
+        :index => 8,
+        :length => 320
+      },{
+        :number => 4,
+        :par => 4,
+        :index => 2,
+        :length => 367
+      },{
+        :number => 5,
+        :par => 4,
+        :index => 14,
+        :length => 304
+      },{
+        :number => 6,
+        :par => 4,
+        :index => 16,
+        :length => 308
+      },{
+        :number => 7,
+        :par => 5,
+        :index => 6,
+        :length => 465
+      },{
+        :number => 8,
+        :par => 3,
+        :index => 12,
+        :length => 162
+      },{
+        :number => 9,
+        :par => 4,
+        :index => 4,
+        :length => 364
+      },{
+        :number => 10,
+        :par => 5,
+        :index => 9,
+        :length => 437
+      },{
+        :number => 11,
+        :par => 4,
+        :index => 17,
+        :length => 282
+      },{
+        :number => 12,
+        :par => 3,
+        :index => 15,
+        :length => 108
+      },{
+        :number => 13,
+        :par => 4,
+        :index => 3,
+        :length => 363
+      },{
+        :number => 14,
+        :par => 3,
+        :index => 11,
+        :length => 140
+      },{
+        :number => 15,
+        :par => 4,
+        :index => 13,
+        :length => 264
+      },{
+        :number => 16,
+        :par => 3,
+        :index => 7,
+        :length => 179
+      },{
+        :number => 17,
+        :par => 4,
+        :index => 5,
+        :length => 336
+      },{
+        :number => 18,
+        :par => 4,
+        :index => 1,
+        :length => 385
+      }])
+
+      course
+    end
+
+    def find_or_create_player(name, handicap, facebook_id = '')
+      player = Player.find_by_name name
+
+      if player.nil?
+        player = Player.create do |player|
+          player.name = name
+          player.handicap = handicap
+          player.facebook_id = facebook_id
+        end
+      else 
+        player.update_attributes({
+            :handicap => handicap,
+            :facebook_id => facebook_id
+          })
+      end
+
+      player
+    end
+
+    def create_tee_times(tournament)
+      tournament.tee_times.create([{
+        :player => find_or_create_player('Brendan Considine', 18, 1818997307),
+        :time => '09:00:00'
+      },{
+        :player => find_or_create_player('John Power', 18, 1445472060),
+        :time => '09:00:00'
+      },{
+        :player => find_or_create_player("Ronan O'Sullivan", 18, 572455127),
+        :time => '09:00:00'
+      },{
+        :player => find_or_create_player('Mike Rockall', 16, 786518139),
+        :time => '09:10:00'
+      },{
+        :player => find_or_create_player('Eoghan Considine', 28, 1184451214),
+        :time => '09:10:00'
+      },{
+        :player => find_or_create_player('Liam Rockall', 19, 1826322379),
+        :time => '09:10:00'
+      },{
+        :player => find_or_create_player('Danny Finn', 26),
+        :time => '09:10:00'
+      },{
+        :player => find_or_create_player('David Flanagan', 19, 539111621),
+        :time => '09:20:00'
+      },{
+        :player => find_or_create_player('Ciaran Considine', 28, 1184451214),
+        :time => '09:20:00'
+      },{
+        :player => find_or_create_player("Phil Staunton", 18, 788629318),
+        :time => '09:20:00'
+      },{
+        :player => find_or_create_player('Ruaidhri Molloy', 28, 1102887886),
+        :time => '09:20:00'
+      }])
+    end
+
+    course = Course.find_by_name "Elm Green"
+    course = create_elm_green if course.nil?
+
+    tournament = Tournament.create do |t|
+      t.name = "Blue Pirate #6"
+      t.course = course
+      t.date = "2014-10-17"
+    end
+
+    create_tee_times tournament
+  end
 end

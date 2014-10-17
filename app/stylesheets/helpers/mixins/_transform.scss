@@ -1,5 +1,14 @@
-@mixin transform($transformation...) {
-  -webkit-transform: $transformation;
-      -ms-transform: $transformation;
-          transform: $transformation;
+@mixin transform_m($content) {
+  -webkit-transform: $content;
+      -ms-transform: $content;
+          transform: $content;
+}
+
+@mixin keyframes($name){
+  @-webkit-keyframes #{$name} {
+    @content;
+  }
+  @keyframes #{$name} {
+    @content;
+  }
 }

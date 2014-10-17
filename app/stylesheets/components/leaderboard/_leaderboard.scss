@@ -4,9 +4,13 @@
   padding: 0;
 
   li{
-    font-size: 1.35em;
-    line-height: 2.5em;
+    font-size: 1.5em;
+    line-height: 2.25em;
     padding: 0;
+
+    &:nth-child(2n){
+      background: #f6f6f6;
+    }
 
     a{
       display: table;
@@ -54,6 +58,11 @@
 
       &.time{
         display: none;
+      }
+
+      &.blue{
+        color: #7b7b7b;
+        font-weight: bold;
       }
     }
 

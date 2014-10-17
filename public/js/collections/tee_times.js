@@ -5,9 +5,8 @@ module.exports = Collection.extend({
   model: TeeTime,
   url: '/tee_times',
 
-  comparator: function(a, b){
-    // console.log(a.golf_score, b.golf_score);
-    return a.golf_score > b.golf_score;
+  comparator: function(model){
+    return model.golf_score;
   },
 
   findByID: function(id) {

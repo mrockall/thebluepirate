@@ -15,8 +15,8 @@ var PlayerView = View.extend({
   },
   bindings: {
     'score.pretty_score': '[role=pretty_score]',
-    'score.pretty_putts': '[role=pretty_putts]',
-    'score.pretty_fairway': '[role=pretty_fairway]'
+    'score.points': '[role=points]',
+    // 'score.pretty_fairway': '[role=pretty_fairway]'
   },
   events: {
     'click .course_tiles li' : 'show_modal_overlay'

@@ -57,25 +57,30 @@ module.exports = View.extend({
   render: function () {
     this.renderWithTemplate(this.serialize());
     this.show_loading();
+    this.$players = $(this.el).find('.players');
 
     this.tee_times = new TeeTimes(this.model.tee_times());
 
     this.tee_times.on('request', this.show_loading, this);
     this.tee_times.on('sync', this.hide_loading, this);
     this.tee_times.on('error', this.try_again, this);
+    this.tee_times.on('sort', this.renderLeaderboard, this);
 
-    this.views = []
-    var $players = $(this.el).find('.players');
+    this.renderLeaderboard();
+    this.tee_times.fetch();
+  },
+  renderLeaderboard: function(){
+    this.views = [];
+    this.$players.empty();
+    
     this.tee_times.each(_.bind(function(m){
       var view = new PlayerListItem({
         model: m
       }).render();
 
-      $players.append(view.el);
+      this.$players.append(view.el);
       this.views.push(view);
     }, this));
-
-    this.tee_times.fetch();
   },
   transitionIn: function(cb){
     $(this.el).show();
@@ -92,6 +97,10 @@ module.exports = View.extend({
     $(this.el).find(".list-loading").slideUp();
   },
   try_again: function(){
-    this.tee_times.fetch();
+    var retries = this.retries || 0;
+    if(retries < 5){
+      this.tee_times.fetch();
+      this.retries = retries + 1;
+    }
   }
 });

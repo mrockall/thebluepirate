@@ -6,9 +6,9 @@
 
   li {
     float: left;
-    width: 33.3333%;
+    width: 50%;
 
-    a{
+    a, > div{
       @include box-sizing(border-box);
       display: block;
       margin: .25em;
@@ -31,6 +31,11 @@
         border-color: darken($blue, 15%);
         color: white;
       }
+    }
+
+    > div{
+      background: transparent;
+      border-color: transparent;
     }
   }
 }

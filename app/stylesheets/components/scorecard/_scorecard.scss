@@ -60,26 +60,26 @@
         @include box-sizing(border-box);
 
         &.birdie{
-          color: #13375C;
-          border: 4px solid #13375C;
+          color: #3C6BA1;
+          border: 4px solid #3C6BA1;
           line-height: 2.2em;
           @include border-radius(50%);
         }
         &.eagle{
-          color: #13375C;
-          border: 6px double #13375C; 
-          line-height: 2em;
+          color: #3C6BA1;
+          border: 6px double #3C6BA1; 
+          line-height: 1.8em;
           @include border-radius(50%);
         }
         &.bogey{ 
-          color: #A51818;
-          border: 4px solid #A51818;
+          color: #B56161;
+          border: 4px solid #B56161;
           line-height: 2.2em;
         }
         &.dbl_bogey{ 
-          color: #A51818;
-          border: 6px double #A51818;
-          line-height: 2em;
+          color: #B56161;
+          border: 6px double #B56161;
+          line-height: 1.8em;
         }
       }
     }
