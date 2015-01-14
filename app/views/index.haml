@@ -1,12 +1,18 @@
-= partial "elements/header"
+.loader
+  - 3.times do
+    .loader-block
 
 - content_for :view_javascript do
   :javascript
-    var Bootstrap = {};
-    Bootstrap.tournament = #{@tournament};
-    Bootstrap.tee_times = #{@tee_times};
-    Bootstrap.players = #{@players};
-    Bootstrap.holes = #{@holes};
-    Bootstrap.scores = #{@scores};
+    this.InitialData = this.InitialData || {};
+    this.InitialData.development_mode = #{Padrino.env == :development};
+    this.InitialData.me = #{@current_user.to_json};
+    this.InitialData.tournaments = #{@tournaments};
+    this.InitialData.tee_times = #{@tee_times};
+    this.InitialData.players = #{@players};
+    this.InitialData.courses = #{@courses};
+    this.InitialData.holes = #{@holes};
+    this.InitialData.scores = #{@scores};
 
 = yield_content :view_javascript
+%script{:src => '/dist/app.js', :type => 'text/javascript'}

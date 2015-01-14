@@ -6,7 +6,7 @@ var velocity_ui = require('velocity-animate/velocity.ui');
 
 // ---- BP Modules ----
 var View = require('ampersand-view');
-var templates = require('../../dist/templates');
+var templates = require('../../../dist/templates');
 
 $.fn.randomize = function(selector){
   (selector ? this.find(selector) : this).parent().each(function(){

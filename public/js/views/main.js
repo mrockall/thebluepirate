@@ -10,32 +10,25 @@ var setFavicon = require('favicon-setter');
 var velocity = require('velocity-animate');
 var velocity_ui = require('velocity-animate/velocity.ui');
 
-var svgIcon = require('../helpers/svg-icons');
-var SVGIconConfig = require('../helpers/svg-icons-config');
-
 var View = require('ampersand-view');
 var ViewSwitcher = require('ampersand-view-switcher');
-var templates = require('../dist/templates.js');
+var templates = require('../../dist/templates.js');
 
 module.exports = View.extend({
-
   template: templates['body'],
 
   initialize: function () {
     app.router.history.on('route', this.updateActiveNav, this);
   },
-
   events: {
     'click a[href]': 'handleLinkClick'
   },
-
   serialize: function() {
     return _.extend(me.toJSON(), {
       is_logged_in: me.is_logged_in,
       identity_type: me.identity_type
     })
   },
-
   render: function () {
     this.renderWithTemplate(this.serialize());
 
@@ -50,12 +43,9 @@ module.exports = View.extend({
           cb();
         }
       },
-
       before_show: _.bind(function(newView, cb){
         cb();
       }, this),
-
-
       show: function (newView) {
         // it's inserted and rendered for me
         document.title = _.result(newView.pageTitle) || "Blue Pirate";
@@ -72,35 +62,19 @@ module.exports = View.extend({
       }
     });
 
-    this.hamburger_icon = new svgIcon( 
-      document.querySelector('.hamburger-icon'), 
-      SVGIconConfig['hamburgerCross'], 
-      { 
-        easing : mina.elastic, 
-        size : { w : 36, h : 36 },
-        speed: 600,
-        onToggle: _.bind(function(){
-          this.toggleMenu();
-        }, this)
-      }
-    );
-
     setFavicon('/images/favicon.png');
     return this;
   },
-
   _show_loading: function(cb){
     $('.content').addClass('no-scroll');
     $(".loading").fadeIn(100, function(){
       cb();
     });
   },
-
   _hide_loading: function(){
     $(".loading").hide();
     $('.content').removeClass('no-scroll');
   },
-
   setPage: function (view, reload_data) {
     // Set the reload data on the view..
     view.reload_data = reload_data || false;
@@ -111,7 +85,6 @@ module.exports = View.extend({
     // mark the correct nav item selected
     this.updateActiveNav();
   },
-
   handleLinkClick: function (e) {
     var $t = $(e.target);
     var aEl = $t.is('a') ? $t[0] : $t.closest('a')[0];
@@ -126,7 +99,6 @@ module.exports = View.extend({
       app.navigate(path);
     }
   },
-
   updateActiveNav: function () {
     var pathname = window.location.pathname;
     $('.nav a').each(function () {
@@ -140,7 +112,6 @@ module.exports = View.extend({
       }
     });
   },
-
   toggleMenu: function() {
     var $nav = $(this.el).find('.nav');
 
@@ -150,7 +121,6 @@ module.exports = View.extend({
       $nav.slideDown();
     }
   },
-
   hideMenu: function() {
     var $nav = $(this.el).find('.nav');
 

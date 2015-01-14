@@ -1,9 +1,4 @@
 BluePirate::App.controllers :sessions do
-  
-  get :login, :map => 'login' do
-    @title = "Login"
-    render :login
-  end
 
   get :logout, :map => 'logout' do
     logout
@@ -37,5 +32,4 @@ BluePirate::App.controllers :sessions do
 
     redirect '/'
   end
-
 end

@@ -14,14 +14,14 @@ module.exports = function(grunt) {
 
     exec: {
       compress_templates: {
-        cmd: 'templatizer -d public/templates/ -o public/js/dist/templates.js'
+        cmd: 'templatizer -d public/templates/ -o public/dist/templates.js'
       }
     },
 
     uglify: {
       js: {
-        src: ['public/js/dist/app.js'],
-        dest: 'public/js/dist/app.js',
+        src: ['public//dist/app.js'],
+        dest: 'public/dist/app.js',
       }
     }
 

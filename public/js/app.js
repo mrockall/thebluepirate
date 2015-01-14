@@ -1,7 +1,6 @@
 /*global app, me, $*/
 var $ = require('jquery');
 var _ = require('underscore');
-var domReady = require('domready');
 
 window.jQuery = window.$ = $;
 
@@ -22,12 +21,12 @@ var Holes = require('./collections/holes');
 
 /** 
  * Adds CSRF support to Backbone
- */ 
+ */
 var csrf_token = $("meta[name='csrf-token']").attr('content');
 
 $.ajaxSetup({
   cache: false,
-  beforeSend: function(xhr, settings){
+  beforeSend: function (xhr, settings) {
     xhr.setRequestHeader('X-CSRF-Token', csrf_token);
   }
 });
@@ -53,19 +52,19 @@ module.exports = {
     self.holes.reset(InitialData.holes);
     self.scores.reset(InitialData.scores);
 
-    domReady(function () {
+    $('document').ready(function () {
       var mainView = self.view = new MainView({
         model: me,
         el: document.body
       });
       mainView.render();
 
-      self.router.on('newPage', mainView.setPage, mainView);
+      // self.router.on('newPage', mainView.setPage, mainView);
       self.router.history.start({pushState: true, root: '/'});
     });
   },
 
-  is_mobile: function(){
+  is_mobile: function() {
     return $('body').width() <= 767;
   },
 

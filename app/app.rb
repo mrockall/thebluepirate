@@ -56,7 +56,7 @@ module BluePirate
       @courses = Rabl.render(t.course, 'courses/view', :view_path => 'app/views', :format => 'json')
       @holes = Rabl.render(t.course.holes, 'holes/view', :view_path => 'app/views', :format => 'json')
       @scores = Rabl.render(t.scores, 'scores/view', :view_path => 'app/views', :format => 'json')
-      render :app
+      render :index
     end
   end
 end
