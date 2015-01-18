@@ -19,4 +19,14 @@
       border-bottom-color: rgba(255,255,255,0.3);
     }
   }
+
+  @include retina {
+   a{
+      background-image: url(images/icons-2x.png);
+      -webkit-background-size: 25px 180px;
+      -moz-background-size: 25px 180px;
+      -o-background-size: 25px 180px;
+      background-size: 25px 180px;
+    }
+  }
 }
