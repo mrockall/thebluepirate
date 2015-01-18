@@ -19390,7 +19390,7 @@ Velocity's structure:
 
     // body.jade compiled template
     templatizer["body"] = function tmpl_body() {
-        return '<body><div class="content"><header><div href="/" class="logo"></div><div class="title">Blue Pirate #7</div><div class="subtitle">Athenry Golf Course - 22nd April 2015</div><div class="tabs"><a class="home active">Home</a><a class="ldrboard">Leaderboard</a><a class="me_user">Me</a></div></header><div role="page-container" class="container pages"><div class="page"></div></div></div><div role="modal-container" class="modals"><div class="modal"></div></div></body>';
+        return '<body><div class="content"><header><div href="/" class="logo"></div><div class="title">Blue Pirate #7</div><div class="subtitle">Athenry Golf Course - 22nd April 2015</div><div class="tabs"><a href="/" class="home active">Home</a><a href="/leaderboard" class="ldrboard">Leaderboard</a><a href="/my-round" class="me_user">Me</a></div></header><div role="page-container" class="container pages"><div class="page"></div></div></div><div role="modal-container" class="modals"><div class="modal"></div></div></body>';
     };
 
     // modals/nine_box.jade compiled template
@@ -19607,6 +19607,7 @@ $.ajaxSetup({
   }
 });
 
+// ---- Blast Off! ----
 module.exports = {
   blastoff: function () {
     var self = window.app = this;
@@ -19635,20 +19636,11 @@ module.exports = {
       });
       mainView.render();
 
-      // self.router.on('newPage', mainView.setPage, mainView);
+      self.router.on('newPage', mainView.setPage, mainView);
       self.router.history.start({pushState: true, root: '/'});
     });
   },
 
-  is_mobile: function() {
-    return $('body').width() <= 767;
-  },
-
-  // This is how you navigate around the app.
-  // this gets called by a global click handler that handles
-  // all the <a> tags in the app.
-  // it expects a url without a leading slash.
-  // for example: "costello/settings".
   navigate: function (page) {
     var url = (page.charAt(0) === '/') ? page.slice(1) : page;
     this.router.history.navigate(url, {trigger: true});
@@ -20096,65 +20088,56 @@ module.exports = AmpersandModel.extend({
 var _ = require('underscore');
 var Router = require('ampersand-router');
 
-var ViewTournamentPage = require('./views/tournaments/view');
-var TournamentPlayerPage = require('./views/tournaments/player');
-var MyRoundPage = require('./views/my_round/view');
-var MyRoundHolePage = require('./views/my_round/hole');
-
+// ---- Router ----
 module.exports = Router.extend({
   routes: {
     '': 'home',
-    'tournaments/:id/player/:id': 'tournament_player',
-    'my-round': 'my_round',
-    'my-round/:hole_id': 'my_round_hole',
+    'leaderboard': 'leaderboard',
+    'player/:name': 'playerCard',
+    'my-round': 'myRound',
+    'my-round/:hole_id': 'myRoundHole',
+    'login': 'login',
     '(*path)': 'catchAll'
   },
 
-  // ------- ROUTE HANDLERS ---------
   home: function () {
-    var tournament = app.tournaments.first();
-    this.trigger('newPage', new ViewTournamentPage({
-      model: tournament
-    }), true);
+    this.trigger('newPage', 'home');
   },
 
-  tournament_player: function(tournament_id, player_id) {
-    var tee_time = app.tee_times.findByTournamentAndPlayer(tournament_id, player_id);
-    this.trigger('newPage', new TournamentPlayerPage({
-      model: tee_time
-    }), app.scores.length == 0);
+  leaderboard: function() {
+    this.trigger('newPage', 'leaderboard');
   },
 
-  my_round: function() {
-    var model;
+  playerCard: function(player_name) {
+    var tee_time = app.tee_times.findByPlayerName(tournament_id, player_name);
+    if(!tee_time){ return this.redirectTo(''); }
 
-    if(!me.is_logged_in){ return this.redirectTo(''); }
-    if(me.identity_type == 'tee_time'){ model = app.tee_times.findByID(me.id) }
-
-    this.trigger('newPage', new MyRoundPage({
-      model: model
-    }), true);
+    this.trigger('newPage', 'player_card', tee_time);
   },
 
-  my_round_hole: function(hole_id) {
-    var model;
+  myRound: function() {
+    if(!me.is_logged_in){ return this.redirectTo('/login'); }
 
-    if(!me.is_logged_in){ return this.redirectTo(''); }
-    if(me.identity_type == 'tee_time'){ model = app.tee_times.findByID(me.id) }
+    var tee_time = app.tee_times.findByID(me.id);
+    if(!tee_time){ return this.redirectTo('/login'); }
 
-    this.trigger('newPage', new MyRoundHolePage({
-      model: model,
-      hole_id: hole_id
-    }), app.scores.length == 0);
+    this.trigger('newPage', 'my_round', tee_time);
   },
 
-  catchAll: function (slug) {
-    var tournament = app.tournaments.findBySlug(slug);
-    if(tournament){ return this.view_tournament(tournament) }
+  myRoundHole: function(hole_id) {
+    if(!me.is_logged_in){ return this.redirectTo('/login'); }
+
+    var tee_time = app.tee_times.findByID(me.id);
+    if(!tee_time){ return this.redirectTo('/login'); }
+
+    this.trigger('newPage', 'my_round_hole', tee_time, hole_id);
+  },
+
+  catchAll: function () {
     this.redirectTo('');
   }
 });
-},{"./views/my_round/hole":"/Library/WebServer/Server/bp_tournaments/public/js/views/my_round/hole.js","./views/my_round/view":"/Library/WebServer/Server/bp_tournaments/public/js/views/my_round/view.js","./views/tournaments/player":"/Library/WebServer/Server/bp_tournaments/public/js/views/tournaments/player.js","./views/tournaments/view":"/Library/WebServer/Server/bp_tournaments/public/js/views/tournaments/view.js","ampersand-router":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/ampersand-router.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/main.js":[function(require,module,exports){
+},{"ampersand-router":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/ampersand-router.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/main.js":[function(require,module,exports){
 /*global app, me, $*/
 
 // This main view is responsible for rendering all content that goes into
@@ -20177,13 +20160,17 @@ var MyRound = require('./my_round/view');
 // ---- Main View ----
 module.exports = View.extend({
   template: templates['body'],
+  events: {
+    'click a[href]': 'handleLinkClick'
+  },
   render: function () {
     this.renderWithTemplate();
     this.page_container = this.getByRole('page-container');
+    this.$nav_links = $(this.el).find('.tabs a');
 
     this.swipe_view = new SwipeView(this.page_container, {
       numberOfPages: 3,
-      generatePage: this.generatePage,
+      generatePage: this.buildPage,
     });
 
     // We need to update the height of the page container if we change the page..
@@ -20194,7 +20181,7 @@ module.exports = View.extend({
     return this;
   },
 
-  generatePage: function(i, page) {
+  buildPage: function(i, page) {
     var el = page.querySelector('.page');
     var view;
     var tournament = app.tournaments.first();
@@ -20217,194 +20204,55 @@ module.exports = View.extend({
     $(el).html(view.el);
   },
 
+  setPage: function(page_name) {
+    switch(page_name){
+      case 'leaderboard':
+      case 'player_card':
+        this.swipe_view.goToPage(1);
+        break;
+      default:
+        this.swipe_view.goToPage(0);
+        break;
+    }
+
+    this.updateActiveNav();
+  },
+
   // We need to set the outer height of the page container because the swipe library sets everything as height: 100%
   setPageContainerHeight: function() {
     var h = $(this.page_container).find('.swipeview-active .page').outerHeight();
     $(this.page_container).outerHeight(h);
-  }
-});
-},{"../../dist/templates.js":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","./my_round/view":"/Library/WebServer/Server/bp_tournaments/public/js/views/my_round/view.js","./tournaments/home":"/Library/WebServer/Server/bp_tournaments/public/js/views/tournaments/home.js","./tournaments/leaderboard":"/Library/WebServer/Server/bp_tournaments/public/js/views/tournaments/leaderboard.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","favicon-setter":"/Library/WebServer/Server/bp_tournaments/node_modules/favicon-setter/favicon-setter.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js","web-swipe-view":"/Library/WebServer/Server/bp_tournaments/node_modules/web-swipe-view/src/swipeview.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/modals/nine-box.js":[function(require,module,exports){
-// ---- Vendor ----
-var _ = require('underscore');
-var $ = require('jquery');
-var velocity = require('velocity-animate');
-var velocity_ui = require('velocity-animate/velocity.ui');
-
-// ---- BP Modules ----
-var View = require('ampersand-view');
-var templates = require('../../../dist/templates');
-
-$.fn.randomize = function(selector){
-  (selector ? this.find(selector) : this).parent().each(function(){
-    $(this).children(selector).sort(function(){
-      return Math.random() - 0.5;
-    }).detach().appendTo(this);
-  });
-
-  return this;
-};
-
-
-// ---- View ----
-module.exports = View.extend({
-  template: templates.modals.nine_box,
-  initialize: function(options) {
-    $('.modals').append('<div></div>');
-    this.el = $('.modals div')[0];
-    this.modal_title = options.title;
-    app.router.once('route', this.hide, this);
-    return this.render();
   },
-  events: {
-    'click .box': 'box_clicked',
-    'click .back': 'hide'
-  },
-  render: function () {
-    this.renderWithTemplate({
-      title: this.modal_title
-    });
-    this.$meta = $(this.el).find('.meta');
-    return this;
-  },
-  show: function() {
-    $('.content').addClass('no-scroll');
-    this.$boxes = $(this.el).find('.' + this.attribute + ' .box');
 
-    var rows = 2;
-    if(this.attribute == 'score') rows = 5;
-    else if(this.attribute == 'putts') rows = 3;
-    
-    this.$boxes.height(Math.ceil($('.options').outerHeight()/rows) + 'px');
+  handleLinkClick: function (e) {
+    var $t = $(e.target);
+    var aEl = $t.is('a') ? $t[0] : $t.closest('a')[0];
+    var local = window.location.host === aEl.host;
+    var path = aEl.pathname.slice(1);
 
-    this.$meta.velocity('transition.expandIn', {
-      duration: 150
-    });
-    this.$boxes.velocity('transition.expandIn', {
-      drag: true,
-      stagger: 35,
-      duration: 150
-    });
-
-    return this;
-  },
-  hide: function() {
-    this.$meta.velocity('transition.expandOut', {
-      duration: 150
-    });
-    this.$boxes.velocity('transition.expandOut', {
-      stagger: 20,
-      duration: 150,
-      complete: _.bind(function(){
-        app.router.off('route', this.hide, this);
-        this.remove();
-        $('.content').removeClass('no-scroll');
-      }, this)
-    });
-  },
-  box_clicked: function(ev) {
-    var $target = $(ev.target);
-    if(!$target.hasClass('box')){
-      $target = $target.parent();
-    }
-    this.trigger('option:selected', $target.data('value'));
-
-    this.hide();
-  }
-});
-},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js","velocity-animate":"/Library/WebServer/Server/bp_tournaments/node_modules/velocity-animate/jquery.velocity.js","velocity-animate/velocity.ui":"/Library/WebServer/Server/bp_tournaments/node_modules/velocity-animate/velocity.ui.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/my_round/hole.js":[function(require,module,exports){
-// ---- Vendor ----
-var _ = require('underscore');
-var $ = require('jquery');
-var Collection = require('ampersand-collection');
-
-// ---- BP Modules ----
-var View = require('ampersand-view');
-var templates = require('../../../dist/templates');
-var NineBoxModal = require('../../views/modals/nine-box');
-
-var PlayerView = View.extend({
-  template: templates.my_round.hole_player,
-  initialize: function (options) {
-    this.hole = options.hole;
-  },
-  bindings: {
-    'score.pretty_score': '[role=pretty_score]',
-    'score.points': '[role=points]',
-    // 'score.pretty_fairway': '[role=pretty_fairway]'
-  },
-  events: {
-    'click .course_tiles li' : 'show_modal_overlay'
-  },
-  serialize: function(){
-    this.player = this.model.player();
-    this.score = app.scores.findByTeeTimeAndHole(this.model.id, this.hole.id);
-    return {
-      player_name: this.player.name,
-      putts: this.score.pretty_putts,
-      fairway: this.score.pretty_fairway,
-      fairway_label: this.hole.par == 3 ? "Green" : "Fairway"
+    // if the window location host and target host are the
+    // same it's local, else, leave it alone
+    if (local && !$t.data('bypass')) {
+      e.preventDefault();
+      app.navigate(path);
     }
   },
-  render: function() {
-    this.renderWithTemplate(this.serialize());
-    this.score.on("all", function (eventName){
-      if (eventName.slice(0, 7) === 'change:') {
-        this._applyBindingsForKey("score");
+
+  updateActiveNav: function () {
+    var pathname = window.location.pathname;
+    this.$nav_links.each(function () {
+      var navArray = _.compact($(this).attr('href').split('/')).join('/').toLowerCase();
+      var pathArray = _.compact(pathname.split('/')).join('/').toLowerCase();
+
+      if (pathArray === navArray) {
+        $(this).addClass('active');
+      } else {
+        $(this).removeClass('active');
       }
-    }, this);
-    return this;
-  },
-  show_modal_overlay: function(ev) {
-    ev.preventDefault();
-    ev.stopPropagation();
-
-    this.modal = new NineBoxModal({
-      title: $(ev.target).parents('li').data('title')
     });
-    this.modal.once('option:selected', this.option_selected, this);
-    this.modal.attribute = $(ev.target).parents('li').data('attr');
-    this.modal.show();
-  },
-  option_selected: function(value) {
-    this.score.save(this.modal.attribute, value);
   }
 });
-
-// ---- View ----
-module.exports = View.extend({
-  template: templates.my_round.hole,
-  initialize: function(options) {
-    this.views = [];
-    this.hole_id = options.hole_id;
-  },
-  serialize: function(){
-    return {
-      hole_number: this.hole.number,
-      hole_par: this.hole.par,
-      hole_length: this.hole.length,
-      hole_index: this.hole.index,
-      prev_hole: this.hole.number > 1 ? this.hole.number - 1 : false,
-      next_hole: this.hole.number < 18 ? this.hole.number + 1 : false,
-      prev_hole_id: this.hole.id - 1,
-      next_hole_id: this.hole.id + 1
-    };
-  },
-  render: function () {
-    this.hole = this.model.tournament().findHoleById(this.hole_id);
-
-    this.renderWithTemplate(this.serialize());
-
-    var tee_times = this.model.findAllTeeTimes();
-    tee_times = tee_times.sort(function(a,b){return a.id > b.id;});
-    this.renderCollection(
-      new Collection(tee_times), 
-      PlayerView, 
-      '.players',
-      {viewOptions: {hole: this.hole}}
-    );
-  }
-});
-},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","../../views/modals/nine-box":"/Library/WebServer/Server/bp_tournaments/public/js/views/modals/nine-box.js","ampersand-collection":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/ampersand-collection.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/my_round/view.js":[function(require,module,exports){
+},{"../../dist/templates.js":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","./my_round/view":"/Library/WebServer/Server/bp_tournaments/public/js/views/my_round/view.js","./tournaments/home":"/Library/WebServer/Server/bp_tournaments/public/js/views/tournaments/home.js","./tournaments/leaderboard":"/Library/WebServer/Server/bp_tournaments/public/js/views/tournaments/leaderboard.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","favicon-setter":"/Library/WebServer/Server/bp_tournaments/node_modules/favicon-setter/favicon-setter.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js","web-swipe-view":"/Library/WebServer/Server/bp_tournaments/node_modules/web-swipe-view/src/swipeview.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/my_round/view.js":[function(require,module,exports){
 // ---- Vendor ----
 var _ = require('underscore');
 var $ = require('jquery');
@@ -20595,137 +20443,6 @@ module.exports = View.extend({
   }
 });
 
-},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","../../collections/tee_times":"/Library/WebServer/Server/bp_tournaments/public/js/collections/tee_times.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js","velocity-animate":"/Library/WebServer/Server/bp_tournaments/node_modules/velocity-animate/jquery.velocity.js","velocity-animate/velocity.ui":"/Library/WebServer/Server/bp_tournaments/node_modules/velocity-animate/velocity.ui.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/tournaments/player.js":[function(require,module,exports){
-var _ = require('underscore');
-var $ = require('jquery');
-var View = require('ampersand-view');
-var templates = require('../../../dist/templates');
-var Scores = require('../../collections/scores');
-
-var HoleListItem = View.extend({
-  template: templates.tournaments.hole_list_item,
-  initialize: function(options) {
-    this.score = options.score;
-  },
-  bindings: {
-    'score.pretty_score': '[role=score]',
-    'score.pretty_points': '[role=points]'
-  }
-});
-
-var TotalsView = View.extend({
-  template: templates.tournaments.totals_list_item,
-  initialize: function(options) {
-    this.title = options.title;
-    this.score_total = options.score_total;
-    this.points_total = options.points_total;
-  },
-  serialize: function() {
-    return {
-      title: this.title,
-      score_total: this.score_total,
-      points_total: this.points_total
-    }
-  },
-  render: function() {
-    return this.renderWithTemplate(this.serialize());
-  }
-})
-
-module.exports = View.extend({
-  template: templates.tournaments.player,
-  serialize: function() {
-    var player = this.model.player();
-    return {
-      player_name: player.name,
-      player_handicap: player.handicap
-    }
-  },
-  render: function () {
-    this.views = [];
-    this.renderWithTemplate(this.serialize());
-    this.$scorecard = $(this.el).find('.scorecard');
-
-    this.show_loading();
-
-    _(this.model.tournament().holes()).each(_.bind(this.add_player_view, this));
-
-    this.render_totals();
-
-    this.scores = new Scores(app.scores.findByTeeTime(this.model.id));
-    this.scores.on('request', this.show_loading, this);
-    this.scores.on('sync', this.hide_loading, this);
-    this.scores.on('error', this.try_again, this);
-
-    this.scores.url = '/scores/' + this.model.id;
-
-    this.scores.fetch();
-  },
-
-  transitionIn: function(cb){
-    $(this.el).show();
-
-    $(this.el).find('.scorecard li').hide().velocity('transition.slideUpIn', {
-      duration: 200,
-      stagger: 100
-    });
-  },
-
-  add_player_view: function(model, index){
-    var score = app.scores.findByTeeTimeAndHole(this.model.id, model.id);
-
-    var v = new HoleListItem({
-      model: model,
-      score: score
-    }).render();
-
-    this.views.push(v);
-    this.$scorecard.append(v.el);
-  },
-
-  render_totals: function() {
-    var t, view;
-
-    t = this.model.get_totals('Front 9')
-    view = new TotalsView({
-      title: 'Front 9',
-      score_total: t.strokes,
-      points_total: t.points,
-    }).render();
-
-    this.$scorecard.children(":nth-child(9)").after(view.el)
-
-    t = this.model.get_totals('Back 9')
-    view = new TotalsView({
-      title: 'Back 9',
-      score_total: t.strokes,
-      points_total: t.points
-    }).render();
-
-    this.$scorecard.append(view.el)
-
-    t = this.model.get_totals('Total')
-    view = new TotalsView({
-      title: 'Total',
-      score_total: t.strokes,
-      points_total: t.points
-    }).render();
-
-    this.$scorecard.append(view.el)
-  },
-
-  show_loading: function(){
-    $(this.el).find(".list-loading").show();
-  },
-  hide_loading: function(){
-    $(this.el).find(".list-loading").slideUp();
-  },
-  try_again: function(){
-    this.scores.fetch();
-  }
-});
-},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","../../collections/scores":"/Library/WebServer/Server/bp_tournaments/public/js/collections/scores.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/tournaments/view.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/public/js/views/tournaments/leaderboard.js")
-},{"/Library/WebServer/Server/bp_tournaments/public/js/views/tournaments/leaderboard.js":"/Library/WebServer/Server/bp_tournaments/public/js/views/tournaments/leaderboard.js"}],"/usr/local/share/npm/lib/node_modules/watchify/node_modules/browserify/lib/_empty.js":[function(require,module,exports){
+},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","../../collections/tee_times":"/Library/WebServer/Server/bp_tournaments/public/js/collections/tee_times.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js","velocity-animate":"/Library/WebServer/Server/bp_tournaments/node_modules/velocity-animate/jquery.velocity.js","velocity-animate/velocity.ui":"/Library/WebServer/Server/bp_tournaments/node_modules/velocity-animate/velocity.ui.js"}],"/usr/local/share/npm/lib/node_modules/watchify/node_modules/browserify/lib/_empty.js":[function(require,module,exports){
 
 },{}]},{},["/Library/WebServer/Server/bp_tournaments/public/js/app.js"]);

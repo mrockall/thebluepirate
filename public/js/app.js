@@ -31,6 +31,7 @@ $.ajaxSetup({
   }
 });
 
+// ---- Blast Off! ----
 module.exports = {
   blastoff: function () {
     var self = window.app = this;
@@ -59,20 +60,11 @@ module.exports = {
       });
       mainView.render();
 
-      // self.router.on('newPage', mainView.setPage, mainView);
+      self.router.on('newPage', mainView.setPage, mainView);
       self.router.history.start({pushState: true, root: '/'});
     });
   },
 
-  is_mobile: function() {
-    return $('body').width() <= 767;
-  },
-
-  // This is how you navigate around the app.
-  // this gets called by a global click handler that handles
-  // all the <a> tags in the app.
-  // it expects a url without a leading slash.
-  // for example: "costello/settings".
   navigate: function (page) {
     var url = (page.charAt(0) === '/') ? page.slice(1) : page;
     this.router.history.navigate(url, {trigger: true});
