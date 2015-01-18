@@ -129,6 +129,11 @@
         return buf.join("");
     };
 
+    // tournaments/home.jade compiled template
+    templatizer["tournaments"]["home"] = function tmpl_tournaments_home() {
+        return "<p>Hello Mike</p>";
+    };
+
     // tournaments/list_item.jade compiled template
     templatizer["tournaments"]["list_item"] = function tmpl_tournaments_list_item(locals) {
         var buf = [];

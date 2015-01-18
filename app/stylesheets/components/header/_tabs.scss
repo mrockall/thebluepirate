@@ -1,6 +1,6 @@
 .tabs{
   @include clearfix();
-  margin: 40px 0 0;
+  margin: 20px 0 0;
 
   a{
     float: left;
@@ -12,8 +12,8 @@
     border-bottom: 8px solid transparent;
     background: url(images/icons.png) center -10px no-repeat;
 
-    &.ldrboard{ background-position: center -75px; }
-    &.me_user{ background-position: center -135px; }
+    &.me_user{ background-position: center -75px; }
+    &.ldrboard{ background-position: center -135px; }
 
     &.active{
       border-bottom-color: rgba(255,255,255,0.3);
