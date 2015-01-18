@@ -1,0 +1,22 @@
+.tabs{
+  @include clearfix();
+  margin: 40px 0 0;
+
+  a{
+    float: left;
+    width: 33%;
+    padding: 10px 0;
+    color: rgba(255, 255, 255, 1);
+    text-indent: -9999em;
+    text-align: center;
+    border-bottom: 8px solid transparent;
+    background: url(images/icons.png) center -10px no-repeat;
+
+    &.ldrboard{ background-position: center -75px; }
+    &.me_user{ background-position: center -135px; }
+
+    &.active{
+      border-bottom-color: rgba(255,255,255,0.3);
+    }
+  }
+}

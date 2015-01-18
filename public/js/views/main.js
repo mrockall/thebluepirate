@@ -7,126 +7,37 @@
 
 var _ = require('underscore');
 var setFavicon = require('favicon-setter');
-var velocity = require('velocity-animate');
-var velocity_ui = require('velocity-animate/velocity.ui');
-
+var SwipeView = require('web-swipe-view').SwipeView;
 var View = require('ampersand-view');
-var ViewSwitcher = require('ampersand-view-switcher');
 var templates = require('../../dist/templates.js');
 
 module.exports = View.extend({
   template: templates['body'],
-
-  initialize: function () {
-    app.router.history.on('route', this.updateActiveNav, this);
-  },
-  events: {
-    'click a[href]': 'handleLinkClick'
-  },
-  serialize: function() {
-    return _.extend(me.toJSON(), {
-      is_logged_in: me.is_logged_in,
-      identity_type: me.identity_type
-    })
-  },
   render: function () {
-    this.renderWithTemplate(this.serialize());
+    this.renderWithTemplate();
+    this.page_container = this.getByRole('page-container');
 
-    // Init and configure our page switcher
-    this.pageSwitcher = new ViewSwitcher(this.getByRole('page-container'), {
-      waitForRemove: true,
-      hide: function (oldView, newView, cb) {
-        if(_.isFunction(oldView.transitionOut)){
-          oldView.transitionOut(cb);
-        } else {
-          $(oldView.el).hide();
-          cb();
-        }
-      },
-      before_show: _.bind(function(newView, cb){
-        cb();
-      }, this),
-      show: function (newView) {
-        // it's inserted and rendered for me
-        document.title = _.result(newView.pageTitle) || "Blue Pirate";
-        document.scrollTop = 0;
-
-        // store an additional reference, just because
-        app.currentPage = newView;
-
-        if(_.isFunction(newView.transitionIn)){
-          newView.transitionIn();
-        } else {
-          $(newView.el).show();
-        }
-      }
+    this.swipe_view = new SwipeView(this.page_container, {
+      numberOfPages: 3,
+      generatePage: this.generatePage,
     });
+
+    // We need to update the height of the page container if we change the page..
+    this.page_container.addEventListener('swipeview-moveout', _.bind(this.setPageContainerHeight, this));
+    this.setPageContainerHeight();
 
     setFavicon('/images/favicon.png');
     return this;
   },
-  _show_loading: function(cb){
-    $('.content').addClass('no-scroll');
-    $(".loading").fadeIn(100, function(){
-      cb();
-    });
-  },
-  _hide_loading: function(){
-    $(".loading").hide();
-    $('.content').removeClass('no-scroll');
-  },
-  setPage: function (view, reload_data) {
-    // Set the reload data on the view..
-    view.reload_data = reload_data || false;
 
-    // tell the view switcher to render the new one
-    this.pageSwitcher.set(view);
-
-    // mark the correct nav item selected
-    this.updateActiveNav();
+  generatePage: function(i, page) {
+    var el = page.querySelector('.page');
+    el.innerHTML = "neglecting my other guests. enjoy yourself, you'll find the young ladies stimulating company. did you hear about the happy roman? he was glad he ate her. he hid it in the one place he knew he could hide something: his ass. five long years, he wore this watch up his ass. then, when he died of dysentery, he gave me the watch. you know why the yankees always win, frank? it's 'cause the other teams can't stop staring at those damn pinstripes. i don't know what you want, but i know i can get it for you, with a minimum of fuss! money, jewels, a *very* big ball of string. i don't know what you want, but i know i can get it for you, with a minimum of fuss! money, jewels, a *very* big ball of string. this is america, babe, you gotta think big to be big. you know why the yankees always win, frank? it's 'cause the other teams can't stop staring at those damn pinstripes. selina! selina kyle, you're fired! and bruce wayne, why are you dressed up like batman? this is america, babe, you gotta think big to be big. did you hear about the happy roman? he was glad he ate her. i thought about you every time i jerked off, dickhead. I'm neglecting my other guests. enjoy yourself, you'll find the young ladies stimulating company. i got a fever, and the only prescription is more cowbell. i don't know what you want, but i know i can get it for you, with a minimum of fuss! money, jewels, a *very* big ball of string. i got a fever, and the only prescription is more cowbell. he hid it in the one place he knew he could hide something: his ass. five long years, he wore this watch up his ass. then, when he died of dysentery, he gave me the watch. i thought about you every time i jerked off, dickhead. this is america, babe, you gotta think big to be big. you got the wrong guy, ace! you're talking to me all wrong... it's the wrong tone. you do it again and i'll stab you in the face with a soldering iron. hey, tell me, does your mother sew? boom. get her to sew that! you got the wrong guy, ace! you got the wrong guy, ace! you know why the yankees always win, frank? it's 'cause the other teams can't stop staring at those damn pinstripes. He hid it in the one place he knew he could hide something: his ass. five long years, he wore this watch up his ass. then, when he died of dysentery, he gave me the watch. you got the wrong guy, ace! two little mice fell in a bucket of cream. the first mouse quickly gave up and drowned. the second mouse, wouldn't quit. he struggled so hard that eventually he churned that cream into butter and crawled out. gentlemen, as of this moment, i am that second mouse. you're talking to me all wrong... it's the wrong tone. you do it again and i'll stab you in the face with a soldering iron. hey, tell me, does your mother sew? boom. get her to sew that! i got a fever, and the only prescription is more cowbell. what do you want me to say, that i'm sorry? that i apologize? well, people in hell want ice water, pal. you know why the yankees always win, frank? it's 'cause the other teams can't stop staring at those damn pinstripes. i thought about you every time i jerked off, dickhead. selina! selina kyle, you're fired! and bruce wayne, why are you dressed up like batman? did you hear about the happy roman? he was glad he ate her. two little mice fell in a bucket of cream. the first mouse quickly gave up and drowned. the second mouse, wouldn't quit. he struggled so hard that eventually he churned that cream into butter and crawled out. gentlemen, as of this moment, i am that second mouse. this is america, babe, you gotta think big to be big. I'm neglecting my other guests. enjoy yourself, you'll find the young ladies stimulating company. what do you want me to say, that i'm sorry? that i apologize? well, people in hell want ice water, pal. selina! selina kyle, you're fired! and bruce wayne, why are you dressed up like batman? what do you want me to say, that i'm sorry? that i apologize? well, people in hell want ice water, pal. you're talking to me all wrong... it's the wrong tone. you do it again and i'll stab you in the face with a soldering iron. hey, tell me, does your mother sew? boom. get her to sew that! i don't know what you want, but i know i can get it for you, with a minimum of fuss! money, jewels, a *very* big ball of string. what do you want me to say, that i'm sorry? that i apologize? well, people in hell want ice water, pal. two little mice fell in a bucket of cream. the first mouse quickly gave up and drowned. the second mouse, wouldn't quit. he struggled so hard that eventually he churned that cream into butter and crawled out. gentlemen, as of this moment, i am that second mouse. he hid it in the one place he knew he could hide something: his ass. five long years, he wore this watch up his ass. then, when he died of dysentery, he gave me the watch. i got a fever, and the only prescription is more cowbell. i'm neglecting my other guests. enjoy yourself, you'll find the young ladies stimulating company. i thought about you every time i jerked off, dickhead.";
   },
-  handleLinkClick: function (e) {
-    var $t = $(e.target);
-    var aEl = $t.is('a') ? $t[0] : $t.closest('a')[0];
-    var local = window.location.host === aEl.host;
-    var path = aEl.pathname.slice(1);
 
-    // if the window location host and target host are the
-    // same it's local, else, leave it alone
-    if (local && !$t.data('bypass')) {
-      e.preventDefault();
-      this.hideMenu();
-      app.navigate(path);
-    }
-  },
-  updateActiveNav: function () {
-    var pathname = window.location.pathname;
-    $('.nav a').each(function () {
-      var navArray = _.compact($(this).attr('href').split('/')).join('/').toLowerCase();
-      var pathArray = _.compact(pathname.split('/')).join('/').toLowerCase();
-
-      if (pathArray === navArray) {
-        $(this).parent().addClass('active');
-      } else {
-        $(this).parent().removeClass('active');
-      }
-    });
-  },
-  toggleMenu: function() {
-    var $nav = $(this.el).find('.nav');
-
-    if($nav.is(":visible")){
-      $nav.slideUp();
-    } else {
-      $nav.slideDown();
-    }
-  },
-  hideMenu: function() {
-    var $nav = $(this.el).find('.nav');
-
-    if(app.is_mobile() && $nav.is(":visible")){
-      this.hamburger_icon.toggle();
-      $nav.slideUp();
-    }
+  // We need to set the outer height of the page container because the swipe library sets everything as height: 100%
+  setPageContainerHeight: function() {
+    var h = $(this.page_container).find('.swipeview-active .page').height();
+    $(this.page_container).outerHeight(h);
   }
 });

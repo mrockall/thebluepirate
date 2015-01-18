@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/ampersand-collection.js":[function(require,module,exports){
 var BackboneEvents = require('backbone-events-standalone');
 var classExtend = require('ampersand-class-extend');
 var isArray = require('is-array');
@@ -351,7 +351,7 @@ Collection.extend = classExtend;
 
 module.exports = Collection;
 
-},{"ampersand-class-extend":2,"backbone-events-standalone":4,"extend-object":5,"is-array":6}],2:[function(require,module,exports){
+},{"ampersand-class-extend":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/ampersand-class-extend/ampersand-class-extend.js","backbone-events-standalone":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js","extend-object":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/extend-object/extend-object.js","is-array":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/is-array/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/ampersand-class-extend/ampersand-class-extend.js":[function(require,module,exports){
 var objectExtend = require('extend-object');
 
 
@@ -401,7 +401,7 @@ var extend = function(protoProps) {
 // Expose the extend function
 module.exports = extend;
 
-},{"extend-object":5}],3:[function(require,module,exports){
+},{"extend-object":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/extend-object/extend-object.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/backbone-events-standalone.js":[function(require,module,exports){
 /**
  * Standalone extraction of Backbone.Events, no external dependency required.
  * Degrades nicely when Backone/underscore are already available in the current
@@ -669,10 +669,10 @@ module.exports = extend;
   }
 })(this);
 
-},{}],4:[function(require,module,exports){
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js":[function(require,module,exports){
 module.exports = require('./backbone-events-standalone');
 
-},{"./backbone-events-standalone":3}],5:[function(require,module,exports){
+},{"./backbone-events-standalone":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/backbone-events-standalone.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/extend-object/extend-object.js":[function(require,module,exports){
 var arr = [];
 var each = arr.forEach;
 var slice = arr.slice;
@@ -689,7 +689,7 @@ module.exports = function(obj) {
     return obj;
 };
 
-},{}],6:[function(require,module,exports){
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/is-array/index.js":[function(require,module,exports){
 
 /**
  * isArray
@@ -724,7 +724,7 @@ module.exports = isArray || function (val) {
   return !! val && '[object Array]' == str.call(val);
 };
 
-},{}],7:[function(require,module,exports){
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js":[function(require,module,exports){
 var State = require('ampersand-state');
 var _ = require('underscore');
 var sync = require('ampersand-sync');
@@ -857,7 +857,7 @@ var wrapError = function (model, options) {
 
 module.exports = Model;
 
-},{"ampersand-state":8,"ampersand-sync":13,"underscore":67}],8:[function(require,module,exports){
+},{"ampersand-state":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/ampersand-state.js","ampersand-sync":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/ampersand-sync.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/ampersand-state.js":[function(require,module,exports){
 ;if (typeof window !== "undefined") {  window.ampersand = window.ampersand || {};  window.ampersand["ampersand-state"] = window.ampersand["ampersand-state"] || [];  window.ampersand["ampersand-state"].push("4.4.4");}
 var _ = require('underscore');
 var BBEvents = require('backbone-events-standalone');
@@ -1633,7 +1633,7 @@ Base.extend = extend;
 // Our main exports
 module.exports = Base;
 
-},{"array-next":9,"backbone-events-standalone":11,"key-tree-store":12,"underscore":67}],9:[function(require,module,exports){
+},{"array-next":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/array-next/array-next.js","backbone-events-standalone":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/backbone-events-standalone/index.js","key-tree-store":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/key-tree-store/key-tree-store.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/array-next/array-next.js":[function(require,module,exports){
 module.exports = function arrayNext(array, currentItem) {
     var len = array.length;
     var newIndex = array.indexOf(currentItem) + 1;
@@ -1641,11 +1641,9 @@ module.exports = function arrayNext(array, currentItem) {
     return array[newIndex];
 };
 
-},{}],10:[function(require,module,exports){
-module.exports=require(3)
-},{}],11:[function(require,module,exports){
-module.exports=require(4)
-},{"./backbone-events-standalone":10}],12:[function(require,module,exports){
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/backbone-events-standalone/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/key-tree-store/key-tree-store.js":[function(require,module,exports){
 function KeyTreeStore() {
     this.storage = {};
 }
@@ -1686,7 +1684,7 @@ KeyTreeStore.prototype.get = function (keypath) {
 
 module.exports = KeyTreeStore;
 
-},{}],13:[function(require,module,exports){
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/ampersand-sync.js":[function(require,module,exports){
 var _ = require('underscore');
 var xhr = require('xhr');
 var qs = require('qs');
@@ -1802,7 +1800,7 @@ var methodMap = {
     'read':   'GET'
 };
 
-},{"qs":14,"underscore":67,"xhr":15}],14:[function(require,module,exports){
+},{"qs":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/qs/index.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js","xhr":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/qs/index.js":[function(require,module,exports){
 /**
  * Object#toString() ref for stringify().
  */
@@ -2170,7 +2168,7 @@ function decode(str) {
   }
 }
 
-},{}],15:[function(require,module,exports){
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/index.js":[function(require,module,exports){
 var window = require("global/window")
 var once = require("once")
 var parseHeaders = require('parse-headers')
@@ -2349,7 +2347,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":16,"once":17,"parse-headers":21}],16:[function(require,module,exports){
+},{"global/window":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/global/window.js","once":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/once/once.js","parse-headers":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/parse-headers.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/global/window.js":[function(require,module,exports){
 (function (global){
 if (typeof window !== "undefined") {
     module.exports = window;
@@ -2361,8 +2359,8 @@ if (typeof window !== "undefined") {
     module.exports = {};
 }
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],17:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/once/once.js":[function(require,module,exports){
 module.exports = once
 
 once.proto = once(function () {
@@ -2383,7 +2381,7 @@ function once (fn) {
   }
 }
 
-},{}],18:[function(require,module,exports){
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/node_modules/for-each/index.js":[function(require,module,exports){
 var isFunction = require('is-function')
 
 module.exports = forEach
@@ -2431,7 +2429,7 @@ function forEachObject(object, iterator, context) {
     }
 }
 
-},{"is-function":19}],19:[function(require,module,exports){
+},{"is-function":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/node_modules/for-each/node_modules/is-function/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/node_modules/for-each/node_modules/is-function/index.js":[function(require,module,exports){
 module.exports = isFunction
 
 var toString = Object.prototype.toString
@@ -2448,7 +2446,7 @@ function isFunction (fn) {
       fn === window.prompt))
 };
 
-},{}],20:[function(require,module,exports){
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/node_modules/trim/index.js":[function(require,module,exports){
 
 exports = module.exports = trim;
 
@@ -2464,7 +2462,7 @@ exports.right = function(str){
   return str.replace(/\s*$/, '');
 };
 
-},{}],21:[function(require,module,exports){
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/parse-headers.js":[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {
@@ -2496,7 +2494,7 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":18,"trim":20}],22:[function(require,module,exports){
+},{"for-each":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/node_modules/for-each/index.js","trim":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/node_modules/trim/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/ampersand-rest-collection.js":[function(require,module,exports){
 var Collection = require('ampersand-collection');
 var underscoreMixin = require('ampersand-collection-underscore-mixin');
 var restMixins = require('ampersand-collection-rest-mixin');
@@ -2504,7 +2502,7 @@ var restMixins = require('ampersand-collection-rest-mixin');
 
 module.exports = Collection.extend(underscoreMixin, restMixins);
 
-},{"ampersand-collection":1,"ampersand-collection-rest-mixin":23,"ampersand-collection-underscore-mixin":34}],23:[function(require,module,exports){
+},{"ampersand-collection":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/ampersand-collection.js","ampersand-collection-rest-mixin":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-rest-mixin/ampersand-collection-rest-mixin.js","ampersand-collection-underscore-mixin":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-underscore-mixin/ampersand-collection-underscore-mixin.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-rest-mixin/ampersand-collection-rest-mixin.js":[function(require,module,exports){
 var sync = require('ampersand-sync');
 var extend = require('extend-object');
 
@@ -2605,27 +2603,11 @@ module.exports = {
     }
 };
 
-},{"ampersand-sync":24,"extend-object":33}],24:[function(require,module,exports){
-module.exports=require(13)
-},{"qs":25,"underscore":67,"xhr":26}],25:[function(require,module,exports){
-module.exports=require(14)
-},{}],26:[function(require,module,exports){
-module.exports=require(15)
-},{"global/window":27,"once":28,"parse-headers":32}],27:[function(require,module,exports){
-module.exports=require(16)
-},{}],28:[function(require,module,exports){
-module.exports=require(17)
-},{}],29:[function(require,module,exports){
-module.exports=require(18)
-},{"is-function":30}],30:[function(require,module,exports){
-module.exports=require(19)
-},{}],31:[function(require,module,exports){
-module.exports=require(20)
-},{}],32:[function(require,module,exports){
-module.exports=require(21)
-},{"for-each":29,"trim":31}],33:[function(require,module,exports){
-module.exports=require(5)
-},{}],34:[function(require,module,exports){
+},{"ampersand-sync":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-rest-mixin/node_modules/ampersand-sync/ampersand-sync.js","extend-object":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-rest-mixin/node_modules/extend-object/extend-object.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-rest-mixin/node_modules/ampersand-sync/ampersand-sync.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/ampersand-sync.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/ampersand-sync.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/ampersand-sync.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-rest-mixin/node_modules/extend-object/extend-object.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/extend-object/extend-object.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/extend-object/extend-object.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/extend-object/extend-object.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-underscore-mixin/ampersand-collection-underscore-mixin.js":[function(require,module,exports){
 ;if (typeof window !== "undefined") {  window.ampersand = window.ampersand || {};  window.ampersand["ampersand-collection-underscore-mixin"] = window.ampersand["ampersand-collection-underscore-mixin"] || [];  window.ampersand["ampersand-collection-underscore-mixin"].push("1.0.3");}
 var _ = require('underscore');
 var slice = [].slice;
@@ -2692,7 +2674,7 @@ mixins.pluck = function (attr) {
 
 module.exports = mixins;
 
-},{"underscore":67}],35:[function(require,module,exports){
+},{"underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/ampersand-history.js":[function(require,module,exports){
 var Events = require('backbone-events-standalone');
 var _ = require('underscore');
 
@@ -2916,7 +2898,7 @@ _.extend(History.prototype, Events, {
 
 module.exports = new History();
 
-},{"backbone-events-standalone":40,"underscore":67}],36:[function(require,module,exports){
+},{"backbone-events-standalone":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/ampersand-router.js":[function(require,module,exports){
 ;if (typeof window !== "undefined") {  window.ampersand = window.ampersand || {};  window.ampersand["ampersand-router"] = window.ampersand["ampersand-router"] || [];  window.ampersand["ampersand-router"].push("1.0.6");}
 var classExtend = require('ampersand-class-extend');
 var Events = require('backbone-events-standalone');
@@ -3032,136 +3014,11 @@ _.extend(Router.prototype, Events, {
 
 Router.extend = classExtend;
 
-},{"./ampersand-history":35,"ampersand-class-extend":37,"backbone-events-standalone":40,"underscore":67}],37:[function(require,module,exports){
-module.exports=require(2)
-},{"extend-object":38}],38:[function(require,module,exports){
-module.exports=require(5)
-},{}],39:[function(require,module,exports){
-module.exports=require(3)
-},{}],40:[function(require,module,exports){
-module.exports=require(4)
-},{"./backbone-events-standalone":39}],41:[function(require,module,exports){
-function ViewSwitcher(el, options) {
-    options || (options = {});
-    this.el = el;
-    this.config = {
-        hide: null,
-        show: null,
-        empty: null,
-        waitForRemove: false
-    };
-    for (var item in options) {
-        if (this.config.hasOwnProperty(item)) {
-            this.config[item] = options[item];
-        }
-    }
-    if (options.view) {
-        this.set(options.view);
-    } else {
-        // call this so the empty callback gets called
-        this._onViewRemove();
-    }
-}
-
-ViewSwitcher.prototype.set = function (view) {
-    var self = this;
-    var prev = this.previous = this.current;
-    var current = this._setCurrent(view);
-    if (this.config.waitForRemove) {
-        this._hide(prev, function () {
-            // make sure we're still dealing with the same one
-            // that way if we're navigating quickly we don't start
-            // to show one that's already old.
-            if (prev === self.previous && current === self.current) {
-                self._show(current);
-            }
-        });
-    } else {
-        this._hide(prev);
-        this._show(current);
-    }
-};
-
-ViewSwitcher.prototype._setCurrent = function (view) {
-    this.current = view;
-    if (view) this._registerRemoveListener(view);
-    var emptyCb = this.config.empty;
-    if (emptyCb && !this.current) {
-        emptyCb();
-    }
-    return view;
-};
-
-ViewSwitcher.prototype.clear = function (cb) {
-    this._hide(this.current, cb);
-};
-
-// If the view switcher itself is removed, remove its child to avoid memory leaks
-ViewSwitcher.prototype.remove = function () {
-    if (this.current) this.current.remove();
-};
-
-ViewSwitcher.prototype._show = function (view, cb) {
-    var customShow = this.config.show;
-    if (customShow) {
-        // async
-        if (customShow.length === 3) {
-            this._render(view);
-            customShow(view, cb);
-        } else {
-            this._render(view);
-            customShow(view);
-            if (cb) cb();
-        }
-    } else {
-        this._render(view);
-        if (cb) cb();
-    }
-};
-
-ViewSwitcher.prototype._registerRemoveListener = function (view) {
-    if (view) view.once('remove', this._onViewRemove, this);
-};
-
-ViewSwitcher.prototype._onViewRemove = function (view) {
-    var emptyCb = this.config.empty;
-    if (this.current === view) {
-        this.current = null;
-    }
-    if (emptyCb && !this.current) {
-        emptyCb();
-    }
-};
-
-ViewSwitcher.prototype._render = function (view) {
-    if (!view.rendered) view.render({containerEl: this.el});
-    this.el.appendChild(view.el);
-};
-
-ViewSwitcher.prototype._hide = function (view, cb) {
-    if (!view) return cb && cb();
-    var customHide = this.config.hide;
-    if (customHide) {
-        // async
-        if (customHide.length === 3) {
-            customHide(view, this.current, function () {
-                view.remove();
-            });
-        } else {
-            customHide(view, this.current);
-            view.remove();
-            if (cb) cb();
-        }
-    } else {
-        view.remove();
-        if (cb) cb();
-    }
-};
-
-
-module.exports = ViewSwitcher;
-
-},{}],42:[function(require,module,exports){
+},{"./ampersand-history":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/ampersand-history.js","ampersand-class-extend":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/ampersand-class-extend/ampersand-class-extend.js","backbone-events-standalone":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/ampersand-class-extend/ampersand-class-extend.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/ampersand-class-extend/ampersand-class-extend.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/ampersand-class-extend/ampersand-class-extend.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/ampersand-class-extend/ampersand-class-extend.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/backbone-events-standalone/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/backbone-events-standalone/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/backbone-events-standalone/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js":[function(require,module,exports){
 var State = require('ampersand-state');
 var CollectionView = require('ampersand-collection-view');
 var domify = require('domify');
@@ -3523,7 +3380,7 @@ _.extend(View.prototype, {
 View.extend = BaseState.extend;
 module.exports = View;
 
-},{"ampersand-collection-view":43,"ampersand-dom-bindings":48,"ampersand-state":52,"domify":57,"events-mixin":58,"get-object-path":63,"matches-selector":64,"underscore":67}],43:[function(require,module,exports){
+},{"ampersand-collection-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/ampersand-collection-view.js","ampersand-dom-bindings":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-dom-bindings/ampersand-dom-bindings.js","ampersand-state":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/ampersand-state.js","domify":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/domify/index.js","events-mixin":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/events-mixin/index.js","get-object-path":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/get-object-path/index.js","matches-selector":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/matches-selector/index.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/ampersand-collection-view.js":[function(require,module,exports){
 ;if (typeof window !== "undefined") {  window.ampersand = window.ampersand || {};  window.ampersand["ampersand-collection-view"] = window.ampersand["ampersand-collection-view"] || [];  window.ampersand["ampersand-collection-view"].push("1.1.3");}
 var _ = require('underscore');
 var BBEvents = require('backbone-events-standalone');
@@ -3673,292 +3530,11 @@ CollectionView.extend = ampExtend;
 
 module.exports = CollectionView;
 
-},{"ampersand-class-extend":44,"backbone-events-standalone":47,"underscore":67}],44:[function(require,module,exports){
-module.exports=require(2)
-},{"extend-object":45}],45:[function(require,module,exports){
-module.exports=require(5)
-},{}],46:[function(require,module,exports){
-/**
- * Standalone extraction of Backbone.Events, no external dependency required.
- * Degrades nicely when Backone/underscore are already available in the current
- * global context.
- *
- * Note that docs suggest to use underscore's `_.extend()` method to add Events
- * support to some given object. A `mixin()` method has been added to the Events
- * prototype to avoid using underscore for that sole purpose:
- *
- *     var myEventEmitter = BackboneEvents.mixin({});
- *
- * Or for a function constructor:
- *
- *     function MyConstructor(){}
- *     MyConstructor.prototype.foo = function(){}
- *     BackboneEvents.mixin(MyConstructor.prototype);
- *
- * (c) 2009-2013 Jeremy Ashkenas, DocumentCloud Inc.
- * (c) 2013 Nicolas Perriault
- */
-/* global exports:true, define, module */
-(function() {
-  var root = this,
-      breaker = {},
-      nativeForEach = Array.prototype.forEach,
-      hasOwnProperty = Object.prototype.hasOwnProperty,
-      slice = Array.prototype.slice,
-      idCounter = 0;
-
-  // Returns a partial implementation matching the minimal API subset required
-  // by Backbone.Events
-  function miniscore() {
-    return {
-      keys: Object.keys || function (obj) {
-        if (typeof obj !== "object" && typeof obj !== "function" || obj === null) {
-          throw new TypeError("keys() called on a non-object");
-        }
-        var key, keys = [];
-        for (key in obj) {
-          if (obj.hasOwnProperty(key)) {
-            keys[keys.length] = key;
-          }
-        }
-        return keys;
-      },
-
-      uniqueId: function(prefix) {
-        var id = ++idCounter + '';
-        return prefix ? prefix + id : id;
-      },
-
-      has: function(obj, key) {
-        return hasOwnProperty.call(obj, key);
-      },
-
-      each: function(obj, iterator, context) {
-        if (obj == null) return;
-        if (nativeForEach && obj.forEach === nativeForEach) {
-          obj.forEach(iterator, context);
-        } else if (obj.length === +obj.length) {
-          for (var i = 0, l = obj.length; i < l; i++) {
-            if (iterator.call(context, obj[i], i, obj) === breaker) return;
-          }
-        } else {
-          for (var key in obj) {
-            if (this.has(obj, key)) {
-              if (iterator.call(context, obj[key], key, obj) === breaker) return;
-            }
-          }
-        }
-      },
-
-      once: function(func) {
-        var ran = false, memo;
-        return function() {
-          if (ran) return memo;
-          ran = true;
-          memo = func.apply(this, arguments);
-          func = null;
-          return memo;
-        };
-      }
-    };
-  }
-
-  var _ = miniscore(), Events;
-
-  // Backbone.Events
-  // ---------------
-
-  // A module that can be mixed in to *any object* in order to provide it with
-  // custom events. You may bind with `on` or remove with `off` callback
-  // functions to an event; `trigger`-ing an event fires all callbacks in
-  // succession.
-  //
-  //     var object = {};
-  //     _.extend(object, Backbone.Events);
-  //     object.on('expand', function(){ alert('expanded'); });
-  //     object.trigger('expand');
-  //
-  Events = {
-
-    // Bind an event to a `callback` function. Passing `"all"` will bind
-    // the callback to all events fired.
-    on: function(name, callback, context) {
-      if (!eventsApi(this, 'on', name, [callback, context]) || !callback) return this;
-      this._events || (this._events = {});
-      var events = this._events[name] || (this._events[name] = []);
-      events.push({callback: callback, context: context, ctx: context || this});
-      return this;
-    },
-
-    // Bind an event to only be triggered a single time. After the first time
-    // the callback is invoked, it will be removed.
-    once: function(name, callback, context) {
-      if (!eventsApi(this, 'once', name, [callback, context]) || !callback) return this;
-      var self = this;
-      var once = _.once(function() {
-        self.off(name, once);
-        callback.apply(this, arguments);
-      });
-      once._callback = callback;
-      return this.on(name, once, context);
-    },
-
-    // Remove one or many callbacks. If `context` is null, removes all
-    // callbacks with that function. If `callback` is null, removes all
-    // callbacks for the event. If `name` is null, removes all bound
-    // callbacks for all events.
-    off: function(name, callback, context) {
-      var retain, ev, events, names, i, l, j, k;
-      if (!this._events || !eventsApi(this, 'off', name, [callback, context])) return this;
-      if (!name && !callback && !context) {
-        this._events = {};
-        return this;
-      }
-
-      names = name ? [name] : _.keys(this._events);
-      for (i = 0, l = names.length; i < l; i++) {
-        name = names[i];
-        if (events = this._events[name]) {
-          this._events[name] = retain = [];
-          if (callback || context) {
-            for (j = 0, k = events.length; j < k; j++) {
-              ev = events[j];
-              if ((callback && callback !== ev.callback && callback !== ev.callback._callback) ||
-                  (context && context !== ev.context)) {
-                retain.push(ev);
-              }
-            }
-          }
-          if (!retain.length) delete this._events[name];
-        }
-      }
-
-      return this;
-    },
-
-    // Trigger one or many events, firing all bound callbacks. Callbacks are
-    // passed the same arguments as `trigger` is, apart from the event name
-    // (unless you're listening on `"all"`, which will cause your callback to
-    // receive the true name of the event as the first argument).
-    trigger: function(name) {
-      if (!this._events) return this;
-      var args = slice.call(arguments, 1);
-      if (!eventsApi(this, 'trigger', name, args)) return this;
-      var events = this._events[name];
-      var allEvents = this._events.all;
-      if (events) triggerEvents(events, args);
-      if (allEvents) triggerEvents(allEvents, arguments);
-      return this;
-    },
-
-    // Tell this object to stop listening to either specific events ... or
-    // to every object it's currently listening to.
-    stopListening: function(obj, name, callback) {
-      var listeners = this._listeners;
-      if (!listeners) return this;
-      var deleteListener = !name && !callback;
-      if (typeof name === 'object') callback = this;
-      if (obj) (listeners = {})[obj._listenerId] = obj;
-      for (var id in listeners) {
-        listeners[id].off(name, callback, this);
-        if (deleteListener) delete this._listeners[id];
-      }
-      return this;
-    }
-
-  };
-
-  // Regular expression used to split event strings.
-  var eventSplitter = /\s+/;
-
-  // Implement fancy features of the Events API such as multiple event
-  // names `"change blur"` and jQuery-style event maps `{change: action}`
-  // in terms of the existing API.
-  var eventsApi = function(obj, action, name, rest) {
-    if (!name) return true;
-
-    // Handle event maps.
-    if (typeof name === 'object') {
-      for (var key in name) {
-        obj[action].apply(obj, [key, name[key]].concat(rest));
-      }
-      return false;
-    }
-
-    // Handle space separated event names.
-    if (eventSplitter.test(name)) {
-      var names = name.split(eventSplitter);
-      for (var i = 0, l = names.length; i < l; i++) {
-        obj[action].apply(obj, [names[i]].concat(rest));
-      }
-      return false;
-    }
-
-    return true;
-  };
-
-  // A difficult-to-believe, but optimized internal dispatch function for
-  // triggering events. Tries to keep the usual cases speedy (most internal
-  // Backbone events have 3 arguments).
-  var triggerEvents = function(events, args) {
-    var ev, i = -1, l = events.length, a1 = args[0], a2 = args[1], a3 = args[2];
-    switch (args.length) {
-      case 0: while (++i < l) (ev = events[i]).callback.call(ev.ctx); return;
-      case 1: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1); return;
-      case 2: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1, a2); return;
-      case 3: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1, a2, a3); return;
-      default: while (++i < l) (ev = events[i]).callback.apply(ev.ctx, args);
-    }
-  };
-
-  var listenMethods = {listenTo: 'on', listenToOnce: 'once'};
-
-  // Inversion-of-control versions of `on` and `once`. Tell *this* object to
-  // listen to an event in another object ... keeping track of what it's
-  // listening to.
-  _.each(listenMethods, function(implementation, method) {
-    Events[method] = function(obj, name, callback) {
-      var listeners = this._listeners || (this._listeners = {});
-      var id = obj._listenerId || (obj._listenerId = _.uniqueId('l'));
-      listeners[id] = obj;
-      if (typeof name === 'object') callback = this;
-      obj[implementation](name, callback, this);
-      return this;
-    };
-  });
-
-  // Aliases for backwards compatibility.
-  Events.bind   = Events.on;
-  Events.unbind = Events.off;
-
-  // Mixin utility
-  Events.mixin = function(proto) {
-    var exports = ['on', 'once', 'off', 'trigger', 'stopListening', 'listenTo',
-                   'listenToOnce', 'bind', 'unbind'];
-    _.each(exports, function(name) {
-      proto[name] = this[name];
-    }, this);
-    return proto;
-  };
-
-  // Export Events as BackboneEvents depending on current context
-  if (typeof define === "function") {
-    define(function() {
-      return Events;
-    });
-  } else if (typeof exports !== 'undefined') {
-    if (typeof module !== 'undefined' && module.exports) {
-      exports = module.exports = Events;
-    }
-    exports.BackboneEvents = Events;
-  } else {
-    root.BackboneEvents = Events;
-  }
-})(this);
-
-},{}],47:[function(require,module,exports){
-arguments[4][4][0].apply(exports,arguments)
-},{"./backbone-events-standalone":46}],48:[function(require,module,exports){
+},{"ampersand-class-extend":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-class-extend/ampersand-class-extend.js","backbone-events-standalone":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/backbone-events-standalone/index.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-class-extend/ampersand-class-extend.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/ampersand-class-extend/ampersand-class-extend.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/ampersand-class-extend/ampersand-class-extend.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/ampersand-class-extend/ampersand-class-extend.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/backbone-events-standalone/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-dom-bindings/ampersand-dom-bindings.js":[function(require,module,exports){
 var Store = require('key-tree-store');
 var isArray = require('is-array');
 var dom = require('ampersand-dom');
@@ -4129,7 +3705,7 @@ function getBindingFunc(binding) {
     }
 }
 
-},{"ampersand-dom":49,"is-array":50,"key-tree-store":51,"matches-selector":64}],49:[function(require,module,exports){
+},{"ampersand-dom":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-dom-bindings/node_modules/ampersand-dom/ampersand-dom.js","is-array":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-dom-bindings/node_modules/is-array/index.js","key-tree-store":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-dom-bindings/node_modules/key-tree-store/key-tree-store.js","matches-selector":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/matches-selector/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-dom-bindings/node_modules/ampersand-dom/ampersand-dom.js":[function(require,module,exports){
 ;if (typeof window !== "undefined") {  window.ampersand = window.ampersand || {};  window.ampersand["ampersand-dom"] = window.ampersand["ampersand-dom"] || [];  window.ampersand["ampersand-dom"].push("1.2.7");}
 var dom = module.exports = {
     text: function (el, val) {
@@ -4249,9 +3825,9 @@ function hide (el) {
     el.style.display = 'none';
 }
 
-},{}],50:[function(require,module,exports){
-module.exports=require(6)
-},{}],51:[function(require,module,exports){
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-dom-bindings/node_modules/is-array/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/is-array/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/is-array/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/is-array/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-dom-bindings/node_modules/key-tree-store/key-tree-store.js":[function(require,module,exports){
 var slice = Array.prototype.slice;
 
 // our constructor
@@ -4333,17 +3909,9 @@ KeyTreeStore.prototype.run = function (keypath, context) {
 
 module.exports = KeyTreeStore;
 
-},{}],52:[function(require,module,exports){
-module.exports=require(8)
-},{"array-next":53,"backbone-events-standalone":55,"key-tree-store":56,"underscore":67}],53:[function(require,module,exports){
-module.exports=require(9)
-},{}],54:[function(require,module,exports){
-module.exports=require(3)
-},{}],55:[function(require,module,exports){
-module.exports=require(4)
-},{"./backbone-events-standalone":54}],56:[function(require,module,exports){
-module.exports=require(12)
-},{}],57:[function(require,module,exports){
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/ampersand-state.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/ampersand-state.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/ampersand-state.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/ampersand-state.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/domify/index.js":[function(require,module,exports){
 
 /**
  * Expose `parse`.
@@ -4452,7 +4020,7 @@ function parse(html, doc) {
   return fragment;
 }
 
-},{}],58:[function(require,module,exports){
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/events-mixin/index.js":[function(require,module,exports){
 
 /**
  * Module dependencies.
@@ -4632,7 +4200,7 @@ function parse(event) {
   }
 }
 
-},{"component-event":59,"delegate-events":60}],59:[function(require,module,exports){
+},{"component-event":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/events-mixin/node_modules/component-event/index.js","delegate-events":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/events-mixin/node_modules/delegate-events/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/events-mixin/node_modules/component-event/index.js":[function(require,module,exports){
 var bind = window.addEventListener ? 'addEventListener' : 'attachEvent',
     unbind = window.removeEventListener ? 'removeEventListener' : 'detachEvent',
     prefix = bind !== 'addEventListener' ? 'on' : '';
@@ -4668,7 +4236,7 @@ exports.unbind = function(el, type, fn, capture){
   el[unbind](prefix + type, fn, capture || false);
   return fn;
 };
-},{}],60:[function(require,module,exports){
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/events-mixin/node_modules/delegate-events/index.js":[function(require,module,exports){
 /**
  * Module dependencies.
  */
@@ -4720,7 +4288,7 @@ exports.unbind = function(el, type, fn, capture){
   event.unbind(el, type, fn, capture);
 };
 
-},{"closest":61,"event":59}],61:[function(require,module,exports){
+},{"closest":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/events-mixin/node_modules/delegate-events/node_modules/closest/index.js","event":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/events-mixin/node_modules/component-event/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/events-mixin/node_modules/delegate-events/node_modules/closest/index.js":[function(require,module,exports){
 var matches = require('matches-selector')
 
 module.exports = function (element, selector, checkYoSelf) {
@@ -4732,7 +4300,7 @@ module.exports = function (element, selector, checkYoSelf) {
   }
 }
 
-},{"matches-selector":62}],62:[function(require,module,exports){
+},{"matches-selector":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/events-mixin/node_modules/delegate-events/node_modules/closest/node_modules/matches-selector/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/events-mixin/node_modules/delegate-events/node_modules/closest/node_modules/matches-selector/index.js":[function(require,module,exports){
 
 /**
  * Element prototype.
@@ -4773,7 +4341,7 @@ function match(el, selector) {
   }
   return false;
 }
-},{}],63:[function(require,module,exports){
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/get-object-path/index.js":[function(require,module,exports){
 module.exports = get;
 
 function get (context, path) {
@@ -4796,7 +4364,7 @@ function get (context, path) {
   return result;
 }
 
-},{}],64:[function(require,module,exports){
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/matches-selector/index.js":[function(require,module,exports){
 'use strict';
 
 var proto = Element.prototype;
@@ -4826,7 +4394,7 @@ function match(el, selector) {
   }
   return false;
 }
-},{}],65:[function(require,module,exports){
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/favicon-setter/favicon-setter.js":[function(require,module,exports){
 // follow @HenrikJoreteg and @andyet if you like this ;)
 // props to @mathias for this https://gist.github.com/428626 which served as starting point
 // for this code.
@@ -4857,7 +4425,7 @@ function match(el, selector) {
     }
 })();
 
-},{}],66:[function(require,module,exports){
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js":[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.3
  * http://jquery.com/
@@ -14064,7 +13632,7 @@ return jQuery;
 
 }));
 
-},{}],67:[function(require,module,exports){
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js":[function(require,module,exports){
 //     Underscore.js 1.6.0
 //     http://underscorejs.org
 //     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -15409,7 +14977,7 @@ return jQuery;
   }
 }).call(this);
 
-},{}],68:[function(require,module,exports){
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/velocity-animate/jquery.velocity.js":[function(require,module,exports){
 /***************
     Details
 ***************/
@@ -18739,7 +18307,7 @@ Velocity's structure:
 /* The CSS spec mandates that the translateX/Y/Z transforms are %-relative to the element itself -- not its parent.
    Velocity, however, doesn't make this distinction. Thus, converting to or from the % unit with these subproperties
    will produce an inaccurate conversion value. The same issue exists with the cx/cy attributes of SVG circles and ellipses. */
-},{}],69:[function(require,module,exports){
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/velocity-animate/velocity.ui.js":[function(require,module,exports){
 /***************
     Details
 ***************/
@@ -19406,17 +18974,414 @@ Velocity's structure:
         Container.Velocity.RegisterUI(effectName, Container.Velocity.RegisterUI.packagedEffects[effectName]);
     }
 })();
-},{}],70:[function(require,module,exports){
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/web-swipe-view/src/swipeview.js":[function(require,module,exports){
+/*
+ * web-swipe-view — Copyright (c) 2014 Simon Friis Vindum
+ * SwipeView v1.0 — Copyright (c) 2012 Matteo Spinelli, http://cubiq.org
+ * Released under MIT license
+ */
+(function (root) {
+  var dummyStyle = document.createElement('div').style;
+  var vendor = (function () {
+    var vendors = ['t', 'webkitT', 'MozT', 'msT', 'OT'];
+    for (var i = 0; i < vendors.length; i++ ) {
+      if ((vendors[i] + 'ransform') in dummyStyle ) {
+        return vendors[i].substr(0, vendors[i].length - 1);
+      }
+    }
+    return false;
+  })();
+  var cssVendor = vendor ? '-' + vendor.toLowerCase() + '-' : '';
+
+  // Style properties
+  var transform = prefixStyle('transform');
+  var transitionDuration = prefixStyle('transitionDuration');
+
+  // Browser capabilities
+  var has3d = prefixStyle('perspective') in dummyStyle;
+  var hasTouch = 'ontouchstart' in window;
+  var hasTransform = !!vendor;
+  var hasTransitionEnd = prefixStyle('transition') in dummyStyle;
+
+  // Helpers
+  var translateZ = has3d ? ' translateZ(0)' : '';
+  var mod = function(n, m) { return ((n % m) + m) % m; };
+
+  // Events
+  var resizeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
+  var startEvent = hasTouch ? 'touchstart' : 'mousedown';
+  var moveEvent = hasTouch ? 'touchmove' : 'mousemove';
+  var endEvent = hasTouch ? 'touchend' : 'mouseup';
+  var cancelEvent = hasTouch ? 'touchcancel' : 'mouseup';
+  var transitionEndEvent = (function () {
+    if ( vendor === false ) return false;
+
+    var transitionEnd = {
+        ''      : 'transitionend',
+        'webkit': 'webkitTransitionEnd',
+        'Moz'   : 'transitionend',
+        'O'     : 'oTransitionEnd',
+        'ms'    : 'MSTransitionEnd'
+      };
+
+    return transitionEnd[vendor];
+  })();
+    
+  var SwipeView = function (el, options) {
+    var i, div, className, pageIndex;
+    this.wrapper = typeof el == 'string' ? document.querySelector(el) : el;
+    var initialHTML = this.wrapper.innerHTML;
+    this.wrapper.innerHTML = ''; // Clear the wrapper
+    this.options = {
+      initialPage: 0,
+      numberOfPages: 3,
+      snapThreshold: null,
+      loop: true,
+      pageTurnSpeed: 200,
+    };
+    // User defined options
+    for (i in options) this.options[i] = options[i];
+    
+    this.pageIndex = this.options.initialPage;
+  
+    this.wrapper.style.overflow = 'hidden';
+    if (getComputedStyle(this.wrapper).getPropertyValue('position') !== 'absolute') {
+      this.wrapper.style.position = 'relative';
+    }
+    
+    this.masterPages = [];
+    
+    div = document.createElement('div');
+    div.id = 'swipeview-slider';
+    div.style.cssText = 'position:relative;top:0;height:100%;width:100%;' + cssVendor + 'transition-duration:0;' + cssVendor + 'transform:translateZ(0);' + cssVendor + 'transition-timing-function:ease-out';
+    this.wrapper.appendChild(div);
+    this.slider = div;
+
+    this.refreshSize();
+
+    for (i = -1; i < 2; i++) {
+      div = document.createElement('div');
+      div.id = 'swipeview-masterpage-' + (i+1);
+      div.style.cssText = cssVendor + 'transform:translateZ(0);position:absolute;top:0;height:100%;width:100%;left:' + i*100 + '%';
+      div.innerHTML = initialHTML;
+      if (!div.dataset) div.dataset = {};
+      pageIndex = mod(this.options.initialPage + i, this.options.numberOfPages);
+      div.dataset.pageIndex = pageIndex;
+      div.dataset.upcomingPageIndex = pageIndex;
+      
+      this.slider.appendChild(div);
+      this.masterPages.push(div);
+      this.options.generatePage(pageIndex, div);
+    }
+    
+    this.masterPages[1].classList.add('swipeview-active');
+
+    window.addEventListener(resizeEvent, this, false);
+    this.slider.addEventListener(startEvent, this, false);
+    this.slider.addEventListener(moveEvent, this, false);
+    this.slider.addEventListener(endEvent, this, false);
+    this.slider.addEventListener(transitionEndEvent, this, false);
+    // in Opera >= 12 the transitionend event is lowercase so we register both events
+    if ( vendor == 'O' ) this.slider.addEventListener(transitionEndEvent.toLowerCase(), this, false);
+  };
+
+  SwipeView.prototype = {
+    currentMasterPage: 1,
+    x: 0,
+    page: 0,
+    pageIndex: 0,
+    customEvents: [],
+    
+    onFlip: function (fn) {
+      this.slider.addEventListener('swipeview-flip', fn, false);
+    },
+    onMoveOut: function (fn) {
+      this.slider.addEventListener('swipeview-moveout', fn, false);
+    },
+    onMoveIn: function (fn) {
+      this.slider.addEventListener('swipeview-movein', fn, false);
+    },
+    onTouchStart: function (fn) {
+      this.slider.addEventListener('swipeview-touchstart', fn, false);
+    },
+    destroy: function () {
+      // Remove the global event listener
+      window.removeEventListener(resizeEvent, this, false);
+      this.wrapper.removeChild(this.slider);
+      this.slider = null; // Remove reference to slider and it's listeners
+    },
+
+    refreshSize: function () {
+      this.wrapperWidth = this.wrapper.clientWidth;
+      this.wrapperHeight = this.wrapper.clientHeight;
+      this.pageWidth = this.wrapperWidth;
+      this.maxX = -this.options.numberOfPages * this.pageWidth + this.wrapperWidth;
+      this.snapThreshold = this.options.snapThreshold === null ?
+        Math.round(this.pageWidth * 0.15) :
+        /%/.test(this.options.snapThreshold) ?
+          Math.round(this.pageWidth * this.options.snapThreshold.replace('%', '') / 100) :
+          this.options.snapThreshold;
+    },
+    
+    updatePageCount: function (n) {
+      this.options.numberOfPages = n;
+      this.maxX = -this.options.numberOfPages * this.pageWidth + this.wrapperWidth;
+    },
+    
+    goToPage: function (p) {
+      this.masterPages[this.currentMasterPage].classList.remove('swipeview-active');
+      this.masterPages[this.currentMasterPage].style.position = 'absolute';
+      
+      newPageIndex = Math.min(this.options.numberOfPages - 1, Math.max(0, p));
+      var delta = newPageIndex - this.pageIndex, dist = Math.abs(delta);
+      var turnOffset = dist <= this.options.numberOfPages - dist ?
+                         delta :
+                         delta - (delta / dist) * this.options.numberOfPages;
+      this.slider.style[transitionDuration] = this.options.pageTurnSpeed + 'ms';
+      this.page += turnOffset;
+      this.pageIndex = newPageIndex;
+
+      this.currentMasterPage = mod(this.currentMasterPage+turnOffset, 3);
+      if (turnOffset !== 1 && turnOffset !== -1) {
+        this.masterPages[this.currentMasterPage].classList.add('swipeview-loading');
+      }
+
+      this.masterPages[this.currentMasterPage].classList.add('swipeview-active');
+
+      var pages = this.currentMasterPage === 0 ? [2, 0, 1] :
+                  this.currentMasterPage === 1 ? [0, 1, 2] :
+                                                 [1, 2, 0];
+
+      this.masterPages[pages[0]].style.left = this.page * 100 - 100 + '%';
+      this.masterPages[pages[1]].style.left = this.page * 100 + '%';
+      this.masterPages[pages[2]].style.left = this.page * 100 + 100 + '%';
+
+      this.masterPages[pages[0]].dataset.upcomingPageIndex = p === 0 ? this.options.numberOfPages-1 : p - 1;
+      this.masterPages[pages[1]].dataset.upcomingPageIndex = p;
+      this.masterPages[pages[2]].dataset.upcomingPageIndex = p === this.options.numberOfPages-1 ? 0 : p + 1;
+      
+      this._pos(-this.page * this.pageWidth);
+    },
+    
+    next: function () {
+      if (!this.options.loop && this.x == this.maxX) return;
+      this.directionX = -1;
+      this.x -= 1;
+      this._checkPosition();
+    },
+
+    prev: function () {
+      if (!this.options.loop && this.x === 0) return;
+      this.directionX = 1;
+      this.x += 1;
+      this._checkPosition();
+    },
+
+    handleEvent: function (e) {
+      switch (e.type) {
+        case startEvent:
+          this._start(e);
+          break;
+        case moveEvent:
+          this._move(e);
+          break;
+        case cancelEvent:
+        case endEvent:
+          this._end(e);
+          break;
+        case resizeEvent:
+          this._resize();
+          break;
+        case transitionEndEvent:
+        case 'otransitionend':
+          if (e.target == this.slider/* && !this.options.hastyPageFlip*/) this._flip();
+          break;
+      }
+    },
+
+    // Pseudo private methods
+    _pos: function (x) {
+      this.x = x;
+      this.slider.style[transform] = 'translate(' + x + 'px,0)' + translateZ;
+    },
+
+    _resize: function () {
+      this.refreshSize();
+      this.slider.style[transitionDuration] = '0s';
+      this._pos(-this.page * this.pageWidth);
+    },
+
+    _reset: function() {
+      this.moved = false;
+      this.thresholdExceeded = false;
+      this.stepsX = 0;
+      this.stepsY = 0;
+      this.directionX = 0;
+      this.directionLocked = false;
+      this.slider.style[transitionDuration] = '0s';
+    },
+
+    _start: function (e) {
+      if (this.initiated) return;
+      this.initiated = true;
+      
+      this._reset();
+
+      var point = hasTouch ? e.touches[0] : e;
+      this.startX = this.pointX = point.pageX;
+      this.startY = this.pointY = point.pageY;
+      this._triggerEvent('touchstart');
+    },
+    
+    _move: function (e) {
+      if (!this.initiated) return;
+
+      var point  = hasTouch ? e.touches[0] : e,
+          deltaX = point.pageX - this.pointX,
+          deltaY = point.pageY - this.pointY,
+          newX   = this.x + deltaX,
+          dist   = Math.abs(point.pageX - this.startX);
+
+      this.moved = true;
+      this.pointX = point.pageX;
+      this.pointY = point.pageY;
+      this.directionX = deltaX > 0 ? 1 : deltaX < 0 ? -1 : 0;
+      this.stepsX += Math.abs(deltaX);
+      this.stepsY += Math.abs(deltaY);
+
+      // We take a 10px buffer to figure out the direction of the swipe
+      if (this.stepsX < 10 && this.stepsY < 10) {
+        return;
+      }
+
+      // We are scrolling vertically, so skip SwipeView and give the control back to the browser
+      if (!this.directionLocked) {
+        if (this.stepsY > this.stepsX) {
+          this.initiated = false;
+          return;
+        } else {
+          this.directionLocked = true;
+        }
+      }
+
+      e.preventDefault();
+
+      if (!this.options.loop && (newX > 0 || newX < this.maxX)) {
+        return;
+      }
+
+      if (!this.thresholdExceeded && dist >= this.snapThreshold) {
+        this.thresholdExceeded = true;
+        this._triggerEvent('moveout');
+      } else if (this.thresholdExceeded && dist < this.snapThreshold) {
+        this.thresholdExceeded = false;
+        this._triggerEvent('movein');
+      }
+
+      this._pos(newX);
+    },
+
+    _end: function (e) {
+      if (!this.initiated) return;
+      
+      var point = hasTouch ? e.changedTouches[0] : e,
+          dist = Math.abs(point.pageX - this.startX);
+
+      this.initiated = false;
+      
+      if (!this.moved) return;
+
+      if (!this.options.loop && (this.x >= 0 || this.x <= this.maxX)) {
+        dist = 0;
+        //this._triggerEvent('movein');
+      }
+
+      // Check if we exceeded the snap threshold
+      if (dist < this.snapThreshold) {
+        this.slider.style[transitionDuration] = Math.floor(300 * dist / this.snapThreshold) + 'ms';
+        this._pos(-this.page * this.pageWidth);
+      } else {
+        this._checkPosition();
+      }
+    },
+    
+    _checkPosition: function () {
+      var pageFlip, pageFlipIndex, className;
+
+      this.masterPages[this.currentMasterPage].classList.remove('swipeview-active');
+      this.masterPages[this.currentMasterPage].style.position = 'absolute';
+
+      // Flip the page, directionX == -1 when swiping right and +1 when swiping left
+      this.page = (this.page - this.directionX);
+      this.currentMasterPage = mod(this.page + 1, 3);
+      this.pageIndex = mod(this.pageIndex - this.directionX, this.options.numberOfPages);
+      pageFlip = mod(this.currentMasterPage - this.directionX, 3);
+      pageFlipIndex = this.page - this.directionX;
+      this.masterPages[pageFlip].style.left = (this.page - this.directionX) * 100 + '%';
+      pageFlipIndex = mod(this.pageIndex - this.directionX, this.options.numberOfPages);
+
+      // Add active class to current page
+      this.masterPages[this.currentMasterPage].classList.add('swipeview-active');
+
+      // Add loading class to flipped page
+      this.masterPages[pageFlip].classList.add('swipeview-loading');
+ 
+      this.masterPages[pageFlip].dataset.upcomingPageIndex = pageFlipIndex; // Index to be loaded in the newly flipped page
+
+      var newX = -this.page * this.pageWidth;
+      
+      this.slider.style[transitionDuration] = Math.floor(this.options.pageTurnSpeed * Math.abs(this.x - newX) / this.pageWidth) + 'ms';
+
+      // Hide the next page if we decided to disable looping
+      if (!this.options.loop) {
+        this.masterPages[pageFlip].style.visibility = newX === 0 || newX == this.maxX ? 'hidden' : '';
+      }
+
+      this._pos(newX);
+    },
+    
+    _flip: function () {
+      this._triggerEvent('flip');
+
+      for (var i=0; i<3; i++) {
+        this.masterPages[i].classList.remove('swipeview-loading');
+        if (this.masterPages[i].dataset.pageIndex !== this.masterPages[i].dataset.upcomingPageIndex) {
+          if (typeof this.options.teardownPage === 'function') {
+            this.options.teardownPage(parseInt(this.masterPages[i].dataset.pageIndex, 10), this.masterPages[i]);
+          }
+          this.options.generatePage(parseInt(this.masterPages[i].dataset.upcomingPageIndex, 10), this.masterPages[i]);
+        }
+        this.masterPages[i].dataset.pageIndex = this.masterPages[i].dataset.upcomingPageIndex;
+      }
+    },
+    
+    _triggerEvent: function (type) {
+      var ev = document.createEvent('Event');
+      ev.initEvent('swipeview-' + type, true, true);
+      this.slider.dispatchEvent(ev);
+    },
+  };
+
+  function prefixStyle (style) {
+    return (vendor === '') ? style
+      : vendor + style.charAt(0).toUpperCase() + style.substr(1);
+  }
+  root.SwipeView = SwipeView;
+}(typeof exports !== 'undefined' ? exports : window));
+
+},{}],"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js":[function(require,module,exports){
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         define([], factory);
     } else if (typeof exports === 'object') {
         module.exports = factory();
+    } else if (typeof root === 'undefined' || root !== Object(root)) {
+        throw new Error('templatizer: window does not exist or is not an object');
     } else {
         root.templatizer = factory();
     }
 }(this, function () {
-    var jade=function(){function r(r){return null!=r&&""!==r}function n(e){return Array.isArray(e)?e.map(n).filter(r).join(" "):e}var e={};return e.merge=function t(n,e){if(1===arguments.length){for(var a=n[0],s=1;s<n.length;s++)a=t(a,n[s]);return a}var i=n["class"],l=e["class"];(i||l)&&(i=i||[],l=l||[],Array.isArray(i)||(i=[i]),Array.isArray(l)||(l=[l]),n["class"]=i.concat(l).filter(r));for(var o in e)"class"!=o&&(n[o]=e[o]);return n},e.joinClasses=n,e.cls=function(r,t){for(var a=[],s=0;s<r.length;s++)a.push(t&&t[s]?e.escape(n([r[s]])):n(r[s]));var i=n(a);return i.length?' class="'+i+'"':""},e.attr=function(r,n,t,a){return"boolean"==typeof n||null==n?n?" "+(a?r:r+'="'+r+'"'):"":0==r.indexOf("data")&&"string"!=typeof n?" "+r+"='"+JSON.stringify(n).replace(/'/g,"&apos;")+"'":t?" "+r+'="'+e.escape(n)+'"':" "+r+'="'+n+'"'},e.attrs=function(r,t){var a=[],s=Object.keys(r);if(s.length)for(var i=0;i<s.length;++i){var l=s[i],o=r[l];"class"==l?(o=n(o))&&a.push(" "+l+'="'+o+'"'):a.push(e.attr(l,o,!1,t))}return a.join("")},e.escape=function(r){var n=String(r).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");return n===""+r?r:n},e.rethrow=function a(r,n,e,t){if(!(r instanceof Error))throw r;if(!("undefined"==typeof window&&n||t))throw r.message+=" on line "+e,r;try{t=t||require("fs").readFileSync(n,"utf8")}catch(s){a(r,null,e)}var i=3,l=t.split("\n"),o=Math.max(e-i,0),c=Math.min(l.length,e+i),i=l.slice(o,c).map(function(r,n){var t=n+o+1;return(t==e?"  > ":"    ")+t+"| "+r}).join("\n");throw r.path=n,r.message=(n||"Jade")+":"+e+"\n"+i+"\n\n"+r.message,r},e}();
+    var jade=function(){function e(e){return null!=e&&""!==e}function n(t){return(Array.isArray(t)?t.map(n):t&&"object"==typeof t?Object.keys(t).filter(function(e){return t[e]}):[t]).filter(e).join(" ")}var t={};return t.merge=function r(n,t){if(1===arguments.length){for(var a=n[0],i=1;i<n.length;i++)a=r(a,n[i]);return a}var o=n["class"],s=t["class"];(o||s)&&(o=o||[],s=s||[],Array.isArray(o)||(o=[o]),Array.isArray(s)||(s=[s]),n["class"]=o.concat(s).filter(e));for(var l in t)"class"!=l&&(n[l]=t[l]);return n},t.joinClasses=n,t.cls=function(e,r){for(var a=[],i=0;i<e.length;i++)a.push(r&&r[i]?t.escape(n([e[i]])):n(e[i]));var o=n(a);return o.length?' class="'+o+'"':""},t.style=function(e){return e&&"object"==typeof e?Object.keys(e).map(function(n){return n+":"+e[n]}).join(";"):e},t.attr=function(e,n,r,a){return"style"===e&&(n=t.style(n)),"boolean"==typeof n||null==n?n?" "+(a?e:e+'="'+e+'"'):"":0==e.indexOf("data")&&"string"!=typeof n?(-1!==JSON.stringify(n).indexOf("&")&&console.warn("Since Jade 2.0.0, ampersands (`&`) in data attributes will be escaped to `&amp;`"),n&&"function"==typeof n.toISOString&&console.warn("Jade will eliminate the double quotes around dates in ISO form after 2.0.0")," "+e+"='"+JSON.stringify(n).replace(/'/g,"&apos;")+"'"):r?(n&&"function"==typeof n.toISOString&&console.warn("Jade will stringify dates in ISO form after 2.0.0")," "+e+'="'+t.escape(n)+'"'):(n&&"function"==typeof n.toISOString&&console.warn("Jade will stringify dates in ISO form after 2.0.0")," "+e+'="'+n+'"')},t.attrs=function(e,r){var a=[],i=Object.keys(e);if(i.length)for(var o=0;o<i.length;++o){var s=i[o],l=e[s];"class"==s?(l=n(l))&&a.push(" "+s+'="'+l+'"'):a.push(t.attr(s,l,!1,r))}return a.join("")},t.escape=function(e){var n=String(e).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");return n===""+e?e:n},t.rethrow=function a(e,n,t,r){if(!(e instanceof Error))throw e;if(!("undefined"==typeof window&&n||r))throw e.message+=" on line "+t,e;try{r=r||require("fs").readFileSync(n,"utf8")}catch(i){a(e,null,t)}var o=3,s=r.split("\n"),l=Math.max(t-o,0),f=Math.min(s.length,t+o),o=s.slice(l,f).map(function(e,n){var r=n+l+1;return(r==t?"  > ":"    ")+r+"| "+e}).join("\n");throw e.path=n,e.message=(n||"Jade")+":"+t+"\n"+o+"\n\n"+e.message,e},t}();
 
     var templatizer = {};
     templatizer["modals"] = {};
@@ -19425,7 +19390,7 @@ Velocity's structure:
 
     // body.jade compiled template
     templatizer["body"] = function tmpl_body() {
-        return '<body><div class="content"><header><a href="/" class="logo"></a></header><div role="page-container" class="container pages"></div></div><div role="modal-container" class="modals"><div class="modal"></div></div></body>';
+        return '<body><div class="content"><header><div href="/" class="logo"></div><div class="title">Blue Pirate #7</div><div class="subtitle">Athenry Golf Course - 22nd April 2015</div><div class="tabs"><a class="home active">Home</a><a class="ldrboard">Leaderboard</a><a class="me_user">Me</a></div></header><div role="page-container" class="container pages"><div class="page"></div></div></div><div role="modal-container" class="modals"><div class="modal"></div></div></body>';
     };
 
     // modals/nine_box.jade compiled template
@@ -19435,8 +19400,8 @@ Velocity's structure:
         var jade_interp;
         var locals_for_with = locals || {};
         (function(title) {
-            buf.push('<div class="nine_box"><div class="meta"><div class="title">' + jade.escape(null == (jade_interp = title) ? "" : jade_interp) + '</div><div class="back">x</div></div><div class="options"><div class="score"><div data-value="1" class="box"><div class="value">1</div></div><div data-value="2" class="box"><div class="value">2</div></div><div data-value="3" class="box"><div class="value">3</div></div><div data-value="4" class="box"><div class="value">4</div></div><div data-value="5" class="box"><div class="value">5</div></div><div data-value="6" class="box"><div class="value">6</div></div><div data-value="7" class="box"><div class="value">7</div></div><div data-value="8" class="box"><div class="value">8</div></div><div data-value="9" class="box"><div class="value">9</div></div><div data-value="10" class="box"><div class="value">10</div></div></div><div class="putts"><div data-value="0" class="box"><div class="value">0</div></div><div data-value="1" class="box"><div class="value">1</div></div><div data-value="2" class="box"><div class="value">2</div></div><div data-value="3" class="box"><div class="value">3</div></div><div data-value="4" class="box"><div class="value">4</div></div><div data-value="5" class="box"><div class="value">5</div></div></div><div class="fairway"><div data-value=\'1\' class="box"><div class="value">Yep</div></div><div data-value=\'0\' class="box"><div class="value">Nope</div></div></div></div></div>');
-        })("title" in locals_for_with ? locals_for_with.title : typeof title !== "undefined" ? title : undefined);
+            buf.push('<div class="nine_box"><div class="meta"><div class="title">' + jade.escape(null == (jade_interp = title) ? "" : jade_interp) + '</div><div class="back">x</div></div><div class="options"><div class="score"><div data-value="1" class="box"> <div class="value">1</div></div><div data-value="2" class="box"> <div class="value">2</div></div><div data-value="3" class="box"> <div class="value">3</div></div><div data-value="4" class="box"> <div class="value">4</div></div><div data-value="5" class="box"> <div class="value">5</div></div><div data-value="6" class="box"> <div class="value">6</div></div><div data-value="7" class="box"> <div class="value">7</div></div><div data-value="8" class="box"><div class="value">8</div></div><div data-value="9" class="box"> <div class="value">9</div></div><div data-value="10" class="box"> <div class="value">10</div></div></div><div class="putts"><div data-value="0" class="box"> <div class="value">0</div></div><div data-value="1" class="box"> <div class="value">1</div></div><div data-value="2" class="box"> <div class="value">2</div></div><div data-value="3" class="box"> <div class="value">3</div></div><div data-value="4" class="box"> <div class="value">4</div></div><div data-value="5" class="box"> <div class="value">5</div></div></div><div class="fairway"><div data-value=\'1\' class="box"> <div class="value">Yep</div></div><div data-value=\'0\' class="box"> <div class="value">Nope</div></div></div></div></div>');
+        }).call(this, "title" in locals_for_with ? locals_for_with.title : typeof title !== "undefined" ? title : undefined);
         return buf.join("");
     };
 
@@ -19446,7 +19411,7 @@ Velocity's structure:
         var jade_mixins = {};
         var jade_interp;
         var locals_for_with = locals || {};
-        (function(hole_number, hole_par, hole_length, hole_index, prev_hole, prev_hole_id, next_hole, next_hole_id) {
+        (function(hole_index, hole_length, hole_number, hole_par, next_hole, next_hole_id, prev_hole, prev_hole_id) {
             buf.push('<div class="page"><div class="page_header"><h1>' + jade.escape(null == (jade_interp = "#" + hole_number + " - Par " + hole_par) ? "" : jade_interp) + "</h1><h2>" + jade.escape(null == (jade_interp = "Length " + hole_length + "m") ? "" : jade_interp) + "</h2><h2>" + jade.escape(null == (jade_interp = "Index " + hole_index) ? "" : jade_interp) + '</h2></div><div class="menu_stripe"></div><div class="players"></div><div class="next_prev_nav">');
             if (prev_hole) {
                 buf.push("<a" + jade.attr("href", "/my-round/" + prev_hole_id, true, false) + ' class="prev"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" xml:space="preserve"><polygon points="142.332,104.886 197.48,50 402.5,256 197.48,462 142.332,407.113 292.727,256 "></polygon></svg><div class="number">' + jade.escape(null == (jade_interp = "#" + prev_hole) ? "" : jade_interp) + "</div></a>");
@@ -19455,7 +19420,7 @@ Velocity's structure:
                 buf.push("<a" + jade.attr("href", "/my-round/" + next_hole_id, true, false) + ' class="next"><div class="number">' + jade.escape(null == (jade_interp = "#" + next_hole) ? "" : jade_interp) + '</div><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" xml:space="preserve"><polygon points="142.332,104.886 197.48,50 402.5,256 197.48,462 142.332,407.113 292.727,256 "></polygon></svg></a>');
             }
             buf.push("</div></div>");
-        })("hole_number" in locals_for_with ? locals_for_with.hole_number : typeof hole_number !== "undefined" ? hole_number : undefined, "hole_par" in locals_for_with ? locals_for_with.hole_par : typeof hole_par !== "undefined" ? hole_par : undefined, "hole_length" in locals_for_with ? locals_for_with.hole_length : typeof hole_length !== "undefined" ? hole_length : undefined, "hole_index" in locals_for_with ? locals_for_with.hole_index : typeof hole_index !== "undefined" ? hole_index : undefined, "prev_hole" in locals_for_with ? locals_for_with.prev_hole : typeof prev_hole !== "undefined" ? prev_hole : undefined, "prev_hole_id" in locals_for_with ? locals_for_with.prev_hole_id : typeof prev_hole_id !== "undefined" ? prev_hole_id : undefined, "next_hole" in locals_for_with ? locals_for_with.next_hole : typeof next_hole !== "undefined" ? next_hole : undefined, "next_hole_id" in locals_for_with ? locals_for_with.next_hole_id : typeof next_hole_id !== "undefined" ? next_hole_id : undefined);
+        }).call(this, "hole_index" in locals_for_with ? locals_for_with.hole_index : typeof hole_index !== "undefined" ? hole_index : undefined, "hole_length" in locals_for_with ? locals_for_with.hole_length : typeof hole_length !== "undefined" ? hole_length : undefined, "hole_number" in locals_for_with ? locals_for_with.hole_number : typeof hole_number !== "undefined" ? hole_number : undefined, "hole_par" in locals_for_with ? locals_for_with.hole_par : typeof hole_par !== "undefined" ? hole_par : undefined, "next_hole" in locals_for_with ? locals_for_with.next_hole : typeof next_hole !== "undefined" ? next_hole : undefined, "next_hole_id" in locals_for_with ? locals_for_with.next_hole_id : typeof next_hole_id !== "undefined" ? next_hole_id : undefined, "prev_hole" in locals_for_with ? locals_for_with.prev_hole : typeof prev_hole !== "undefined" ? prev_hole : undefined, "prev_hole_id" in locals_for_with ? locals_for_with.prev_hole_id : typeof prev_hole_id !== "undefined" ? prev_hole_id : undefined);
         return buf.join("");
     };
 
@@ -19467,7 +19432,7 @@ Velocity's structure:
         var locals_for_with = locals || {};
         (function(id, number, par) {
             buf.push("<li><a" + jade.attr("href", "my-round/" + id, true, false) + '><div class="hole_num">' + jade.escape(null == (jade_interp = "#" + number) ? "" : jade_interp) + '</div><div class="meta">' + jade.escape(null == (jade_interp = "Par " + par) ? "" : jade_interp) + "</div></a></li>");
-        })("id" in locals_for_with ? locals_for_with.id : typeof id !== "undefined" ? id : undefined, "number" in locals_for_with ? locals_for_with.number : typeof number !== "undefined" ? number : undefined, "par" in locals_for_with ? locals_for_with.par : typeof par !== "undefined" ? par : undefined);
+        }).call(this, "id" in locals_for_with ? locals_for_with.id : typeof id !== "undefined" ? id : undefined, "number" in locals_for_with ? locals_for_with.number : typeof number !== "undefined" ? number : undefined, "par" in locals_for_with ? locals_for_with.par : typeof par !== "undefined" ? par : undefined);
         return buf.join("");
     };
 
@@ -19479,7 +19444,7 @@ Velocity's structure:
         var locals_for_with = locals || {};
         (function(player_name) {
             buf.push('<div class="player_scores"><h2>' + jade.escape(null == (jade_interp = player_name) ? "" : jade_interp) + '</h2><ul class="course_tiles"><li data-attr="score" data-title="Strokes"><a href="#"><div class="meta">Strokes</div><div role="pretty_score" class="hole_num"></div></a></li><li data-attr="points" data-title="Points"><div><div class="meta">Points</div><div role="points" class="hole_num"></div></div></li></ul></div>');
-        })("player_name" in locals_for_with ? locals_for_with.player_name : typeof player_name !== "undefined" ? player_name : undefined);
+        }).call(this, "player_name" in locals_for_with ? locals_for_with.player_name : typeof player_name !== "undefined" ? player_name : undefined);
         return buf.join("");
     };
 
@@ -19494,7 +19459,7 @@ Velocity's structure:
         var jade_mixins = {};
         var jade_interp;
         var locals_for_with = locals || {};
-        (function(model, collection) {
+        (function(collection, model) {
             buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + ">" + jade.escape(null == (jade_interp = model.player().name) ? "" : jade_interp) + '<div class="cell left">' + jade.escape(null == (jade_interp = collection.indexOf(model) + 1) ? "" : jade_interp) + '</div><div class="cell big">');
             if (model.fairways_played != 0) {
                 buf.push(jade.escape(null == (jade_interp = model.fairways + "/" + model.fairways_played) ? "" : jade_interp));
@@ -19502,7 +19467,7 @@ Velocity's structure:
                 buf.push("-");
             }
             buf.push("</div></a></li>");
-        })("model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined, "collection" in locals_for_with ? locals_for_with.collection : typeof collection !== "undefined" ? collection : undefined);
+        }).call(this, "collection" in locals_for_with ? locals_for_with.collection : typeof collection !== "undefined" ? collection : undefined, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
         return buf.join("");
     };
 
@@ -19512,7 +19477,7 @@ Velocity's structure:
         var jade_mixins = {};
         var jade_interp;
         var locals_for_with = locals || {};
-        (function(model, collection) {
+        (function(collection, model) {
             buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + ">" + jade.escape(null == (jade_interp = model.player().name) ? "" : jade_interp) + '<div class="cell left">' + jade.escape(null == (jade_interp = collection.indexOf(model) + 1) ? "" : jade_interp) + '</div><div class="cell big">');
             if (model.greens_played != 0) {
                 buf.push(jade.escape(null == (jade_interp = model.greens_hit + "/" + model.greens_played) ? "" : jade_interp));
@@ -19520,7 +19485,7 @@ Velocity's structure:
                 buf.push("-");
             }
             buf.push("</div></a></li>");
-        })("model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined, "collection" in locals_for_with ? locals_for_with.collection : typeof collection !== "undefined" ? collection : undefined);
+        }).call(this, "collection" in locals_for_with ? locals_for_with.collection : typeof collection !== "undefined" ? collection : undefined, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
         return buf.join("");
     };
 
@@ -19532,7 +19497,7 @@ Velocity's structure:
         var locals_for_with = locals || {};
         (function(model, score) {
             buf.push('<li><div class="hole_information"><div class="cell number">' + jade.escape(null == (jade_interp = model.number) ? "" : jade_interp) + '</div><div class="cell length">' + jade.escape(null == (jade_interp = model.length) ? "" : jade_interp) + '</div><div class="cell par">' + jade.escape(null == (jade_interp = model.par) ? "" : jade_interp) + '</div><div class="cell index">' + jade.escape(null == (jade_interp = model.index) ? "" : jade_interp) + '</div></div><div class="score_information"><div class="cell score"><div role="score"' + jade.cls([ score.result ], [ true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_score) ? "" : jade_interp) + '</div></div><div role="points" class="cell points">' + jade.escape(null == (jade_interp = score.pretty_points) ? "" : jade_interp) + "</div></div></li>");
-        })("model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined, "score" in locals_for_with ? locals_for_with.score : typeof score !== "undefined" ? score : undefined);
+        }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined, "score" in locals_for_with ? locals_for_with.score : typeof score !== "undefined" ? score : undefined);
         return buf.join("");
     };
 
@@ -19542,9 +19507,9 @@ Velocity's structure:
         var jade_mixins = {};
         var jade_interp;
         var locals_for_with = locals || {};
-        (function(slug, name) {
+        (function(name, slug) {
             buf.push("<a" + jade.attr("href", slug, true, false) + ' class="tournament"><div class="col6 push0"><div class="title">' + jade.escape(null == (jade_interp = name) ? "" : jade_interp) + '</div><div class="sub_title">Athenry Golf Club</div><div class="sub_title">26 May 2014</div></div><div class="col6 push6"><ul class="leaderboard"><li>Mike Rockall<div class="score">9.15</div></li><li>David Flanagan<div class="score">9.15</div></li><li>Brendan Considine<div class="score">9.15</div></li></ul></div></a>');
-        })("slug" in locals_for_with ? locals_for_with.slug : typeof slug !== "undefined" ? slug : undefined, "name" in locals_for_with ? locals_for_with.name : typeof name !== "undefined" ? name : undefined);
+        }).call(this, "name" in locals_for_with ? locals_for_with.name : typeof name !== "undefined" ? name : undefined, "slug" in locals_for_with ? locals_for_with.slug : typeof slug !== "undefined" ? slug : undefined);
         return buf.join("");
     };
 
@@ -19554,9 +19519,9 @@ Velocity's structure:
         var jade_mixins = {};
         var jade_interp;
         var locals_for_with = locals || {};
-        (function(player_name, player_handicap) {
+        (function(player_handicap, player_name) {
             buf.push('<div class="page"><div class="list-loading"><div class="loader"><div class="loader-block"></div><div class="loader-block"></div><div class="loader-block"></div></div></div><div class="page_header"><h1>' + jade.escape(null == (jade_interp = player_name) ? "" : jade_interp) + "</h1><h2>" + jade.escape(null == (jade_interp = "Handicap " + player_handicap) ? "" : jade_interp) + '</h2></div><ul class="scorecard"></ul></div>');
-        })("player_name" in locals_for_with ? locals_for_with.player_name : typeof player_name !== "undefined" ? player_name : undefined, "player_handicap" in locals_for_with ? locals_for_with.player_handicap : typeof player_handicap !== "undefined" ? player_handicap : undefined);
+        }).call(this, "player_handicap" in locals_for_with ? locals_for_with.player_handicap : typeof player_handicap !== "undefined" ? player_handicap : undefined, "player_name" in locals_for_with ? locals_for_with.player_name : typeof player_name !== "undefined" ? player_name : undefined);
         return buf.join("");
     };
 
@@ -19568,7 +19533,7 @@ Velocity's structure:
         var locals_for_with = locals || {};
         (function(model) {
             buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + '><div role="pretty_through" class="cell one">' + jade.escape(null == (jade_interp = model.pretty_through) ? "" : jade_interp) + '</div><div class="cell six ellipsis name">' + jade.escape(null == (jade_interp = model.player().name) ? "" : jade_interp) + '</div><div role="pretty_score" class="cell one score blue">' + jade.escape(null == (jade_interp = model.pretty_score) ? "" : jade_interp) + '</div><div role="points" class="cell one score">' + jade.escape(null == (jade_interp = model.points) ? "" : jade_interp) + '</div><div role="through" class="cell one thru">' + jade.escape(null == (jade_interp = model.through) ? "" : jade_interp) + '</div><div class="cell three time">' + jade.escape(null == (jade_interp = model.time_parsed) ? "" : jade_interp) + "</div></a></li>");
-        })("model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
+        }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
         return buf.join("");
     };
 
@@ -19578,9 +19543,9 @@ Velocity's structure:
         var jade_mixins = {};
         var jade_interp;
         var locals_for_with = locals || {};
-        (function(model, collection) {
+        (function(collection, model) {
             buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + ">" + jade.escape(null == (jade_interp = model.player().name) ? "" : jade_interp) + '<div class="cell left">' + jade.escape(null == (jade_interp = collection.indexOf(model) + 1) ? "" : jade_interp) + '</div><div class="cell big">' + jade.escape(null == (jade_interp = model.putts) ? "" : jade_interp) + "</div></a></li>");
-        })("model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined, "collection" in locals_for_with ? locals_for_with.collection : typeof collection !== "undefined" ? collection : undefined);
+        }).call(this, "collection" in locals_for_with ? locals_for_with.collection : typeof collection !== "undefined" ? collection : undefined, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
         return buf.join("");
     };
 
@@ -19590,9 +19555,9 @@ Velocity's structure:
         var jade_mixins = {};
         var jade_interp;
         var locals_for_with = locals || {};
-        (function(title, score_total, points_total) {
+        (function(points_total, score_total, title) {
             buf.push('<li><div class="hole_information">' + jade.escape(null == (jade_interp = title) ? "" : jade_interp) + '</div><div class="totals_information"><div class="cell score">' + jade.escape(null == (jade_interp = score_total) ? "" : jade_interp) + '</div><div class="cell points">' + jade.escape(null == (jade_interp = points_total) ? "" : jade_interp) + "</div></div></li>");
-        })("title" in locals_for_with ? locals_for_with.title : typeof title !== "undefined" ? title : undefined, "score_total" in locals_for_with ? locals_for_with.score_total : typeof score_total !== "undefined" ? score_total : undefined, "points_total" in locals_for_with ? locals_for_with.points_total : typeof points_total !== "undefined" ? points_total : undefined);
+        }).call(this, "points_total" in locals_for_with ? locals_for_with.points_total : typeof points_total !== "undefined" ? points_total : undefined, "score_total" in locals_for_with ? locals_for_with.score_total : typeof score_total !== "undefined" ? score_total : undefined, "title" in locals_for_with ? locals_for_with.title : typeof title !== "undefined" ? title : undefined);
         return buf.join("");
     };
 
@@ -19603,7 +19568,7 @@ Velocity's structure:
 
     return templatizer;
 }));
-},{"fs":92}],71:[function(require,module,exports){
+},{"fs":"/usr/local/share/npm/lib/node_modules/watchify/node_modules/browserify/lib/_empty.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/app.js":[function(require,module,exports){
 /*global app, me, $*/
 var $ = require('jquery');
 var _ = require('underscore');
@@ -19687,7 +19652,7 @@ module.exports = {
 
 // lets go!
 module.exports.blastoff();
-},{"./collections/courses":72,"./collections/holes":73,"./collections/players":74,"./collections/scores":75,"./collections/tee_times":76,"./collections/tournaments":77,"./models/me":80,"./router":85,"./views/main":86,"jquery":66,"underscore":67}],72:[function(require,module,exports){
+},{"./collections/courses":"/Library/WebServer/Server/bp_tournaments/public/js/collections/courses.js","./collections/holes":"/Library/WebServer/Server/bp_tournaments/public/js/collections/holes.js","./collections/players":"/Library/WebServer/Server/bp_tournaments/public/js/collections/players.js","./collections/scores":"/Library/WebServer/Server/bp_tournaments/public/js/collections/scores.js","./collections/tee_times":"/Library/WebServer/Server/bp_tournaments/public/js/collections/tee_times.js","./collections/tournaments":"/Library/WebServer/Server/bp_tournaments/public/js/collections/tournaments.js","./models/me":"/Library/WebServer/Server/bp_tournaments/public/js/models/me.js","./router":"/Library/WebServer/Server/bp_tournaments/public/js/router.js","./views/main":"/Library/WebServer/Server/bp_tournaments/public/js/views/main.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/collections/courses.js":[function(require,module,exports){
 var Collection = require('ampersand-rest-collection');
 var Course = require('../models/course');
 
@@ -19699,7 +19664,7 @@ module.exports = Collection.extend({
       return this.findWhere({id: id});
     }
 });
-},{"../models/course":78,"ampersand-rest-collection":22}],73:[function(require,module,exports){
+},{"../models/course":"/Library/WebServer/Server/bp_tournaments/public/js/models/course.js","ampersand-rest-collection":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/ampersand-rest-collection.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/collections/holes.js":[function(require,module,exports){
 var Collection = require('ampersand-rest-collection');
 var Holes = require('../models/hole');
 
@@ -19718,7 +19683,7 @@ module.exports = Collection.extend({
       return this.where({course_id: id});
     }
 });
-},{"../models/hole":79,"ampersand-rest-collection":22}],74:[function(require,module,exports){
+},{"../models/hole":"/Library/WebServer/Server/bp_tournaments/public/js/models/hole.js","ampersand-rest-collection":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/ampersand-rest-collection.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/collections/players.js":[function(require,module,exports){
 var Collection = require('ampersand-rest-collection');
 var Player = require('../models/player');
 
@@ -19730,7 +19695,7 @@ module.exports = Collection.extend({
       return this.findWhere({id: id});
     }
 });
-},{"../models/player":81,"ampersand-rest-collection":22}],75:[function(require,module,exports){
+},{"../models/player":"/Library/WebServer/Server/bp_tournaments/public/js/models/player.js","ampersand-rest-collection":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/ampersand-rest-collection.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/collections/scores.js":[function(require,module,exports){
 var Collection = require('ampersand-rest-collection');
 var Scores = require('../models/score');
 
@@ -19751,7 +19716,7 @@ module.exports = Collection.extend({
       })
     }
 });
-},{"../models/score":82,"ampersand-rest-collection":22}],76:[function(require,module,exports){
+},{"../models/score":"/Library/WebServer/Server/bp_tournaments/public/js/models/score.js","ampersand-rest-collection":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/ampersand-rest-collection.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/collections/tee_times.js":[function(require,module,exports){
 var Collection = require('ampersand-rest-collection');
 var TeeTime = require('../models/tee_time');
 
@@ -19809,7 +19774,7 @@ module.exports = Collection.extend({
     this.comparator = old_comparator;
   }
 });
-},{"../models/tee_time":83,"ampersand-rest-collection":22}],77:[function(require,module,exports){
+},{"../models/tee_time":"/Library/WebServer/Server/bp_tournaments/public/js/models/tee_time.js","ampersand-rest-collection":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/ampersand-rest-collection.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/collections/tournaments.js":[function(require,module,exports){
 var Collection = require('ampersand-rest-collection');
 var Tournament = require('../models/tournament');
 
@@ -19825,7 +19790,7 @@ module.exports = Collection.extend({
       return this.findWhere({id: id});
     }
 });
-},{"../models/tournament":84,"ampersand-rest-collection":22}],78:[function(require,module,exports){
+},{"../models/tournament":"/Library/WebServer/Server/bp_tournaments/public/js/models/tournament.js","ampersand-rest-collection":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/ampersand-rest-collection.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/models/course.js":[function(require,module,exports){
 var AmpersandModel = require('ampersand-model');
 
 module.exports = AmpersandModel.extend({
@@ -19843,7 +19808,7 @@ module.exports = AmpersandModel.extend({
     return app.holes.findByCourseIDAndHoleID(this.id, hole_id)
   }
 });
-},{"ampersand-model":7}],79:[function(require,module,exports){
+},{"ampersand-model":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/models/hole.js":[function(require,module,exports){
 var AmpersandModel = require('ampersand-model');
 
 module.exports = AmpersandModel.extend({
@@ -19857,7 +19822,7 @@ module.exports = AmpersandModel.extend({
     length: ['integer', true]
   }
 });
-},{"ampersand-model":7}],80:[function(require,module,exports){
+},{"ampersand-model":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/models/me.js":[function(require,module,exports){
 var AmpersandModel = require('ampersand-model');
 
 module.exports = AmpersandModel.extend({
@@ -19886,7 +19851,7 @@ module.exports = AmpersandModel.extend({
     }
   }
 });
-},{"ampersand-model":7}],81:[function(require,module,exports){
+},{"ampersand-model":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/models/player.js":[function(require,module,exports){
 var AmpersandModel = require('ampersand-model');
 
 module.exports = AmpersandModel.extend({
@@ -19902,7 +19867,7 @@ module.exports = AmpersandModel.extend({
     return app.holes.findByID(this.id)
   }
 });
-},{"ampersand-model":7}],82:[function(require,module,exports){
+},{"ampersand-model":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/models/score.js":[function(require,module,exports){
 var _ = require('underscore');
 var AmpersandModel = require('ampersand-model');
 
@@ -19955,7 +19920,7 @@ module.exports = AmpersandModel.extend({
     })
   }
 });
-},{"ampersand-model":7,"underscore":67}],83:[function(require,module,exports){
+},{"ampersand-model":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/models/tee_time.js":[function(require,module,exports){
 var _ = require('underscore');
 var AmpersandModel = require('ampersand-model');
 
@@ -20083,7 +20048,7 @@ module.exports = AmpersandModel.extend({
     return total;
   }
 });
-},{"ampersand-model":7,"underscore":67}],84:[function(require,module,exports){
+},{"ampersand-model":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/models/tournament.js":[function(require,module,exports){
 var AmpersandModel = require('ampersand-model');
 
 module.exports = AmpersandModel.extend({
@@ -20121,7 +20086,7 @@ module.exports = AmpersandModel.extend({
     return app.tee_times.findByTournamentID(this.id);
   }
 });
-},{"ampersand-model":7}],85:[function(require,module,exports){
+},{"ampersand-model":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/router.js":[function(require,module,exports){
 /*global me, app*/
 var _ = require('underscore');
 var Router = require('ampersand-router');
@@ -20184,7 +20149,7 @@ module.exports = Router.extend({
     this.redirectTo('');
   }
 });
-},{"./views/my_round/hole":88,"./views/my_round/view":89,"./views/tournaments/player":90,"./views/tournaments/view":91,"ampersand-router":36,"underscore":67}],86:[function(require,module,exports){
+},{"./views/my_round/hole":"/Library/WebServer/Server/bp_tournaments/public/js/views/my_round/hole.js","./views/my_round/view":"/Library/WebServer/Server/bp_tournaments/public/js/views/my_round/view.js","./views/tournaments/player":"/Library/WebServer/Server/bp_tournaments/public/js/views/tournaments/player.js","./views/tournaments/view":"/Library/WebServer/Server/bp_tournaments/public/js/views/tournaments/view.js","ampersand-router":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/ampersand-router.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/main.js":[function(require,module,exports){
 /*global app, me, $*/
 
 // This app view is responsible for rendering all content that goes into
@@ -20194,130 +20159,41 @@ module.exports = Router.extend({
 
 var _ = require('underscore');
 var setFavicon = require('favicon-setter');
-var velocity = require('velocity-animate');
-var velocity_ui = require('velocity-animate/velocity.ui');
-
+var SwipeView = require('web-swipe-view').SwipeView;
 var View = require('ampersand-view');
-var ViewSwitcher = require('ampersand-view-switcher');
 var templates = require('../../dist/templates.js');
 
 module.exports = View.extend({
   template: templates['body'],
-
-  initialize: function () {
-    app.router.history.on('route', this.updateActiveNav, this);
-  },
-  events: {
-    'click a[href]': 'handleLinkClick'
-  },
-  serialize: function() {
-    return _.extend(me.toJSON(), {
-      is_logged_in: me.is_logged_in,
-      identity_type: me.identity_type
-    })
-  },
   render: function () {
-    this.renderWithTemplate(this.serialize());
+    this.renderWithTemplate();
+    this.page_container = this.getByRole('page-container');
 
-    // Init and configure our page switcher
-    this.pageSwitcher = new ViewSwitcher(this.getByRole('page-container'), {
-      waitForRemove: true,
-      hide: function (oldView, newView, cb) {
-        if(_.isFunction(oldView.transitionOut)){
-          oldView.transitionOut(cb);
-        } else {
-          $(oldView.el).hide();
-          cb();
-        }
-      },
-      before_show: _.bind(function(newView, cb){
-        cb();
-      }, this),
-      show: function (newView) {
-        // it's inserted and rendered for me
-        document.title = _.result(newView.pageTitle) || "Blue Pirate";
-        document.scrollTop = 0;
-
-        // store an additional reference, just because
-        app.currentPage = newView;
-
-        if(_.isFunction(newView.transitionIn)){
-          newView.transitionIn();
-        } else {
-          $(newView.el).show();
-        }
-      }
+    this.swipe_view = new SwipeView(this.page_container, {
+      numberOfPages: 3,
+      generatePage: this.generatePage,
     });
+
+    // We need to update the height of the page container if we change the page..
+    this.page_container.addEventListener('swipeview-moveout', _.bind(this.setPageContainerHeight, this));
+    this.setPageContainerHeight();
 
     setFavicon('/images/favicon.png');
     return this;
   },
-  _show_loading: function(cb){
-    $('.content').addClass('no-scroll');
-    $(".loading").fadeIn(100, function(){
-      cb();
-    });
-  },
-  _hide_loading: function(){
-    $(".loading").hide();
-    $('.content').removeClass('no-scroll');
-  },
-  setPage: function (view, reload_data) {
-    // Set the reload data on the view..
-    view.reload_data = reload_data || false;
 
-    // tell the view switcher to render the new one
-    this.pageSwitcher.set(view);
-
-    // mark the correct nav item selected
-    this.updateActiveNav();
+  generatePage: function(i, page) {
+    var el = page.querySelector('.page');
+    el.innerHTML = "neglecting my other guests. enjoy yourself, you'll find the young ladies stimulating company. did you hear about the happy roman? he was glad he ate her. he hid it in the one place he knew he could hide something: his ass. five long years, he wore this watch up his ass. then, when he died of dysentery, he gave me the watch. you know why the yankees always win, frank? it's 'cause the other teams can't stop staring at those damn pinstripes. i don't know what you want, but i know i can get it for you, with a minimum of fuss! money, jewels, a *very* big ball of string. i don't know what you want, but i know i can get it for you, with a minimum of fuss! money, jewels, a *very* big ball of string. this is america, babe, you gotta think big to be big. you know why the yankees always win, frank? it's 'cause the other teams can't stop staring at those damn pinstripes. selina! selina kyle, you're fired! and bruce wayne, why are you dressed up like batman? this is america, babe, you gotta think big to be big. did you hear about the happy roman? he was glad he ate her. i thought about you every time i jerked off, dickhead. I'm neglecting my other guests. enjoy yourself, you'll find the young ladies stimulating company. i got a fever, and the only prescription is more cowbell. i don't know what you want, but i know i can get it for you, with a minimum of fuss! money, jewels, a *very* big ball of string. i got a fever, and the only prescription is more cowbell. he hid it in the one place he knew he could hide something: his ass. five long years, he wore this watch up his ass. then, when he died of dysentery, he gave me the watch. i thought about you every time i jerked off, dickhead. this is america, babe, you gotta think big to be big. you got the wrong guy, ace! you're talking to me all wrong... it's the wrong tone. you do it again and i'll stab you in the face with a soldering iron. hey, tell me, does your mother sew? boom. get her to sew that! you got the wrong guy, ace! you got the wrong guy, ace! you know why the yankees always win, frank? it's 'cause the other teams can't stop staring at those damn pinstripes. He hid it in the one place he knew he could hide something: his ass. five long years, he wore this watch up his ass. then, when he died of dysentery, he gave me the watch. you got the wrong guy, ace! two little mice fell in a bucket of cream. the first mouse quickly gave up and drowned. the second mouse, wouldn't quit. he struggled so hard that eventually he churned that cream into butter and crawled out. gentlemen, as of this moment, i am that second mouse. you're talking to me all wrong... it's the wrong tone. you do it again and i'll stab you in the face with a soldering iron. hey, tell me, does your mother sew? boom. get her to sew that! i got a fever, and the only prescription is more cowbell. what do you want me to say, that i'm sorry? that i apologize? well, people in hell want ice water, pal. you know why the yankees always win, frank? it's 'cause the other teams can't stop staring at those damn pinstripes. i thought about you every time i jerked off, dickhead. selina! selina kyle, you're fired! and bruce wayne, why are you dressed up like batman? did you hear about the happy roman? he was glad he ate her. two little mice fell in a bucket of cream. the first mouse quickly gave up and drowned. the second mouse, wouldn't quit. he struggled so hard that eventually he churned that cream into butter and crawled out. gentlemen, as of this moment, i am that second mouse. this is america, babe, you gotta think big to be big. I'm neglecting my other guests. enjoy yourself, you'll find the young ladies stimulating company. what do you want me to say, that i'm sorry? that i apologize? well, people in hell want ice water, pal. selina! selina kyle, you're fired! and bruce wayne, why are you dressed up like batman? what do you want me to say, that i'm sorry? that i apologize? well, people in hell want ice water, pal. you're talking to me all wrong... it's the wrong tone. you do it again and i'll stab you in the face with a soldering iron. hey, tell me, does your mother sew? boom. get her to sew that! i don't know what you want, but i know i can get it for you, with a minimum of fuss! money, jewels, a *very* big ball of string. what do you want me to say, that i'm sorry? that i apologize? well, people in hell want ice water, pal. two little mice fell in a bucket of cream. the first mouse quickly gave up and drowned. the second mouse, wouldn't quit. he struggled so hard that eventually he churned that cream into butter and crawled out. gentlemen, as of this moment, i am that second mouse. he hid it in the one place he knew he could hide something: his ass. five long years, he wore this watch up his ass. then, when he died of dysentery, he gave me the watch. i got a fever, and the only prescription is more cowbell. i'm neglecting my other guests. enjoy yourself, you'll find the young ladies stimulating company. i thought about you every time i jerked off, dickhead.";
   },
-  handleLinkClick: function (e) {
-    var $t = $(e.target);
-    var aEl = $t.is('a') ? $t[0] : $t.closest('a')[0];
-    var local = window.location.host === aEl.host;
-    var path = aEl.pathname.slice(1);
 
-    // if the window location host and target host are the
-    // same it's local, else, leave it alone
-    if (local && !$t.data('bypass')) {
-      e.preventDefault();
-      this.hideMenu();
-      app.navigate(path);
-    }
-  },
-  updateActiveNav: function () {
-    var pathname = window.location.pathname;
-    $('.nav a').each(function () {
-      var navArray = _.compact($(this).attr('href').split('/')).join('/').toLowerCase();
-      var pathArray = _.compact(pathname.split('/')).join('/').toLowerCase();
-
-      if (pathArray === navArray) {
-        $(this).parent().addClass('active');
-      } else {
-        $(this).parent().removeClass('active');
-      }
-    });
-  },
-  toggleMenu: function() {
-    var $nav = $(this.el).find('.nav');
-
-    if($nav.is(":visible")){
-      $nav.slideUp();
-    } else {
-      $nav.slideDown();
-    }
-  },
-  hideMenu: function() {
-    var $nav = $(this.el).find('.nav');
-
-    if(app.is_mobile() && $nav.is(":visible")){
-      this.hamburger_icon.toggle();
-      $nav.slideUp();
-    }
+  // We need to set the outer height of the page container because the swipe library sets everything as height: 100%
+  setPageContainerHeight: function() {
+    var h = $(this.page_container).find('.swipeview-active .page').height();
+    $(this.page_container).outerHeight(h);
   }
 });
-},{"../../dist/templates.js":70,"ampersand-view":42,"ampersand-view-switcher":41,"favicon-setter":65,"underscore":67,"velocity-animate":68,"velocity-animate/velocity.ui":69}],87:[function(require,module,exports){
+},{"../../dist/templates.js":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","favicon-setter":"/Library/WebServer/Server/bp_tournaments/node_modules/favicon-setter/favicon-setter.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js","web-swipe-view":"/Library/WebServer/Server/bp_tournaments/node_modules/web-swipe-view/src/swipeview.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/modals/nine-box.js":[function(require,module,exports){
 // ---- Vendor ----
 var _ = require('underscore');
 var $ = require('jquery');
@@ -20405,7 +20281,7 @@ module.exports = View.extend({
     this.hide();
   }
 });
-},{"../../../dist/templates":70,"ampersand-view":42,"jquery":66,"underscore":67,"velocity-animate":68,"velocity-animate/velocity.ui":69}],88:[function(require,module,exports){
+},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js","velocity-animate":"/Library/WebServer/Server/bp_tournaments/node_modules/velocity-animate/jquery.velocity.js","velocity-animate/velocity.ui":"/Library/WebServer/Server/bp_tournaments/node_modules/velocity-animate/velocity.ui.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/my_round/hole.js":[function(require,module,exports){
 // ---- Vendor ----
 var _ = require('underscore');
 var $ = require('jquery');
@@ -20498,7 +20374,7 @@ module.exports = View.extend({
     );
   }
 });
-},{"../../../dist/templates":70,"../../views/modals/nine-box":87,"ampersand-collection":1,"ampersand-view":42,"jquery":66,"underscore":67}],89:[function(require,module,exports){
+},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","../../views/modals/nine-box":"/Library/WebServer/Server/bp_tournaments/public/js/views/modals/nine-box.js","ampersand-collection":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/ampersand-collection.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/my_round/view.js":[function(require,module,exports){
 // ---- Vendor ----
 var _ = require('underscore');
 var $ = require('jquery');
@@ -20568,7 +20444,7 @@ module.exports = View.extend({
     this.$leaderboard.append(v.el);
   }
 });
-},{"../../../dist/templates":70,"ampersand-view":42,"jquery":66,"underscore":67}],90:[function(require,module,exports){
+},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/tournaments/player.js":[function(require,module,exports){
 var _ = require('underscore');
 var $ = require('jquery');
 var View = require('ampersand-view');
@@ -20697,7 +20573,7 @@ module.exports = View.extend({
     this.scores.fetch();
   }
 });
-},{"../../../dist/templates":70,"../../collections/scores":75,"ampersand-view":42,"jquery":66,"underscore":67}],91:[function(require,module,exports){
+},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","../../collections/scores":"/Library/WebServer/Server/bp_tournaments/public/js/collections/scores.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/tournaments/view.js":[function(require,module,exports){
 // ---- Vendor ----
 var _ = require('underscore');
 var $ = require('jquery');
@@ -20804,6 +20680,6 @@ module.exports = View.extend({
   }
 });
 
-},{"../../../dist/templates":70,"../../collections/tee_times":76,"ampersand-view":42,"jquery":66,"underscore":67,"velocity-animate":68,"velocity-animate/velocity.ui":69}],92:[function(require,module,exports){
+},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","../../collections/tee_times":"/Library/WebServer/Server/bp_tournaments/public/js/collections/tee_times.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js","velocity-animate":"/Library/WebServer/Server/bp_tournaments/node_modules/velocity-animate/jquery.velocity.js","velocity-animate/velocity.ui":"/Library/WebServer/Server/bp_tournaments/node_modules/velocity-animate/velocity.ui.js"}],"/usr/local/share/npm/lib/node_modules/watchify/node_modules/browserify/lib/_empty.js":[function(require,module,exports){
 
-},{}]},{},[71])
+},{}]},{},["/Library/WebServer/Server/bp_tournaments/public/js/app.js"]);
