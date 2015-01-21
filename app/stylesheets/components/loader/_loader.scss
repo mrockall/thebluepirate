@@ -1,8 +1,16 @@
+.loading-page{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #116493;
+  z-index: $z-loading-page;
+}
 
 // KUDOS -> http://codepen.io/Vestride/pen/vHzyk
 
-$blockSize: .75em;
-//$blockSize: 6vmin; // Try this in Firefox! Viewport based size, which doesn't work in Canary at the moment
+$blockSize: 1.15em;
 
 // Play with these to see what you get
 $delay: .15s;
@@ -51,7 +59,7 @@ $loaderSize: $blockSize * 1 + $blockMargin * 2;
   position: absolute;
   top: 50%; left: 50%;
   height: $loaderSize;
-  @include transform(translateX(-50%));
+  @include transform(translateX(-50%) translateY(-50%));
 }
 
 .loader-block {
@@ -62,7 +70,8 @@ $loaderSize: $blockSize * 1 + $blockMargin * 2;
   background: $startingColor;
   border-radius: 50%;
   margin: 0 5px;
-  @include animation(pulse 3s ease-in-out infinite);
+  @include transform(translateX(-1000px));
+  @include animation(pulse 2.5s ease-in-out infinite);
 }
 
 // Second
@@ -96,7 +105,7 @@ $loaderSize: $blockSize * 1 + $blockMargin * 2;
     @include transform(translateX(0));
   }
   75%{
-    opacity: 1; 
+    opacity: 1;
   }
   to {
     @include transform(translateX(200px));
@@ -119,7 +128,7 @@ $loaderSize: $blockSize * 1 + $blockMargin * 2;
     @include transform(translateX(0));
   }
   75%{
-    opacity: 1; 
+    opacity: 1;
   }
   to {
     @include transform(translateX(200px));

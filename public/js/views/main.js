@@ -1,8 +1,3 @@
-/*global app, me, $*/
-
-// This main view is responsible for rendering all content that goes into
-// <html>. It's initted right away and renders iteslf on DOM ready.
-
 // ---- Vendor ----
 var _ = require('underscore');
 var setFavicon = require('favicon-setter');
@@ -17,12 +12,17 @@ var TournamentHome = require('./tournaments/home');
 var TournamentLeaderboard = require('./tournaments/leaderboard');
 var MyRound = require('./my_round/view');
 
-// ---- Main View ----
+/** === View
+ * This main view is responsible for rendering all content that goes into
+ * <html>. It's initted right away and renders iteslf on DOM ready.
+ */
 module.exports = View.extend({
   template: templates['body'],
+
   events: {
     'click a[href]': 'handleLinkClick'
   },
+
   render: function () {
     this.renderWithTemplate();
     this.page_container = this.getByRole('page-container');

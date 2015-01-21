@@ -56,7 +56,7 @@ module.exports = {
     $('document').ready(function () {
       var mainView = self.view = new MainView({
         model: me,
-        el: document.body
+        el: document.querySelector('.content')
       });
       mainView.render();
 

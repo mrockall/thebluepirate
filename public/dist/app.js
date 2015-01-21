@@ -19390,7 +19390,7 @@ Velocity's structure:
 
     // body.jade compiled template
     templatizer["body"] = function tmpl_body() {
-        return '<body><div class="content"><header><div href="/" class="logo"></div><div class="title">Blue Pirate #7</div><div class="subtitle">Athenry Golf Course - 22nd April 2015</div><div class="tabs"><a href="/" class="home active">Home</a><a href="/leaderboard" class="ldrboard">Leaderboard</a><a href="/my-round" class="me_user">Me</a></div></header><div role="page-container" class="container pages"><div class="page"></div></div></div><div role="modal-container" class="modals"><div class="modal"></div></div></body>';
+        return '<div class="main"><div class="content"><header><div href="/" class="logo"></div><div class="title">Blue Pirate #7</div><div class="subtitle">Athenry Golf Course - 22nd April 2015</div><div class="tabs"><a href="/" class="home active">Home</a><a href="/leaderboard" class="ldrboard">Leaderboard</a><a href="/my-round" class="me_user">Me</a></div></header><div role="page-container" class="container pages"><div class="page"></div></div></div><div role="modal-container" class="modals"><div class="modal"></div></div></div>';
     };
 
     // modals/nine_box.jade compiled template
@@ -19632,7 +19632,7 @@ module.exports = {
     $('document').ready(function () {
       var mainView = self.view = new MainView({
         model: me,
-        el: document.body
+        el: document.querySelector('.content')
       });
       mainView.render();
 
@@ -20138,11 +20138,6 @@ module.exports = Router.extend({
   }
 });
 },{"ampersand-router":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/ampersand-router.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/main.js":[function(require,module,exports){
-/*global app, me, $*/
-
-// This main view is responsible for rendering all content that goes into
-// <html>. It's initted right away and renders iteslf on DOM ready.
-
 // ---- Vendor ----
 var _ = require('underscore');
 var setFavicon = require('favicon-setter');
@@ -20157,12 +20152,17 @@ var TournamentHome = require('./tournaments/home');
 var TournamentLeaderboard = require('./tournaments/leaderboard');
 var MyRound = require('./my_round/view');
 
-// ---- Main View ----
+/** === View
+ * This main view is responsible for rendering all content that goes into
+ * <html>. It's initted right away and renders iteslf on DOM ready.
+ */
 module.exports = View.extend({
   template: templates['body'],
+
   events: {
     'click a[href]': 'handleLinkClick'
   },
+
   render: function () {
     this.renderWithTemplate();
     this.page_container = this.getByRole('page-container');
