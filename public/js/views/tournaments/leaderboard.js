@@ -66,7 +66,7 @@ module.exports = View.extend({
     this.tee_times.on('sort', this.renderLeaderboard, this);
 
     this.renderLeaderboard();
-    this.tee_times.fetch();
+    // this.tee_times.fetch();
   },
   renderLeaderboard: function(){
     this.views = [];

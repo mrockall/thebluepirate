@@ -4,3 +4,10 @@
   -webkit-animation: $animation;
   animation: $animation;
 }
+
+@mixin animation-delay($animation...) {
+  -o-animation-delay: $animation;
+  -moz-animation-delay: $animation;
+  -webkit-animation-delay: $animation;
+  animation-delay: $animation;
+}

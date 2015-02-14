@@ -1,7 +1,7 @@
 BluePirate::App.controllers :tournaments do
   
   get :'/' do
-    t = Tournament.last
+    t = Tournament.includes(:tee_times, :scores).last
     {
       :tournaments => Rabl.render(t, 'tournaments/view', :view_path => 'app/views', :format => 'hash'),
       :tee_times => Rabl.render(t.tee_times, 'tee_times/view', :view_path => 'app/views', :format => 'hash'),

@@ -29,33 +29,25 @@ module BluePirate
     
     before :except => [] do
       begin
-        @authenticated = authenticated?
         @current_user = Authorization.current_user = user
       rescue => e
         session.clear
       end
     end
 
-    get :bootstrap, :provides => :json do
-      t = Tournament.last
-      {
-        :tournaments => Rabl.render(t, 'tournaments/view', :view_path => 'app/views', :format => 'hash'),
-        :tee_times => Rabl.render(t.tee_times, 'tee_times/view', :view_path => 'app/views', :format => 'hash'),
-        :courses => Rabl.render(t.course, 'courses/view', :view_path => 'app/views', :format => 'hash'),
-        :holes => Rabl.render(t.course.holes, 'holes/view', :view_path => 'app/views', :format => 'hash'),
-        :scores => Rabl.render(t.scores, 'scores/view', :view_path => 'app/views', :format => 'hash'),
-        :players => Rabl.render(t.players, 'players/view', :view_path => 'app/views', :format => 'hash')
-      }.to_json
+    get :favicon, :map => '/favicon.ico' do
     end
     
     get :index, :map => '/*page', :priority => :low do
-      t = Tournament.last
+      t = Tournament.includes(:players, :scores => [:hole, :player], :tee_times => [:scores]).last
+      c = Course.includes(:holes).find_by_id(t.course_id)
+
       @tournaments = Rabl.render(t, 'tournaments/view', :view_path => 'app/views', :format => 'json')
       @tee_times = Rabl.render(t.tee_times, 'tee_times/view', :view_path => 'app/views', :format => 'json')
       @players = Rabl.render(t.players, 'players/view', :view_path => 'app/views', :format => 'json')
-      @courses = Rabl.render(t.course, 'courses/view', :view_path => 'app/views', :format => 'json')
-      @holes = Rabl.render(t.course.holes, 'holes/view', :view_path => 'app/views', :format => 'json')
       @scores = Rabl.render(t.scores, 'scores/view', :view_path => 'app/views', :format => 'json')
+      @courses = Rabl.render(c, 'courses/view', :view_path => 'app/views', :format => 'json')
+      @holes = Rabl.render(c.holes, 'holes/view', :view_path => 'app/views', :format => 'json')
       render :index
     end
   end

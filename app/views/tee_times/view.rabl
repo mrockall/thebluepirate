@@ -14,7 +14,3 @@ attributes :id,
   :fairways_played,
   :greens_hit,
   :greens_played
-
-node :time_parsed do |t|
-  t.time.strftime("%l:%M")
-end
