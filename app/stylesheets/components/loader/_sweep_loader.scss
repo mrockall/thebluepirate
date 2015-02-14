@@ -1,0 +1,128 @@
+// KUDOS -> http://codepen.io/Vestride/pen/vHzyk
+
+$blockSize: 1.15em;
+
+// Play with these to see what you get
+$delay: .15s;
+$duration: .88s;
+$startingColor: lighten(#3C6BA1, 30%);
+$endingColor: #3C6BA1;
+
+// Calculate some values
+$blockMargin: $blockSize / 3;
+$loaderSize: $blockSize * 1 + $blockMargin * 2;
+
+@mixin animation-delay( $delay ) {
+  -webkit-animation-delay: $delay;
+  animation-delay: $delay;
+}
+
+// Official syntax supported by IE10, FF16, Opera 12.1,
+// so we're only going to add the webkit prefix
+@mixin animation( $ani1:null, $ani2:null ) {
+  @if ($ani2 != null) {
+    -webkit-animation: $ani1, $ani2;
+    animation: $ani1, $ani2;
+  }
+  
+  @else if ($ani1 != null) {
+    -webkit-animation: $ani1;
+    animation: $ani1;
+  }
+}
+
+.loading{
+  display: none;
+  position: absolute;
+  top: 90px; bottom: 0;
+  left: 0; right: 0;
+  background: white;
+}
+
+.list-loading{
+  display: none;
+  position: relative;
+  height: 12px;
+  padding: 2em 0 0;
+}
+
+.loader {
+  position: absolute;
+  top: 50%; left: 50%;
+  height: $loaderSize;
+  @include transform(translateX(-50%) translateY(-50%));
+}
+
+.loader-block {
+  float: right;
+  display: inline-block;
+  width: $blockSize;
+  height: $blockSize;
+  background: $startingColor;
+  border-radius: 50%;
+  margin: 0 5px;
+  @include transform(translateX(-1000px));
+  @include animation(pulse 2.5s ease-in-out infinite);
+}
+
+// Second
+.loader-block:nth-child(1) {
+  @include animation-delay(0 * $delay);
+}
+
+// Ninth
+.loader-block:nth-child(2) {
+  @include animation-delay(1 * $delay);
+}
+
+// Fourth
+.loader-block:nth-child(3) {
+  @include animation-delay(2 * $delay);
+}
+
+
+@-webkit-keyframes pulse {
+  from {
+    @include transform(translateX(-200px));
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  35% {
+    @include transform(translateX(0));
+  }
+  65% {
+    @include transform(translateX(0));
+  }
+  75%{
+    opacity: 1;
+  }
+  to {
+    @include transform(translateX(200px));
+    opacity: 0;
+  }
+}
+
+@keyframes pulse {
+  from {
+    @include transform(translateX(-200px));
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  35% {
+    @include transform(translateX(0));
+  }
+  65% {
+    @include transform(translateX(0));
+  }
+  75%{
+    opacity: 1;
+  }
+  to {
+    @include transform(translateX(200px));
+    opacity: 0;
+  }
+}

@@ -55,7 +55,7 @@ module.exports = View.extend({
   },
   render: function () {
     this.renderWithTemplate(this.serialize());
-    this.show_loading();
+    // this.show_loading();
     this.$players = $(this.el).find('.players');
 
     this.tee_times = new TeeTimes(this.model.tee_times());
