@@ -20152,6 +20152,26 @@ var TournamentHome = require('./tournaments/home');
 var TournamentLeaderboard = require('./tournaments/leaderboard');
 var MyRound = require('./my_round/view');
 
+/**
+ * Helper to return the transition event
+ */
+function whichTransitionEvent(){
+    var t;
+    var el = document.createElement('fakeelement');
+    var transitions = {
+      'transition':'transitionend',
+      'OTransition':'oTransitionEnd',
+      'MozTransition':'transitionend',
+      'WebkitTransition':'webkitTransitionEnd'
+    }
+
+    for(t in transitions){
+        if( el.style[t] !== undefined ){
+            return transitions[t];
+        }
+    }
+}
+
 /** === View
  * This main view is responsible for rendering all content that goes into
  * <html>. It's initted right away and renders iteslf on DOM ready.
@@ -20160,7 +20180,8 @@ module.exports = View.extend({
   template: templates['body'],
 
   events: {
-    'click a[href]': 'handleLinkClick'
+    'click a[href]': 'handleLinkClick',
+    'click .tabs a': 'tabClick'
   },
 
   render: function () {
@@ -20236,6 +20257,12 @@ module.exports = View.extend({
       e.preventDefault();
       app.navigate(path);
     }
+  },
+
+  tabClick: function(ev) {
+    $(ev.target).addClass('ripple').one(whichTransitionEvent(), function() {
+      $(this).removeClass('ripple');
+    });
   },
 
   updateActiveNav: function () {

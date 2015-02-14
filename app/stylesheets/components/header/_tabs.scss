@@ -4,15 +4,39 @@
 
   a{
     float: left;
+    position: relative;
+    overflow: hidden;
     outline: none;
     width: 33%;
     padding: 1.25rem 0;
     color: rgba(255, 255, 255, 1);
     text-indent: -9999em;
     text-align: center;
-    border-bottom: 6px solid transparent;
+    border-bottom: 5px solid transparent;
     background: url(images/icons.png) center no-repeat;
     @include background-size(24px);
+
+    &:before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: block;
+      width: 0;
+      padding-top: 0;
+      border-radius: 100%;
+      background-color: rgba(236, 240, 241, .3);
+      @include transform(translate(-50%, -50%));
+    }
+
+    &:active:before,
+    &.ripple:before {
+      width: 120%;
+      padding-top: 120%;
+      background-color: rgba(236, 240, 241, .1);
+      
+      @include transition(width .4s ease-out, padding-top .4s ease-out);
+    }
 
     &.active{
       border-bottom-color: rgba(255,255,255,0.3);
