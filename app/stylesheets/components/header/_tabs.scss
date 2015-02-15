@@ -15,6 +15,7 @@
     border-bottom: 5px solid transparent;
     background: url(images/icons.png) center no-repeat;
     @include background-size(24px);
+    @include transition(border-color .5s ease-out);
 
     &:before {
       content: "";

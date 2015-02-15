@@ -19636,7 +19636,6 @@ module.exports = {
       });
       mainView.render();
 
-      self.router.on('newPage', mainView.setPage, mainView);
       self.router.history.start({pushState: true, root: '/'});
     });
   },
@@ -20179,6 +20178,10 @@ function whichTransitionEvent(){
 module.exports = View.extend({
   template: templates['body'],
 
+  initialize: function(){
+    app.router.on('newPage', this.setPage, this);
+  },
+
   events: {
     'click a[href]': 'handleLinkClick',
     'mousedown .tabs a': 'tabClick'
@@ -20193,6 +20196,7 @@ module.exports = View.extend({
       numberOfPages: 3,
       generatePage: this.buildPage,
     });
+    this.swipe_view.onFlip(_.bind(this.pageChanged, this));
 
     // We need to update the height of the page container if we change the page..
     this.page_container.addEventListener('swipeview-flip', _.bind(this.setPageContainerHeight, this));
@@ -20236,6 +20240,24 @@ module.exports = View.extend({
         break;
     }
 
+    this.updateActiveNav();
+  },
+
+  pageChanged: function(){
+    var url = '';
+
+    switch(this.swipe_view.pageIndex){
+      case 0:
+        break;
+      case 1:
+        url = 'leaderboard';
+        break;
+      case 2:
+        url = 'my-round';
+        break;
+    }
+
+    app.router.history.navigate(url, {trigger: false});
     this.updateActiveNav();
   },
 

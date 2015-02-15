@@ -60,7 +60,6 @@ module.exports = {
       });
       mainView.render();
 
-      self.router.on('newPage', mainView.setPage, mainView);
       self.router.history.start({pushState: true, root: '/'});
     });
   },
