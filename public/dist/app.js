@@ -20181,7 +20181,7 @@ module.exports = View.extend({
 
   events: {
     'click a[href]': 'handleLinkClick',
-    'click .tabs a': 'tabClick'
+    'mousedown .tabs a': 'tabClick'
   },
 
   render: function () {
