@@ -11,3 +11,27 @@
   -webkit-animation-delay: $animation;
   animation-delay: $animation;
 }
+
+@mixin ripple-effect($color: rgba(236, 240, 241, .3), $speed: 0.5s){
+  &:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    width: 0;
+    padding-top: 0;
+    border-radius: 100%;
+    background-color: $color;
+    @include transform(translate(-50%, -50%));
+  }
+
+  &:active:before,
+  &.ripple:before {
+    width: 120%;
+    padding-top: 120%;
+    background-color: $color;
+    
+    @include transition(width $speed ease-out, padding-top $speed ease-out);
+  }
+}

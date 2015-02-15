@@ -81,42 +81,6 @@
         return '<div class="page"><ul class="leaderboard"></ul><ul class="course_tiles"></ul></div>';
     };
 
-    // tournaments/fairways_list_item.jade compiled template
-    templatizer["tournaments"]["fairways_list_item"] = function tmpl_tournaments_fairways_list_item(locals) {
-        var buf = [];
-        var jade_mixins = {};
-        var jade_interp;
-        var locals_for_with = locals || {};
-        (function(collection, model) {
-            buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + ">" + jade.escape(null == (jade_interp = model.player().name) ? "" : jade_interp) + '<div class="cell left">' + jade.escape(null == (jade_interp = collection.indexOf(model) + 1) ? "" : jade_interp) + '</div><div class="cell big">');
-            if (model.fairways_played != 0) {
-                buf.push(jade.escape(null == (jade_interp = model.fairways + "/" + model.fairways_played) ? "" : jade_interp));
-            } else {
-                buf.push("-");
-            }
-            buf.push("</div></a></li>");
-        }).call(this, "collection" in locals_for_with ? locals_for_with.collection : typeof collection !== "undefined" ? collection : undefined, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
-        return buf.join("");
-    };
-
-    // tournaments/greens_list_item.jade compiled template
-    templatizer["tournaments"]["greens_list_item"] = function tmpl_tournaments_greens_list_item(locals) {
-        var buf = [];
-        var jade_mixins = {};
-        var jade_interp;
-        var locals_for_with = locals || {};
-        (function(collection, model) {
-            buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + ">" + jade.escape(null == (jade_interp = model.player().name) ? "" : jade_interp) + '<div class="cell left">' + jade.escape(null == (jade_interp = collection.indexOf(model) + 1) ? "" : jade_interp) + '</div><div class="cell big">');
-            if (model.greens_played != 0) {
-                buf.push(jade.escape(null == (jade_interp = model.greens_hit + "/" + model.greens_played) ? "" : jade_interp));
-            } else {
-                buf.push("-");
-            }
-            buf.push("</div></a></li>");
-        }).call(this, "collection" in locals_for_with ? locals_for_with.collection : typeof collection !== "undefined" ? collection : undefined, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
-        return buf.join("");
-    };
-
     // tournaments/hole_list_item.jade compiled template
     templatizer["tournaments"]["hole_list_item"] = function tmpl_tournaments_hole_list_item(locals) {
         var buf = [];
@@ -205,30 +169,6 @@
             }).call(this);
             buf.push('<div class="hole total"><div class="hole_num">&nbsp;</div><div class="par">' + jade.escape(null == (jade_interp = model.course.front_nine_total_par()) ? "" : jade_interp) + '</div><div class="index">&nbsp;</div><div class="score">' + jade.escape(null == (jade_interp = model.get_totals("Back 9").strokes) ? "" : jade_interp) + '</div><div class="points">' + jade.escape(null == (jade_interp = model.get_totals("Back 9").points) ? "" : jade_interp) + "</div></div></div></div></li>");
         }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined, "score" in locals_for_with ? locals_for_with.score : typeof score !== "undefined" ? score : undefined, "undefined" in locals_for_with ? locals_for_with.undefined : typeof undefined !== "undefined" ? undefined : undefined);
-        return buf.join("");
-    };
-
-    // tournaments/putts_list_item.jade compiled template
-    templatizer["tournaments"]["putts_list_item"] = function tmpl_tournaments_putts_list_item(locals) {
-        var buf = [];
-        var jade_mixins = {};
-        var jade_interp;
-        var locals_for_with = locals || {};
-        (function(collection, model) {
-            buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + ">" + jade.escape(null == (jade_interp = model.player.name) ? "" : jade_interp) + '<div class="cell left">' + jade.escape(null == (jade_interp = collection.indexOf(model) + 1) ? "" : jade_interp) + '</div><div class="cell big">' + jade.escape(null == (jade_interp = model.putts) ? "" : jade_interp) + "</div></a></li>");
-        }).call(this, "collection" in locals_for_with ? locals_for_with.collection : typeof collection !== "undefined" ? collection : undefined, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
-        return buf.join("");
-    };
-
-    // tournaments/totals_list_item.jade compiled template
-    templatizer["tournaments"]["totals_list_item"] = function tmpl_tournaments_totals_list_item(locals) {
-        var buf = [];
-        var jade_mixins = {};
-        var jade_interp;
-        var locals_for_with = locals || {};
-        (function(points_total, score_total, title) {
-            buf.push('<li><div class="hole_information">' + jade.escape(null == (jade_interp = title) ? "" : jade_interp) + '</div><div class="totals_information"><div class="cell score">' + jade.escape(null == (jade_interp = score_total) ? "" : jade_interp) + '</div><div class="cell points">' + jade.escape(null == (jade_interp = points_total) ? "" : jade_interp) + "</div></div></li>");
-        }).call(this, "points_total" in locals_for_with ? locals_for_with.points_total : typeof points_total !== "undefined" ? points_total : undefined, "score_total" in locals_for_with ? locals_for_with.score_total : typeof score_total !== "undefined" ? score_total : undefined, "title" in locals_for_with ? locals_for_with.title : typeof title !== "undefined" ? title : undefined);
         return buf.join("");
     };
 

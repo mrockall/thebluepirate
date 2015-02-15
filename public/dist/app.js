@@ -4394,7 +4394,9 @@ function match(el, selector) {
   }
   return false;
 }
-},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/favicon-setter/favicon-setter.js":[function(require,module,exports){
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/backbone-events-standalone/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/backbone-events-standalone/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/backbone-events-standalone/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/backbone-events-standalone/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/favicon-setter/favicon-setter.js":[function(require,module,exports){
 // follow @HenrikJoreteg and @andyet if you like this ;)
 // props to @mathias for this https://gist.github.com/428626 which served as starting point
 // for this code.
@@ -19453,42 +19455,6 @@ Velocity's structure:
         return '<div class="page"><ul class="leaderboard"></ul><ul class="course_tiles"></ul></div>';
     };
 
-    // tournaments/fairways_list_item.jade compiled template
-    templatizer["tournaments"]["fairways_list_item"] = function tmpl_tournaments_fairways_list_item(locals) {
-        var buf = [];
-        var jade_mixins = {};
-        var jade_interp;
-        var locals_for_with = locals || {};
-        (function(collection, model) {
-            buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + ">" + jade.escape(null == (jade_interp = model.player().name) ? "" : jade_interp) + '<div class="cell left">' + jade.escape(null == (jade_interp = collection.indexOf(model) + 1) ? "" : jade_interp) + '</div><div class="cell big">');
-            if (model.fairways_played != 0) {
-                buf.push(jade.escape(null == (jade_interp = model.fairways + "/" + model.fairways_played) ? "" : jade_interp));
-            } else {
-                buf.push("-");
-            }
-            buf.push("</div></a></li>");
-        }).call(this, "collection" in locals_for_with ? locals_for_with.collection : typeof collection !== "undefined" ? collection : undefined, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
-        return buf.join("");
-    };
-
-    // tournaments/greens_list_item.jade compiled template
-    templatizer["tournaments"]["greens_list_item"] = function tmpl_tournaments_greens_list_item(locals) {
-        var buf = [];
-        var jade_mixins = {};
-        var jade_interp;
-        var locals_for_with = locals || {};
-        (function(collection, model) {
-            buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + ">" + jade.escape(null == (jade_interp = model.player().name) ? "" : jade_interp) + '<div class="cell left">' + jade.escape(null == (jade_interp = collection.indexOf(model) + 1) ? "" : jade_interp) + '</div><div class="cell big">');
-            if (model.greens_played != 0) {
-                buf.push(jade.escape(null == (jade_interp = model.greens_hit + "/" + model.greens_played) ? "" : jade_interp));
-            } else {
-                buf.push("-");
-            }
-            buf.push("</div></a></li>");
-        }).call(this, "collection" in locals_for_with ? locals_for_with.collection : typeof collection !== "undefined" ? collection : undefined, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
-        return buf.join("");
-    };
-
     // tournaments/hole_list_item.jade compiled template
     templatizer["tournaments"]["hole_list_item"] = function tmpl_tournaments_hole_list_item(locals) {
         var buf = [];
@@ -19580,30 +19546,6 @@ Velocity's structure:
         return buf.join("");
     };
 
-    // tournaments/putts_list_item.jade compiled template
-    templatizer["tournaments"]["putts_list_item"] = function tmpl_tournaments_putts_list_item(locals) {
-        var buf = [];
-        var jade_mixins = {};
-        var jade_interp;
-        var locals_for_with = locals || {};
-        (function(collection, model) {
-            buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + ">" + jade.escape(null == (jade_interp = model.player.name) ? "" : jade_interp) + '<div class="cell left">' + jade.escape(null == (jade_interp = collection.indexOf(model) + 1) ? "" : jade_interp) + '</div><div class="cell big">' + jade.escape(null == (jade_interp = model.putts) ? "" : jade_interp) + "</div></a></li>");
-        }).call(this, "collection" in locals_for_with ? locals_for_with.collection : typeof collection !== "undefined" ? collection : undefined, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
-        return buf.join("");
-    };
-
-    // tournaments/totals_list_item.jade compiled template
-    templatizer["tournaments"]["totals_list_item"] = function tmpl_tournaments_totals_list_item(locals) {
-        var buf = [];
-        var jade_mixins = {};
-        var jade_interp;
-        var locals_for_with = locals || {};
-        (function(points_total, score_total, title) {
-            buf.push('<li><div class="hole_information">' + jade.escape(null == (jade_interp = title) ? "" : jade_interp) + '</div><div class="totals_information"><div class="cell score">' + jade.escape(null == (jade_interp = score_total) ? "" : jade_interp) + '</div><div class="cell points">' + jade.escape(null == (jade_interp = points_total) ? "" : jade_interp) + "</div></div></li>");
-        }).call(this, "points_total" in locals_for_with ? locals_for_with.points_total : typeof points_total !== "undefined" ? points_total : undefined, "score_total" in locals_for_with ? locals_for_with.score_total : typeof score_total !== "undefined" ? score_total : undefined, "title" in locals_for_with ? locals_for_with.title : typeof title !== "undefined" ? title : undefined);
-        return buf.join("");
-    };
-
     // tournaments/view.jade compiled template
     templatizer["tournaments"]["view"] = function tmpl_tournaments_view() {
         return '<div class="page"><div class="list-loading"><div class="loader"><div class="loader-block"></div><div class="loader-block"></div><div class="loader-block"></div></div></div><ul class="leaderboard players"></ul></div>';
@@ -19615,6 +19557,7 @@ Velocity's structure:
 /*global app, me, $*/
 var $ = require('jquery');
 var _ = require('underscore');
+var BBEvents = require('backbone-events-standalone');
 
 window.jQuery = window.$ = $;
 
@@ -19645,10 +19588,32 @@ $.ajaxSetup({
   }
 });
 
+/**
+ * Helper to return the transition event
+ */
+function whichTransitionEvent(){
+    var t;
+    var el = document.createElement('fakeelement');
+    var transitions = {
+      'transition':'transitionend',
+      'OTransition':'oTransitionEnd',
+      'MozTransition':'transitionend',
+      'WebkitTransition':'webkitTransitionEnd'
+    }
+
+    for(t in transitions){
+        if( el.style[t] !== undefined ){
+            return transitions[t];
+        }
+    }
+}
+
 // ---- Blast Off! ----
-module.exports = {
+module.exports = _.extend({
   blastoff: function () {
     var self = window.app = this;
+
+    app.whichTransitionEvent = whichTransitionEvent();
 
     window.me = new Me(InitialData.me);
 
@@ -19682,11 +19647,11 @@ module.exports = {
     var url = (page.charAt(0) === '/') ? page.slice(1) : page;
     this.router.history.navigate(url, {trigger: true});
   }
-};
+}, BBEvents);
 
 // lets go!
 module.exports.blastoff();
-},{"./collections/courses":"/Library/WebServer/Server/bp_tournaments/public/js/collections/courses.js","./collections/holes":"/Library/WebServer/Server/bp_tournaments/public/js/collections/holes.js","./collections/players":"/Library/WebServer/Server/bp_tournaments/public/js/collections/players.js","./collections/scores":"/Library/WebServer/Server/bp_tournaments/public/js/collections/scores.js","./collections/tee_times":"/Library/WebServer/Server/bp_tournaments/public/js/collections/tee_times.js","./collections/tournaments":"/Library/WebServer/Server/bp_tournaments/public/js/collections/tournaments.js","./models/me":"/Library/WebServer/Server/bp_tournaments/public/js/models/me.js","./router":"/Library/WebServer/Server/bp_tournaments/public/js/router.js","./views/main":"/Library/WebServer/Server/bp_tournaments/public/js/views/main.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/collections/courses.js":[function(require,module,exports){
+},{"./collections/courses":"/Library/WebServer/Server/bp_tournaments/public/js/collections/courses.js","./collections/holes":"/Library/WebServer/Server/bp_tournaments/public/js/collections/holes.js","./collections/players":"/Library/WebServer/Server/bp_tournaments/public/js/collections/players.js","./collections/scores":"/Library/WebServer/Server/bp_tournaments/public/js/collections/scores.js","./collections/tee_times":"/Library/WebServer/Server/bp_tournaments/public/js/collections/tee_times.js","./collections/tournaments":"/Library/WebServer/Server/bp_tournaments/public/js/collections/tournaments.js","./models/me":"/Library/WebServer/Server/bp_tournaments/public/js/models/me.js","./router":"/Library/WebServer/Server/bp_tournaments/public/js/router.js","./views/main":"/Library/WebServer/Server/bp_tournaments/public/js/views/main.js","backbone-events-standalone":"/Library/WebServer/Server/bp_tournaments/node_modules/backbone-events-standalone/index.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/collections/courses.js":[function(require,module,exports){
 var Collection = require('ampersand-rest-collection');
 var Course = require('../models/course');
 
@@ -20017,7 +19982,7 @@ module.exports = AmpersandModel.extend({
     },
     player_url: {
       fn: function(){
-        return 'tournaments/' + this.tournament_id + '/player/' + this.player_id;
+        return '/leaderboard/' + this.player_id;
       }
     },
     golf_score: {
@@ -20163,8 +20128,6 @@ module.exports = Router.extend({
   routes: {
     '': 'home',
     'leaderboard': 'leaderboard',
-    'leaderboard/:player_id': 'leaderboardPlayer',
-    'player/:name': 'playerCard',
     'my-round': 'myRound',
     'my-round/:hole_id': 'myRoundHole',
     'login': 'login',
@@ -20177,10 +20140,6 @@ module.exports = Router.extend({
 
   leaderboard: function() {
     this.trigger('newPage', 'leaderboard');
-  },
-
-  leaderboardPlayer: function(player_id) {
-    this.trigger('pageEvent', 'leaderboardPlayer', player_id);
   },
 
   playerCard: function(player_id) {
@@ -20227,26 +20186,6 @@ var TournamentHome = require('./tournaments/home');
 var TournamentLeaderboard = require('./tournaments/leaderboard');
 var MyRound = require('./my_round/view');
 
-/**
- * Helper to return the transition event
- */
-function whichTransitionEvent(){
-    var t;
-    var el = document.createElement('fakeelement');
-    var transitions = {
-      'transition':'transitionend',
-      'OTransition':'oTransitionEnd',
-      'MozTransition':'transitionend',
-      'WebkitTransition':'webkitTransitionEnd'
-    }
-
-    for(t in transitions){
-        if( el.style[t] !== undefined ){
-            return transitions[t];
-        }
-    }
-}
-
 /** === View
  * This main view is responsible for rendering all content that goes into
  * <html>. It's initted right away and renders iteslf on DOM ready.
@@ -20277,6 +20216,7 @@ module.exports = View.extend({
     // We need to update the height of the page container if we change the page..
     this.page_container.addEventListener('swipeview-flip', _.bind(this.setPageContainerHeight, this));
     this.setPageContainerHeight();
+    app.on('updateHeight', this.setPageContainerHeight, this);
 
     setFavicon('/images/favicon.png');
     return this;
@@ -20315,8 +20255,6 @@ module.exports = View.extend({
         this.swipe_view.goToPage(0);
         break;
     }
-
-    this.updateActiveNav();
   },
 
   pageChanged: function(){
@@ -20358,7 +20296,7 @@ module.exports = View.extend({
   },
 
   tabClick: function(ev) {
-    $(ev.target).addClass('ripple').one(whichTransitionEvent(), function() {
+    $(ev.target).addClass('ripple').one(app.whichTransitionEvent, function() {
       $(this).removeClass('ripple');
     });
   },
@@ -20478,24 +20416,45 @@ var templates = require('../../../dist/templates');
 // model -> Player
 var PlayerListItem = View.extend({
   template: templates.tournaments.player_list_item,
-  bindings: {
-    'model.pretty_through': '[role=pretty_through]',
-    'model.pretty_score': '[role=pretty_score]',
-    'model.points': '[role=points]',
-    'model.through': '[role=through]'
+  props:{
+    expanded: ['boolean', true, false]
+  },
+  events: {
+    'click a': 'toggleScorecard'
+  },
+  render: function(){
+    this.renderWithTemplate(this);
+    this.cacheElements({
+      scorecard: '.scorecard'
+    });
+    return this;
+  },
+  toggleScorecard: function(ev){
+    ev.preventDefault();
+    ev.stopPropagation();
+    this._rippleEffect(ev);
+
+    if(this.expanded){
+      $(this.scorecard).velocity('slideUp', {
+        complete: function(){
+          app.trigger('updateHeight');
+        }
+      });
+    } else {
+      $(this.scorecard).velocity('slideDown', {
+        complete: function(){
+          app.trigger('updateHeight');
+        }
+      });
+    }
+
+    this.expanded = !this.expanded;
+  },
+  _rippleEffect: function(ev) {
+    $(ev.delegateTarget).one(app.whichTransitionEvent, function() {
+      $(this).removeClass('ripple');
+    }).addClass('ripple');
   }
-});
-
-var PuttsLeaderboardItem = View.extend({
-  template: templates.tournaments.putts_list_item
-});
-
-var FairwaysLeaderboardItem = View.extend({
-  template: templates.tournaments.fairways_list_item
-});
-
-var GreensLeaderboardItem = View.extend({
-  template: templates.tournaments.greens_list_item
 });
 
 // ---- TournamentView ----
@@ -20503,9 +20462,6 @@ var GreensLeaderboardItem = View.extend({
 // model -> Tournament
 module.exports = View.extend({
   template: templates.tournaments.view,
-  initialize: function(){
-    app.router.on('pageEvent', this.handlePageEvents, this);
-  },
   serialize: function(){
     return {
       tournament_name: this.model.name,
@@ -20525,9 +20481,6 @@ module.exports = View.extend({
 
     this.renderLeaderboard();
   },
-  handlePageEvents: function(event_name) {
-
-  },
   renderLeaderboard: function(){
     this.views = [];
     this.$players.empty();
@@ -20540,14 +20493,6 @@ module.exports = View.extend({
       this.$players.append(view.el);
       this.views.push(view);
     }, this));
-  },
-  transitionIn: function(cb){
-    $(this.el).show();
-
-    $(this.el).find('.players li').hide().velocity('transition.slideUpIn', {
-      duration: 200,
-      stagger: 60
-    });
   },
   show_loading: function(){
     $(this.el).find(".list-loading").show();

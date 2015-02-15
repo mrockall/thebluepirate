@@ -1,6 +1,7 @@
 /*global app, me, $*/
 var $ = require('jquery');
 var _ = require('underscore');
+var BBEvents = require('backbone-events-standalone');
 
 window.jQuery = window.$ = $;
 
@@ -31,10 +32,32 @@ $.ajaxSetup({
   }
 });
 
+/**
+ * Helper to return the transition event
+ */
+function whichTransitionEvent(){
+    var t;
+    var el = document.createElement('fakeelement');
+    var transitions = {
+      'transition':'transitionend',
+      'OTransition':'oTransitionEnd',
+      'MozTransition':'transitionend',
+      'WebkitTransition':'webkitTransitionEnd'
+    }
+
+    for(t in transitions){
+        if( el.style[t] !== undefined ){
+            return transitions[t];
+        }
+    }
+}
+
 // ---- Blast Off! ----
-module.exports = {
+module.exports = _.extend({
   blastoff: function () {
     var self = window.app = this;
+
+    app.whichTransitionEvent = whichTransitionEvent();
 
     window.me = new Me(InitialData.me);
 
@@ -68,7 +91,7 @@ module.exports = {
     var url = (page.charAt(0) === '/') ? page.slice(1) : page;
     this.router.history.navigate(url, {trigger: true});
   }
-};
+}, BBEvents);
 
 // lets go!
 module.exports.blastoff();

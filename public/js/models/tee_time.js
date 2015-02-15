@@ -39,7 +39,7 @@ module.exports = AmpersandModel.extend({
     },
     player_url: {
       fn: function(){
-        return 'tournaments/' + this.tournament_id + '/player/' + this.player_id;
+        return '/leaderboard/' + this.player_id;
       }
     },
     golf_score: {

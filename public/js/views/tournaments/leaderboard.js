@@ -14,24 +14,45 @@ var templates = require('../../../dist/templates');
 // model -> Player
 var PlayerListItem = View.extend({
   template: templates.tournaments.player_list_item,
-  bindings: {
-    'model.pretty_through': '[role=pretty_through]',
-    'model.pretty_score': '[role=pretty_score]',
-    'model.points': '[role=points]',
-    'model.through': '[role=through]'
+  props:{
+    expanded: ['boolean', true, false]
+  },
+  events: {
+    'click a': 'toggleScorecard'
+  },
+  render: function(){
+    this.renderWithTemplate(this);
+    this.cacheElements({
+      scorecard: '.scorecard'
+    });
+    return this;
+  },
+  toggleScorecard: function(ev){
+    ev.preventDefault();
+    ev.stopPropagation();
+    this._rippleEffect(ev);
+
+    if(this.expanded){
+      $(this.scorecard).velocity('slideUp', {
+        complete: function(){
+          app.trigger('updateHeight');
+        }
+      });
+    } else {
+      $(this.scorecard).velocity('slideDown', {
+        complete: function(){
+          app.trigger('updateHeight');
+        }
+      });
+    }
+
+    this.expanded = !this.expanded;
+  },
+  _rippleEffect: function(ev) {
+    $(ev.delegateTarget).one(app.whichTransitionEvent, function() {
+      $(this).removeClass('ripple');
+    }).addClass('ripple');
   }
-});
-
-var PuttsLeaderboardItem = View.extend({
-  template: templates.tournaments.putts_list_item
-});
-
-var FairwaysLeaderboardItem = View.extend({
-  template: templates.tournaments.fairways_list_item
-});
-
-var GreensLeaderboardItem = View.extend({
-  template: templates.tournaments.greens_list_item
 });
 
 // ---- TournamentView ----
@@ -39,9 +60,6 @@ var GreensLeaderboardItem = View.extend({
 // model -> Tournament
 module.exports = View.extend({
   template: templates.tournaments.view,
-  initialize: function(){
-    app.router.on('pageEvent', this.handlePageEvents, this);
-  },
   serialize: function(){
     return {
       tournament_name: this.model.name,
@@ -61,9 +79,6 @@ module.exports = View.extend({
 
     this.renderLeaderboard();
   },
-  handlePageEvents: function(event_name) {
-
-  },
   renderLeaderboard: function(){
     this.views = [];
     this.$players.empty();
@@ -76,14 +91,6 @@ module.exports = View.extend({
       this.$players.append(view.el);
       this.views.push(view);
     }, this));
-  },
-  transitionIn: function(cb){
-    $(this.el).show();
-
-    $(this.el).find('.players li').hide().velocity('transition.slideUpIn', {
-      duration: 200,
-      stagger: 60
-    });
   },
   show_loading: function(){
     $(this.el).find(".list-loading").show();

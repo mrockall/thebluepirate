@@ -12,26 +12,6 @@ var TournamentHome = require('./tournaments/home');
 var TournamentLeaderboard = require('./tournaments/leaderboard');
 var MyRound = require('./my_round/view');
 
-/**
- * Helper to return the transition event
- */
-function whichTransitionEvent(){
-    var t;
-    var el = document.createElement('fakeelement');
-    var transitions = {
-      'transition':'transitionend',
-      'OTransition':'oTransitionEnd',
-      'MozTransition':'transitionend',
-      'WebkitTransition':'webkitTransitionEnd'
-    }
-
-    for(t in transitions){
-        if( el.style[t] !== undefined ){
-            return transitions[t];
-        }
-    }
-}
-
 /** === View
  * This main view is responsible for rendering all content that goes into
  * <html>. It's initted right away and renders iteslf on DOM ready.
@@ -62,6 +42,7 @@ module.exports = View.extend({
     // We need to update the height of the page container if we change the page..
     this.page_container.addEventListener('swipeview-flip', _.bind(this.setPageContainerHeight, this));
     this.setPageContainerHeight();
+    app.on('updateHeight', this.setPageContainerHeight, this);
 
     setFavicon('/images/favicon.png');
     return this;
@@ -100,8 +81,6 @@ module.exports = View.extend({
         this.swipe_view.goToPage(0);
         break;
     }
-
-    this.updateActiveNav();
   },
 
   pageChanged: function(){
@@ -143,7 +122,7 @@ module.exports = View.extend({
   },
 
   tabClick: function(ev) {
-    $(ev.target).addClass('ripple').one(whichTransitionEvent(), function() {
+    $(ev.target).addClass('ripple').one(app.whichTransitionEvent, function() {
       $(this).removeClass('ripple');
     });
   },

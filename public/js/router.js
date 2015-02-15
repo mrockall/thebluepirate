@@ -7,8 +7,6 @@ module.exports = Router.extend({
   routes: {
     '': 'home',
     'leaderboard': 'leaderboard',
-    'leaderboard/:player_id': 'leaderboardPlayer',
-    'player/:name': 'playerCard',
     'my-round': 'myRound',
     'my-round/:hole_id': 'myRoundHole',
     'login': 'login',
@@ -21,10 +19,6 @@ module.exports = Router.extend({
 
   leaderboard: function() {
     this.trigger('newPage', 'leaderboard');
-  },
-
-  leaderboardPlayer: function(player_id) {
-    this.trigger('pageEvent', 'leaderboardPlayer', player_id);
   },
 
   playerCard: function(player_id) {
