@@ -19,12 +19,6 @@ var PlayerListItem = View.extend({
     'model.pretty_score': '[role=pretty_score]',
     'model.points': '[role=points]',
     'model.through': '[role=through]'
-  },
-  render: function() {
-    this.renderWithTemplate();
-    if(this.model.through == 0) $(this.el).addClass('pre');
-    else $(this.el).removeClass('pre');
-    return this;
   }
 });
 
@@ -45,28 +39,30 @@ var GreensLeaderboardItem = View.extend({
 // model -> Tournament
 module.exports = View.extend({
   template: templates.tournaments.view,
+  initialize: function(){
+    app.router.on('pageEvent', this.handlePageEvents, this);
+  },
   serialize: function(){
-    var course = this.model.course();
     return {
       tournament_name: this.model.name,
-      course_name: course.name,
+      course_name: this.model.course.name,
       tournament_date: this.model.formatted_date
     };
   },
   render: function () {
     this.renderWithTemplate(this.serialize());
-    // this.show_loading();
     this.$players = $(this.el).find('.players');
 
     this.tee_times = new TeeTimes(this.model.tee_times());
 
     this.tee_times.on('request', this.show_loading, this);
     this.tee_times.on('sync', this.hide_loading, this);
-    this.tee_times.on('error', this.try_again, this);
     this.tee_times.on('sort', this.renderLeaderboard, this);
 
     this.renderLeaderboard();
-    // this.tee_times.fetch();
+  },
+  handlePageEvents: function(event_name) {
+
   },
   renderLeaderboard: function(){
     this.views = [];
@@ -94,12 +90,5 @@ module.exports = View.extend({
   },
   hide_loading: function(){
     $(this.el).find(".list-loading").slideUp();
-  },
-  try_again: function(){
-    var retries = this.retries || 0;
-    if(retries < 5){
-      this.tee_times.fetch();
-      this.retries = retries + 1;
-    }
   }
 });

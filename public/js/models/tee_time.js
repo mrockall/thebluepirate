@@ -22,6 +22,21 @@ module.exports = AmpersandModel.extend({
   },
 
   derived: {
+    tournament: {
+      fn: function(){
+        return app.tournaments.findByID(this.tournament_id);
+      }
+    },
+    course: {
+      fn: function(){
+        return this.tournament.course;
+      }
+    },
+    player: {
+      fn: function(){
+        return app.players.findByID(this.player_id);
+      }
+    },
     player_url: {
       fn: function(){
         return 'tournaments/' + this.tournament_id + '/player/' + this.player_id;
@@ -69,22 +84,18 @@ module.exports = AmpersandModel.extend({
       }
     }
   },
-  
-  player: function(){
-    return app.players.findByID(this.player_id)
-  },
 
   findAllTeeTimes: function(){
     return app.tee_times.findByTime(this.time);
   },
 
-  tournament: function(){
-    return app.tournaments.findByID(this.tournament_id)
-  },
-
   scores: function(){
     var scores = app.scores.findByTeeTime(this.id);
     return _(scores).sortBy(function(m){ return m.hole_id });
+  },
+
+  score_on_hole: function(hole_id){
+    return app.scores.findByTeeTimeAndHole(this.id, hole_id);
   },
 
   get_totals: function(name) {

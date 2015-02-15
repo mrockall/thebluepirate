@@ -11,16 +11,17 @@ module.exports = AmpersandModel.extend({
     slug: ['string']
   },
   derived: {
+    course: {
+      fn: function(){
+        return app.courses.findByID(this.course_id);
+      }
+    },
     formatted_date: {
       deps: ['date'],
       fn: function() {
         return "26th July 2014";
       }
     }
-  },
-
-  course: function(){
-    return app.courses.findByID(this.course_id);
   },
 
   holes: function(){

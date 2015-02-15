@@ -19536,9 +19536,47 @@ Velocity's structure:
         var jade_mixins = {};
         var jade_interp;
         var locals_for_with = locals || {};
-        (function(model) {
-            buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + '><div role="pretty_through" class="cell one">' + jade.escape(null == (jade_interp = model.pretty_through) ? "" : jade_interp) + '</div><div class="cell six ellipsis name">' + jade.escape(null == (jade_interp = model.player().name) ? "" : jade_interp) + '</div><div role="pretty_score" class="cell one score blue">' + jade.escape(null == (jade_interp = model.pretty_score) ? "" : jade_interp) + '</div><div role="points" class="cell one score">' + jade.escape(null == (jade_interp = model.points) ? "" : jade_interp) + '</div><div role="through" class="cell one thru">' + jade.escape(null == (jade_interp = model.through) ? "" : jade_interp) + '</div><div class="cell three time">' + jade.escape(null == (jade_interp = model.time_parsed) ? "" : jade_interp) + "</div></a></li>");
-        }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
+        (function(model, score, undefined) {
+            buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + '><div role="pretty_through" class="cell one">' + jade.escape(null == (jade_interp = model.pretty_through) ? "" : jade_interp) + '</div><div class="cell six ellipsis name">' + jade.escape(null == (jade_interp = model.player.name) ? "" : jade_interp) + '</div><div role="pretty_score" class="cell one score blue">' + jade.escape(null == (jade_interp = model.pretty_score) ? "" : jade_interp) + '</div><div role="points" class="cell one score">' + jade.escape(null == (jade_interp = model.points) ? "" : jade_interp) + '</div><div role="through" class="cell one thru">' + jade.escape(null == (jade_interp = model.through) ? "" : jade_interp) + '</div><div class="cell three time">' + jade.escape(null == (jade_interp = model.time_parsed) ? "" : jade_interp) + '</div></a><div class="scorecard"><div class="nine"><div class="hole"><div class="label">Hole</div><div class="label">Par</div><div class="label">Idx</div><div class="label score">Str</div><div class="label points">Pts</div></div>');
+            (function() {
+                var $obj = model.course.front_nine;
+                if ("number" == typeof $obj.length) {
+                    for (var $index = 0, $l = $obj.length; $index < $l; $index++) {
+                        var hole = $obj[$index];
+                        score = model.score_on_hole(hole.id);
+                        buf.push('<div class="hole"><div class="hole_num">' + jade.escape(null == (jade_interp = hole.number) ? "" : jade_interp) + '</div><div class="par">' + jade.escape(null == (jade_interp = hole.par) ? "" : jade_interp) + '</div><div class="index">' + jade.escape(null == (jade_interp = hole.index) ? "" : jade_interp) + "</div><div" + jade.cls([ "score", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.score) ? "" : jade_interp) + "</div><div" + jade.cls([ "points", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.points) ? "" : jade_interp) + "</div></div>");
+                    }
+                } else {
+                    var $l = 0;
+                    for (var $index in $obj) {
+                        $l++;
+                        var hole = $obj[$index];
+                        score = model.score_on_hole(hole.id);
+                        buf.push('<div class="hole"><div class="hole_num">' + jade.escape(null == (jade_interp = hole.number) ? "" : jade_interp) + '</div><div class="par">' + jade.escape(null == (jade_interp = hole.par) ? "" : jade_interp) + '</div><div class="index">' + jade.escape(null == (jade_interp = hole.index) ? "" : jade_interp) + "</div><div" + jade.cls([ "score", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.score) ? "" : jade_interp) + "</div><div" + jade.cls([ "points", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.points) ? "" : jade_interp) + "</div></div>");
+                    }
+                }
+            }).call(this);
+            buf.push('<div class="hole total"><div class="hole_num">&nbsp;</div><div class="par">' + jade.escape(null == (jade_interp = model.course.front_nine_total_par()) ? "" : jade_interp) + '</div><div class="index">&nbsp;</div><div class="score">' + jade.escape(null == (jade_interp = model.get_totals("Front 9").strokes) ? "" : jade_interp) + '</div><div class="points">' + jade.escape(null == (jade_interp = model.get_totals("Front 9").points) ? "" : jade_interp) + '</div></div></div><div class="nine"><div class="hole"><div class="label">Hole</div><div class="label">Par</div><div class="label">Idx</div><div class="label score">Str</div><div class="label points">Pts</div></div>');
+            (function() {
+                var $obj = model.course.back_nine;
+                if ("number" == typeof $obj.length) {
+                    for (var $index = 0, $l = $obj.length; $index < $l; $index++) {
+                        var hole = $obj[$index];
+                        score = model.score_on_hole(hole.id);
+                        buf.push('<div class="hole"><div class="hole_num">' + jade.escape(null == (jade_interp = hole.number) ? "" : jade_interp) + '</div><div class="par">' + jade.escape(null == (jade_interp = hole.par) ? "" : jade_interp) + '</div><div class="index">' + jade.escape(null == (jade_interp = hole.index) ? "" : jade_interp) + "</div><div" + jade.cls([ "score", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.score) ? "" : jade_interp) + "</div><div" + jade.cls([ "points", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.points) ? "" : jade_interp) + "</div></div>");
+                    }
+                } else {
+                    var $l = 0;
+                    for (var $index in $obj) {
+                        $l++;
+                        var hole = $obj[$index];
+                        score = model.score_on_hole(hole.id);
+                        buf.push('<div class="hole"><div class="hole_num">' + jade.escape(null == (jade_interp = hole.number) ? "" : jade_interp) + '</div><div class="par">' + jade.escape(null == (jade_interp = hole.par) ? "" : jade_interp) + '</div><div class="index">' + jade.escape(null == (jade_interp = hole.index) ? "" : jade_interp) + "</div><div" + jade.cls([ "score", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.score) ? "" : jade_interp) + "</div><div" + jade.cls([ "points", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.points) ? "" : jade_interp) + "</div></div>");
+                    }
+                }
+            }).call(this);
+            buf.push('<div class="hole total"><div class="hole_num">&nbsp;</div><div class="par">' + jade.escape(null == (jade_interp = model.course.front_nine_total_par()) ? "" : jade_interp) + '</div><div class="index">&nbsp;</div><div class="score">' + jade.escape(null == (jade_interp = model.get_totals("Back 9").strokes) ? "" : jade_interp) + '</div><div class="points">' + jade.escape(null == (jade_interp = model.get_totals("Back 9").points) ? "" : jade_interp) + "</div></div></div></div></li>");
+        }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined, "score" in locals_for_with ? locals_for_with.score : typeof score !== "undefined" ? score : undefined, "undefined" in locals_for_with ? locals_for_with.undefined : typeof undefined !== "undefined" ? undefined : undefined);
         return buf.join("");
     };
 
@@ -19549,7 +19587,7 @@ Velocity's structure:
         var jade_interp;
         var locals_for_with = locals || {};
         (function(collection, model) {
-            buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + ">" + jade.escape(null == (jade_interp = model.player().name) ? "" : jade_interp) + '<div class="cell left">' + jade.escape(null == (jade_interp = collection.indexOf(model) + 1) ? "" : jade_interp) + '</div><div class="cell big">' + jade.escape(null == (jade_interp = model.putts) ? "" : jade_interp) + "</div></a></li>");
+            buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + ">" + jade.escape(null == (jade_interp = model.player.name) ? "" : jade_interp) + '<div class="cell left">' + jade.escape(null == (jade_interp = collection.indexOf(model) + 1) ? "" : jade_interp) + '</div><div class="cell big">' + jade.escape(null == (jade_interp = model.putts) ? "" : jade_interp) + "</div></a></li>");
         }).call(this, "collection" in locals_for_with ? locals_for_with.collection : typeof collection !== "undefined" ? collection : undefined, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
         return buf.join("");
     };
@@ -19787,6 +19825,7 @@ module.exports = Collection.extend({
     }
 });
 },{"../models/tournament":"/Library/WebServer/Server/bp_tournaments/public/js/models/tournament.js","ampersand-rest-collection":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/ampersand-rest-collection.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/models/course.js":[function(require,module,exports){
+var _ = require('underscore');
 var AmpersandModel = require('ampersand-model');
 
 module.exports = AmpersandModel.extend({
@@ -19796,15 +19835,35 @@ module.exports = AmpersandModel.extend({
     name: ['string', true, '']
   },
 
-  holes: function(){
-    return app.holes.findAllByCourseID(this.id)
+  derived: {
+    holes: {
+      fn: function(){
+        return app.holes.findAllByCourseID(this.id)
+      }
+    },
+    front_nine: {
+      fn: function(){
+        return this.holes.slice(0,9);
+      }
+    },
+    back_nine: {
+      fn: function(){
+        return this.holes.slice(9,18);
+      }
+    }
   },
 
   findHoleByID: function(hole_id) {
     return app.holes.findByCourseIDAndHoleID(this.id, hole_id)
+  },
+
+  front_nine_total_par: function(){
+    return _(this.front_nine).reduce(function(total, hole){
+      return total + hole.par;
+    }, 0);
   }
 });
-},{"ampersand-model":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/models/hole.js":[function(require,module,exports){
+},{"ampersand-model":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/models/hole.js":[function(require,module,exports){
 var AmpersandModel = require('ampersand-model');
 
 module.exports = AmpersandModel.extend({
@@ -19941,6 +20000,21 @@ module.exports = AmpersandModel.extend({
   },
 
   derived: {
+    tournament: {
+      fn: function(){
+        return app.tournaments.findByID(this.tournament_id);
+      }
+    },
+    course: {
+      fn: function(){
+        return this.tournament.course;
+      }
+    },
+    player: {
+      fn: function(){
+        return app.players.findByID(this.player_id);
+      }
+    },
     player_url: {
       fn: function(){
         return 'tournaments/' + this.tournament_id + '/player/' + this.player_id;
@@ -19988,22 +20062,18 @@ module.exports = AmpersandModel.extend({
       }
     }
   },
-  
-  player: function(){
-    return app.players.findByID(this.player_id)
-  },
 
   findAllTeeTimes: function(){
     return app.tee_times.findByTime(this.time);
   },
 
-  tournament: function(){
-    return app.tournaments.findByID(this.tournament_id)
-  },
-
   scores: function(){
     var scores = app.scores.findByTeeTime(this.id);
     return _(scores).sortBy(function(m){ return m.hole_id });
+  },
+
+  score_on_hole: function(hole_id){
+    return app.scores.findByTeeTimeAndHole(this.id, hole_id);
   },
 
   get_totals: function(name) {
@@ -20058,16 +20128,17 @@ module.exports = AmpersandModel.extend({
     slug: ['string']
   },
   derived: {
+    course: {
+      fn: function(){
+        return app.courses.findByID(this.course_id);
+      }
+    },
     formatted_date: {
       deps: ['date'],
       fn: function() {
         return "26th July 2014";
       }
     }
-  },
-
-  course: function(){
-    return app.courses.findByID(this.course_id);
   },
 
   holes: function(){
@@ -20092,6 +20163,7 @@ module.exports = Router.extend({
   routes: {
     '': 'home',
     'leaderboard': 'leaderboard',
+    'leaderboard/:player_id': 'leaderboardPlayer',
     'player/:name': 'playerCard',
     'my-round': 'myRound',
     'my-round/:hole_id': 'myRoundHole',
@@ -20107,8 +20179,12 @@ module.exports = Router.extend({
     this.trigger('newPage', 'leaderboard');
   },
 
-  playerCard: function(player_name) {
-    var tee_time = app.tee_times.findByPlayerName(tournament_id, player_name);
+  leaderboardPlayer: function(player_id) {
+    this.trigger('pageEvent', 'leaderboardPlayer', player_id);
+  },
+
+  playerCard: function(player_id) {
+    var tee_time = app.tee_times.findByPlayerName(tournament_id, player_id);
     if(!tee_time){ return this.redirectTo(''); }
 
     this.trigger('newPage', 'player_card', tee_time);
@@ -20407,12 +20483,6 @@ var PlayerListItem = View.extend({
     'model.pretty_score': '[role=pretty_score]',
     'model.points': '[role=points]',
     'model.through': '[role=through]'
-  },
-  render: function() {
-    this.renderWithTemplate();
-    if(this.model.through == 0) $(this.el).addClass('pre');
-    else $(this.el).removeClass('pre');
-    return this;
   }
 });
 
@@ -20433,28 +20503,30 @@ var GreensLeaderboardItem = View.extend({
 // model -> Tournament
 module.exports = View.extend({
   template: templates.tournaments.view,
+  initialize: function(){
+    app.router.on('pageEvent', this.handlePageEvents, this);
+  },
   serialize: function(){
-    var course = this.model.course();
     return {
       tournament_name: this.model.name,
-      course_name: course.name,
+      course_name: this.model.course.name,
       tournament_date: this.model.formatted_date
     };
   },
   render: function () {
     this.renderWithTemplate(this.serialize());
-    // this.show_loading();
     this.$players = $(this.el).find('.players');
 
     this.tee_times = new TeeTimes(this.model.tee_times());
 
     this.tee_times.on('request', this.show_loading, this);
     this.tee_times.on('sync', this.hide_loading, this);
-    this.tee_times.on('error', this.try_again, this);
     this.tee_times.on('sort', this.renderLeaderboard, this);
 
     this.renderLeaderboard();
-    // this.tee_times.fetch();
+  },
+  handlePageEvents: function(event_name) {
+
   },
   renderLeaderboard: function(){
     this.views = [];
@@ -20482,13 +20554,6 @@ module.exports = View.extend({
   },
   hide_loading: function(){
     $(this.el).find(".list-loading").slideUp();
-  },
-  try_again: function(){
-    var retries = this.retries || 0;
-    if(retries < 5){
-      this.tee_times.fetch();
-      this.retries = retries + 1;
-    }
   }
 });
 

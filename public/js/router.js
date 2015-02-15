@@ -7,6 +7,7 @@ module.exports = Router.extend({
   routes: {
     '': 'home',
     'leaderboard': 'leaderboard',
+    'leaderboard/:player_id': 'leaderboardPlayer',
     'player/:name': 'playerCard',
     'my-round': 'myRound',
     'my-round/:hole_id': 'myRoundHole',
@@ -22,8 +23,12 @@ module.exports = Router.extend({
     this.trigger('newPage', 'leaderboard');
   },
 
-  playerCard: function(player_name) {
-    var tee_time = app.tee_times.findByPlayerName(tournament_id, player_name);
+  leaderboardPlayer: function(player_id) {
+    this.trigger('pageEvent', 'leaderboardPlayer', player_id);
+  },
+
+  playerCard: function(player_id) {
+    var tee_time = app.tee_times.findByPlayerName(tournament_id, player_id);
     if(!tee_time){ return this.redirectTo(''); }
 
     this.trigger('newPage', 'player_card', tee_time);

@@ -1,87 +1,42 @@
+$bogey_red: #B56161;
+$birdie_blue: #3C6BA1;
+
 .scorecard{
   list-style: none;
-  margin: 1em 0 0;
-  padding: 0;
+  margin: 0;
+  padding: 1em;
+  background: #dedede;
 
-  li {
-    @include clearfix();
-    position: relative;
-    height: 2.5em;
-    margin: .5em;
-    font-size: 1.5em;
-    line-height: 2.5em;
-
-    .hole_information{
-      @include clearfix();
-      position: absolute;
-      top: 0; left: 0;
-      bottom: 0;
-
-      .cell{
-        padding-right: 1em;
-      }
-    }
-    .score_information, .totals_information{
-      @include clearfix();
-      position: absolute;
-      top: 0; right: 0;
-      bottom: 0;
+  .nine{
+    @include flexbox();
+    @include justify-content(space-around);
+    margin-bottom: 1.5em;
+    &:nth-last-child(1){
+      margin-bottom: 0;
     }
 
-    .cell{
-      float: left;
+    .hole{
+      @include flex(1 0 auto);
       text-align: center;
-      color: $text-light;
+    }
 
-      &.number{
-        min-width: 1em;
-      }
+    .label {
+      text-align: left;
+      font-weight: 300;
+      padding-left: .5em;
+    }
 
-      &.length,
-      &.par,
-      &.total_score{
-        color: $text-dark;
-      }
+    .hole_num{
+      font-weight: bold;
+    }
 
-      &.score{
-        width: 2.5em;
-      }
-      &.points{
-        min-width: 1.25em;
-        padding-left: .75em;
-        text-align: center;
-      }
+    .score, .points{
+      background-color: #eee;
 
-      > div{
-        height: 2.5em;
-        width: 2.5em;
-        line-height: 2.5em;
-
-        @include box-sizing(border-box);
-
-        &.birdie{
-          color: #3C6BA1;
-          border: 4px solid #3C6BA1;
-          line-height: 2.2em;
-          @include border-radius(50%);
-        }
-        &.eagle{
-          color: #3C6BA1;
-          border: 6px double #3C6BA1; 
-          line-height: 1.8em;
-          @include border-radius(50%);
-        }
-        &.bogey{ 
-          color: #B56161;
-          border: 4px solid #B56161;
-          line-height: 2.2em;
-        }
-        &.dbl_bogey{ 
-          color: #B56161;
-          border: 6px double #B56161;
-          line-height: 1.8em;
-        }
-      }
+      &.dbl_bogey{ background-color: darken($bogey_red, 10%); color: white; }
+      &.bogey{ background-color: $bogey_red; color: white; }
+      &.birdie{ background-color: $birdie_blue; color: white; }
+      &.eagle{ background-color: lighten($birdie_blue, 10%); color: white; }
     }
   }
 }

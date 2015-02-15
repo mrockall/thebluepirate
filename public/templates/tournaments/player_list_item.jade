@@ -1,9 +1,53 @@
 li
   a(href=model.player_url)
     .cell.one(role='pretty_through')= model.pretty_through
-    .cell.six.ellipsis.name= model.player().name
+    .cell.six.ellipsis.name= model.player.name
     .cell.one.score.blue(role='pretty_score')= model.pretty_score
     .cell.one.score(role='points')= model.points
     .cell.one.thru(role='through')= model.through
 
     .cell.three.time= model.time_parsed
+  .scorecard
+    .nine
+      .hole
+        .label Hole
+        .label Par
+        .label Idx
+        .label.score Str
+        .label.points Pts
+      - each hole in model.course.front_nine
+        - score = model.score_on_hole(hole.id)
+        .hole
+          .hole_num= hole.number
+          .par= hole.par
+          .index= hole.index
+          .score(class=score.result)= score.score
+          .points(class=score.result)= score.points
+      .hole.total
+        .hole_num &nbsp;
+        .par= model.course.front_nine_total_par()
+        .index &nbsp;
+        .score= model.get_totals('Front 9').strokes
+        .points= model.get_totals('Front 9').points
+
+    .nine
+      .hole
+        .label Hole
+        .label Par
+        .label Idx
+        .label.score Str
+        .label.points Pts
+      - each hole in model.course.back_nine
+        - score = model.score_on_hole(hole.id)
+        .hole
+          .hole_num= hole.number
+          .par= hole.par
+          .index= hole.index
+          .score(class=score.result)= score.score
+          .points(class=score.result)= score.points
+      .hole.total
+        .hole_num &nbsp;
+        .par= model.course.front_nine_total_par()
+        .index &nbsp;
+        .score= model.get_totals('Back 9').strokes
+        .points= model.get_totals('Back 9').points
