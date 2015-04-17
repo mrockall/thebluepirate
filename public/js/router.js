@@ -21,20 +21,8 @@ module.exports = Router.extend({
     this.trigger('newPage', 'leaderboard');
   },
 
-  playerCard: function(player_id) {
-    var tee_time = app.tee_times.findByPlayerName(tournament_id, player_id);
-    if(!tee_time){ return this.redirectTo(''); }
-
-    this.trigger('newPage', 'player_card', tee_time);
-  },
-
   myRound: function() {
-    if(!me.is_logged_in){ return this.redirectTo('/login'); }
-
-    var tee_time = app.tee_times.findByID(me.id);
-    if(!tee_time){ return this.redirectTo('/login'); }
-
-    this.trigger('newPage', 'my_round', tee_time);
+    this.trigger('newPage', 'my_round');
   },
 
   myRoundHole: function(hole_id) {

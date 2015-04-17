@@ -51,7 +51,6 @@ module.exports = View.extend({
   buildPage: function(i, page) {
     var el = page.querySelector('.page');
     var view;
-    var tournament = app.tournaments.first();
 
     switch(i){
       case 0:
@@ -63,7 +62,7 @@ module.exports = View.extend({
         });
         break;
       case 2:
-        view = new TournamentHome();
+        view = new MyRound();
         break;
     }
 
