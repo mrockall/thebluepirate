@@ -76,6 +76,11 @@
         return buf.join("");
     };
 
+    // my_round/login.jade compiled template
+    templatizer["my_round"]["login"] = function tmpl_my_round_login() {
+        return '<div class="login_page"><p>Enter your unique passphrase to login and begin keeping the score.</p><div class="options"><div class="row"><div class="option">Angry</div><div class="option">Delighted</div></div><div class="row"><div class="option">Excited</div><div class="option">Scared</div></div><div class="row"><div class="option">Motivated</div><div class="option">Surprised</div></div><div class="row"><div class="option">Confused</div><div class="option">Happy</div></div></div></div>';
+    };
+
     // my_round/view.jade compiled template
     templatizer["my_round"]["view"] = function tmpl_my_round_view() {
         return '<div class="page"><ul class="leaderboard"></ul><ul class="course_tiles"></ul></div>';

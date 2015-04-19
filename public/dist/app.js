@@ -19450,6 +19450,11 @@ Velocity's structure:
         return buf.join("");
     };
 
+    // my_round/login.jade compiled template
+    templatizer["my_round"]["login"] = function tmpl_my_round_login() {
+        return '<div class="login_page"><p>Enter your unique passphrase to login and begin keeping the score.</p><div class="options"><div class="row"><div class="option">Angry</div><div class="option">Delighted</div></div><div class="row"><div class="option">Excited</div><div class="option">Scared</div></div><div class="row"><div class="option">Motivated</div><div class="option">Surprised</div></div><div class="row"><div class="option">Confused</div><div class="option">Happy</div></div></div></div>';
+    };
+
     // my_round/view.jade compiled template
     templatizer["my_round"]["view"] = function tmpl_my_round_view() {
         return '<div class="page"><ul class="leaderboard"></ul><ul class="course_tiles"></ul></div>';
@@ -20216,9 +20221,6 @@ module.exports = View.extend({
     var view;
 
     switch(i){
-      // case 0:
-      //   view = new TournamentHome();
-      //   break;
       case 0:
         view = new TournamentLeaderboard({
           model: tournament
@@ -20251,8 +20253,6 @@ module.exports = View.extend({
     var url = '';
 
     switch(this.swipe_view.pageIndex){
-      // case 0:
-      //   break;
       case 0:
         url = 'leaderboard';
         break;
@@ -20286,7 +20286,7 @@ module.exports = View.extend({
   },
 
   tabClick: function(ev) {
-    $(ev.target).addClass('ripple active').one(app.whichTransitionEvent, function() {
+    $(ev.target).addClass('ripple').one(app.whichTransitionEvent, function() {
       $(this).removeClass('ripple');
     });
   },
@@ -20316,7 +20316,12 @@ var templates = require('../../../dist/templates');
 
 
 module.exports = View.extend({
-  template: templates.my_round.view
+  logged_in_template: templates.my_round.view,
+  login_template: templates.my_round.login,
+
+  render: function() {
+    return this.renderWithTemplate(this, this.login_template);
+  }
 });
 },{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/tournaments/home.js":[function(require,module,exports){
 // ---- Vendor ----

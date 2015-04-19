@@ -32,6 +32,6 @@
     padding-top: 120%;
     background-color: $color;
     
-    @include transition('width $speed ease-out, padding-top $speed ease-out');
+    @include transition(width $speed ease-out, padding-top $speed ease-out);
   }
 }

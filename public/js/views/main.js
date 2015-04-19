@@ -54,9 +54,6 @@ module.exports = View.extend({
     var view;
 
     switch(i){
-      // case 0:
-      //   view = new TournamentHome();
-      //   break;
       case 0:
         view = new TournamentLeaderboard({
           model: tournament
@@ -89,8 +86,6 @@ module.exports = View.extend({
     var url = '';
 
     switch(this.swipe_view.pageIndex){
-      // case 0:
-      //   break;
       case 0:
         url = 'leaderboard';
         break;

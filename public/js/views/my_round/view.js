@@ -8,5 +8,10 @@ var templates = require('../../../dist/templates');
 
 
 module.exports = View.extend({
-  template: templates.my_round.view
+  logged_in_template: templates.my_round.view,
+  login_template: templates.my_round.login,
+
+  render: function() {
+    return this.renderWithTemplate(this, this.login_template);
+  }
 });

@@ -1,0 +1,38 @@
+$options-border-colour: #ddd;
+
+.login_page{
+  padding: .75rem 1.5rem;
+
+  p{
+    font-size: 1.25rem;
+    color: $text-light;
+  }
+
+  .options {
+    margin-top: 2rem;
+    border-top: 1px solid $options-border-colour;
+
+    .row {
+      border-bottom: 1px solid $options-border-colour;
+      @include clearfix();
+
+      .option:nth-child(1){
+        border-right: 1px solid $options-border-colour;
+      }
+    }
+  }
+
+  .option {
+    @include box-sizing(border-box);
+    position: relative;
+    overflow: hidden;
+    float: left;
+    width: 50%;
+    color: $text-dark;
+    font-size: 1.35em;
+    line-height: 3.5;
+    text-align: center;
+
+    @include ripple-effect(rgba(133, 155, 163, 0.21), .25s);
+  }
+}
