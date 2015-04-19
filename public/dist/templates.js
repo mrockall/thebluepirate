@@ -18,7 +18,7 @@
 
     // body.jade compiled template
     templatizer["body"] = function tmpl_body() {
-        return '<div class="main"><div class="content"><header><div href="/" class="logo"></div><div class="title">Blue Pirate #7</div><div class="subtitle">Athenry Golf Course</div><div class="tabs"><a href="/leaderboard" class="ldrboard">Leaderboard</a><a href="/my-round" class="me_user">Me</a></div></header><div role="page-container" class="container pages"><div class="page"></div></div></div><div role="modal-container" class="modals"><div class="modal"></div></div></div>';
+        return '<div class="main"><div class="content"><header><div href="/" class="logo"></div><div class="title">Blue Pirate #7</div><div class="subtitle">Athenry Golf Course</div><div class="tabs"><a href="/leaderboard" class="ldrboard">Leaderboard</a><a href="/my-round" class="me_user">Me</a></div></header><div class="container pages page-container"><div class="page"></div></div></div><div role="modal-container" class="modals"><div class="modal"></div></div></div>';
     };
 
     // modals/nine_box.jade compiled template
@@ -31,6 +31,11 @@
             buf.push('<div class="nine_box"><div class="meta"><div class="title">' + jade.escape(null == (jade_interp = title) ? "" : jade_interp) + '</div><div class="back">x</div></div><div class="options"><div class="score"><div data-value="1" class="box"> <div class="value">1</div></div><div data-value="2" class="box"> <div class="value">2</div></div><div data-value="3" class="box"> <div class="value">3</div></div><div data-value="4" class="box"> <div class="value">4</div></div><div data-value="5" class="box"> <div class="value">5</div></div><div data-value="6" class="box"> <div class="value">6</div></div><div data-value="7" class="box"> <div class="value">7</div></div><div data-value="8" class="box"><div class="value">8</div></div><div data-value="9" class="box"> <div class="value">9</div></div><div data-value="10" class="box"> <div class="value">10</div></div></div><div class="putts"><div data-value="0" class="box"> <div class="value">0</div></div><div data-value="1" class="box"> <div class="value">1</div></div><div data-value="2" class="box"> <div class="value">2</div></div><div data-value="3" class="box"> <div class="value">3</div></div><div data-value="4" class="box"> <div class="value">4</div></div><div data-value="5" class="box"> <div class="value">5</div></div></div><div class="fairway"><div data-value=\'1\' class="box"> <div class="value">Yep</div></div><div data-value=\'0\' class="box"> <div class="value">Nope</div></div></div></div></div>');
         }).call(this, "title" in locals_for_with ? locals_for_with.title : typeof title !== "undefined" ? title : undefined);
         return buf.join("");
+    };
+
+    // my_round/base.jade compiled template
+    templatizer["my_round"]["base"] = function tmpl_my_round_base() {
+        return '<div class="page"></div>';
     };
 
     // my_round/hole.jade compiled template

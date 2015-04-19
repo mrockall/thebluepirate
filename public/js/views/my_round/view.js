@@ -5,13 +5,20 @@ var $ = require('jquery');
 // ---- BP Modules ----
 var View = require('ampersand-view');
 var templates = require('../../../dist/templates');
+var LoginPage = require('./login');
 
 
 module.exports = View.extend({
-  logged_in_template: templates.my_round.view,
-  login_template: templates.my_round.login,
+  template: templates.my_round.base,
 
   render: function() {
-    return this.renderWithTemplate(this, this.login_template);
+    this.renderWithTemplate();
+
+    if(me.id){
+
+    } else {
+      var login_page = new LoginPage();
+      this.renderSubview(login_page, '.page');
+    }
   }
 });

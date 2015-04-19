@@ -3019,10 +3019,20 @@ module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/am
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/ampersand-class-extend/ampersand-class-extend.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/ampersand-class-extend/ampersand-class-extend.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/backbone-events-standalone/index.js")
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/backbone-events-standalone/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/backbone-events-standalone/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js":[function(require,module,exports){
+/*$AMPERSAND_VERSION*/
 var State = require('ampersand-state');
 var CollectionView = require('ampersand-collection-view');
 var domify = require('domify');
-var _ = require('underscore');
+var uniqueId = require("lodash.uniqueid");
+var pick = require("lodash.pick");
+var assign = require("lodash.assign");
+var forEach = require("lodash.foreach");
+var result = require("lodash.result");
+var last = require("lodash.last");
+var isString = require("lodash.isstring");
+var bind = require("lodash.bind");
+var flatten = require("lodash.flatten");
+var invoke = require("lodash.invoke");
 var events = require('events-mixin');
 var matches = require('matches-selector');
 var bindings = require('ampersand-dom-bindings');
@@ -3030,20 +3040,21 @@ var getPath = require('get-object-path');
 
 
 function View(attrs) {
-    this.cid = _.uniqueId('view');
+    this.cid = uniqueId('view');
     attrs || (attrs = {});
     var parent = attrs.parent;
     delete attrs.parent;
     BaseState.call(this, attrs, {init: false, parent: parent});
     this.on('change:el', this._handleElementChange, this);
-    this._parsedBindings = bindings(this.bindings);
+    this._parsedBindings = bindings(this.bindings, this);
     this._initializeBindings();
     if (attrs.el && !this.autoRender) {
         this._handleElementChange();
     }
     this._initializeSubviews();
+    this.template = attrs.template || this.template;
     this.initialize.apply(this, arguments);
-    this.set(_.pick(attrs, viewOptions));
+    this.set(pick(attrs, viewOptions));
     if (this.autoRender && this.template) {
         this.render();
     }
@@ -3104,14 +3115,14 @@ var viewOptions = ['model', 'collection', 'el'];
 View.prototype = Object.create(BaseState.prototype);
 
 // Set up all inheritable properties and methods.
-_.extend(View.prototype, {
-
+assign(View.prototype, {
+    // ## query
     // Get an single element based on CSS selector scoped to this.el
     // if you pass an empty string it return `this.el`.
     // If you pass an element we just return it back.
     // This lets us use `get` to handle cases where users
     // can pass a selector or an already selected element.
-    get: function (selector) {
+    query: function (selector) {
         if (!selector) return this.el;
         if (typeof selector === 'string') {
             if (matches(this.el, selector)) return this.el;
@@ -3120,9 +3131,11 @@ _.extend(View.prototype, {
         return selector;
     },
 
+    // ## queryAll
     // Returns an array of elements based on CSS selector scoped to this.el
-    // if you pass an empty string it return `this.el`.
-    getAll: function (selector) {
+    // if you pass an empty string it return `this.el`. Also includes root
+    // element.
+    queryAll: function (selector) {
         var res = [];
         if (!this.el) return res;
         if (selector === '') return [this.el];
@@ -3130,12 +3143,12 @@ _.extend(View.prototype, {
         return res.concat(Array.prototype.slice.call(this.el.querySelectorAll(selector)));
     },
 
-    // ## getByRole
-    // Gets an element within a view by its role attribute.
-    // Also works for the root `el` if it has the right role.
-    getByRole: function (role) {
-        return this.get('[role="' + role + '"]') ||
-            ((this.el.getAttribute('role') === role && this.el) || undefined);
+    // ## queryByHook
+    // Convenience method for fetching element by it's `data-hook` attribute.
+    // Also tries to match against root element.
+    // Also supports matching 'one' of several space separated hooks.
+    queryByHook: function (hook) {
+        return this.query('[data-hook~="' + hook + '"]');
     },
 
     // Initialize is an empty function by default. Override it with your own
@@ -3154,13 +3167,13 @@ _.extend(View.prototype, {
     remove: function () {
         var parsedBindings = this._parsedBindings;
         if (this.el && this.el.parentNode) this.el.parentNode.removeChild(this.el);
-        _.chain(this._subviews).flatten().invoke('remove');
+        if (this._subviews) invoke(flatten(this._subviews), 'remove');
         this.stopListening();
         // TODO: Not sure if this is actually necessary.
         // Just trying to de-reference this potentially large
         // amount of generated functions to avoid memory leaks.
-        _.each(parsedBindings, function (properties, modelName) {
-            _.each(properties, function (value, key) {
+        forEach(parsedBindings, function (properties, modelName) {
+            forEach(properties, function (value, key) {
                 delete parsedBindings[modelName][key];
             });
             delete parsedBindings[modelName];
@@ -3195,7 +3208,7 @@ _.extend(View.prototype, {
     // This only works for delegate-able events: not `focus`, `blur`, and
     // not `change`, `submit`, and `reset` in Internet Explorer.
     delegateEvents: function (events) {
-        if (!(events || (events = _.result(this, 'events')))) return this;
+        if (!(events || (events = result(this, 'events')))) return this;
         this.undelegateEvents();
         for (var key in events) {
             this.eventManager.bind(key, events[key]);
@@ -3230,11 +3243,11 @@ _.extend(View.prototype, {
     // when the parent view is destroyed.
     renderSubview: function (view, container) {
         if (typeof container === 'string') {
-            container = this.get(container);
+            container = this.query(container);
         }
         this.registerSubview(view);
         view.render();
-        container.appendChild(view.el);
+        (container || this.el).appendChild(view.el);
         return view;
     },
 
@@ -3244,7 +3257,7 @@ _.extend(View.prototype, {
         var item;
         for (item in fns) {
             fns[item].forEach(function (fn) {
-                fn(this.el, getPath(this, item), _.last(item.split('.')));
+                fn(this.el, getPath(this, item), last(item.split('.')));
             }, this);
         }
     },
@@ -3273,7 +3286,7 @@ _.extend(View.prototype, {
     _parseSubview: function (subview, name) {
         var self = this;
         var opts = {
-            selector: subview.container || '[role="' + subview.role + '"]',
+            selector: subview.container || '[data-hook="' + subview.hook + '"]',
             waitFor: subview.waitFor || '',
             prepareView: subview.prepareView || function (el) {
                 return new subview.constructor({
@@ -3285,7 +3298,7 @@ _.extend(View.prototype, {
         function action() {
             var el, subview;
             // if not rendered or we can't find our element, stop here.
-            if (!this.el || !(el = this.get(opts.selector))) return;
+            if (!this.el || !(el = this.query(opts.selector))) return;
             if (!opts.waitFor || getPath(this, opts.waitFor)) {
                 subview = this[name] = opts.prepareView.call(this, el);
                 subview.render();
@@ -3308,8 +3321,8 @@ _.extend(View.prototype, {
     renderWithTemplate: function (context, templateArg) {
         var template = templateArg || this.template;
         if (!template) throw new Error('Template string or function needed.');
-        var newDom = _.isString(template) ? template : template(context || this);
-        if (_.isString(newDom)) newDom = domify(newDom);
+        var newDom = isString(template) ? template : template.call(this, context || this);
+        if (isString(newDom)) newDom = domify(newDom);
         var parent = this.el && this.el.parentNode;
         if (parent) parent.replaceChild(newDom, this.el);
         if (newDom.nodeName === '#document-fragment') throw new Error('Views can only have one root element.');
@@ -3319,7 +3332,7 @@ _.extend(View.prototype, {
 
     // ## cacheElements
     // This is a shortcut for adding reference to specific elements within your view for
-    // access later. This is avoids excessive DOM queries and gives makes it easier to update
+    // access later. This avoids excessive DOM queries and makes it easier to update
     // your view if your template changes.
     //
     // In your `render` method. Use it like so:
@@ -3339,15 +3352,16 @@ _.extend(View.prototype, {
     // Then later you can access elements by reference like so: `this.pages`, or `this.chat`.
     cacheElements: function (hash) {
         for (var item in hash) {
-            this[item] = this.get(hash[item]);
+            this[item] = this.query(hash[item]);
         }
+        return this;
     },
 
     // ## listenToAndRun
     // Shortcut for registering a listener for a model
     // and also triggering it right away.
     listenToAndRun: function (object, events, handler) {
-        var bound = _.bind(handler, this);
+        var bound = bind(handler, this);
         this.listenTo(object, events, bound);
         bound();
     },
@@ -3363,24 +3377,28 @@ _.extend(View.prototype, {
     // ## renderCollection
     // Method for rendering a collections with individual views.
     // Just pass it the collection, and the view to use for the items in the
-    // collection.
+    // collection. The collectionView is returned.
     renderCollection: function (collection, ViewClass, container, opts) {
-        var containerEl = (typeof container === 'string') ? this.get(container) : container;
-        var config = _.extend({
+        var containerEl = (typeof container === 'string') ? this.query(container) : container;
+        var config = assign({
             collection: collection,
-            el: containerEl,
-            view: ViewClass
+            el: containerEl || this.el,
+            view: ViewClass,
+            parent: this,
+            viewOptions: {
+                parent: this
+            }
         }, opts);
         var collectionView = new CollectionView(config);
         collectionView.render();
-        this.registerSubview(collectionView);
+        return this.registerSubview(collectionView);
     }
 });
 
 View.extend = BaseState.extend;
 module.exports = View;
 
-},{"ampersand-collection-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/ampersand-collection-view.js","ampersand-dom-bindings":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-dom-bindings/ampersand-dom-bindings.js","ampersand-state":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/ampersand-state.js","domify":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/domify/index.js","events-mixin":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/events-mixin/index.js","get-object-path":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/get-object-path/index.js","matches-selector":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/matches-selector/index.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/ampersand-collection-view.js":[function(require,module,exports){
+},{"ampersand-collection-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/ampersand-collection-view.js","ampersand-dom-bindings":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-dom-bindings/ampersand-dom-bindings.js","ampersand-state":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/ampersand-state.js","domify":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/domify/index.js","events-mixin":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/events-mixin/index.js","get-object-path":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/get-object-path/index.js","lodash.assign":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/index.js","lodash.bind":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/index.js","lodash.flatten":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/index.js","lodash.foreach":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/index.js","lodash.invoke":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/index.js","lodash.isstring":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.isstring/index.js","lodash.last":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.last/index.js","lodash.pick":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/index.js","lodash.result":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/index.js","lodash.uniqueid":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.uniqueid/index.js","matches-selector":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/matches-selector/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/ampersand-collection-view.js":[function(require,module,exports){
 ;if (typeof window !== "undefined") {  window.ampersand = window.ampersand || {};  window.ampersand["ampersand-collection-view"] = window.ampersand["ampersand-collection-view"] || [];  window.ampersand["ampersand-collection-view"].push("1.1.3");}
 var _ = require('underscore');
 var BBEvents = require('backbone-events-standalone');
@@ -3535,8 +3553,8 @@ module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/am
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/ampersand-class-extend/ampersand-class-extend.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/ampersand-class-extend/ampersand-class-extend.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/backbone-events-standalone/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js")
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-dom-bindings/ampersand-dom-bindings.js":[function(require,module,exports){
+/*$AMPERSAND_VERSION*/
 var Store = require('key-tree-store');
-var isArray = require('is-array');
 var dom = require('ampersand-dom');
 var matchesSelector = require('matches-selector');
 
@@ -3546,7 +3564,7 @@ var matchesSelector = require('matches-selector');
 
 // all resulting functions should be called
 // like func(el, value, lastKeyName)
-module.exports = function (bindings) {
+module.exports = function (bindings, context) {
     var store = new Store();
     var key, current;
 
@@ -3559,10 +3577,10 @@ module.exports = function (bindings) {
             }));
         } else if (current.forEach) {
             current.forEach(function (binding) {
-                store.add(key, getBindingFunc(binding));
+                store.add(key, getBindingFunc(binding, context));
             });
         } else {
-            store.add(key, getBindingFunc(current));
+            store.add(key, getBindingFunc(current, context));
         }
     }
 
@@ -3572,34 +3590,56 @@ module.exports = function (bindings) {
 
 var slice = Array.prototype.slice;
 
-function getMatches(el, selector, func) {
+function getMatches(el, selector) {
     if (selector === '') return [el];
     var matches = [];
     if (matchesSelector(el, selector)) matches.push(el);
     return matches.concat(slice.call(el.querySelectorAll(selector)));
 }
 
+function setAttributes(el, attrs) {
+    for (var name in attrs) {
+        dom.setAttribute(el, name, attrs[name]);
+    }
+}
+
+function removeAttributes(el, attrs) {
+    for (var name in attrs) {
+        dom.removeAttribute(el, name);
+    }
+}
+
 function makeArray(val) {
     return Array.isArray(val) ? val : [val];
 }
 
-function getBindingFunc(binding) {
+function getBindingFunc(binding, context) {
     var type = binding.type || 'text';
-    var hasSelector = true;
+    var isCustomBinding = typeof type === 'function';
     var selector = (function () {
         if (typeof binding.selector === 'string') {
             return binding.selector;
-        } else if (binding.role) {
-            return '[role="' + binding.role + '"]';
+        } else if (binding.hook) {
+            return '[data-hook~="' + binding.hook + '"]';
         } else {
             return '';
         }
     })();
+    var yes = binding.yes;
+    var no = binding.no;
+    var hasYesNo = !!(yes || no);
 
     // storage variable for previous if relevant
-    var previousValue = '';
+    var previousValue;
 
-    if (type === 'text') {
+    if (isCustomBinding) {
+        return function (el, value) {
+            getMatches(el, selector).forEach(function (match) {
+                type.call(context, match, value, previousValue);
+            });
+            previousValue = value;
+        };
+    } else if (type === 'text') {
         return function (el, value) {
             getMatches(el, selector).forEach(function (match) {
                 dom.text(match, value);
@@ -3627,16 +3667,17 @@ function getBindingFunc(binding) {
         return function (el, value) {
             getMatches(el, selector).forEach(function (match) {
                 if (!value && value !== 0) value = '';
-                match.value = value;
+                // only apply bindings if element is not currently focused
+                if (document.activeElement !== match) match.value = value;
             });
             previousValue = value;
         };
     } else if (type === 'booleanClass') {
         // if there's a `no` case this is actually a switch
-        if (binding.no) {
-            return function (el, value, keyName) {
-                var yes = makeArray(binding.name || binding.yes || keyName);
-                var no = makeArray(binding.no);
+        if (hasYesNo) {
+            yes = makeArray(yes || '');
+            no = makeArray(no || '');
+            return function (el, value) {
                 var prevClass = value ? no : yes;
                 var newClass = value ? yes : no;
                 getMatches(el, selector).forEach(function (match) {
@@ -3659,29 +3700,52 @@ function getBindingFunc(binding) {
             };
         }
     } else if (type === 'booleanAttribute') {
-        return function (el, value, keyName) {
-            var name = makeArray(binding.name || keyName);
-            getMatches(el, selector).forEach(function (match) {
-                name.forEach(function (attr) {
-                    dom[value ? 'addAttribute' : 'removeAttribute'](match, attr);
-                });
-            });
-        };
-    } else if (type === 'toggle') {
-        // this doesn't require a selector since we can pass yes/no selectors
-        if (binding.yes && binding.no) {
+        // if there are `yes` and `no` selectors, this swaps between them
+        if (hasYesNo) {
+            yes = makeArray(yes || '');
+            no = makeArray(no || '');
             return function (el, value) {
-                getMatches(el, binding.yes).forEach(function (match) {
-                    dom[value ? 'show' : 'hide'](match);
-                });
-                getMatches(el, binding.no).forEach(function (match) {
-                    dom[value ? 'hide' : 'show'](match);
+                var prevAttribute = value ? no : yes;
+                var newAttribute = value ? yes : no;
+                getMatches(el, selector).forEach(function (match) {
+                    prevAttribute.forEach(function (pa) {
+                        if (pa) {
+                            dom.removeAttribute(match, pa);
+                        }
+                    });
+                    newAttribute.forEach(function (na) {
+                        if (na) {
+                            dom.addAttribute(match, na);
+                        }
+                    });
                 });
             };
         } else {
-                return function (el, value) {
+            return function (el, value, keyName) {
+                var name = makeArray(binding.name || keyName);
                 getMatches(el, selector).forEach(function (match) {
-                    dom[value ? 'show' : 'hide'](match);
+                    name.forEach(function (attr) {
+                        dom[value ? 'addAttribute' : 'removeAttribute'](match, attr);
+                    });
+                });
+            };
+        }
+    } else if (type === 'toggle') {
+        var mode = (binding.mode || 'display');
+        // this doesn't require a selector since we can pass yes/no selectors
+        if (hasYesNo) {
+            return function (el, value) {
+                getMatches(el, yes).forEach(function (match) {
+                    dom[value ? 'show' : 'hide'](match, mode);
+                });
+                getMatches(el, no).forEach(function (match) {
+                    dom[value ? 'hide' : 'show'](match, mode);
+                });
+            };
+        } else {
+            return function (el, value) {
+                getMatches(el, selector).forEach(function (match) {
+                    dom[value ? 'show' : 'hide'](match, mode);
                 });
             };
         }
@@ -3700,12 +3764,44 @@ function getBindingFunc(binding) {
                 dom.html(match, value);
             });
         };
+    } else if (type === 'switchClass') {
+        if (!binding.cases) throw Error('switchClass bindings must have "cases"');
+        return function (el, value, keyName) {
+            var name = makeArray(binding.name || keyName);
+            for (var item in binding.cases) {
+                getMatches(el, binding.cases[item]).forEach(function (match) {
+                    name.forEach(function (className) {
+                        dom[value === item ? 'addClass' : 'removeClass'](match, className);
+                    });
+                });
+            }
+        };
+    } else if (type === 'switchAttribute') {
+        if (!binding.cases) throw Error('switchAttribute bindings must have "cases"');
+        return function (el, value, keyName) {
+            getMatches(el, selector).forEach(function (match) {
+                if (previousValue) {
+                    removeAttributes(match, previousValue);
+                }
+
+                if (value in binding.cases) {
+                    var attrs = binding.cases[value];
+                    if (typeof attrs === 'string') {
+                        attrs = {};
+                        attrs[binding.name || keyName] = binding.cases[value];
+                    }
+                    setAttributes(match, attrs);
+
+                    previousValue = attrs;
+                }
+            });
+        };
     } else {
         throw new Error('no such binding type: ' + type);
     }
 }
 
-},{"ampersand-dom":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-dom-bindings/node_modules/ampersand-dom/ampersand-dom.js","is-array":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-dom-bindings/node_modules/is-array/index.js","key-tree-store":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-dom-bindings/node_modules/key-tree-store/key-tree-store.js","matches-selector":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/matches-selector/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-dom-bindings/node_modules/ampersand-dom/ampersand-dom.js":[function(require,module,exports){
+},{"ampersand-dom":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-dom-bindings/node_modules/ampersand-dom/ampersand-dom.js","key-tree-store":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-dom-bindings/node_modules/key-tree-store/key-tree-store.js","matches-selector":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/matches-selector/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-dom-bindings/node_modules/ampersand-dom/ampersand-dom.js":[function(require,module,exports){
 ;if (typeof window !== "undefined") {  window.ampersand = window.ampersand || {};  window.ampersand["ampersand-dom"] = window.ampersand["ampersand-dom"] || [];  window.ampersand["ampersand-dom"].push("1.2.7");}
 var dom = module.exports = {
     text: function (el, val) {
@@ -3825,9 +3921,7 @@ function hide (el) {
     el.style.display = 'none';
 }
 
-},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-dom-bindings/node_modules/is-array/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/is-array/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/is-array/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/is-array/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-dom-bindings/node_modules/key-tree-store/key-tree-store.js":[function(require,module,exports){
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-dom-bindings/node_modules/key-tree-store/key-tree-store.js":[function(require,module,exports){
 var slice = Array.prototype.slice;
 
 // our constructor
@@ -4364,7 +4458,3564 @@ function get (context, path) {
   return result;
 }
 
-},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/matches-selector/index.js":[function(require,module,exports){
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/index.js":[function(require,module,exports){
+/**
+ * lodash 3.1.0 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+var baseAssign = require('lodash._baseassign'),
+    createAssigner = require('lodash._createassigner'),
+    isNative = require('lodash.isnative'),
+    keys = require('lodash.keys');
+
+/** Used for native method references. */
+var arrayProto = Array.prototype;
+
+/** Native method references. */
+var getOwnPropertySymbols = isNative(getOwnPropertySymbols = Object.getOwnPropertySymbols) && getOwnPropertySymbols,
+    push = arrayProto.push;
+
+/**
+ * A specialized version of `_.assign` for customizing assigned values without
+ * support for argument juggling, multiple sources, and `this` binding `customizer`
+ * functions.
+ *
+ * @private
+ * @param {Object} object The destination object.
+ * @param {Object} source The source object.
+ * @param {Function} customizer The function to customize assigned values.
+ * @returns {Object} Returns `object`.
+ */
+function assignWith(object, source, customizer) {
+  var props = keys(source);
+  push.apply(props, getSymbols(source));
+
+  var index = -1,
+      length = props.length;
+
+  while (++index < length) {
+    var key = props[index],
+        value = object[key],
+        result = customizer(value, source[key], key, object, source);
+
+    if ((result === result ? (result !== value) : (value === value)) ||
+        (value === undefined && !(key in object))) {
+      object[key] = result;
+    }
+  }
+  return object;
+}
+
+/**
+ * Creates an array of the own symbols of `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of symbols.
+ */
+var getSymbols = !getOwnPropertySymbols ? constant([]) : function(object) {
+  return getOwnPropertySymbols(toObject(object));
+};
+
+/**
+ * Converts `value` to an object if it is not one.
+ *
+ * @private
+ * @param {*} value The value to process.
+ * @returns {Object} Returns the object.
+ */
+function toObject(value) {
+  return isObject(value) ? value : Object(value);
+}
+
+/**
+ * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+ * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(1);
+ * // => false
+ */
+function isObject(value) {
+  // Avoid a V8 JIT bug in Chrome 19-20.
+  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+  var type = typeof value;
+  return type == 'function' || (!!value && type == 'object');
+}
+
+/**
+ * Assigns own enumerable properties of source object(s) to the destination
+ * object. Subsequent sources overwrite property assignments of previous sources.
+ * If `customizer` is provided it is invoked to produce the assigned values.
+ * The `customizer` is bound to `thisArg` and invoked with five arguments:
+ * (objectValue, sourceValue, key, object, source).
+ *
+ * **Note:** This method mutates `object` and is based on
+ * [`Object.assign`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.assign).
+ *
+ *
+ * @static
+ * @memberOf _
+ * @alias extend
+ * @category Object
+ * @param {Object} object The destination object.
+ * @param {...Object} [sources] The source objects.
+ * @param {Function} [customizer] The function to customize assigned values.
+ * @param {*} [thisArg] The `this` binding of `customizer`.
+ * @returns {Object} Returns `object`.
+ * @example
+ *
+ * _.assign({ 'user': 'barney' }, { 'age': 40 }, { 'user': 'fred' });
+ * // => { 'user': 'fred', 'age': 40 }
+ *
+ * // using a customizer callback
+ * var defaults = _.partialRight(_.assign, function(value, other) {
+ *   return _.isUndefined(value) ? other : value;
+ * });
+ *
+ * defaults({ 'user': 'barney' }, { 'age': 36 }, { 'user': 'fred' });
+ * // => { 'user': 'barney', 'age': 36 }
+ */
+var assign = createAssigner(function(object, source, customizer) {
+  return customizer
+    ? assignWith(object, source, customizer)
+    : baseAssign(object, source);
+});
+
+/**
+ * Creates a function that returns `value`.
+ *
+ * @static
+ * @memberOf _
+ * @category Utility
+ * @param {*} value The value to return from the new function.
+ * @returns {Function} Returns the new function.
+ * @example
+ *
+ * var object = { 'user': 'fred' };
+ * var getter = _.constant(object);
+ *
+ * getter() === object;
+ * // => true
+ */
+function constant(value) {
+  return function() {
+    return value;
+  };
+}
+
+module.exports = assign;
+
+},{"lodash._baseassign":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._baseassign/index.js","lodash._createassigner":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/index.js","lodash.isnative":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.isnative/index.js","lodash.keys":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.keys/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._baseassign/index.js":[function(require,module,exports){
+/**
+ * lodash 3.1.0 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+var baseCopy = require('lodash._basecopy'),
+    isNative = require('lodash.isnative'),
+    keys = require('lodash.keys');
+
+/** Native method references. */
+var getOwnPropertySymbols = isNative(getOwnPropertySymbols = Object.getOwnPropertySymbols) && getOwnPropertySymbols,
+    preventExtensions = isNative(Object.preventExtensions = Object.preventExtensions) && preventExtensions;
+
+/** Used as `baseAssign`. */
+var nativeAssign = (function() {
+  // Avoid `Object.assign` in Firefox 34-37 which have an early implementation
+  // with a now defunct try/catch behavior. See https://bugzilla.mozilla.org/show_bug.cgi?id=1103344
+  // for more details.
+  //
+  // Use `Object.preventExtensions` on a plain object instead of simply using
+  // `Object('x')` because Chrome and IE fail to throw an error when attempting
+  // to assign values to readonly indexes of strings in strict mode.
+  var object = { '1': 0 },
+      func = preventExtensions && isNative(func = Object.assign) && func;
+
+  try { func(preventExtensions(object), 'xo'); } catch(e) {}
+  return !object[1] && func;
+}());
+
+/**
+ * The base implementation of `_.assign` without support for argument juggling,
+ * multiple sources, and `customizer` functions.
+ *
+ * @private
+ * @param {Object} object The destination object.
+ * @param {Object} source The source object.
+ * @returns {Object} Returns `object`.
+ */
+var baseAssign = nativeAssign || function(object, source) {
+  return source == null
+    ? object
+    : baseCopy(source, getSymbols(source), baseCopy(source, keys(source), object));
+};
+
+/**
+ * Creates an array of the own symbols of `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of symbols.
+ */
+var getSymbols = !getOwnPropertySymbols ? constant([]) : function(object) {
+  return getOwnPropertySymbols(toObject(object));
+};
+
+/**
+ * Converts `value` to an object if it is not one.
+ *
+ * @private
+ * @param {*} value The value to process.
+ * @returns {Object} Returns the object.
+ */
+function toObject(value) {
+  return isObject(value) ? value : Object(value);
+}
+
+/**
+ * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+ * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(1);
+ * // => false
+ */
+function isObject(value) {
+  // Avoid a V8 JIT bug in Chrome 19-20.
+  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+  var type = typeof value;
+  return type == 'function' || (!!value && type == 'object');
+}
+
+/**
+ * Creates a function that returns `value`.
+ *
+ * @static
+ * @memberOf _
+ * @category Utility
+ * @param {*} value The value to return from the new function.
+ * @returns {Function} Returns the new function.
+ * @example
+ *
+ * var object = { 'user': 'fred' };
+ * var getter = _.constant(object);
+ *
+ * getter() === object;
+ * // => true
+ */
+function constant(value) {
+  return function() {
+    return value;
+  };
+}
+
+module.exports = baseAssign;
+
+},{"lodash._basecopy":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._baseassign/node_modules/lodash._basecopy/index.js","lodash.isnative":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.isnative/index.js","lodash.keys":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.keys/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._baseassign/node_modules/lodash._basecopy/index.js":[function(require,module,exports){
+/**
+ * lodash 3.0.1 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/**
+ * Copies properties of `source` to `object`.
+ *
+ * @private
+ * @param {Object} source The object to copy properties from.
+ * @param {Array} props The property names to copy.
+ * @param {Object} [object={}] The object to copy properties to.
+ * @returns {Object} Returns `object`.
+ */
+function baseCopy(source, props, object) {
+  object || (object = {});
+
+  var index = -1,
+      length = props.length;
+
+  while (++index < length) {
+    var key = props[index];
+    object[key] = source[key];
+  }
+  return object;
+}
+
+module.exports = baseCopy;
+
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/index.js":[function(require,module,exports){
+/**
+ * lodash 3.1.0 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+var bindCallback = require('lodash._bindcallback'),
+    isIterateeCall = require('lodash._isiterateecall'),
+    restParam = require('lodash.restparam');
+
+/**
+ * Creates a function that assigns properties of source object(s) to a given
+ * destination object.
+ *
+ * **Note:** This function is used to create `_.assign`, `_.defaults`, and `_.merge`.
+ *
+ * @private
+ * @param {Function} assigner The function to assign values.
+ * @returns {Function} Returns the new assigner function.
+ */
+function createAssigner(assigner) {
+  return restParam(function(object, sources) {
+    var index = -1,
+        length = object == null ? 0 : sources.length,
+        customizer = length > 2 && sources[length - 2],
+        guard = length > 2 && sources[2],
+        thisArg = length > 1 && sources[length - 1];
+
+    if (typeof customizer == 'function') {
+      customizer = bindCallback(customizer, thisArg, 5);
+      length -= 2;
+    } else {
+      customizer = typeof thisArg == 'function' ? thisArg : null;
+      length -= (customizer ? 1 : 0);
+    }
+    if (guard && isIterateeCall(sources[0], sources[1], guard)) {
+      customizer = length < 3 ? null : customizer;
+      length = 1;
+    }
+    while (++index < length) {
+      var source = sources[index];
+      if (source) {
+        assigner(object, source, customizer);
+      }
+    }
+    return object;
+  });
+}
+
+module.exports = createAssigner;
+
+},{"lodash._bindcallback":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._bindcallback/index.js","lodash._isiterateecall":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._isiterateecall/index.js","lodash.restparam":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._bindcallback/index.js":[function(require,module,exports){
+/**
+ * lodash 3.0.1 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/**
+ * A specialized version of `baseCallback` which only supports `this` binding
+ * and specifying the number of arguments to provide to `func`.
+ *
+ * @private
+ * @param {Function} func The function to bind.
+ * @param {*} thisArg The `this` binding of `func`.
+ * @param {number} [argCount] The number of arguments to provide to `func`.
+ * @returns {Function} Returns the callback.
+ */
+function bindCallback(func, thisArg, argCount) {
+  if (typeof func != 'function') {
+    return identity;
+  }
+  if (thisArg === undefined) {
+    return func;
+  }
+  switch (argCount) {
+    case 1: return function(value) {
+      return func.call(thisArg, value);
+    };
+    case 3: return function(value, index, collection) {
+      return func.call(thisArg, value, index, collection);
+    };
+    case 4: return function(accumulator, value, index, collection) {
+      return func.call(thisArg, accumulator, value, index, collection);
+    };
+    case 5: return function(value, other, key, object, source) {
+      return func.call(thisArg, value, other, key, object, source);
+    };
+  }
+  return function() {
+    return func.apply(thisArg, arguments);
+  };
+}
+
+/**
+ * This method returns the first argument provided to it.
+ *
+ * @static
+ * @memberOf _
+ * @category Utility
+ * @param {*} value Any value.
+ * @returns {*} Returns `value`.
+ * @example
+ *
+ * var object = { 'user': 'fred' };
+ *
+ * _.identity(object) === object;
+ * // => true
+ */
+function identity(value) {
+  return value;
+}
+
+module.exports = bindCallback;
+
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._isiterateecall/index.js":[function(require,module,exports){
+/**
+ * lodash 3.0.6 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/**
+ * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
+ * of an array-like value.
+ */
+var MAX_SAFE_INTEGER = Math.pow(2, 53) - 1;
+
+/**
+ * The base implementation of `_.property` without support for deep paths.
+ *
+ * @private
+ * @param {string} key The key of the property to get.
+ * @returns {Function} Returns the new function.
+ */
+function baseProperty(key) {
+  return function(object) {
+    return object == null ? undefined : object[key];
+  };
+}
+
+/**
+ * Gets the "length" property value of `object`.
+ *
+ * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
+ * in Safari on iOS 8.1 ARM64.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {*} Returns the "length" value.
+ */
+var getLength = baseProperty('length');
+
+/**
+ * Checks if `value` is a valid array-like index.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+ * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+ */
+function isIndex(value, length) {
+  value = +value;
+  length = length == null ? MAX_SAFE_INTEGER : length;
+  return value > -1 && value % 1 == 0 && value < length;
+}
+
+/**
+ * Checks if the provided arguments are from an iteratee call.
+ *
+ * @private
+ * @param {*} value The potential iteratee value argument.
+ * @param {*} index The potential iteratee index or key argument.
+ * @param {*} object The potential iteratee object argument.
+ * @returns {boolean} Returns `true` if the arguments are from an iteratee call, else `false`.
+ */
+function isIterateeCall(value, index, object) {
+  if (!isObject(object)) {
+    return false;
+  }
+  var type = typeof index;
+  if (type == 'number') {
+    var length = getLength(object),
+        prereq = isLength(length) && isIndex(index, length);
+  } else {
+    prereq = type == 'string' && index in object;
+  }
+  if (prereq) {
+    var other = object[index];
+    return value === value ? (value === other) : (other !== other);
+  }
+  return false;
+}
+
+/**
+ * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This function is based on [`ToLength`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength).
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ */
+function isLength(value) {
+  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+}
+
+/**
+ * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+ * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(1);
+ * // => false
+ */
+function isObject(value) {
+  // Avoid a V8 JIT bug in Chrome 19-20.
+  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+  var type = typeof value;
+  return type == 'function' || (!!value && type == 'object');
+}
+
+module.exports = isIterateeCall;
+
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash.restparam/index.js":[function(require,module,exports){
+/**
+ * lodash 3.6.1 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/** Used as the `TypeError` message for "Functions" methods. */
+var FUNC_ERROR_TEXT = 'Expected a function';
+
+/* Native method references for those with the same name as other `lodash` methods. */
+var nativeMax = Math.max;
+
+/**
+ * Creates a function that invokes `func` with the `this` binding of the
+ * created function and arguments from `start` and beyond provided as an array.
+ *
+ * **Note:** This method is based on the [rest parameter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters).
+ *
+ * @static
+ * @memberOf _
+ * @category Function
+ * @param {Function} func The function to apply a rest parameter to.
+ * @param {number} [start=func.length-1] The start position of the rest parameter.
+ * @returns {Function} Returns the new function.
+ * @example
+ *
+ * var say = _.restParam(function(what, names) {
+ *   return what + ' ' + _.initial(names).join(', ') +
+ *     (_.size(names) > 1 ? ', & ' : '') + _.last(names);
+ * });
+ *
+ * say('hello', 'fred', 'barney', 'pebbles');
+ * // => 'hello fred, barney, & pebbles'
+ */
+function restParam(func, start) {
+  if (typeof func != 'function') {
+    throw new TypeError(FUNC_ERROR_TEXT);
+  }
+  start = nativeMax(start === undefined ? (func.length - 1) : (+start || 0), 0);
+  return function() {
+    var args = arguments,
+        index = -1,
+        length = nativeMax(args.length - start, 0),
+        rest = Array(length);
+
+    while (++index < length) {
+      rest[index] = args[start + index];
+    }
+    switch (start) {
+      case 0: return func.call(this, rest);
+      case 1: return func.call(this, args[0], rest);
+      case 2: return func.call(this, args[0], args[1], rest);
+    }
+    var otherArgs = Array(start + 1);
+    index = -1;
+    while (++index < start) {
+      otherArgs[index] = args[index];
+    }
+    otherArgs[start] = rest;
+    return func.apply(this, otherArgs);
+  };
+}
+
+module.exports = restParam;
+
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.isnative/index.js":[function(require,module,exports){
+/**
+ * lodash 3.0.2 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/** `Object#toString` result references. */
+var funcTag = '[object Function]';
+
+/**
+ * Used to match `RegExp` [special characters](http://www.regular-expressions.info/characters.html#special).
+ * In addition to special characters the forward slash is escaped to allow for
+ * easier `eval` use and `Function` compilation.
+ */
+var reRegExpChars = /[.*+?^${}()|[\]\/\\]/g,
+    reHasRegExpChars = RegExp(reRegExpChars.source);
+
+/** Used to detect host constructors (Safari > 5). */
+var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+/**
+ * Converts `value` to a string if it is not one. An empty string is returned
+ * for `null` or `undefined` values.
+ *
+ * @private
+ * @param {*} value The value to process.
+ * @returns {string} Returns the string.
+ */
+function baseToString(value) {
+  if (typeof value == 'string') {
+    return value;
+  }
+  return value == null ? '' : (value + '');
+}
+
+/**
+ * Checks if `value` is object-like.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+/** Used for native method references. */
+var objectProto = Object.prototype;
+
+/** Used to resolve the decompiled source of functions. */
+var fnToString = Function.prototype.toString;
+
+/**
+ * Used to resolve the [`toStringTag`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring)
+ * of values.
+ */
+var objToString = objectProto.toString;
+
+/** Used to detect if a method is native. */
+var reIsNative = RegExp('^' +
+  escapeRegExp(objToString)
+  .replace(/toString|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+);
+
+/**
+ * Checks if `value` is a native function.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
+ * @example
+ *
+ * _.isNative(Array.prototype.push);
+ * // => true
+ *
+ * _.isNative(_);
+ * // => false
+ */
+function isNative(value) {
+  if (value == null) {
+    return false;
+  }
+  if (objToString.call(value) == funcTag) {
+    return reIsNative.test(fnToString.call(value));
+  }
+  return isObjectLike(value) && reIsHostCtor.test(value);
+}
+
+/**
+ * Escapes the `RegExp` special characters "\", "/", "^", "$", ".", "|", "?",
+ * "*", "+", "(", ")", "[", "]", "{" and "}" in `string`.
+ *
+ * @static
+ * @memberOf _
+ * @category String
+ * @param {string} [string=''] The string to escape.
+ * @returns {string} Returns the escaped string.
+ * @example
+ *
+ * _.escapeRegExp('[lodash](https://lodash.com/)');
+ * // => '\[lodash\]\(https:\/\/lodash\.com\/\)'
+ */
+function escapeRegExp(string) {
+  string = baseToString(string);
+  return (string && reHasRegExpChars.test(string))
+    ? string.replace(reRegExpChars, '\\$&')
+    : string;
+}
+
+module.exports = isNative;
+
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.keys/index.js":[function(require,module,exports){
+/**
+ * lodash 3.0.6 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+var isArguments = require('lodash.isarguments'),
+    isArray = require('lodash.isarray'),
+    isNative = require('lodash.isnative');
+
+/** Used for native method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/** Native method references. */
+var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+
+/* Native method references for those with the same name as other `lodash` methods. */
+var nativeKeys = isNative(nativeKeys = Object.keys) && nativeKeys;
+
+/**
+ * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
+ * of an array-like value.
+ */
+var MAX_SAFE_INTEGER = Math.pow(2, 53) - 1;
+
+/**
+ * An object environment feature flags.
+ *
+ * @static
+ * @memberOf _
+ * @type Object
+ */
+var support = {};
+
+(function(x) {
+  var Ctor = function() { this.x = x; },
+      object = { '0': x, 'length': x },
+      props = [];
+
+  Ctor.prototype = { 'valueOf': x, 'y': x };
+  for (var key in new Ctor) { props.push(key); }
+
+  /**
+   * Detect if `arguments` object indexes are non-enumerable.
+   *
+   * In Firefox < 4, IE < 9, PhantomJS, and Safari < 5.1 `arguments` object
+   * indexes are non-enumerable. Chrome < 25 and Node.js < 0.11.0 treat
+   * `arguments` object indexes as non-enumerable and fail `hasOwnProperty`
+   * checks for indexes that exceed the number of function parameters and
+   * whose associated argument values are `0`.
+   *
+   * @memberOf _.support
+   * @type boolean
+   */
+  try {
+    support.nonEnumArgs = !propertyIsEnumerable.call(arguments, 1);
+  } catch(e) {
+    support.nonEnumArgs = true;
+  }
+}(1, 0));
+
+/**
+ * Checks if `value` is a valid array-like index.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+ * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+ */
+function isIndex(value, length) {
+  value = +value;
+  length = length == null ? MAX_SAFE_INTEGER : length;
+  return value > -1 && value % 1 == 0 && value < length;
+}
+
+/**
+ * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This function is based on [`ToLength`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength).
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ */
+function isLength(value) {
+  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+}
+
+/**
+ * A fallback implementation of `Object.keys` which creates an array of the
+ * own enumerable property names of `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ */
+function shimKeys(object) {
+  var props = keysIn(object),
+      propsLength = props.length,
+      length = propsLength && object.length;
+
+  var allowIndexes = length && isLength(length) &&
+    (isArray(object) || (support.nonEnumArgs && isArguments(object)));
+
+  var index = -1,
+      result = [];
+
+  while (++index < propsLength) {
+    var key = props[index];
+    if ((allowIndexes && isIndex(key, length)) || hasOwnProperty.call(object, key)) {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+/**
+ * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+ * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(1);
+ * // => false
+ */
+function isObject(value) {
+  // Avoid a V8 JIT bug in Chrome 19-20.
+  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+  var type = typeof value;
+  return type == 'function' || (!!value && type == 'object');
+}
+
+/**
+ * Creates an array of the own enumerable property names of `object`.
+ *
+ * **Note:** Non-object values are coerced to objects. See the
+ * [ES spec](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.keys)
+ * for more details.
+ *
+ * @static
+ * @memberOf _
+ * @category Object
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ *   this.b = 2;
+ * }
+ *
+ * Foo.prototype.c = 3;
+ *
+ * _.keys(new Foo);
+ * // => ['a', 'b'] (iteration order is not guaranteed)
+ *
+ * _.keys('hi');
+ * // => ['0', '1']
+ */
+var keys = !nativeKeys ? shimKeys : function(object) {
+  if (object) {
+    var Ctor = object.constructor,
+        length = object.length;
+  }
+  if ((typeof Ctor == 'function' && Ctor.prototype === object) ||
+      (typeof object != 'function' && isLength(length))) {
+    return shimKeys(object);
+  }
+  return isObject(object) ? nativeKeys(object) : [];
+};
+
+/**
+ * Creates an array of the own and inherited enumerable property names of `object`.
+ *
+ * **Note:** Non-object values are coerced to objects.
+ *
+ * @static
+ * @memberOf _
+ * @category Object
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ *   this.b = 2;
+ * }
+ *
+ * Foo.prototype.c = 3;
+ *
+ * _.keysIn(new Foo);
+ * // => ['a', 'b', 'c'] (iteration order is not guaranteed)
+ */
+function keysIn(object) {
+  if (object == null) {
+    return [];
+  }
+  if (!isObject(object)) {
+    object = Object(object);
+  }
+  var length = object.length;
+  length = (length && isLength(length) &&
+    (isArray(object) || (support.nonEnumArgs && isArguments(object))) && length) || 0;
+
+  var Ctor = object.constructor,
+      index = -1,
+      isProto = typeof Ctor == 'function' && Ctor.prototype === object,
+      result = Array(length),
+      skipIndexes = length > 0;
+
+  while (++index < length) {
+    result[index] = (index + '');
+  }
+  for (var key in object) {
+    if (!(skipIndexes && isIndex(key, length)) &&
+        !(key == 'constructor' && (isProto || !hasOwnProperty.call(object, key)))) {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+module.exports = keys;
+
+},{"lodash.isarguments":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.keys/node_modules/lodash.isarguments/index.js","lodash.isarray":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.keys/node_modules/lodash.isarray/index.js","lodash.isnative":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.isnative/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.keys/node_modules/lodash.isarguments/index.js":[function(require,module,exports){
+/**
+ * lodash 3.0.1 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.2 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/** `Object#toString` result references. */
+var argsTag = '[object Arguments]';
+
+/**
+ * Checks if `value` is object-like.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+/** Used for native method references. */
+var objectProto = Object.prototype;
+
+/**
+ * Used to resolve the [`toStringTag`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring)
+ * of values.
+ */
+var objToString = objectProto.toString;
+
+/**
+ * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
+ * of an array-like value.
+ */
+var MAX_SAFE_INTEGER = Math.pow(2, 53) - 1;
+
+/**
+ * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This function is based on [`ToLength`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength).
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ */
+function isLength(value) {
+  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+}
+
+/**
+ * Checks if `value` is classified as an `arguments` object.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @example
+ *
+ * _.isArguments(function() { return arguments; }());
+ * // => true
+ *
+ * _.isArguments([1, 2, 3]);
+ * // => false
+ */
+function isArguments(value) {
+  var length = isObjectLike(value) ? value.length : undefined;
+  return isLength(length) && objToString.call(value) == argsTag;
+}
+
+module.exports = isArguments;
+
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.keys/node_modules/lodash.isarray/index.js":[function(require,module,exports){
+/**
+ * lodash 3.0.2 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/** `Object#toString` result references. */
+var arrayTag = '[object Array]',
+    funcTag = '[object Function]';
+
+/**
+ * Used to match `RegExp` [special characters](http://www.regular-expressions.info/characters.html#special).
+ * In addition to special characters the forward slash is escaped to allow for
+ * easier `eval` use and `Function` compilation.
+ */
+var reRegExpChars = /[.*+?^${}()|[\]\/\\]/g,
+    reHasRegExpChars = RegExp(reRegExpChars.source);
+
+/** Used to detect host constructors (Safari > 5). */
+var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+/**
+ * Converts `value` to a string if it is not one. An empty string is returned
+ * for `null` or `undefined` values.
+ *
+ * @private
+ * @param {*} value The value to process.
+ * @returns {string} Returns the string.
+ */
+function baseToString(value) {
+  if (typeof value == 'string') {
+    return value;
+  }
+  return value == null ? '' : (value + '');
+}
+
+/**
+ * Checks if `value` is object-like.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+/** Used for native method references. */
+var objectProto = Object.prototype;
+
+/** Used to resolve the decompiled source of functions. */
+var fnToString = Function.prototype.toString;
+
+/**
+ * Used to resolve the [`toStringTag`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring)
+ * of values.
+ */
+var objToString = objectProto.toString;
+
+/** Used to detect if a method is native. */
+var reIsNative = RegExp('^' +
+  escapeRegExp(objToString)
+  .replace(/toString|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+);
+
+/* Native method references for those with the same name as other `lodash` methods. */
+var nativeIsArray = isNative(nativeIsArray = Array.isArray) && nativeIsArray;
+
+/**
+ * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
+ * of an array-like value.
+ */
+var MAX_SAFE_INTEGER = Math.pow(2, 53) - 1;
+
+/**
+ * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This function is based on [`ToLength`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength).
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ */
+function isLength(value) {
+  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+}
+
+/**
+ * Checks if `value` is classified as an `Array` object.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @example
+ *
+ * _.isArray([1, 2, 3]);
+ * // => true
+ *
+ * _.isArray(function() { return arguments; }());
+ * // => false
+ */
+var isArray = nativeIsArray || function(value) {
+  return isObjectLike(value) && isLength(value.length) && objToString.call(value) == arrayTag;
+};
+
+/**
+ * Checks if `value` is a native function.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
+ * @example
+ *
+ * _.isNative(Array.prototype.push);
+ * // => true
+ *
+ * _.isNative(_);
+ * // => false
+ */
+function isNative(value) {
+  if (value == null) {
+    return false;
+  }
+  if (objToString.call(value) == funcTag) {
+    return reIsNative.test(fnToString.call(value));
+  }
+  return isObjectLike(value) && reIsHostCtor.test(value);
+}
+
+/**
+ * Escapes the `RegExp` special characters "\", "/", "^", "$", ".", "|", "?",
+ * "*", "+", "(", ")", "[", "]", "{" and "}" in `string`.
+ *
+ * @static
+ * @memberOf _
+ * @category String
+ * @param {string} [string=''] The string to escape.
+ * @returns {string} Returns the escaped string.
+ * @example
+ *
+ * _.escapeRegExp('[lodash](https://lodash.com/)');
+ * // => '\[lodash\]\(https:\/\/lodash\.com\/\)'
+ */
+function escapeRegExp(string) {
+  string = baseToString(string);
+  return (string && reHasRegExpChars.test(string))
+    ? string.replace(reRegExpChars, '\\$&')
+    : string;
+}
+
+module.exports = isArray;
+
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/index.js":[function(require,module,exports){
+/**
+ * lodash 3.1.0 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.2 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+var createWrapper = require('lodash._createwrapper'),
+    replaceHolders = require('lodash._replaceholders'),
+    restParam = require('lodash.restparam');
+
+/** Used to compose bitmasks for wrapper metadata. */
+var BIND_FLAG = 1,
+    PARTIAL_FLAG = 32;
+
+/**
+ * Creates a function that invokes `func` with the `this` binding of `thisArg`
+ * and prepends any additional `_.bind` arguments to those provided to the
+ * bound function.
+ *
+ * The `_.bind.placeholder` value, which defaults to `_` in monolithic builds,
+ * may be used as a placeholder for partially applied arguments.
+ *
+ * **Note:** Unlike native `Function#bind` this method does not set the `length`
+ * property of bound functions.
+ *
+ * @static
+ * @memberOf _
+ * @category Function
+ * @param {Function} func The function to bind.
+ * @param {*} thisArg The `this` binding of `func`.
+ * @param {...*} [partials] The arguments to be partially applied.
+ * @returns {Function} Returns the new bound function.
+ * @example
+ *
+ * var greet = function(greeting, punctuation) {
+ *   return greeting + ' ' + this.user + punctuation;
+ * };
+ *
+ * var object = { 'user': 'fred' };
+ *
+ * var bound = _.bind(greet, object, 'hi');
+ * bound('!');
+ * // => 'hi fred!'
+ *
+ * // using placeholders
+ * var bound = _.bind(greet, object, _, '!');
+ * bound('hi');
+ * // => 'hi fred!'
+ */
+var bind = restParam(function(func, thisArg, partials) {
+  var bitmask = BIND_FLAG;
+  if (partials.length) {
+    var holders = replaceHolders(partials, bind.placeholder);
+    bitmask |= PARTIAL_FLAG;
+  }
+  return createWrapper(func, bitmask, thisArg, partials, holders);
+});
+
+// Assign default placeholders.
+bind.placeholder = {};
+
+module.exports = bind;
+
+},{"lodash._createwrapper":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/node_modules/lodash._createwrapper/index.js","lodash._replaceholders":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/node_modules/lodash._replaceholders/index.js","lodash.restparam":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/node_modules/lodash._createwrapper/index.js":[function(require,module,exports){
+(function (global){
+/**
+ * lodash 3.0.3 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.2 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+var arrayCopy = require('lodash._arraycopy'),
+    baseCreate = require('lodash._basecreate'),
+    replaceHolders = require('lodash._replaceholders');
+
+/** Used to compose bitmasks for wrapper metadata. */
+var BIND_FLAG = 1,
+    BIND_KEY_FLAG = 2,
+    CURRY_BOUND_FLAG = 4,
+    CURRY_FLAG = 8,
+    CURRY_RIGHT_FLAG = 16,
+    PARTIAL_FLAG = 32,
+    PARTIAL_RIGHT_FLAG = 64,
+    ARY_FLAG = 128;
+
+/** Used as the `TypeError` message for "Functions" methods. */
+var FUNC_ERROR_TEXT = 'Expected a function';
+
+/* Native method references for those with the same name as other `lodash` methods. */
+var nativeMax = Math.max,
+    nativeMin = Math.min;
+
+/**
+ * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
+ * of an array-like value.
+ */
+var MAX_SAFE_INTEGER = Math.pow(2, 53) - 1;
+
+/**
+ * Creates an array that is the composition of partially applied arguments,
+ * placeholders, and provided arguments into a single array of arguments.
+ *
+ * @private
+ * @param {Array|Object} args The provided arguments.
+ * @param {Array} partials The arguments to prepend to those provided.
+ * @param {Array} holders The `partials` placeholder indexes.
+ * @returns {Array} Returns the new array of composed arguments.
+ */
+function composeArgs(args, partials, holders) {
+  var holdersLength = holders.length,
+      argsIndex = -1,
+      argsLength = nativeMax(args.length - holdersLength, 0),
+      leftIndex = -1,
+      leftLength = partials.length,
+      result = Array(argsLength + leftLength);
+
+  while (++leftIndex < leftLength) {
+    result[leftIndex] = partials[leftIndex];
+  }
+  while (++argsIndex < holdersLength) {
+    result[holders[argsIndex]] = args[argsIndex];
+  }
+  while (argsLength--) {
+    result[leftIndex++] = args[argsIndex++];
+  }
+  return result;
+}
+
+/**
+ * This function is like `composeArgs` except that the arguments composition
+ * is tailored for `_.partialRight`.
+ *
+ * @private
+ * @param {Array|Object} args The provided arguments.
+ * @param {Array} partials The arguments to append to those provided.
+ * @param {Array} holders The `partials` placeholder indexes.
+ * @returns {Array} Returns the new array of composed arguments.
+ */
+function composeArgsRight(args, partials, holders) {
+  var holdersIndex = -1,
+      holdersLength = holders.length,
+      argsIndex = -1,
+      argsLength = nativeMax(args.length - holdersLength, 0),
+      rightIndex = -1,
+      rightLength = partials.length,
+      result = Array(argsLength + rightLength);
+
+  while (++argsIndex < argsLength) {
+    result[argsIndex] = args[argsIndex];
+  }
+  var pad = argsIndex;
+  while (++rightIndex < rightLength) {
+    result[pad + rightIndex] = partials[rightIndex];
+  }
+  while (++holdersIndex < holdersLength) {
+    result[pad + holders[holdersIndex]] = args[argsIndex++];
+  }
+  return result;
+}
+
+/**
+ * Creates a function that wraps `func` and invokes it with the `this`
+ * binding of `thisArg`.
+ *
+ * @private
+ * @param {Function} func The function to bind.
+ * @param {*} [thisArg] The `this` binding of `func`.
+ * @returns {Function} Returns the new bound function.
+ */
+function createBindWrapper(func, thisArg) {
+  var Ctor = createCtorWrapper(func);
+
+  function wrapper() {
+    var fn = (this && this !== global && this instanceof wrapper) ? Ctor : func;
+    return fn.apply(thisArg, arguments);
+  }
+  return wrapper;
+}
+
+/**
+ * Creates a function that produces an instance of `Ctor` regardless of
+ * whether it was invoked as part of a `new` expression or by `call` or `apply`.
+ *
+ * @private
+ * @param {Function} Ctor The constructor to wrap.
+ * @returns {Function} Returns the new wrapped function.
+ */
+function createCtorWrapper(Ctor) {
+  return function() {
+    var thisBinding = baseCreate(Ctor.prototype),
+        result = Ctor.apply(thisBinding, arguments);
+
+    // Mimic the constructor's `return` behavior.
+    // See https://es5.github.io/#x13.2.2 for more details.
+    return isObject(result) ? result : thisBinding;
+  };
+}
+
+/**
+ * Creates a function that wraps `func` and invokes it with optional `this`
+ * binding of, partial application, and currying.
+ *
+ * @private
+ * @param {Function|string} func The function or method name to reference.
+ * @param {number} bitmask The bitmask of flags. See `createWrapper` for more details.
+ * @param {*} [thisArg] The `this` binding of `func`.
+ * @param {Array} [partials] The arguments to prepend to those provided to the new function.
+ * @param {Array} [holders] The `partials` placeholder indexes.
+ * @param {Array} [partialsRight] The arguments to append to those provided to the new function.
+ * @param {Array} [holdersRight] The `partialsRight` placeholder indexes.
+ * @param {Array} [argPos] The argument positions of the new function.
+ * @param {number} [ary] The arity cap of `func`.
+ * @param {number} [arity] The arity of `func`.
+ * @returns {Function} Returns the new wrapped function.
+ */
+function createHybridWrapper(func, bitmask, thisArg, partials, holders, partialsRight, holdersRight, argPos, ary, arity) {
+  var isAry = bitmask & ARY_FLAG,
+      isBind = bitmask & BIND_FLAG,
+      isBindKey = bitmask & BIND_KEY_FLAG,
+      isCurry = bitmask & CURRY_FLAG,
+      isCurryBound = bitmask & CURRY_BOUND_FLAG,
+      isCurryRight = bitmask & CURRY_RIGHT_FLAG;
+
+  var Ctor = !isBindKey && createCtorWrapper(func),
+      key = func;
+
+  function wrapper() {
+    // Avoid `arguments` object use disqualifying optimizations by
+    // converting it to an array before providing it to other functions.
+    var length = arguments.length,
+        index = length,
+        args = Array(length);
+
+    while (index--) {
+      args[index] = arguments[index];
+    }
+    if (partials) {
+      args = composeArgs(args, partials, holders);
+    }
+    if (partialsRight) {
+      args = composeArgsRight(args, partialsRight, holdersRight);
+    }
+    if (isCurry || isCurryRight) {
+      var placeholder = wrapper.placeholder,
+          argsHolders = replaceHolders(args, placeholder);
+
+      length -= argsHolders.length;
+      if (length < arity) {
+        var newArgPos = argPos ? arrayCopy(argPos) : null,
+            newArity = nativeMax(arity - length, 0),
+            newsHolders = isCurry ? argsHolders : null,
+            newHoldersRight = isCurry ? null : argsHolders,
+            newPartials = isCurry ? args : null,
+            newPartialsRight = isCurry ? null : args;
+
+        bitmask |= (isCurry ? PARTIAL_FLAG : PARTIAL_RIGHT_FLAG);
+        bitmask &= ~(isCurry ? PARTIAL_RIGHT_FLAG : PARTIAL_FLAG);
+
+        if (!isCurryBound) {
+          bitmask &= ~(BIND_FLAG | BIND_KEY_FLAG);
+        }
+        var result = createHybridWrapper(func, bitmask, thisArg, newPartials, newsHolders, newPartialsRight, newHoldersRight, newArgPos, ary, newArity);
+
+        result.placeholder = placeholder;
+        return result;
+      }
+    }
+    var thisBinding = isBind ? thisArg : this;
+    if (isBindKey) {
+      func = thisBinding[key];
+    }
+    if (argPos) {
+      args = reorder(args, argPos);
+    }
+    if (isAry && ary < args.length) {
+      args.length = ary;
+    }
+    var fn = (this && this !== global && this instanceof wrapper) ? (Ctor || createCtorWrapper(func)) : func;
+    return fn.apply(thisBinding, args);
+  }
+  return wrapper;
+}
+
+/**
+ * Creates a function that wraps `func` and invokes it with the optional `this`
+ * binding of `thisArg` and the `partials` prepended to those provided to
+ * the wrapper.
+ *
+ * @private
+ * @param {Function} func The function to partially apply arguments to.
+ * @param {number} bitmask The bitmask of flags. See `createWrapper` for more details.
+ * @param {*} thisArg The `this` binding of `func`.
+ * @param {Array} partials The arguments to prepend to those provided to the new function.
+ * @returns {Function} Returns the new bound function.
+ */
+function createPartialWrapper(func, bitmask, thisArg, partials) {
+  var isBind = bitmask & BIND_FLAG,
+      Ctor = createCtorWrapper(func);
+
+  function wrapper() {
+    // Avoid `arguments` object use disqualifying optimizations by
+    // converting it to an array before providing it `func`.
+    var argsIndex = -1,
+        argsLength = arguments.length,
+        leftIndex = -1,
+        leftLength = partials.length,
+        args = Array(argsLength + leftLength);
+
+    while (++leftIndex < leftLength) {
+      args[leftIndex] = partials[leftIndex];
+    }
+    while (argsLength--) {
+      args[leftIndex++] = arguments[++argsIndex];
+    }
+    var fn = (this && this !== global && this instanceof wrapper) ? Ctor : func;
+    return fn.apply(isBind ? thisArg : this, args);
+  }
+  return wrapper;
+}
+
+/**
+ * Creates a function that either curries or invokes `func` with optional
+ * `this` binding and partially applied arguments.
+ *
+ * @private
+ * @param {Function|string} func The function or method name to reference.
+ * @param {number} bitmask The bitmask of flags.
+ *  The bitmask may be composed of the following flags:
+ *     1 - `_.bind`
+ *     2 - `_.bindKey`
+ *     4 - `_.curry` or `_.curryRight` of a bound function
+ *     8 - `_.curry`
+ *    16 - `_.curryRight`
+ *    32 - `_.partial`
+ *    64 - `_.partialRight`
+ *   128 - `_.rearg`
+ *   256 - `_.ary`
+ * @param {*} [thisArg] The `this` binding of `func`.
+ * @param {Array} [partials] The arguments to be partially applied.
+ * @param {Array} [holders] The `partials` placeholder indexes.
+ * @param {Array} [argPos] The argument positions of the new function.
+ * @param {number} [ary] The arity cap of `func`.
+ * @param {number} [arity] The arity of `func`.
+ * @returns {Function} Returns the new wrapped function.
+ */
+function createWrapper(func, bitmask, thisArg, partials, holders, argPos, ary, arity) {
+  var isBindKey = bitmask & BIND_KEY_FLAG;
+  if (!isBindKey && typeof func != 'function') {
+    throw new TypeError(FUNC_ERROR_TEXT);
+  }
+  var length = partials ? partials.length : 0;
+  if (!length) {
+    bitmask &= ~(PARTIAL_FLAG | PARTIAL_RIGHT_FLAG);
+    partials = holders = null;
+  }
+  length -= (holders ? holders.length : 0);
+  if (bitmask & PARTIAL_RIGHT_FLAG) {
+    var partialsRight = partials,
+        holdersRight = holders;
+
+    partials = holders = null;
+  }
+  var newData = [func, bitmask, thisArg, partials, holders, partialsRight, holdersRight, argPos, ary, arity];
+
+  newData[9] = arity == null
+    ? (isBindKey ? 0 : func.length)
+    : (nativeMax(arity - length, 0) || 0);
+
+  if (bitmask == BIND_FLAG) {
+    var result = createBindWrapper(newData[0], newData[2]);
+  } else if ((bitmask == PARTIAL_FLAG || bitmask == (BIND_FLAG | PARTIAL_FLAG)) && !newData[4].length) {
+    result = createPartialWrapper.apply(undefined, newData);
+  } else {
+    result = createHybridWrapper.apply(undefined, newData);
+  }
+  return result;
+}
+
+/**
+ * Checks if `value` is a valid array-like index.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+ * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+ */
+function isIndex(value, length) {
+  value = +value;
+  length = length == null ? MAX_SAFE_INTEGER : length;
+  return value > -1 && value % 1 == 0 && value < length;
+}
+
+/**
+ * Reorder `array` according to the specified indexes where the element at
+ * the first index is assigned as the first element, the element at
+ * the second index is assigned as the second element, and so on.
+ *
+ * @private
+ * @param {Array} array The array to reorder.
+ * @param {Array} indexes The arranged array indexes.
+ * @returns {Array} Returns `array`.
+ */
+function reorder(array, indexes) {
+  var arrLength = array.length,
+      length = nativeMin(indexes.length, arrLength),
+      oldArray = arrayCopy(array);
+
+  while (length--) {
+    var index = indexes[length];
+    array[length] = isIndex(index, arrLength) ? oldArray[index] : undefined;
+  }
+  return array;
+}
+
+/**
+ * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+ * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(1);
+ * // => false
+ */
+function isObject(value) {
+  // Avoid a V8 JIT bug in Chrome 19-20.
+  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+  var type = typeof value;
+  return type == 'function' || (!!value && type == 'object');
+}
+
+module.exports = createWrapper;
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"lodash._arraycopy":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/node_modules/lodash._createwrapper/node_modules/lodash._arraycopy/index.js","lodash._basecreate":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/node_modules/lodash._createwrapper/node_modules/lodash._basecreate/index.js","lodash._replaceholders":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/node_modules/lodash._replaceholders/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/node_modules/lodash._createwrapper/node_modules/lodash._arraycopy/index.js":[function(require,module,exports){
+/**
+ * lodash 3.0.0 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.7.0 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/**
+ * Copies the values of `source` to `array`.
+ *
+ * @private
+ * @param {Array} source The array to copy values from.
+ * @param {Array} [array=[]] The array to copy values to.
+ * @returns {Array} Returns `array`.
+ */
+function arrayCopy(source, array) {
+  var index = -1,
+      length = source.length;
+
+  array || (array = Array(length));
+  while (++index < length) {
+    array[index] = source[index];
+  }
+  return array;
+}
+
+module.exports = arrayCopy;
+
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/node_modules/lodash._createwrapper/node_modules/lodash._basecreate/index.js":[function(require,module,exports){
+(function (global){
+/**
+ * lodash 3.0.1 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.2 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/**
+ * The base implementation of `_.create` without support for assigning
+ * properties to the created object.
+ *
+ * @private
+ * @param {Object} prototype The object to inherit from.
+ * @returns {Object} Returns the new object.
+ */
+var baseCreate = (function() {
+  function Object() {}
+  return function(prototype) {
+    if (isObject(prototype)) {
+      Object.prototype = prototype;
+      var result = new Object;
+      Object.prototype = null;
+    }
+    return result || global.Object();
+  };
+}());
+
+/**
+ * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+ * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(1);
+ * // => false
+ */
+function isObject(value) {
+  // Avoid a V8 JIT bug in Chrome 19-20.
+  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+  var type = typeof value;
+  return type == 'function' || (!!value && type == 'object');
+}
+
+module.exports = baseCreate;
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/node_modules/lodash._replaceholders/index.js":[function(require,module,exports){
+/**
+ * lodash 3.0.0 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.7.0 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/** Used as the internal argument placeholder. */
+var PLACEHOLDER = '__lodash_placeholder__';
+
+/**
+ * Replaces all `placeholder` elements in `array` with an internal placeholder
+ * and returns an array of their indexes.
+ *
+ * @private
+ * @param {Array} array The array to modify.
+ * @param {*} placeholder The placeholder to replace.
+ * @returns {Array} Returns the new array of placeholder indexes.
+ */
+function replaceHolders(array, placeholder) {
+  var index = -1,
+      length = array.length,
+      resIndex = -1,
+      result = [];
+
+  while (++index < length) {
+    if (array[index] === placeholder) {
+      array[index] = PLACEHOLDER;
+      result[++resIndex] = index;
+    }
+  }
+  return result;
+}
+
+module.exports = replaceHolders;
+
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/node_modules/lodash.restparam/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash.restparam/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash.restparam/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/index.js":[function(require,module,exports){
+/**
+ * lodash 3.0.2 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.2 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+var baseFlatten = require('lodash._baseflatten'),
+    isIterateeCall = require('lodash._isiterateecall');
+
+/**
+ * Flattens a nested array. If `isDeep` is `true` the array is recursively
+ * flattened, otherwise it is only flattened a single level.
+ *
+ * @static
+ * @memberOf _
+ * @category Array
+ * @param {Array} array The array to flatten.
+ * @param {boolean} [isDeep] Specify a deep flatten.
+ * @param- {Object} [guard] Enables use as a callback for functions like `_.map`.
+ * @returns {Array} Returns the new flattened array.
+ * @example
+ *
+ * _.flatten([1, [2, 3, [4]]]);
+ * // => [1, 2, 3, [4]]
+ *
+ * // using `isDeep`
+ * _.flatten([1, [2, 3, [4]]], true);
+ * // => [1, 2, 3, 4]
+ */
+function flatten(array, isDeep, guard) {
+  var length = array ? array.length : 0;
+  if (guard && isIterateeCall(array, isDeep, guard)) {
+    isDeep = false;
+  }
+  return length ? baseFlatten(array, isDeep) : [];
+}
+
+module.exports = flatten;
+
+},{"lodash._baseflatten":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/index.js","lodash._isiterateecall":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._isiterateecall/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/index.js":[function(require,module,exports){
+/**
+ * lodash 3.1.1 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.2 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+var isArguments = require('lodash.isarguments'),
+    isArray = require('lodash.isarray');
+
+/**
+ * Checks if `value` is object-like.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+/**
+ * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
+ * of an array-like value.
+ */
+var MAX_SAFE_INTEGER = Math.pow(2, 53) - 1;
+
+/**
+ * The base implementation of `_.flatten` with added support for restricting
+ * flattening and specifying the start index.
+ *
+ * @private
+ * @param {Array} array The array to flatten.
+ * @param {boolean} isDeep Specify a deep flatten.
+ * @param {boolean} isStrict Restrict flattening to arrays and `arguments` objects.
+ * @returns {Array} Returns the new flattened array.
+ */
+function baseFlatten(array, isDeep, isStrict) {
+  var index = -1,
+      length = array.length,
+      resIndex = -1,
+      result = [];
+
+  while (++index < length) {
+    var value = array[index];
+
+    if (isObjectLike(value) && isLength(value.length) && (isArray(value) || isArguments(value))) {
+      if (isDeep) {
+        // Recursively flatten arrays (susceptible to call stack limits).
+        value = baseFlatten(value, isDeep, isStrict);
+      }
+      var valIndex = -1,
+          valLength = value.length;
+
+      result.length += valLength;
+      while (++valIndex < valLength) {
+        result[++resIndex] = value[valIndex];
+      }
+    } else if (!isStrict) {
+      result[++resIndex] = value;
+    }
+  }
+  return result;
+}
+
+/**
+ * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This function is based on [`ToLength`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength).
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ */
+function isLength(value) {
+  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+}
+
+module.exports = baseFlatten;
+
+},{"lodash.isarguments":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/node_modules/lodash.isarguments/index.js","lodash.isarray":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/node_modules/lodash.isarguments/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.keys/node_modules/lodash.isarguments/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.keys/node_modules/lodash.isarguments/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.keys/node_modules/lodash.isarguments/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/node_modules/lodash.isarray/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.keys/node_modules/lodash.isarray/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.keys/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.keys/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._isiterateecall/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._isiterateecall/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._isiterateecall/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._isiterateecall/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/index.js":[function(require,module,exports){
+/**
+ * lodash 3.0.3 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+var arrayEach = require('lodash._arrayeach'),
+    baseEach = require('lodash._baseeach'),
+    bindCallback = require('lodash._bindcallback'),
+    isArray = require('lodash.isarray');
+
+/**
+ * Creates a function for `_.forEach` or `_.forEachRight`.
+ *
+ * @private
+ * @param {Function} arrayFunc The function to iterate over an array.
+ * @param {Function} eachFunc The function to iterate over a collection.
+ * @returns {Function} Returns the new each function.
+ */
+function createForEach(arrayFunc, eachFunc) {
+  return function(collection, iteratee, thisArg) {
+    return (typeof iteratee == 'function' && thisArg === undefined && isArray(collection))
+      ? arrayFunc(collection, iteratee)
+      : eachFunc(collection, bindCallback(iteratee, thisArg, 3));
+  };
+}
+
+/**
+ * Iterates over elements of `collection` invoking `iteratee` for each element.
+ * The `iteratee` is bound to `thisArg` and invoked with three arguments:
+ * (value, index|key, collection). Iteratee functions may exit iteration early
+ * by explicitly returning `false`.
+ *
+ * **Note:** As with other "Collections" methods, objects with a "length" property
+ * are iterated like arrays. To avoid this behavior `_.forIn` or `_.forOwn`
+ * may be used for object iteration.
+ *
+ * @static
+ * @memberOf _
+ * @alias each
+ * @category Collection
+ * @param {Array|Object|string} collection The collection to iterate over.
+ * @param {Function} [iteratee=_.identity] The function invoked per iteration.
+ * @param {*} [thisArg] The `this` binding of `iteratee`.
+ * @returns {Array|Object|string} Returns `collection`.
+ * @example
+ *
+ * _([1, 2]).forEach(function(n) {
+ *   console.log(n);
+ * }).value();
+ * // => logs each value from left to right and returns the array
+ *
+ * _.forEach({ 'a': 1, 'b': 2 }, function(n, key) {
+ *   console.log(n, key);
+ * });
+ * // => logs each value-key pair and returns the object (iteration order is not guaranteed)
+ */
+var forEach = createForEach(arrayEach, baseEach);
+
+module.exports = forEach;
+
+},{"lodash._arrayeach":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._arrayeach/index.js","lodash._baseeach":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._baseeach/index.js","lodash._bindcallback":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._bindcallback/index.js","lodash.isarray":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._arrayeach/index.js":[function(require,module,exports){
+/**
+ * lodash 3.0.0 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.7.0 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/**
+ * A specialized version of `_.forEach` for arrays without support for callback
+ * shorthands or `this` binding.
+ *
+ * @private
+ * @param {Array} array The array to iterate over.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @returns {Array} Returns `array`.
+ */
+function arrayEach(array, iteratee) {
+  var index = -1,
+      length = array.length;
+
+  while (++index < length) {
+    if (iteratee(array[index], index, array) === false) {
+      break;
+    }
+  }
+  return array;
+}
+
+module.exports = arrayEach;
+
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._baseeach/index.js":[function(require,module,exports){
+/**
+ * lodash 3.0.3 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+var keys = require('lodash.keys');
+
+/**
+ * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
+ * of an array-like value.
+ */
+var MAX_SAFE_INTEGER = Math.pow(2, 53) - 1;
+
+/**
+ * The base implementation of `_.forEach` without support for callback
+ * shorthands and `this` binding.
+ *
+ * @private
+ * @param {Array|Object|string} collection The collection to iterate over.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @returns {Array|Object|string} Returns `collection`.
+ */
+var baseEach = createBaseEach(baseForOwn);
+
+/**
+ * The base implementation of `baseForIn` and `baseForOwn` which iterates
+ * over `object` properties returned by `keysFunc` invoking `iteratee` for
+ * each property. Iteratee functions may exit iteration early by explicitly
+ * returning `false`.
+ *
+ * @private
+ * @param {Object} object The object to iterate over.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @param {Function} keysFunc The function to get the keys of `object`.
+ * @returns {Object} Returns `object`.
+ */
+var baseFor = createBaseFor();
+
+/**
+ * The base implementation of `_.forOwn` without support for callback
+ * shorthands and `this` binding.
+ *
+ * @private
+ * @param {Object} object The object to iterate over.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @returns {Object} Returns `object`.
+ */
+function baseForOwn(object, iteratee) {
+  return baseFor(object, iteratee, keys);
+}
+
+/**
+ * The base implementation of `_.property` without support for deep paths.
+ *
+ * @private
+ * @param {string} key The key of the property to get.
+ * @returns {Function} Returns the new function.
+ */
+function baseProperty(key) {
+  return function(object) {
+    return object == null ? undefined : object[key];
+  };
+}
+
+/**
+ * Creates a `baseEach` or `baseEachRight` function.
+ *
+ * @private
+ * @param {Function} eachFunc The function to iterate over a collection.
+ * @param {boolean} [fromRight] Specify iterating from right to left.
+ * @returns {Function} Returns the new base function.
+ */
+function createBaseEach(eachFunc, fromRight) {
+  return function(collection, iteratee) {
+    var length = collection ? getLength(collection) : 0;
+    if (!isLength(length)) {
+      return eachFunc(collection, iteratee);
+    }
+    var index = fromRight ? length : -1,
+        iterable = toObject(collection);
+
+    while ((fromRight ? index-- : ++index < length)) {
+      if (iteratee(iterable[index], index, iterable) === false) {
+        break;
+      }
+    }
+    return collection;
+  };
+}
+
+/**
+ * Creates a base function for `_.forIn` or `_.forInRight`.
+ *
+ * @private
+ * @param {boolean} [fromRight] Specify iterating from right to left.
+ * @returns {Function} Returns the new base function.
+ */
+function createBaseFor(fromRight) {
+  return function(object, iteratee, keysFunc) {
+    var iterable = toObject(object),
+        props = keysFunc(object),
+        length = props.length,
+        index = fromRight ? length : -1;
+
+    while ((fromRight ? index-- : ++index < length)) {
+      var key = props[index];
+      if (iteratee(iterable[key], key, iterable) === false) {
+        break;
+      }
+    }
+    return object;
+  };
+}
+
+/**
+ * Gets the "length" property value of `object`.
+ *
+ * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
+ * in Safari on iOS 8.1 ARM64.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {*} Returns the "length" value.
+ */
+var getLength = baseProperty('length');
+
+/**
+ * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This function is based on [`ToLength`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength).
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ */
+function isLength(value) {
+  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+}
+
+/**
+ * Converts `value` to an object if it is not one.
+ *
+ * @private
+ * @param {*} value The value to process.
+ * @returns {Object} Returns the object.
+ */
+function toObject(value) {
+  return isObject(value) ? value : Object(value);
+}
+
+/**
+ * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+ * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(1);
+ * // => false
+ */
+function isObject(value) {
+  // Avoid a V8 JIT bug in Chrome 19-20.
+  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+  var type = typeof value;
+  return type == 'function' || (!!value && type == 'object');
+}
+
+module.exports = baseEach;
+
+},{"lodash.keys":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._baseeach/node_modules/lodash.keys/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._baseeach/node_modules/lodash.keys/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.keys/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.keys/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.keys/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._bindcallback/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._bindcallback/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._bindcallback/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._bindcallback/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash.isarray/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/node_modules/lodash.isarray/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/index.js":[function(require,module,exports){
+/**
+ * lodash 3.2.0 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+var baseEach = require('lodash._baseeach'),
+    invokePath = require('lodash._invokepath'),
+    isArray = require('lodash.isarray'),
+    restParam = require('lodash.restparam');
+
+/** Used to match property names within property paths. */
+var reIsDeepProp = /\.|\[(?:[^[\]]+|(["'])(?:(?!\1)[^\n\\]|\\.)*?)\1\]/,
+    reIsPlainProp = /^\w*$/;
+
+/**
+ * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
+ * of an array-like value.
+ */
+var MAX_SAFE_INTEGER = Math.pow(2, 53) - 1;
+
+/**
+ * The base implementation of `_.property` without support for deep paths.
+ *
+ * @private
+ * @param {string} key The key of the property to get.
+ * @returns {Function} Returns the new function.
+ */
+function baseProperty(key) {
+  return function(object) {
+    return object == null ? undefined : object[key];
+  };
+}
+
+/**
+ * Gets the "length" property value of `object`.
+ *
+ * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
+ * in Safari on iOS 8.1 ARM64.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {*} Returns the "length" value.
+ */
+var getLength = baseProperty('length');
+
+/**
+ * Checks if `value` is a property name and not a property path.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @param {Object} [object] The object to query keys on.
+ * @returns {boolean} Returns `true` if `value` is a property name, else `false`.
+ */
+function isKey(value, object) {
+  var type = typeof value;
+  if ((type == 'string' && reIsPlainProp.test(value)) || type == 'number') {
+    return true;
+  }
+  if (isArray(value)) {
+    return false;
+  }
+  var result = !reIsDeepProp.test(value);
+  return result || (object != null && value in toObject(object));
+}
+
+/**
+ * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This function is based on [`ToLength`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength).
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ */
+function isLength(value) {
+  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+}
+
+/**
+ * Converts `value` to an object if it is not one.
+ *
+ * @private
+ * @param {*} value The value to process.
+ * @returns {Object} Returns the object.
+ */
+function toObject(value) {
+  return isObject(value) ? value : Object(value);
+}
+
+/**
+ * Invokes the method at `path` on each element in `collection`, returning
+ * an array of the results of each invoked method. Any additional arguments
+ * are provided to each invoked method. If `methodName` is a function it is
+ * invoked for, and `this` bound to, each element in `collection`.
+ *
+ * @static
+ * @memberOf _
+ * @category Collection
+ * @param {Array|Object|string} collection The collection to iterate over.
+ * @param {Array|Function|string} path The path of the method to invoke or
+ *  the function invoked per iteration.
+ * @param {...*} [args] The arguments to invoke the method with.
+ * @returns {Array} Returns the array of results.
+ * @example
+ *
+ * _.invoke([[5, 1, 7], [3, 2, 1]], 'sort');
+ * // => [[1, 5, 7], [1, 2, 3]]
+ *
+ * _.invoke([123, 456], String.prototype.split, '');
+ * // => [['1', '2', '3'], ['4', '5', '6']]
+ */
+var invoke = restParam(function(collection, path, args) {
+  var index = -1,
+      isFunc = typeof path == 'function',
+      isProp = isKey(path),
+      length = getLength(collection),
+      result = isLength(length) ? Array(length) : [];
+
+  baseEach(collection, function(value) {
+    var func = isFunc ? path : (isProp && value != null && value[path]);
+    result[++index] = func ? func.apply(value, args) : invokePath(value, path, args);
+  });
+  return result;
+});
+
+/**
+ * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+ * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(1);
+ * // => false
+ */
+function isObject(value) {
+  // Avoid a V8 JIT bug in Chrome 19-20.
+  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+  var type = typeof value;
+  return type == 'function' || (!!value && type == 'object');
+}
+
+module.exports = invoke;
+
+},{"lodash._baseeach":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._baseeach/index.js","lodash._invokepath":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/index.js","lodash.isarray":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.isarray/index.js","lodash.restparam":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._baseeach/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._baseeach/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._baseeach/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._baseeach/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/index.js":[function(require,module,exports){
+/**
+ * lodash 3.7.0 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+var baseGet = require('lodash._baseget'),
+    baseSlice = require('lodash._baseslice'),
+    toPath = require('lodash._topath'),
+    isArray = require('lodash.isarray');
+
+/** Used to match property names within property paths. */
+var reIsDeepProp = /\.|\[(?:[^[\]]+|(["'])(?:(?!\1)[^\n\\]|\\.)*?)\1\]/,
+    reIsPlainProp = /^\w*$/;
+
+/**
+ * Invokes the method at `path` on `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {Array|string} path The path of the method to invoke.
+ * @param {Array} args The arguments to invoke the method with.
+ * @returns {*} Returns the result of the invoked method.
+ */
+function invokePath(object, path, args) {
+  if (object != null && !isKey(path, object)) {
+    path = toPath(path);
+    object = path.length == 1 ? object : baseGet(object, baseSlice(path, 0, -1));
+    path = last(path);
+  }
+  var func = object == null ? object : object[path];
+  return func == null ? undefined : func.apply(object, args);
+}
+
+/**
+ * Checks if `value` is a property name and not a property path.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @param {Object} [object] The object to query keys on.
+ * @returns {boolean} Returns `true` if `value` is a property name, else `false`.
+ */
+function isKey(value, object) {
+  var type = typeof value;
+  if ((type == 'string' && reIsPlainProp.test(value)) || type == 'number') {
+    return true;
+  }
+  if (isArray(value)) {
+    return false;
+  }
+  var result = !reIsDeepProp.test(value);
+  return result || (object != null && value in toObject(object));
+}
+
+/**
+ * Converts `value` to an object if it is not one.
+ *
+ * @private
+ * @param {*} value The value to process.
+ * @returns {Object} Returns the object.
+ */
+function toObject(value) {
+  return isObject(value) ? value : Object(value);
+}
+
+/**
+ * Gets the last element of `array`.
+ *
+ * @static
+ * @memberOf _
+ * @category Array
+ * @param {Array} array The array to query.
+ * @returns {*} Returns the last element of `array`.
+ * @example
+ *
+ * _.last([1, 2, 3]);
+ * // => 3
+ */
+function last(array) {
+  var length = array ? array.length : 0;
+  return length ? array[length - 1] : undefined;
+}
+
+/**
+ * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+ * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(1);
+ * // => false
+ */
+function isObject(value) {
+  // Avoid a V8 JIT bug in Chrome 19-20.
+  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+  var type = typeof value;
+  return type == 'function' || (!!value && type == 'object');
+}
+
+module.exports = invokePath;
+
+},{"lodash._baseget":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._baseget/index.js","lodash._baseslice":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._baseslice/index.js","lodash._topath":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._topath/index.js","lodash.isarray":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._baseget/index.js":[function(require,module,exports){
+/**
+ * lodash 3.7.0 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/**
+ * The base implementation of `get` without support for string paths
+ * and default values.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {Array} path The path of the property to get.
+ * @param {string} [pathKey] The key representation of path.
+ * @returns {*} Returns the resolved value.
+ */
+function baseGet(object, path, pathKey) {
+  if (object == null) {
+    return;
+  }
+  if (pathKey !== undefined && pathKey in toObject(object)) {
+    path = [pathKey];
+  }
+  var index = -1,
+      length = path.length;
+
+  while (object != null && ++index < length) {
+    var result = object = object[path[index]];
+  }
+  return result;
+}
+
+/**
+ * Converts `value` to an object if it is not one.
+ *
+ * @private
+ * @param {*} value The value to process.
+ * @returns {Object} Returns the object.
+ */
+function toObject(value) {
+  return isObject(value) ? value : Object(value);
+}
+
+/**
+ * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+ * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(1);
+ * // => false
+ */
+function isObject(value) {
+  // Avoid a V8 JIT bug in Chrome 19-20.
+  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+  var type = typeof value;
+  return type == 'function' || (!!value && type == 'object');
+}
+
+module.exports = baseGet;
+
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._baseslice/index.js":[function(require,module,exports){
+/**
+ * lodash 3.0.3 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/**
+ * The base implementation of `_.slice` without an iteratee call guard.
+ *
+ * @private
+ * @param {Array} array The array to slice.
+ * @param {number} [start=0] The start position.
+ * @param {number} [end=array.length] The end position.
+ * @returns {Array} Returns the slice of `array`.
+ */
+function baseSlice(array, start, end) {
+  var index = -1,
+      length = array.length;
+
+  start = start == null ? 0 : (+start || 0);
+  if (start < 0) {
+    start = -start > length ? 0 : (length + start);
+  }
+  end = (end === undefined || end > length) ? length : (+end || 0);
+  if (end < 0) {
+    end += length;
+  }
+  length = start > end ? 0 : ((end - start) >>> 0);
+  start >>>= 0;
+
+  var result = Array(length);
+  while (++index < length) {
+    result[index] = array[index + start];
+  }
+  return result;
+}
+
+module.exports = baseSlice;
+
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._topath/index.js":[function(require,module,exports){
+/**
+ * lodash 3.7.0 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+var baseToString = require('lodash._basetostring'),
+    isArray = require('lodash.isarray');
+
+/** Used to match property names within property paths. */
+var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\n\\]|\\.)*?)\2)\]/g;
+
+/** Used to match backslashes in property paths. */
+var reEscapeChar = /\\(\\)?/g;
+
+/**
+ * Converts `value` to property path array if it is not one.
+ *
+ * @private
+ * @param {*} value The value to process.
+ * @returns {Array} Returns the property path array.
+ */
+function toPath(value) {
+  if (isArray(value)) {
+    return value;
+  }
+  var result = [];
+  baseToString(value).replace(rePropName, function(match, number, quote, string) {
+    result.push(quote ? string.replace(reEscapeChar, '$1') : (number || match));
+  });
+  return result;
+}
+
+module.exports = toPath;
+
+},{"lodash._basetostring":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._topath/node_modules/lodash._basetostring/index.js","lodash.isarray":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._topath/node_modules/lodash._basetostring/index.js":[function(require,module,exports){
+/**
+ * lodash 3.0.0 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.7.0 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/**
+ * Converts `value` to a string if it is not one. An empty string is returned
+ * for `null` or `undefined` values.
+ *
+ * @private
+ * @param {*} value The value to process.
+ * @returns {string} Returns the string.
+ */
+function baseToString(value) {
+  if (typeof value == 'string') {
+    return value;
+  }
+  return value == null ? '' : (value + '');
+}
+
+module.exports = baseToString;
+
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.isarray/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash.isarray/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.restparam/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/node_modules/lodash.restparam/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/node_modules/lodash.restparam/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.isstring/index.js":[function(require,module,exports){
+/**
+ * lodash 3.0.1 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.2 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/** `Object#toString` result references. */
+var stringTag = '[object String]';
+
+/**
+ * Checks if `value` is object-like.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+/** Used for native method references. */
+var objectProto = Object.prototype;
+
+/**
+ * Used to resolve the [`toStringTag`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring)
+ * of values.
+ */
+var objToString = objectProto.toString;
+
+/**
+ * Checks if `value` is classified as a `String` primitive or object.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @example
+ *
+ * _.isString('abc');
+ * // => true
+ *
+ * _.isString(1);
+ * // => false
+ */
+function isString(value) {
+  return typeof value == 'string' || (isObjectLike(value) && objToString.call(value) == stringTag);
+}
+
+module.exports = isString;
+
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.last/index.js":[function(require,module,exports){
+/**
+ * lodash 3.0.0 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.7.0 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/**
+ * Gets the last element of `array`.
+ *
+ * @static
+ * @memberOf _
+ * @category Array
+ * @param {Array} array The array to query.
+ * @returns {*} Returns the last element of `array`.
+ * @example
+ *
+ * _.last([1, 2, 3]);
+ * // => 3
+ */
+function last(array) {
+  var length = array ? array.length : 0;
+  return length ? array[length - 1] : undefined;
+}
+
+module.exports = last;
+
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/index.js":[function(require,module,exports){
+/**
+ * lodash 3.1.0 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.2 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+var baseFlatten = require('lodash._baseflatten'),
+    bindCallback = require('lodash._bindcallback'),
+    pickByArray = require('lodash._pickbyarray'),
+    pickByCallback = require('lodash._pickbycallback'),
+    restParam = require('lodash.restparam');
+
+/**
+ * Creates an object composed of the picked `object` properties. Property
+ * names may be specified as individual arguments or as arrays of property
+ * names. If `predicate` is provided it is invoked for each property of `object`
+ * picking the properties `predicate` returns truthy for. The predicate is
+ * bound to `thisArg` and invoked with three arguments: (value, key, object).
+ *
+ * @static
+ * @memberOf _
+ * @category Object
+ * @param {Object} object The source object.
+ * @param {Function|...(string|string[])} [predicate] The function invoked per
+ *  iteration or property names to pick, specified as individual property
+ *  names or arrays of property names.
+ * @param {*} [thisArg] The `this` binding of `predicate`.
+ * @returns {Object} Returns the new object.
+ * @example
+ *
+ * var object = { 'user': 'fred', 'age': 40 };
+ *
+ * _.pick(object, 'user');
+ * // => { 'user': 'fred' }
+ *
+ * _.pick(object, _.isString);
+ * // => { 'user': 'fred' }
+ */
+var pick = restParam(function(object, props) {
+  if (object == null) {
+    return {};
+  }
+  return typeof props[0] == 'function'
+    ? pickByCallback(object, bindCallback(props[0], props[1], 3))
+    : pickByArray(object, baseFlatten(props));
+});
+
+module.exports = pick;
+
+},{"lodash._baseflatten":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._baseflatten/index.js","lodash._bindcallback":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._bindcallback/index.js","lodash._pickbyarray":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbyarray/index.js","lodash._pickbycallback":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbycallback/index.js","lodash.restparam":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._baseflatten/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._bindcallback/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._bindcallback/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._bindcallback/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._bindcallback/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbyarray/index.js":[function(require,module,exports){
+/**
+ * lodash 3.0.1 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.2 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/**
+ * A specialized version of `_.pick` that picks `object` properties specified
+ * by the `props` array.
+ *
+ * @private
+ * @param {Object} object The source object.
+ * @param {string[]} props The property names to pick.
+ * @returns {Object} Returns the new object.
+ */
+function pickByArray(object, props) {
+  object = toObject(object);
+
+  var index = -1,
+      length = props.length,
+      result = {};
+
+  while (++index < length) {
+    var key = props[index];
+    if (key in object) {
+      result[key] = object[key];
+    }
+  }
+  return result;
+}
+
+/**
+ * Converts `value` to an object if it is not one.
+ *
+ * @private
+ * @param {*} value The value to process.
+ * @returns {Object} Returns the object.
+ */
+function toObject(value) {
+  return isObject(value) ? value : Object(value);
+}
+
+/**
+ * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+ * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(1);
+ * // => false
+ */
+function isObject(value) {
+  // Avoid a V8 JIT bug in Chrome 19-20.
+  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+  var type = typeof value;
+  return type == 'function' || (!!value && type == 'object');
+}
+
+module.exports = pickByArray;
+
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbycallback/index.js":[function(require,module,exports){
+/**
+ * lodash 3.0.0 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.7.0 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+var baseFor = require('lodash._basefor'),
+    keysIn = require('lodash.keysin');
+
+/**
+ * The base implementation of `_.forIn` without support for callback
+ * shorthands and `this` binding.
+ *
+ * @private
+ * @param {Object} object The object to iterate over.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @returns {Object} Returns `object`.
+ */
+function baseForIn(object, iteratee) {
+  return baseFor(object, iteratee, keysIn);
+}
+
+/**
+ * A specialized version of `_.pick` that picks `object` properties `predicate`
+ * returns truthy for.
+ *
+ * @private
+ * @param {Object} object The source object.
+ * @param {Function} predicate The function invoked per iteration.
+ * @returns {Object} Returns the new object.
+ */
+function pickByCallback(object, predicate) {
+  var result = {};
+  baseForIn(object, function(value, key, object) {
+    if (predicate(value, key, object)) {
+      result[key] = value;
+    }
+  });
+  return result;
+}
+
+module.exports = pickByCallback;
+
+},{"lodash._basefor":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbycallback/node_modules/lodash._basefor/index.js","lodash.keysin":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbycallback/node_modules/lodash.keysin/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbycallback/node_modules/lodash._basefor/index.js":[function(require,module,exports){
+/**
+ * lodash 3.0.1 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.2 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/**
+ * The base implementation of `baseForIn` and `baseForOwn` which iterates
+ * over `object` properties returned by `keysFunc` invoking `iteratee` for
+ * each property. Iterator functions may exit iteration early by explicitly
+ * returning `false`.
+ *
+ * @private
+ * @param {Object} object The object to iterate over.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @param {Function} keysFunc The function to get the keys of `object`.
+ * @returns {Object} Returns `object`.
+ */
+var baseFor = createBaseFor();
+
+/**
+ * Creates a base function for `_.forIn` or `_.forInRight`.
+ *
+ * @private
+ * @param {boolean} [fromRight] Specify iterating from right to left.
+ * @returns {Function} Returns the new base function.
+ */
+function createBaseFor(fromRight) {
+  return function(object, iteratee, keysFunc) {
+    var iterable = toObject(object),
+        props = keysFunc(object),
+        length = props.length,
+        index = fromRight ? length : -1;
+
+    while ((fromRight ? index-- : ++index < length)) {
+      var key = props[index];
+      if (iteratee(iterable[key], key, iterable) === false) {
+        break;
+      }
+    }
+    return object;
+  };
+}
+
+/**
+ * Converts `value` to an object if it is not one.
+ *
+ * @private
+ * @param {*} value The value to process.
+ * @returns {Object} Returns the object.
+ */
+function toObject(value) {
+  return isObject(value) ? value : Object(value);
+}
+
+/**
+ * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+ * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(1);
+ * // => false
+ */
+function isObject(value) {
+  // Avoid a V8 JIT bug in Chrome 19-20.
+  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+  var type = typeof value;
+  return type == 'function' || (!!value && type == 'object');
+}
+
+module.exports = baseFor;
+
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbycallback/node_modules/lodash.keysin/index.js":[function(require,module,exports){
+/**
+ * lodash 3.0.5 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+var isArguments = require('lodash.isarguments'),
+    isArray = require('lodash.isarray');
+
+/** Used for native method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/** Native method references. */
+var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+
+/**
+ * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
+ * of an array-like value.
+ */
+var MAX_SAFE_INTEGER = Math.pow(2, 53) - 1;
+
+/**
+ * An object environment feature flags.
+ *
+ * @static
+ * @memberOf _
+ * @type Object
+ */
+var support = {};
+
+(function(x) {
+  var Ctor = function() { this.x = x; },
+      object = { '0': x, 'length': x },
+      props = [];
+
+  Ctor.prototype = { 'valueOf': x, 'y': x };
+  for (var key in new Ctor) { props.push(key); }
+
+  /**
+   * Detect if `arguments` object indexes are non-enumerable.
+   *
+   * In Firefox < 4, IE < 9, PhantomJS, and Safari < 5.1 `arguments` object
+   * indexes are non-enumerable. Chrome < 25 and Node.js < 0.11.0 treat
+   * `arguments` object indexes as non-enumerable and fail `hasOwnProperty`
+   * checks for indexes that exceed the number of function parameters and
+   * whose associated argument values are `0`.
+   *
+   * @memberOf _.support
+   * @type boolean
+   */
+  try {
+    support.nonEnumArgs = !propertyIsEnumerable.call(arguments, 1);
+  } catch(e) {
+    support.nonEnumArgs = true;
+  }
+}(1, 0));
+
+/**
+ * Checks if `value` is a valid array-like index.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+ * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+ */
+function isIndex(value, length) {
+  value = +value;
+  length = length == null ? MAX_SAFE_INTEGER : length;
+  return value > -1 && value % 1 == 0 && value < length;
+}
+
+/**
+ * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This function is based on [`ToLength`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength).
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ */
+function isLength(value) {
+  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+}
+
+/**
+ * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+ * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(1);
+ * // => false
+ */
+function isObject(value) {
+  // Avoid a V8 JIT bug in Chrome 19-20.
+  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+  var type = typeof value;
+  return type == 'function' || (!!value && type == 'object');
+}
+
+/**
+ * Creates an array of the own and inherited enumerable property names of `object`.
+ *
+ * **Note:** Non-object values are coerced to objects.
+ *
+ * @static
+ * @memberOf _
+ * @category Object
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ *   this.b = 2;
+ * }
+ *
+ * Foo.prototype.c = 3;
+ *
+ * _.keysIn(new Foo);
+ * // => ['a', 'b', 'c'] (iteration order is not guaranteed)
+ */
+function keysIn(object) {
+  if (object == null) {
+    return [];
+  }
+  if (!isObject(object)) {
+    object = Object(object);
+  }
+  var length = object.length;
+  length = (length && isLength(length) &&
+    (isArray(object) || (support.nonEnumArgs && isArguments(object))) && length) || 0;
+
+  var Ctor = object.constructor,
+      index = -1,
+      isProto = typeof Ctor == 'function' && Ctor.prototype === object,
+      result = Array(length),
+      skipIndexes = length > 0;
+
+  while (++index < length) {
+    result[index] = (index + '');
+  }
+  for (var key in object) {
+    if (!(skipIndexes && isIndex(key, length)) &&
+        !(key == 'constructor' && (isProto || !hasOwnProperty.call(object, key)))) {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+module.exports = keysIn;
+
+},{"lodash.isarguments":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbycallback/node_modules/lodash.keysin/node_modules/lodash.isarguments/index.js","lodash.isarray":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbycallback/node_modules/lodash.keysin/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbycallback/node_modules/lodash.keysin/node_modules/lodash.isarguments/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/node_modules/lodash.isarguments/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/node_modules/lodash.isarguments/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/node_modules/lodash.isarguments/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbycallback/node_modules/lodash.keysin/node_modules/lodash.isarray/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.isarray/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash.restparam/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.restparam/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.restparam/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/index.js":[function(require,module,exports){
+/**
+ * lodash 3.1.0 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+var baseGet = require('lodash._baseget'),
+    baseSlice = require('lodash._baseslice'),
+    toPath = require('lodash._topath'),
+    isArray = require('lodash.isarray'),
+    isFunction = require('lodash.isfunction');
+
+/** Used to match property names within property paths. */
+var reIsDeepProp = /\.|\[(?:[^[\]]+|(["'])(?:(?!\1)[^\n\\]|\\.)*?)\1\]/,
+    reIsPlainProp = /^\w*$/;
+
+/**
+ * Checks if `value` is a property name and not a property path.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @param {Object} [object] The object to query keys on.
+ * @returns {boolean} Returns `true` if `value` is a property name, else `false`.
+ */
+function isKey(value, object) {
+  var type = typeof value;
+  if ((type == 'string' && reIsPlainProp.test(value)) || type == 'number') {
+    return true;
+  }
+  if (isArray(value)) {
+    return false;
+  }
+  var result = !reIsDeepProp.test(value);
+  return result || (object != null && value in toObject(object));
+}
+
+/**
+ * Converts `value` to an object if it is not one.
+ *
+ * @private
+ * @param {*} value The value to process.
+ * @returns {Object} Returns the object.
+ */
+function toObject(value) {
+  return isObject(value) ? value : Object(value);
+}
+
+/**
+ * Gets the last element of `array`.
+ *
+ * @static
+ * @memberOf _
+ * @category Array
+ * @param {Array} array The array to query.
+ * @returns {*} Returns the last element of `array`.
+ * @example
+ *
+ * _.last([1, 2, 3]);
+ * // => 3
+ */
+function last(array) {
+  var length = array ? array.length : 0;
+  return length ? array[length - 1] : undefined;
+}
+
+/**
+ * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+ * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(1);
+ * // => false
+ */
+function isObject(value) {
+  // Avoid a V8 JIT bug in Chrome 19-20.
+  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+  var type = typeof value;
+  return type == 'function' || (!!value && type == 'object');
+}
+
+/**
+ * This method is like `_.get` except that if the resolved value is a function
+ * it is invoked with the `this` binding of its parent object and its result
+ * is returned.
+ *
+ * @static
+ * @memberOf _
+ * @category Object
+ * @param {Object} object The object to query.
+ * @param {Array|string} path The path of the property to resolve.
+ * @param {*} [defaultValue] The value returned if the resolved value is `undefined`.
+ * @returns {*} Returns the resolved value.
+ * @example
+ *
+ * var object = { 'a': [{ 'b': { 'c1': 3, 'c2': _.constant(4) } }] };
+ *
+ * _.result(object, 'a[0].b.c1');
+ * // => 3
+ *
+ * _.result(object, 'a[0].b.c2');
+ * // => 4
+ *
+ * _.result(object, 'a.b.c', 'default');
+ * // => 'default'
+ *
+ * _.result(object, 'a.b.c', _.constant('default'));
+ * // => 'default'
+ */
+function result(object, path, defaultValue) {
+  var result = object == null ? undefined : object[path];
+  if (result === undefined) {
+    if (object != null && !isKey(path, object)) {
+      path = toPath(path);
+      object = path.length == 1 ? object : baseGet(object, baseSlice(path, 0, -1));
+      result = object == null ? undefined : object[last(path)];
+    }
+    result = result === undefined ? defaultValue : result;
+  }
+  return isFunction(result) ? result.call(object) : result;
+}
+
+module.exports = result;
+
+},{"lodash._baseget":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash._baseget/index.js","lodash._baseslice":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash._baseslice/index.js","lodash._topath":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash._topath/index.js","lodash.isarray":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash.isarray/index.js","lodash.isfunction":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash.isfunction/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash._baseget/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._baseget/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._baseget/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._baseget/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash._baseslice/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._baseslice/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._baseslice/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._baseslice/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash._topath/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._topath/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._topath/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._topath/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash.isarray/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbycallback/node_modules/lodash.keysin/node_modules/lodash.isarray/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbycallback/node_modules/lodash.keysin/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbycallback/node_modules/lodash.keysin/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash.isfunction/index.js":[function(require,module,exports){
+(function (global){
+/**
+ * lodash 3.0.3 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/** `Object#toString` result references. */
+var funcTag = '[object Function]';
+
+/**
+ * Used to match `RegExp` [special characters](http://www.regular-expressions.info/characters.html#special).
+ * In addition to special characters the forward slash is escaped to allow for
+ * easier `eval` use and `Function` compilation.
+ */
+var reRegExpChars = /[.*+?^${}()|[\]\/\\]/g,
+    reHasRegExpChars = RegExp(reRegExpChars.source);
+
+/** Used to detect host constructors (Safari > 5). */
+var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+/**
+ * The base implementation of `_.isFunction` without support for environments
+ * with incorrect `typeof` results.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ */
+function baseIsFunction(value) {
+  // Avoid a Chakra JIT bug in compatibility modes of IE 11.
+  // See https://github.com/jashkenas/underscore/issues/1621 for more details.
+  return typeof value == 'function' || false;
+}
+
+/**
+ * Converts `value` to a string if it is not one. An empty string is returned
+ * for `null` or `undefined` values.
+ *
+ * @private
+ * @param {*} value The value to process.
+ * @returns {string} Returns the string.
+ */
+function baseToString(value) {
+  if (typeof value == 'string') {
+    return value;
+  }
+  return value == null ? '' : (value + '');
+}
+
+/**
+ * Checks if `value` is object-like.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+/** Used for native method references. */
+var objectProto = Object.prototype;
+
+/** Used to resolve the decompiled source of functions. */
+var fnToString = Function.prototype.toString;
+
+/**
+ * Used to resolve the [`toStringTag`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring)
+ * of values.
+ */
+var objToString = objectProto.toString;
+
+/** Used to detect if a method is native. */
+var reIsNative = RegExp('^' +
+  escapeRegExp(objToString)
+  .replace(/toString|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+);
+
+/** Native method references. */
+var Uint8Array = isNative(Uint8Array = global.Uint8Array) && Uint8Array;
+
+/**
+ * Checks if `value` is classified as a `Function` object.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @example
+ *
+ * _.isFunction(_);
+ * // => true
+ *
+ * _.isFunction(/abc/);
+ * // => false
+ */
+var isFunction = !(baseIsFunction(/x/) || (Uint8Array && !baseIsFunction(Uint8Array))) ? baseIsFunction : function(value) {
+  // The use of `Object#toString` avoids issues with the `typeof` operator
+  // in older versions of Chrome and Safari which return 'function' for regexes
+  // and Safari 8 equivalents which return 'object' for typed array constructors.
+  return objToString.call(value) == funcTag;
+};
+
+/**
+ * Checks if `value` is a native function.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
+ * @example
+ *
+ * _.isNative(Array.prototype.push);
+ * // => true
+ *
+ * _.isNative(_);
+ * // => false
+ */
+function isNative(value) {
+  if (value == null) {
+    return false;
+  }
+  if (objToString.call(value) == funcTag) {
+    return reIsNative.test(fnToString.call(value));
+  }
+  return isObjectLike(value) && reIsHostCtor.test(value);
+}
+
+/**
+ * Escapes the `RegExp` special characters "\", "/", "^", "$", ".", "|", "?",
+ * "*", "+", "(", ")", "[", "]", "{" and "}" in `string`.
+ *
+ * @static
+ * @memberOf _
+ * @category String
+ * @param {string} [string=''] The string to escape.
+ * @returns {string} Returns the escaped string.
+ * @example
+ *
+ * _.escapeRegExp('[lodash](https://lodash.com/)');
+ * // => '\[lodash\]\(https:\/\/lodash\.com\/\)'
+ */
+function escapeRegExp(string) {
+  string = baseToString(string);
+  return (string && reHasRegExpChars.test(string))
+    ? string.replace(reRegExpChars, '\\$&')
+    : string;
+}
+
+module.exports = isFunction;
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.uniqueid/index.js":[function(require,module,exports){
+/**
+ * lodash 3.0.0 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.7.0 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+var baseToString = require('lodash._basetostring');
+
+/** Used to generate unique IDs. */
+var idCounter = 0;
+
+/**
+ * Generates a unique ID. If `prefix` is provided the ID is appended to it.
+ *
+ * @static
+ * @memberOf _
+ * @category Utility
+ * @param {string} [prefix] The value to prefix the ID with.
+ * @returns {string} Returns the unique ID.
+ * @example
+ *
+ * _.uniqueId('contact_');
+ * // => 'contact_104'
+ *
+ * _.uniqueId();
+ * // => '105'
+ */
+function uniqueId(prefix) {
+  var id = ++idCounter;
+  return baseToString(prefix) + id;
+}
+
+module.exports = uniqueId;
+
+},{"lodash._basetostring":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.uniqueid/node_modules/lodash._basetostring/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.uniqueid/node_modules/lodash._basetostring/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._topath/node_modules/lodash._basetostring/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._topath/node_modules/lodash._basetostring/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._topath/node_modules/lodash._basetostring/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/matches-selector/index.js":[function(require,module,exports){
 'use strict';
 
 var proto = Element.prototype;
@@ -19392,7 +23043,7 @@ Velocity's structure:
 
     // body.jade compiled template
     templatizer["body"] = function tmpl_body() {
-        return '<div class="main"><div class="content"><header><div href="/" class="logo"></div><div class="title">Blue Pirate #7</div><div class="subtitle">Athenry Golf Course</div><div class="tabs"><a href="/leaderboard" class="ldrboard">Leaderboard</a><a href="/my-round" class="me_user">Me</a></div></header><div role="page-container" class="container pages"><div class="page"></div></div></div><div role="modal-container" class="modals"><div class="modal"></div></div></div>';
+        return '<div class="main"><div class="content"><header><div href="/" class="logo"></div><div class="title">Blue Pirate #7</div><div class="subtitle">Athenry Golf Course</div><div class="tabs"><a href="/leaderboard" class="ldrboard">Leaderboard</a><a href="/my-round" class="me_user">Me</a></div></header><div class="container pages page-container"><div class="page"></div></div></div><div role="modal-container" class="modals"><div class="modal"></div></div></div>';
     };
 
     // modals/nine_box.jade compiled template
@@ -19405,6 +23056,11 @@ Velocity's structure:
             buf.push('<div class="nine_box"><div class="meta"><div class="title">' + jade.escape(null == (jade_interp = title) ? "" : jade_interp) + '</div><div class="back">x</div></div><div class="options"><div class="score"><div data-value="1" class="box"> <div class="value">1</div></div><div data-value="2" class="box"> <div class="value">2</div></div><div data-value="3" class="box"> <div class="value">3</div></div><div data-value="4" class="box"> <div class="value">4</div></div><div data-value="5" class="box"> <div class="value">5</div></div><div data-value="6" class="box"> <div class="value">6</div></div><div data-value="7" class="box"> <div class="value">7</div></div><div data-value="8" class="box"><div class="value">8</div></div><div data-value="9" class="box"> <div class="value">9</div></div><div data-value="10" class="box"> <div class="value">10</div></div></div><div class="putts"><div data-value="0" class="box"> <div class="value">0</div></div><div data-value="1" class="box"> <div class="value">1</div></div><div data-value="2" class="box"> <div class="value">2</div></div><div data-value="3" class="box"> <div class="value">3</div></div><div data-value="4" class="box"> <div class="value">4</div></div><div data-value="5" class="box"> <div class="value">5</div></div></div><div class="fairway"><div data-value=\'1\' class="box"> <div class="value">Yep</div></div><div data-value=\'0\' class="box"> <div class="value">Nope</div></div></div></div></div>');
         }).call(this, "title" in locals_for_with ? locals_for_with.title : typeof title !== "undefined" ? title : undefined);
         return buf.join("");
+    };
+
+    // my_round/base.jade compiled template
+    templatizer["my_round"]["base"] = function tmpl_my_round_base() {
+        return '<div class="page"></div>';
     };
 
     // my_round/hole.jade compiled template
@@ -20197,7 +23853,7 @@ module.exports = View.extend({
 
   render: function () {
     this.renderWithTemplate();
-    this.page_container = this.getByRole('page-container');
+    this.page_container = this.query('.page-container');
     this.$nav_links = $(this.el).find('.tabs a');
 
     this.swipe_view = new SwipeView(this.page_container, {
@@ -20306,7 +23962,29 @@ module.exports = View.extend({
     });
   }
 });
-},{"../../dist/templates.js":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","./my_round/view":"/Library/WebServer/Server/bp_tournaments/public/js/views/my_round/view.js","./tournaments/home":"/Library/WebServer/Server/bp_tournaments/public/js/views/tournaments/home.js","./tournaments/leaderboard":"/Library/WebServer/Server/bp_tournaments/public/js/views/tournaments/leaderboard.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","favicon-setter":"/Library/WebServer/Server/bp_tournaments/node_modules/favicon-setter/favicon-setter.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js","web-swipe-view":"/Library/WebServer/Server/bp_tournaments/node_modules/web-swipe-view/src/swipeview.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/my_round/view.js":[function(require,module,exports){
+},{"../../dist/templates.js":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","./my_round/view":"/Library/WebServer/Server/bp_tournaments/public/js/views/my_round/view.js","./tournaments/home":"/Library/WebServer/Server/bp_tournaments/public/js/views/tournaments/home.js","./tournaments/leaderboard":"/Library/WebServer/Server/bp_tournaments/public/js/views/tournaments/leaderboard.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","favicon-setter":"/Library/WebServer/Server/bp_tournaments/node_modules/favicon-setter/favicon-setter.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js","web-swipe-view":"/Library/WebServer/Server/bp_tournaments/node_modules/web-swipe-view/src/swipeview.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/my_round/login.js":[function(require,module,exports){
+// ---- Vendor ----
+var _ = require('underscore');
+var $ = require('jquery');
+
+// ---- BP Modules ----
+var View = require('ampersand-view');
+var Model = require('ampersand-model');
+var templates = require('../../../dist/templates');
+
+var LoginModel = Model.extend({
+
+});
+
+module.exports = View.extend({
+  template: templates.my_round.login,
+
+  render: function(){
+    console.trace();
+    return this.renderWithTemplate();
+  }
+});
+},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","ampersand-model":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/my_round/view.js":[function(require,module,exports){
 // ---- Vendor ----
 var _ = require('underscore');
 var $ = require('jquery');
@@ -20314,17 +23992,24 @@ var $ = require('jquery');
 // ---- BP Modules ----
 var View = require('ampersand-view');
 var templates = require('../../../dist/templates');
+var LoginPage = require('./login');
 
 
 module.exports = View.extend({
-  logged_in_template: templates.my_round.view,
-  login_template: templates.my_round.login,
+  template: templates.my_round.base,
 
   render: function() {
-    return this.renderWithTemplate(this, this.login_template);
+    this.renderWithTemplate();
+
+    if(me.id){
+
+    } else {
+      var login_page = new LoginPage();
+      this.renderSubview(login_page, '.page');
+    }
   }
 });
-},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/tournaments/home.js":[function(require,module,exports){
+},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","./login":"/Library/WebServer/Server/bp_tournaments/public/js/views/my_round/login.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/tournaments/home.js":[function(require,module,exports){
 // ---- Vendor ----
 var _ = require('underscore');
 var $ = require('jquery');

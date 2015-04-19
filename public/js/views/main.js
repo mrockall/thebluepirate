@@ -30,7 +30,7 @@ module.exports = View.extend({
 
   render: function () {
     this.renderWithTemplate();
-    this.page_container = this.getByRole('page-container');
+    this.page_container = this.query('.page-container');
     this.$nav_links = $(this.el).find('.tabs a');
 
     this.swipe_view = new SwipeView(this.page_container, {
