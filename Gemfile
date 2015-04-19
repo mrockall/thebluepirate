@@ -29,9 +29,9 @@ gem 'padrino-warden', :github => 'jondot/padrino-warden'
 gem 'declarative_authorization_padrino'
 
 # Omniauth
-gem 'omniauth'
-gem 'omniauth-twitter'
-gem 'omniauth-facebook'
+# gem 'omniauth'
+# gem 'omniauth-twitter'
+# gem 'omniauth-facebook'
 
 # Test requirements
 

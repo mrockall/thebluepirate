@@ -1,6 +1,7 @@
 module BluePirate
   class App < Padrino::Application
     use ActiveRecord::ConnectionAdapters::ConnectionManagement
+    register ScssInitializer
     register Padrino::Rendering
     register Padrino::Mailer
     register Padrino::Helpers
@@ -17,11 +18,13 @@ module BluePirate
       config.include_child_root = false
     end
 
-    # Load OmniAuth
-    use OmniAuth::Builder do
-      provider :twitter,  '8t2RRALbWML9RhMAeBGSg', 'FMaVBc4E74DWEJqmKsm74WPJfyvlZkCpK7mxeZQ2w'
-      provider :facebook, 1437118896504791, '77312d65e408231dfcede3e97cb35e0e'
-    end
+    # Disable Omniauth for now. 
+    # Going to go with a different login strategy..
+    # 
+    # use OmniAuth::Builder do
+    #   provider :twitter,  '8t2RRALbWML9RhMAeBGSg', 'FMaVBc4E74DWEJqmKsm74WPJfyvlZkCpK7mxeZQ2w'
+    #   provider :facebook, 1437118896504791, '77312d65e408231dfcede3e97cb35e0e'
+    # end
 
     ##
     # Routes

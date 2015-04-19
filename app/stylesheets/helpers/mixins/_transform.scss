@@ -1,4 +1,4 @@
-@mixin transform_m($content) {
+@mixin transform($content) {
   -webkit-transform: $content;
       -ms-transform: $content;
           transform: $content;

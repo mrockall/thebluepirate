@@ -20286,7 +20286,7 @@ module.exports = View.extend({
   },
 
   tabClick: function(ev) {
-    $(ev.target).addClass('ripple').one(app.whichTransitionEvent, function() {
+    $(ev.target).addClass('ripple active').one(app.whichTransitionEvent, function() {
       $(this).removeClass('ripple');
     });
   },
