@@ -4,15 +4,19 @@ var $ = require('jquery');
 
 // ---- BP Modules ----
 var View = require('ampersand-view');
-var Model = require('ampersand-model');
+var BPModel = require('../../models/bp_modal');
 var templates = require('../../../dist/templates');
 
-var LoginModel = Model.extend({
+var LoginModel = BPModel.extend({
+  url: 'sessions/',
+
   props: {
     feeling: '',
     colour: '',
-    animal: '',
+    animal: ''
+  },
 
+  session: {
     feeling_options: {type: 'array'},
     colour_options: {type: 'array'},
     animal_options: {type: 'array'}
@@ -42,6 +46,7 @@ var LoginModel = Model.extend({
   },
 
   tryLogin: function(){
+    this.save();
     // this.trigger('login:success');
     this.trigger('login:failed');
   }

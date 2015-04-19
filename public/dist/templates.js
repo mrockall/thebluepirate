@@ -207,7 +207,7 @@
 
     // tournaments/view.jade compiled template
     templatizer["tournaments"]["view"] = function tmpl_tournaments_view() {
-        return '<div class="page"><div class="list-loading"><div class="loader"><div class="loader-block"></div><div class="loader-block"></div><div class="loader-block"></div></div></div><ul class="leaderboard players"></ul></div>';
+        return '<div class="page"><ul class="leaderboard players"></ul></div>';
     };
 
     return templatizer;

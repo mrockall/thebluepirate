@@ -32,4 +32,15 @@ BluePirate::App.controllers :sessions do
 
     redirect '/'
   end
+
+  # Try to login
+  post '/', :provides => :json do
+    teetime = TeeTime.find_by_login_slug params[:slug]
+    error 400 if teetime.nil?
+
+    Authorization.current_user = teetime
+    authenticate(:teetime)    
+
+    teetime.to_json
+  end
 end

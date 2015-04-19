@@ -23232,7 +23232,7 @@ Velocity's structure:
 
     // tournaments/view.jade compiled template
     templatizer["tournaments"]["view"] = function tmpl_tournaments_view() {
-        return '<div class="page"><div class="list-loading"><div class="loader"><div class="loader-block"></div><div class="loader-block"></div><div class="loader-block"></div></div></div><ul class="leaderboard players"></ul></div>';
+        return '<div class="page"><ul class="leaderboard players"></ul></div>';
     };
 
     return templatizer;
@@ -23473,7 +23473,20 @@ module.exports = Collection.extend({
       return this.findWhere({id: id});
     }
 });
-},{"../models/tournament":"/Library/WebServer/Server/bp_tournaments/public/js/models/tournament.js","ampersand-rest-collection":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/ampersand-rest-collection.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/models/course.js":[function(require,module,exports){
+},{"../models/tournament":"/Library/WebServer/Server/bp_tournaments/public/js/models/tournament.js","ampersand-rest-collection":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/ampersand-rest-collection.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/models/bp_modal.js":[function(require,module,exports){
+var AmpersandModel = require('ampersand-model');
+var csrf_token = $("meta[name='csrf-token']").attr('content');
+
+module.exports = AmpersandModel.extend({
+  ajaxConfig: function(){
+    return { 
+      headers: {
+        'X-CSRF-Token': csrf_token 
+      }
+    };
+  }
+});
+},{"ampersand-model":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/models/course.js":[function(require,module,exports){
 var _ = require('underscore');
 var AmpersandModel = require('ampersand-model');
 
@@ -23992,15 +24005,19 @@ var $ = require('jquery');
 
 // ---- BP Modules ----
 var View = require('ampersand-view');
-var Model = require('ampersand-model');
+var BPModel = require('../../models/bp_modal');
 var templates = require('../../../dist/templates');
 
-var LoginModel = Model.extend({
+var LoginModel = BPModel.extend({
+  url: 'sessions/',
+
   props: {
     feeling: '',
     colour: '',
-    animal: '',
+    animal: ''
+  },
 
+  session: {
     feeling_options: {type: 'array'},
     colour_options: {type: 'array'},
     animal_options: {type: 'array'}
@@ -24030,6 +24047,7 @@ var LoginModel = Model.extend({
   },
 
   tryLogin: function(){
+    this.save();
     // this.trigger('login:success');
     this.trigger('login:failed');
   }
@@ -24178,7 +24196,7 @@ module.exports = View.extend({
   }
 });
 
-},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","ampersand-model":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/my_round/view.js":[function(require,module,exports){
+},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","../../models/bp_modal":"/Library/WebServer/Server/bp_tournaments/public/js/models/bp_modal.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/my_round/view.js":[function(require,module,exports){
 // ---- Vendor ----
 var _ = require('underscore');
 var $ = require('jquery');
