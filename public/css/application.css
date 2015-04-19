@@ -1388,7 +1388,7 @@ header {
     color: #323232;
     font-size: 1.35em;
     line-height: 3.5;
-    text-align: center; }
+    padding: 0 1rem; }
     .login_page .option:before {
       content: "";
       position: absolute;
@@ -1409,3 +1409,14 @@ header {
       -webkit-transition: width 0.25s ease-out, padding-top 0.25s ease-out;
       -moz-transition: width 0.25s ease-out, padding-top 0.25s ease-out;
       transition: width 0.25s ease-out, padding-top 0.25s ease-out; }
+    .login_page .option:after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 0.3rem;
+      background: url(svg/chevron-right.svg) center center no-repeat;
+      height: 24px;
+      width: 24px;
+      -webkit-transform: translateY(-45%);
+      -ms-transform: translateY(-45%);
+      transform: translateY(-45%); }

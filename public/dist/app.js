@@ -20204,6 +20204,7 @@ module.exports = View.extend({
       numberOfPages: 2,
       generatePage: this.buildPage,
     });
+
     this.swipe_view.onFlip(_.bind(this.pageChanged, this));
 
     // We need to update the height of the page container if we change the page..
