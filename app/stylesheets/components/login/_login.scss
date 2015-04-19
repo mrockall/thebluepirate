@@ -10,11 +10,26 @@ $options-border-colour: #ddd;
 
   .options {
     margin-top: 2rem;
-    border-top: 1px solid $options-border-colour;
+    .option:nth-child(1), .option:nth-child(2){
+      border-top-width: 1px;
+    }
 
     .option:nth-child(2n){
-      border-right: 0 none;
+      border-left-width: 1px;
     }
+
+    .list-loading{
+      margin-top: 2rem;
+    }
+
+    p{
+      text-align: center;
+      color: $text-dark;
+    }
+  }
+
+  .errors p{
+    color: $text-red;
   }
 
   .option {
@@ -27,10 +42,10 @@ $options-border-colour: #ddd;
     font-size: 1.35em;
     line-height: 3.5;
     padding: 0 1rem;
-    border-bottom: 1px solid $options-border-colour;
-    border-right: 1px solid $options-border-colour;
+    border: 0 solid $options-border-colour;
+    border-bottom-width: 1px;
 
-    @include ripple-effect(rgba(133, 155, 163, 0.21), .25s);
+    @include ripple-effect(rgba(133, 155, 163, 0.21), .15s);
 
     &:after{
       content: '';
@@ -40,6 +55,21 @@ $options-border-colour: #ddd;
       height: 24px;
       width: 24px;
       @include transform(translateY(-45%));
+    }
+
+    &.full_width{
+      width: 100%;
+      border-right: 0 none;
+      padding-left: 2.5rem;
+      color: $text-light;
+
+      &:after{
+        background: url(svg/chevron-left.svg) center center no-repeat;
+        right: auto;
+        left: 0.3rem;
+        fill: $text-light;
+        @include transform(translateY(-50%));
+      }
     }
   }
 }

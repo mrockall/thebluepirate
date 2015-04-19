@@ -22,15 +22,30 @@
         return '<div class="main"><div class="content"><header><div href="/" class="logo"></div><div class="title">Blue Pirate #7</div><div class="subtitle">Athenry Golf Course</div><div class="tabs"><a href="/leaderboard" class="ldrboard">Leaderboard</a><a href="/my-round" class="me_user">Me</a></div></header><div class="container pages page-container"><div class="page"></div></div></div><div role="modal-container" class="modals"><div class="modal"></div></div></div>';
     };
 
+    // login/base.jade compiled template
+    templatizer["login"]["base"] = function tmpl_login_base() {
+        return '<div class="login_page"><p>Enter your unique passphrase to login and begin keeping score.</p><div class="errors"></div><div class="options"></div></div>';
+    };
+
+    // login/error.jade compiled template
+    templatizer["login"]["error"] = function tmpl_login_error() {
+        return "<p>Oops, that didn't work.. Please try again.</p>";
+    };
+
+    // login/loading.jade compiled template
+    templatizer["login"]["loading"] = function tmpl_login_loading() {
+        return '<div><div class="list-loading"><div class="loader"><div class="loader-block"></div><div class="loader-block"></div><div class="loader-block"></div></div></div><p>Logging you in</p></div>';
+    };
+
     // login/option.jade compiled template
     templatizer["login"]["option"] = function tmpl_login_option(locals) {
         var buf = [];
         var jade_mixins = {};
         var jade_interp;
         var locals_for_with = locals || {};
-        (function(label) {
-            buf.push('<div class="option">' + jade.escape(null == (jade_interp = label) ? "" : jade_interp) + "</div>");
-        }).call(this, "label" in locals_for_with ? locals_for_with.label : typeof label !== "undefined" ? label : undefined);
+        (function(extra_classes, label) {
+            buf.push("<div" + jade.cls([ "option", extra_classes ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = label) ? "" : jade_interp) + "</div>");
+        }).call(this, "extra_classes" in locals_for_with ? locals_for_with.extra_classes : typeof extra_classes !== "undefined" ? extra_classes : undefined, "label" in locals_for_with ? locals_for_with.label : typeof label !== "undefined" ? label : undefined);
         return buf.join("");
     };
 
@@ -92,11 +107,6 @@
             buf.push('<div class="player_scores"><h2>' + jade.escape(null == (jade_interp = player_name) ? "" : jade_interp) + '</h2><ul class="course_tiles"><li data-attr="score" data-title="Strokes"><a href="#"><div class="meta">Strokes</div><div role="pretty_score" class="hole_num"></div></a></li><li data-attr="points" data-title="Points"><div><div class="meta">Points</div><div role="points" class="hole_num"></div></div></li></ul></div>');
         }).call(this, "player_name" in locals_for_with ? locals_for_with.player_name : typeof player_name !== "undefined" ? player_name : undefined);
         return buf.join("");
-    };
-
-    // my_round/login.jade compiled template
-    templatizer["my_round"]["login"] = function tmpl_my_round_login() {
-        return '<div class="login_page"><p>Enter your unique passphrase to login and begin keeping score.</p><div class="options"></div></div>';
     };
 
     // my_round/view.jade compiled template

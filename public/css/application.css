@@ -852,7 +852,6 @@ h3 {
   background: white; }
 
 .list-loading {
-  display: none;
   position: relative;
   height: 12px;
   padding: 2em 0 0; }
@@ -1369,10 +1368,18 @@ header {
     font-size: 1.25rem;
     color: #a0a0a0; }
   .login_page .options {
-    margin-top: 2rem;
-    border-top: 1px solid #dddddd; }
+    margin-top: 2rem; }
+    .login_page .options .option:nth-child(1), .login_page .options .option:nth-child(2) {
+      border-top-width: 1px; }
     .login_page .options .option:nth-child(2n) {
-      border-right: 0 none; }
+      border-left-width: 1px; }
+    .login_page .options .list-loading {
+      margin-top: 2rem; }
+    .login_page .options p {
+      text-align: center;
+      color: #323232; }
+  .login_page .errors p {
+    color: #c33636; }
   .login_page .option {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -1385,8 +1392,8 @@ header {
     font-size: 1.35em;
     line-height: 3.5;
     padding: 0 1rem;
-    border-bottom: 1px solid #dddddd;
-    border-right: 1px solid #dddddd; }
+    border: 0 solid #dddddd;
+    border-bottom-width: 1px; }
     .login_page .option:before {
       content: "";
       position: absolute;
@@ -1404,9 +1411,9 @@ header {
       width: 120%;
       padding-top: 120%;
       background-color: rgba(133, 155, 163, 0.21);
-      -webkit-transition: width 0.25s ease-out, padding-top 0.25s ease-out;
-      -moz-transition: width 0.25s ease-out, padding-top 0.25s ease-out;
-      transition: width 0.25s ease-out, padding-top 0.25s ease-out; }
+      -webkit-transition: width 0.15s ease-out, padding-top 0.15s ease-out;
+      -moz-transition: width 0.15s ease-out, padding-top 0.15s ease-out;
+      transition: width 0.15s ease-out, padding-top 0.15s ease-out; }
     .login_page .option:after {
       content: '';
       position: absolute;
@@ -1418,3 +1425,16 @@ header {
       -webkit-transform: translateY(-45%);
       -ms-transform: translateY(-45%);
       transform: translateY(-45%); }
+    .login_page .option.full_width {
+      width: 100%;
+      border-right: 0 none;
+      padding-left: 2.5rem;
+      color: #a0a0a0; }
+      .login_page .option.full_width:after {
+        background: url(svg/chevron-left.svg) center center no-repeat;
+        right: auto;
+        left: 0.3rem;
+        fill: #a0a0a0;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%); }

@@ -23047,15 +23047,30 @@ Velocity's structure:
         return '<div class="main"><div class="content"><header><div href="/" class="logo"></div><div class="title">Blue Pirate #7</div><div class="subtitle">Athenry Golf Course</div><div class="tabs"><a href="/leaderboard" class="ldrboard">Leaderboard</a><a href="/my-round" class="me_user">Me</a></div></header><div class="container pages page-container"><div class="page"></div></div></div><div role="modal-container" class="modals"><div class="modal"></div></div></div>';
     };
 
+    // login/base.jade compiled template
+    templatizer["login"]["base"] = function tmpl_login_base() {
+        return '<div class="login_page"><p>Enter your unique passphrase to login and begin keeping score.</p><div class="errors"></div><div class="options"></div></div>';
+    };
+
+    // login/error.jade compiled template
+    templatizer["login"]["error"] = function tmpl_login_error() {
+        return "<p>Oops, that didn't work.. Please try again.</p>";
+    };
+
+    // login/loading.jade compiled template
+    templatizer["login"]["loading"] = function tmpl_login_loading() {
+        return '<div><div class="list-loading"><div class="loader"><div class="loader-block"></div><div class="loader-block"></div><div class="loader-block"></div></div></div><p>Logging you in</p></div>';
+    };
+
     // login/option.jade compiled template
     templatizer["login"]["option"] = function tmpl_login_option(locals) {
         var buf = [];
         var jade_mixins = {};
         var jade_interp;
         var locals_for_with = locals || {};
-        (function(label) {
-            buf.push('<div class="option">' + jade.escape(null == (jade_interp = label) ? "" : jade_interp) + "</div>");
-        }).call(this, "label" in locals_for_with ? locals_for_with.label : typeof label !== "undefined" ? label : undefined);
+        (function(extra_classes, label) {
+            buf.push("<div" + jade.cls([ "option", extra_classes ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = label) ? "" : jade_interp) + "</div>");
+        }).call(this, "extra_classes" in locals_for_with ? locals_for_with.extra_classes : typeof extra_classes !== "undefined" ? extra_classes : undefined, "label" in locals_for_with ? locals_for_with.label : typeof label !== "undefined" ? label : undefined);
         return buf.join("");
     };
 
@@ -23117,11 +23132,6 @@ Velocity's structure:
             buf.push('<div class="player_scores"><h2>' + jade.escape(null == (jade_interp = player_name) ? "" : jade_interp) + '</h2><ul class="course_tiles"><li data-attr="score" data-title="Strokes"><a href="#"><div class="meta">Strokes</div><div role="pretty_score" class="hole_num"></div></a></li><li data-attr="points" data-title="Points"><div><div class="meta">Points</div><div role="points" class="hole_num"></div></div></li></ul></div>');
         }).call(this, "player_name" in locals_for_with ? locals_for_with.player_name : typeof player_name !== "undefined" ? player_name : undefined);
         return buf.join("");
-    };
-
-    // my_round/login.jade compiled template
-    templatizer["my_round"]["login"] = function tmpl_my_round_login() {
-        return '<div class="login_page"><p>Enter your unique passphrase to login and begin keeping score.</p><div class="options"></div></div>';
     };
 
     // my_round/view.jade compiled template
@@ -23991,36 +24001,68 @@ var LoginModel = Model.extend({
     colour: '',
     animal: '',
 
-    feeling_options: {
-      type: 'array'
-    }
+    feeling_options: {type: 'array'},
+    colour_options: {type: 'array'},
+    animal_options: {type: 'array'}
   },
 
   initialize: function(){
     this.feeling_options = [
       'Angry', 'Delighted', 'Excited', 'Scared', 'Motivated',
       'Surprised', 'Confused', 'Happy', 'Anxious', 'Encouraged'
-    ]
+    ];
+
+    this.colour_options = [
+      'Blue', 'Red', 'Yellow', 'Green', 'Purple',
+      'Pink', 'Brown', 'Black', 'Orange', 'Indigo'
+    ];
+
+    this.animal_options = [
+      'Lion', 'Dog', 'Rhino', 'Horse', 'Snake',
+      'Cat', 'Giraffe', 'Tiger', 'Pig', 'Duck'
+    ];
+  },
+
+  startOver: function(){
+    this.feeling = '';
+    this.colour = '';
+    this.animal = '';
+  },
+
+  tryLogin: function(){
+    // this.trigger('login:success');
+    this.trigger('login:failed');
   }
 });
 
 var OptionsView = View.extend({
   template: templates.login.option,
   props: {
-    label: ''
+    label: '',
+    extra_classes: ''
   },
   events: {
     'click .option': 'selectOption'
   },
   selectOption: function(ev){
-    $(ev.delegateTarget).one(app.whichTransitionEvent, function() {
-      $(this).removeClass('ripple');
-    }).addClass('ripple');
+    var $el = $(ev.delegateTarget);
+    $el.one(app.whichTransitionEvent, _.bind(function() {
+      $el.removeClass('ripple');
+      this.trigger('option:clicked', this.label);
+    }, this)).addClass('ripple');
   }
 })
 
+var LoadingView = View.extend({
+  template: templates.login.loading
+})
+
+var ErrorView = View.extend({
+  template: templates.login.error
+})
+
 module.exports = View.extend({
-  template: templates.my_round.login,
+  template: templates.login.base,
 
   initialize: function(){
     this.model = new LoginModel();
@@ -24028,18 +24070,111 @@ module.exports = View.extend({
 
   render: function(){
     this.renderWithTemplate();
-
     this.renderFeelingOptions();
   },
 
   renderFeelingOptions: function(){
     _(this.model.feeling_options).each(_.bind(function(item, i){
-      var option_view = new OptionsView({
+      var view = new OptionsView({
         label: item
       });
 
-      this.renderSubview(option_view, '.options');
+      this.listenTo(view, 'option:clicked', this.feelingOptionClicked);
+
+      this.renderSubview(view, '.options');
     }, this));
+  },
+
+  feelingOptionClicked: function(feeling_clicked){
+    this.model.feeling = feeling_clicked;
+
+    _(this._subviews).each(_.bind(function(view){
+      this.stopListening(view);
+      view.remove();
+    }, this));
+
+    this.renderColourOptions();
+  },
+
+  renderColourOptions: function(feeling_clicked){
+    _(this.model.colour_options).each(_.bind(function(item, i){
+      var view = new OptionsView({
+        label: item
+      });
+
+      this.listenTo(view, 'option:clicked', this.colourOptionClicked);
+
+      this.renderSubview(view, '.options');
+    }, this));
+
+    this.renderStartOverView();
+  },
+
+  colourOptionClicked: function(colour_clicked){
+    this.model.colour = colour_clicked;
+
+    _(this._subviews).each(_.bind(function(view){
+      this.stopListening(view);
+      view.remove();
+    }, this));
+
+    this.renderAnimalOptions();
+  },
+
+  renderAnimalOptions: function(feeling_clicked){
+    _(this.model.animal_options).each(_.bind(function(item, i){
+      var view = new OptionsView({
+        label: item
+      });
+
+      this.listenTo(view, 'option:clicked', this.tryLogin);
+
+      this.renderSubview(view, '.options');
+    }, this));
+
+    this.renderStartOverView();
+  },
+
+  tryLogin: function(animal_clicked){
+    this.model.animal = animal_clicked;
+
+    _(this._subviews).each(_.bind(function(view){
+      this.stopListening(view);
+      view.remove();
+    }, this));
+
+    var view = new LoadingView();
+    this.renderSubview(view, '.options');
+
+    this.listenTo(this.model, 'login:failed', this.loginFailed)
+    this.model.tryLogin();
+  },
+
+  loginFailed: function(){
+    this.startOver();
+
+    var view = new ErrorView();
+    this.renderSubview(view, '.errors');
+  },
+
+  renderStartOverView: function(){
+    var view = new OptionsView({
+      label: 'Start Over',
+      extra_classes: 'full_width'
+    });
+    this.renderSubview(view, '.options');
+
+    this.listenTo(view, 'option:clicked', this.startOver);
+  },
+
+  startOver: function(){
+    _(this._subviews).each(_.bind(function(view){
+      this.stopListening(view);
+      view.remove();
+    }, this));
+
+    this.model.startOver();
+    this.renderFeelingOptions();
   }
 });
 
