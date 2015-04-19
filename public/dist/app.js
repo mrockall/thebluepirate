@@ -19392,7 +19392,7 @@ Velocity's structure:
 
     // body.jade compiled template
     templatizer["body"] = function tmpl_body() {
-        return '<div class="main"><div class="content"><header><div href="/" class="logo"></div><div class="title">Blue Pirate #7</div><div class="subtitle">Athenry Golf Course</div><div class="tabs"><a href="/" class="home active">Home</a><a href="/leaderboard" class="ldrboard">Leaderboard</a><a href="/my-round" class="me_user">Me</a></div></header><div role="page-container" class="container pages"><div class="page"></div></div></div><div role="modal-container" class="modals"><div class="modal"></div></div></div>';
+        return '<div class="main"><div class="content"><header><div href="/" class="logo"></div><div class="title">Blue Pirate #7</div><div class="subtitle">Athenry Golf Course</div><div class="tabs"><a href="/leaderboard" class="ldrboard">Leaderboard</a><a href="/my-round" class="me_user">Me</a></div></header><div role="page-container" class="container pages"><div class="page"></div></div></div><div role="modal-container" class="modals"><div class="modal"></div></div></div>';
     };
 
     // modals/nine_box.jade compiled template
@@ -20142,20 +20142,8 @@ module.exports = Router.extend({
     this.trigger('newPage', 'leaderboard');
   },
 
-  playerCard: function(player_id) {
-    var tee_time = app.tee_times.findByPlayerName(tournament_id, player_id);
-    if(!tee_time){ return this.redirectTo(''); }
-
-    this.trigger('newPage', 'player_card', tee_time);
-  },
-
   myRound: function() {
-    if(!me.is_logged_in){ return this.redirectTo('/login'); }
-
-    var tee_time = app.tee_times.findByID(me.id);
-    if(!tee_time){ return this.redirectTo('/login'); }
-
-    this.trigger('newPage', 'my_round', tee_time);
+    this.trigger('newPage', 'my_round');
   },
 
   myRoundHole: function(hole_id) {
@@ -20208,7 +20196,7 @@ module.exports = View.extend({
     this.$nav_links = $(this.el).find('.tabs a');
 
     this.swipe_view = new SwipeView(this.page_container, {
-      numberOfPages: 3,
+      numberOfPages: 2,
       generatePage: this.buildPage,
     });
     this.swipe_view.onFlip(_.bind(this.pageChanged, this));
@@ -20224,20 +20212,20 @@ module.exports = View.extend({
 
   buildPage: function(i, page) {
     var el = page.querySelector('.page');
-    var view;
     var tournament = app.tournaments.first();
+    var view;
 
     switch(i){
+      // case 0:
+      //   view = new TournamentHome();
+      //   break;
       case 0:
-        view = new TournamentHome();
-        break;
-      case 1:
         view = new TournamentLeaderboard({
           model: tournament
         });
         break;
-      case 2:
-        view = new TournamentHome();
+      case 1:
+        view = new MyRound();
         break;
     }
 
@@ -20248,7 +20236,9 @@ module.exports = View.extend({
   setPage: function(page_name) {
     switch(page_name){
       case 'leaderboard':
-      case 'player_card':
+        this.swipe_view.goToPage(0);
+        break;
+      case 'my_round':
         this.swipe_view.goToPage(1);
         break;
       default:
@@ -20261,12 +20251,12 @@ module.exports = View.extend({
     var url = '';
 
     switch(this.swipe_view.pageIndex){
+      // case 0:
+      //   break;
       case 0:
-        break;
-      case 1:
         url = 'leaderboard';
         break;
-      case 2:
+      case 1:
         url = 'my-round';
         break;
     }
@@ -20324,66 +20314,9 @@ var $ = require('jquery');
 var View = require('ampersand-view');
 var templates = require('../../../dist/templates');
 
-var HoleListItem = View.extend({
-  template: templates.my_round.hole_card,
-  serialize: function(){
-    return {
-      id: this.model.id,
-      number: this.model.number,
-      par: this.model.par,
-      length: this.model.length
-    };
-  },
-  render: function () {
-    return this.renderWithTemplate(this.serialize());
-  }
-});
-
-var LeaderboardItem = View.extend({
-  template: templates.tournaments.player_list_item
-});
 
 module.exports = View.extend({
-  template: templates.my_round.view,
-  serialize: function(){
-    var tournament = this.model.tournament();
-    return {
-      tournament_name: tournament.name
-    };
-  },
-  render: function () {
-    this.views = [];
-    this.renderWithTemplate(this.serialize());
-    this.$course_tiles = $(this.el).find('.course_tiles');
-    this.$leaderboard = $(this.el).find('.leaderboard');
-
-    _(this.model.tournament().holes()).each(_.bind(this.add_hole_tile, this));
-
-    this.render_tee_time_players();
-  },
-
-  add_hole_tile: function(model, index){
-    var v = new HoleListItem({
-      model: model
-    }).render();
-
-    this.views.push(v);
-    this.$course_tiles.append(v.el);
-  },
-
-  render_tee_time_players: function() {
-    var tee_times = this.model.findAllTeeTimes();
-    _(tee_times).each(_.bind(this.add_player, this));
-  },
-
-  add_player: function(model, index) {
-    var v = new LeaderboardItem({
-      model: model
-    }).render();
-
-    this.views.push(v);
-    this.$leaderboard.append(v.el);
-  }
+  template: templates.my_round.view
 });
 },{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/tournaments/home.js":[function(require,module,exports){
 // ---- Vendor ----

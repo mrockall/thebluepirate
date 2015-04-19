@@ -1,6 +1,6 @@
 module BluePirate
   class App < Padrino::Application
-    register CompassInitializer
+    use ActiveRecord::ConnectionAdapters::ConnectionManagement
     register Padrino::Rendering
     register Padrino::Mailer
     register Padrino::Helpers
@@ -48,6 +48,8 @@ module BluePirate
       @scores = Rabl.render(t.scores, 'scores/view', :view_path => 'app/views', :format => 'json')
       @courses = Rabl.render(c, 'courses/view', :view_path => 'app/views', :format => 'json')
       @holes = Rabl.render(c.holes, 'holes/view', :view_path => 'app/views', :format => 'json')
+      
+      @title = "Blue Pirate"
       render :index
     end
   end

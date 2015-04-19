@@ -34,7 +34,7 @@ module.exports = View.extend({
     this.$nav_links = $(this.el).find('.tabs a');
 
     this.swipe_view = new SwipeView(this.page_container, {
-      numberOfPages: 3,
+      numberOfPages: 2,
       generatePage: this.buildPage,
     });
     this.swipe_view.onFlip(_.bind(this.pageChanged, this));
@@ -50,18 +50,19 @@ module.exports = View.extend({
 
   buildPage: function(i, page) {
     var el = page.querySelector('.page');
+    var tournament = app.tournaments.first();
     var view;
 
     switch(i){
+      // case 0:
+      //   view = new TournamentHome();
+      //   break;
       case 0:
-        view = new TournamentHome();
-        break;
-      case 1:
         view = new TournamentLeaderboard({
           model: tournament
         });
         break;
-      case 2:
+      case 1:
         view = new MyRound();
         break;
     }
@@ -73,7 +74,9 @@ module.exports = View.extend({
   setPage: function(page_name) {
     switch(page_name){
       case 'leaderboard':
-      case 'player_card':
+        this.swipe_view.goToPage(0);
+        break;
+      case 'my_round':
         this.swipe_view.goToPage(1);
         break;
       default:
@@ -86,12 +89,12 @@ module.exports = View.extend({
     var url = '';
 
     switch(this.swipe_view.pageIndex){
+      // case 0:
+      //   break;
       case 0:
-        break;
-      case 1:
         url = 'leaderboard';
         break;
-      case 2:
+      case 1:
         url = 'my-round';
         break;
     }
