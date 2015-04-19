@@ -12,13 +12,8 @@ $options-border-colour: #ddd;
     margin-top: 2rem;
     border-top: 1px solid $options-border-colour;
 
-    .row {
-      border-bottom: 1px solid $options-border-colour;
-      @include clearfix();
-
-      .option:nth-child(1){
-        border-right: 1px solid $options-border-colour;
-      }
+    .option:nth-child(2n){
+      border-right: 0 none;
     }
   }
 
@@ -32,6 +27,8 @@ $options-border-colour: #ddd;
     font-size: 1.35em;
     line-height: 3.5;
     padding: 0 1rem;
+    border-bottom: 1px solid $options-border-colour;
+    border-right: 1px solid $options-border-colour;
 
     @include ripple-effect(rgba(133, 155, 163, 0.21), .25s);
 

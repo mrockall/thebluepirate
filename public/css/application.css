@@ -1371,12 +1371,8 @@ header {
   .login_page .options {
     margin-top: 2rem;
     border-top: 1px solid #dddddd; }
-    .login_page .options .row {
-      border-bottom: 1px solid #dddddd;
-      overflow: hidden;
-      *zoom: 1; }
-      .login_page .options .row .option:nth-child(1) {
-        border-right: 1px solid #dddddd; }
+    .login_page .options .option:nth-child(2n) {
+      border-right: 0 none; }
   .login_page .option {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -1388,7 +1384,9 @@ header {
     color: #323232;
     font-size: 1.35em;
     line-height: 3.5;
-    padding: 0 1rem; }
+    padding: 0 1rem;
+    border-bottom: 1px solid #dddddd;
+    border-right: 1px solid #dddddd; }
     .login_page .option:before {
       content: "";
       position: absolute;
