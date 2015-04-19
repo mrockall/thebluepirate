@@ -19,7 +19,6 @@ gem 'sinatra-flash'
 gem 'activerecord', :require => "active_record"
 gem 'haml'
 gem 'sass'
-gem 'compass'
 gem 'puma'
 gem 'mysql2'
 gem 'sqlite3'
