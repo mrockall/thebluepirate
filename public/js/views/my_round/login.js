@@ -68,15 +68,15 @@ var OptionsView = View.extend({
       this.trigger('option:clicked', this.label);
     }, this)).addClass('ripple');
   }
-})
+});
 
 var LoadingView = View.extend({
   template: templates.login.loading
-})
+});
 
 var ErrorView = View.extend({
   template: templates.login.error
-})
+});
 
 module.exports = View.extend({
   template: templates.login.base,

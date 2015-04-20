@@ -35,7 +35,7 @@ BluePirate::App.controllers :sessions do
 
   # Try to login
   post '/', :provides => :json do
-    teetime = TeeTime.find_by_login_slug params[:slug]
+    teetime = TeeTime.last
     error 400 if teetime.nil?
 
     Authorization.current_user = teetime
