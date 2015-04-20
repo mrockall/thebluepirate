@@ -53,8 +53,6 @@ module BluePirate
     end
     
     get :index, :map => '/*page', :priority => :low do
-      deliver(:tournament, :new_tee_time, "mike@exordo.com")
-
       t = Tournament.includes(:players, :scores => [:hole, :player], :tee_times => [:scores]).last
       c = Course.includes(:holes).find_by_id(t.course_id)
 

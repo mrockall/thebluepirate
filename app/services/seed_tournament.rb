@@ -46,6 +46,8 @@ class SeedTournament < BaseService
 
     create_tee_times
 
+    send_welcome_emails
+
   end
 
   private
@@ -92,6 +94,10 @@ class SeedTournament < BaseService
     end
 
     player
+  end
+
+  def send_welcome_emails
+    # deliver(:tournament, :new_tee_time, "mike@exordo.com")
   end
 
   def all_data_present?

@@ -46,6 +46,5 @@ BluePirate::App.mailer :tournament do
     to email
     subject 'Welcome to the Blue Pirate!'
     render 'tournament/new_tee_time'
-    content_type :html       # optional, defaults to :plain
   end
 end
