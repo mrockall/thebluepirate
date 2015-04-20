@@ -3,6 +3,7 @@ class Identity < ActiveRecord::Base
   PROVIDERS = {
     :twitter => 'twitter',
     :facebook => 'facebook',
+    :triple_option_str => 'triple_option_string',
     :identity => 'identity'
   }
 

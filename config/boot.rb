@@ -12,6 +12,9 @@ Bundler.require(:default, RACK_ENV)
 #
 Padrino.before_load do
   ActiveRecord::Base.include_root_in_json = false
+  
+  Padrino.set_load_paths(Padrino.root('app', 'services'))
+  Padrino.dependency_paths << Padrino.root('app', 'services', '**/**.rb')
 end
 
 ##
