@@ -8,6 +8,8 @@ module BluePirate
     register Padrino::Warden::Login
     register Authorization::Padrino
 
+    CONFIG = YAML.load(File.read(File.join(PADRINO_ROOT, 'config', 'blue_pirate.yml')))
+
     set :css_asset_folder, 'css'
     set :js_asset_folder, 'js'
 
@@ -17,6 +19,15 @@ module BluePirate
       config.include_json_root = false
       config.include_child_root = false
     end
+
+    set :delivery_method, :smtp => { 
+      :address              => "smtp.mandrillapp.com",
+      :port                 => 587,
+      :user_name            => 'mrockall@gmail.com',
+      :password             => CONFIG['emails']['api_key'],
+      :authentication       => :plain,
+      :enable_starttls_auto => true  
+    }
 
     # Disable Omniauth for now. 
     # Going to go with a different login strategy..
@@ -42,6 +53,8 @@ module BluePirate
     end
     
     get :index, :map => '/*page', :priority => :low do
+      deliver(:tournament, :new_tee_time, "mike@exordo.com")
+
       t = Tournament.includes(:players, :scores => [:hole, :player], :tee_times => [:scores]).last
       c = Course.includes(:holes).find_by_id(t.course_id)
 

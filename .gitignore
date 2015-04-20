@@ -10,3 +10,4 @@ db/*.db
 node_modules/*
 config/database.rb
 npm-debug.log
+config/blue_pirate.yml
