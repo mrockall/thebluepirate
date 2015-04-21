@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
 
+  has_many :players
   has_many :identities
 
   def self.find_or_create_with_identity(identity, auth)

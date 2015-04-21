@@ -41,9 +41,9 @@
 
 BluePirate::App.mailer :tournament do
 
-  email :new_tee_time do |email|
+  email :new_tee_time do |player|
     from 'mrockall@gmail.com'
-    to email
+    to player.email
     subject 'Welcome to the Blue Pirate!'
     render 'tournament/new_tee_time'
   end

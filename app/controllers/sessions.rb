@@ -1,4 +1,4 @@
-BluePirate::App.controllers :sessions do
+BluePirate::App.controllers :sessions, conditions: { handle_json: true }  do
 
   get :logout, :map => 'logout' do
     logout
@@ -35,12 +35,19 @@ BluePirate::App.controllers :sessions do
 
   # Try to login
   post '/', :provides => :json do
-    teetime = TeeTime.last
-    error 400 if teetime.nil?
+    error 400, {message: "Missing parameters"}.to_json unless params.has_key?(:feeling) && params.has_key?(:colour) && params.has_key?(:animal)
 
-    Authorization.current_user = teetime
+    identity = Identity.find_by_provider_and_uid('triple_option_string', "#{params[:feeling]} #{params[:colour]} #{params[:animal]}")
+    error 400, {message: "Authentication failed"}.to_json if identity.nil?
+
+    error 404, {message: "Not found"}.to_json unless identity.player.present?
+
+    tee_time = TeeTime.where(tournament_id: Tournament.last.id, player_id: identity.player.id).first
+    error 404, {message: "No tee time found"}.to_json unless tee_time.present?
+
+    Authorization.current_user = tee_time
     authenticate(:teetime)    
 
-    teetime.to_json
+    tee_time.to_json
   end
 end

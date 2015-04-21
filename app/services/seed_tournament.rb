@@ -88,16 +88,22 @@ class SeedTournament < BaseService
     player = Player.find_by_name player_data[:name]
 
     if player.nil?
-      player = Player.create player_data.only('name', 'handicap', 'facebook_id')
+      player = Player.create player_data.only(:name, :handicap, :facebook_id, :email)
     else 
-      player.update_attributes player_data.only('handicap', 'facebook_id')
+      player.update_attributes player_data.only(:handicap, :facebook_id, :email)
     end
+
+    Identity.find_or_create_triple_option_identity_for_player(player)
 
     player
   end
 
   def send_welcome_emails
-    # deliver(:tournament, :new_tee_time, "mike@exordo.com")
+    if @tournament.valid?
+      @tournament.players.each do |player|
+        BluePirate::App.deliver(:tournament, :new_tee_time, player) if player.email.present?
+      end
+    end
   end
 
   def all_data_present?

@@ -7,6 +7,7 @@ module BluePirate
     register Padrino::Helpers
     register Padrino::Warden::Login
     register Authorization::Padrino
+    register BluePirate::HandleJSON
 
     CONFIG = YAML.load(File.read(File.join(PADRINO_ROOT, 'config', 'blue_pirate.yml')))
 
