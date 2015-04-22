@@ -67,22 +67,8 @@
     };
 
     // my_round/hole.jade compiled template
-    templatizer["my_round"]["hole"] = function tmpl_my_round_hole(locals) {
-        var buf = [];
-        var jade_mixins = {};
-        var jade_interp;
-        var locals_for_with = locals || {};
-        (function(hole_index, hole_length, hole_number, hole_par, next_hole, next_hole_id, prev_hole, prev_hole_id) {
-            buf.push('<div class="page"><div class="page_header"><h1>' + jade.escape(null == (jade_interp = "#" + hole_number + " - Par " + hole_par) ? "" : jade_interp) + "</h1><h2>" + jade.escape(null == (jade_interp = "Length " + hole_length + "m") ? "" : jade_interp) + "</h2><h2>" + jade.escape(null == (jade_interp = "Index " + hole_index) ? "" : jade_interp) + '</h2></div><div class="menu_stripe"></div><div class="players"></div><div class="next_prev_nav">');
-            if (prev_hole) {
-                buf.push("<a" + jade.attr("href", "/my-round/" + prev_hole_id, true, false) + ' class="prev"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" xml:space="preserve"><polygon points="142.332,104.886 197.48,50 402.5,256 197.48,462 142.332,407.113 292.727,256 "></polygon></svg><div class="number">' + jade.escape(null == (jade_interp = "#" + prev_hole) ? "" : jade_interp) + "</div></a>");
-            }
-            if (next_hole) {
-                buf.push("<a" + jade.attr("href", "/my-round/" + next_hole_id, true, false) + ' class="next"><div class="number">' + jade.escape(null == (jade_interp = "#" + next_hole) ? "" : jade_interp) + '</div><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" xml:space="preserve"><polygon points="142.332,104.886 197.48,50 402.5,256 197.48,462 142.332,407.113 292.727,256 "></polygon></svg></a>');
-            }
-            buf.push("</div></div>");
-        }).call(this, "hole_index" in locals_for_with ? locals_for_with.hole_index : typeof hole_index !== "undefined" ? hole_index : undefined, "hole_length" in locals_for_with ? locals_for_with.hole_length : typeof hole_length !== "undefined" ? hole_length : undefined, "hole_number" in locals_for_with ? locals_for_with.hole_number : typeof hole_number !== "undefined" ? hole_number : undefined, "hole_par" in locals_for_with ? locals_for_with.hole_par : typeof hole_par !== "undefined" ? hole_par : undefined, "next_hole" in locals_for_with ? locals_for_with.next_hole : typeof next_hole !== "undefined" ? next_hole : undefined, "next_hole_id" in locals_for_with ? locals_for_with.next_hole_id : typeof next_hole_id !== "undefined" ? next_hole_id : undefined, "prev_hole" in locals_for_with ? locals_for_with.prev_hole : typeof prev_hole !== "undefined" ? prev_hole : undefined, "prev_hole_id" in locals_for_with ? locals_for_with.prev_hole_id : typeof prev_hole_id !== "undefined" ? prev_hole_id : undefined);
-        return buf.join("");
+    templatizer["my_round"]["hole"] = function tmpl_my_round_hole() {
+        return "<li>Mike</li>";
     };
 
     // my_round/hole_card.jade compiled template
@@ -107,6 +93,21 @@
             buf.push('<div class="player_scores"><h2>' + jade.escape(null == (jade_interp = player_name) ? "" : jade_interp) + '</h2><ul class="course_tiles"><li data-attr="score" data-title="Strokes"><a href="#"><div class="meta">Strokes</div><div role="pretty_score" class="hole_num"></div></a></li><li data-attr="points" data-title="Points"><div><div class="meta">Points</div><div role="points" class="hole_num"></div></div></li></ul></div>');
         }).call(this, "player_name" in locals_for_with ? locals_for_with.player_name : typeof player_name !== "undefined" ? player_name : undefined);
         return buf.join("");
+    };
+
+    // my_round/logged_in_as.jade compiled template
+    templatizer["my_round"]["logged_in_as"] = function tmpl_my_round_logged_in_as() {
+        return '<div class="logged_in_block"><a href="/logout" data-bypass="data-bypass">You can log out if you\'d like</a></div>';
+    };
+
+    // my_round/scorecard.jade compiled template
+    templatizer["my_round"]["scorecard"] = function tmpl_my_round_scorecard() {
+        return '<ul class="my-scorecard"></ul>';
+    };
+
+    // my_round/scorecard_header.jade compiled template
+    templatizer["my_round"]["scorecard_header"] = function tmpl_my_round_scorecard_header() {
+        return "<li>Header</li>";
     };
 
     // my_round/view.jade compiled template

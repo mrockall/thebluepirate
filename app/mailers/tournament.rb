@@ -41,10 +41,16 @@
 
 BluePirate::App.mailer :tournament do
 
-  email :new_tee_time do |player|
+  email :new_tee_time do |tournament, player|
     from 'mrockall@gmail.com'
     to player.email
     subject 'Welcome to the Blue Pirate!'
+    content_type :html
+
+    @tournament = tournament
+    @tee_time = tournament.tee_times.find_by_player_id(player.id)
+    @player = player
+    @identity_string = player.identities.find_by_provider(Identity::PROVIDERS[:triple_option_str])
     render 'tournament/new_tee_time'
   end
 end

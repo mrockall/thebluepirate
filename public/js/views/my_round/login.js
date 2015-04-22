@@ -4,6 +4,7 @@ var $ = require('jquery');
 
 // ---- BP Modules ----
 var View = require('ampersand-view');
+var Me = require('../../models/me');
 var BPModel = require('../../models/bp_modal');
 var templates = require('../../../dist/templates');
 
@@ -46,9 +47,14 @@ var LoginModel = BPModel.extend({
   },
 
   tryLogin: function(){
-    this.save();
-    // this.trigger('login:success');
-    this.trigger('login:failed');
+    this.save(null, {
+      success: _.bind(function(model, data, xhr){
+        this.trigger('login:success', model, data, xhr);
+      }, this),
+      error: _.bind(function(){
+        this.trigger('login:failed');
+      }, this)
+    });
   }
 });
 
@@ -83,6 +89,12 @@ module.exports = View.extend({
 
   initialize: function(){
     this.model = new LoginModel();
+
+    // Once we login, update the me variable and trigger event to re-render
+    this.model.once('login:success', function(login_model, data, xhr){
+      window.me = new Me(data);
+      this.trigger('login:success');
+    }, this);
   },
 
   render: function(){

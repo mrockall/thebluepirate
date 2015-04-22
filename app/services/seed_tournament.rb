@@ -101,7 +101,7 @@ class SeedTournament < BaseService
   def send_welcome_emails
     if @tournament.valid?
       @tournament.players.each do |player|
-        BluePirate::App.deliver(:tournament, :new_tee_time, player) if player.email.present?
+        BluePirate::App.deliver(:tournament, :new_tee_time, @tournament, player) if player.email.present?
       end
     end
   end

@@ -23,6 +23,23 @@ module.exports = AmpersandModel.extend({
         }
         return 'user';
       }
+    }, 
+    tee_time: {
+      deps: ['identity_type'],
+      fn: function() {
+        return app.tee_times.findByID(this.id);
+      }
+    },
+    player: {
+      deps: ['identity_type'],
+      fn: function() {
+        var tee_time = app.tee_times.findByID(this.id);
+        if(tee_time){
+          return tee_time.player;
+        } else {
+          return {};
+        }
+      }
     }
-  }
+  },
 });
