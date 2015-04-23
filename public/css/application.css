@@ -1486,3 +1486,112 @@ header {
         -webkit-transform: translateY(-50%);
         -ms-transform: translateY(-50%);
         transform: translateY(-50%); }
+
+.my-scorecard {
+  list-style: none;
+  margin: 0;
+  padding: 1.5rem 0; }
+  .my-scorecard li {
+    font-size: 0.75rem;
+    line-height: 2.25em;
+    padding: 0; }
+    .my-scorecard li a {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -moz-flex;
+      display: -ms-flexbox;
+      display: flex;
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      padding: 0 .75rem;
+      align-items: center;
+      text-decoration: none;
+      color: #323232; }
+      .my-scorecard li a:before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        display: block;
+        width: 0;
+        padding-top: 0;
+        border-radius: 100%;
+        background-color: rgba(133, 155, 163, 0.21);
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%); }
+      .my-scorecard li a:active:before, .my-scorecard li a.ripple:before {
+        width: 120%;
+        padding-top: 120%;
+        background-color: rgba(133, 155, 163, 0.21);
+        -webkit-transition: width 0.25s ease-out, padding-top 0.25s ease-out;
+        -moz-transition: width 0.25s ease-out, padding-top 0.25s ease-out;
+        transition: width 0.25s ease-out, padding-top 0.25s ease-out; }
+    .my-scorecard li .cell {
+      padding: 1em .5em;
+      flex: 1 auto;
+      color: #a0a0a0;
+      text-align: center; }
+      .my-scorecard li .cell.two {
+        flex-grow: 2; }
+      .my-scorecard li .cell.name {
+        flex-grow: 0;
+        text-align: left;
+        color: #323232; }
+      .my-scorecard li .cell .hole {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-flex;
+        display: -ms-flexbox;
+        display: flex;
+        min-width: 7em;
+        font-size: 2em; }
+        .my-scorecard li .cell .hole div {
+          padding-right: .5em;
+          font-size: 1.25em; }
+          .my-scorecard li .cell .hole div.par_idx {
+            margin: 0.2em; }
+            .my-scorecard li .cell .hole div.par_idx > div {
+              color: #a0a0a0;
+              font-size: 0.5em;
+              text-transform: uppercase;
+              font-weight: bold;
+              line-height: 1.7em; }
+      .my-scorecard li .cell.score {
+        color: #323232; }
+      .my-scorecard li .cell > div {
+        height: 2.4em;
+        width: 2.4em;
+        line-height: 2.4em;
+        font-size: 1.5em;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box; }
+        .my-scorecard li .cell > div.birdie {
+          color: #3C6BA1;
+          border: 3px solid #3C6BA1;
+          line-height: 2.1em;
+          -webkit-border-radius: 50%;
+          border-radius: 50%; }
+        .my-scorecard li .cell > div.eagle {
+          color: #3C6BA1;
+          border: 6px double #3C6BA1;
+          line-height: 2em;
+          height: 2.6em;
+          width: 2.6em;
+          -webkit-border-radius: 50%;
+          border-radius: 50%; }
+        .my-scorecard li .cell > div.bogey {
+          color: #B56161;
+          border: 3px solid #B56161;
+          line-height: 2.2em; }
+        .my-scorecard li .cell > div.dbl_bogey {
+          color: #B56161;
+          border: 6px double #B56161;
+          line-height: 2em;
+          height: 2.6em;
+          width: 2.6em; }

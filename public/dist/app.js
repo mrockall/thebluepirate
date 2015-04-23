@@ -26916,8 +26916,32 @@ Velocity's structure:
     };
 
     // my_round/hole.jade compiled template
-    templatizer["my_round"]["hole"] = function tmpl_my_round_hole() {
-        return "<li>Mike</li>";
+    templatizer["my_round"]["hole"] = function tmpl_my_round_hole(locals) {
+        var buf = [];
+        var jade_mixins = {};
+        var jade_interp;
+        var locals_for_with = locals || {};
+        (function(hole, scores, undefined) {
+            buf.push('<li><a><div class="cell one name"><div class="hole"><div class="num">' + jade.escape(null == (jade_interp = "#" + hole.number) ? "" : jade_interp) + '</div><div class="par_idx"><div>' + jade.escape(null == (jade_interp = "Par: " + hole.par) ? "" : jade_interp) + "</div><div>" + jade.escape(null == (jade_interp = "Idx: " + hole.index) ? "" : jade_interp) + "</div></div></div></div>");
+            (function() {
+                var $obj = scores;
+                if ("number" == typeof $obj.length) {
+                    for (var $index = 0, $l = $obj.length; $index < $l; $index++) {
+                        var score = $obj[$index];
+                        buf.push('<div class="cell two score"> <div' + jade.cls([ score.result ], [ true ]) + ">" + jade.escape(null == (jade_interp = score.score) ? "" : jade_interp) + "</div></div>");
+                    }
+                } else {
+                    var $l = 0;
+                    for (var $index in $obj) {
+                        $l++;
+                        var score = $obj[$index];
+                        buf.push('<div class="cell two score"> <div' + jade.cls([ score.result ], [ true ]) + ">" + jade.escape(null == (jade_interp = score.score) ? "" : jade_interp) + "</div></div>");
+                    }
+                }
+            }).call(this);
+            buf.push("</a></li>");
+        }).call(this, "hole" in locals_for_with ? locals_for_with.hole : typeof hole !== "undefined" ? hole : undefined, "scores" in locals_for_with ? locals_for_with.scores : typeof scores !== "undefined" ? scores : undefined, "undefined" in locals_for_with ? locals_for_with.undefined : typeof undefined !== "undefined" ? undefined : undefined);
+        return buf.join("");
     };
 
     // my_round/hole_card.jade compiled template
@@ -26956,7 +26980,7 @@ Velocity's structure:
 
     // my_round/scorecard_header.jade compiled template
     templatizer["my_round"]["scorecard_header"] = function tmpl_my_round_scorecard_header() {
-        return "<li>Header</li>";
+        return '<li><a><div class="cell one name"></div><div class="cell two score">Mike</div><div class="cell two score">Steve</div><div class="cell two score">Ryan</div></a></li>';
     };
 
     // my_round/view.jade compiled template
@@ -27356,6 +27380,7 @@ var AmpersandModel = require('ampersand-model');
 
 module.exports = AmpersandModel.extend({
   type: 'hole',
+  
   props: {
     id: ['integer', true],
     course_id: ['integer', true],
@@ -27363,6 +27388,20 @@ module.exports = AmpersandModel.extend({
     par: ['integer', true],
     index: ['integer', true],
     length: ['integer', true]
+  },
+
+  nth_string: function(){
+    if(this.number == 1)
+      return 'st';
+
+    else if(this.number == 2)
+      return 'nd';
+
+    else if(this.number == 3)
+      return 'rd';
+
+    else
+      return 'th';
   }
 });
 },{"ampersand-model":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/models/me.js":[function(require,module,exports){
@@ -28066,7 +28105,21 @@ var LoggedInAsView = View.extend({
 });
 
 var ScorecardHoleView = View.extend({
-  template: templates.my_round.hole
+  template: templates.my_round.hole,
+  initialize: function(options){
+    this.hole = options.hole;
+    this.tee_time = options.tee_time;
+  },
+  render: function(){
+    var hole = this.hole;
+
+    all_tee_times_in_group = this.tee_time.findAllTeeTimes();
+    this.scores = _(all_tee_times_in_group).map(function(tee_time){
+      return tee_time.score_on_hole(hole.id);
+    });
+    
+    this.renderWithTemplate();
+  }
 });
 
 var ScorecardHeaders = View.extend({
@@ -28078,15 +28131,18 @@ var ScorecardView = View.extend({
   render: function(){
     this.renderWithTemplate();
 
-    var scorecard_header_view = new ScorecardHeaders({ model: me });
-    this.renderSubview(scorecard_header_view, '.my-scorecard');
+    // var scorecard_header_view = new ScorecardHeaders({ model: me });
+    // this.renderSubview(scorecard_header_view, '.my-scorecard');
 
     var course = this.model.course;
     course.holes.each(_.bind(this.renderHole, this));
   },
 
   renderHole: function(hole){
-    var view = new ScorecardHoleView({ model: hole });
+    var view = new ScorecardHoleView({ 
+      hole: hole,
+      tee_time: this.model
+    });
     this.renderSubview(view, '.my-scorecard');
   }
 });

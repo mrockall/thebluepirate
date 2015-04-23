@@ -1,1 +1,11 @@
-li Mike
+li
+  a
+    .cell.one.name
+      .hole
+        div.num= "#" + hole.number
+        div.par_idx
+          div= "Par: " + hole.par
+          div= "Idx: " + hole.index
+    each score in scores
+      .cell.two.score 
+        div(class=score.result)= score.score

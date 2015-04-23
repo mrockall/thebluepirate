@@ -1,0 +1,35 @@
+> div{
+  height: 2.4em;
+  width: 2.4em;
+  line-height: 2.4em;
+  font-size: 1.5em;
+
+  @include box-sizing(border-box);
+
+  &.birdie{
+    color: #3C6BA1;
+    border: 3px solid #3C6BA1;
+    line-height: 2.1em;
+    @include border-radius(50%);
+  }
+  &.eagle{
+    color: #3C6BA1;
+    border: 6px double #3C6BA1; 
+    line-height: 2em;
+    height: 2.6em;
+    width: 2.6em;
+    @include border-radius(50%);
+  }
+  &.bogey{ 
+    color: #B56161;
+    border: 3px solid #B56161;
+    line-height: 2.2em;
+  }
+  &.dbl_bogey{ 
+    color: #B56161;
+    border: 6px double #B56161;
+    line-height: 2em;
+    height: 2.6em;
+    width: 2.6em;
+  }
+}

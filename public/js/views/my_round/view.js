@@ -12,7 +12,21 @@ var LoggedInAsView = View.extend({
 });
 
 var ScorecardHoleView = View.extend({
-  template: templates.my_round.hole
+  template: templates.my_round.hole,
+  initialize: function(options){
+    this.hole = options.hole;
+    this.tee_time = options.tee_time;
+  },
+  render: function(){
+    var hole = this.hole;
+
+    all_tee_times_in_group = this.tee_time.findAllTeeTimes();
+    this.scores = _(all_tee_times_in_group).map(function(tee_time){
+      return tee_time.score_on_hole(hole.id);
+    });
+    
+    this.renderWithTemplate();
+  }
 });
 
 var ScorecardHeaders = View.extend({
@@ -24,15 +38,18 @@ var ScorecardView = View.extend({
   render: function(){
     this.renderWithTemplate();
 
-    var scorecard_header_view = new ScorecardHeaders({ model: me });
-    this.renderSubview(scorecard_header_view, '.my-scorecard');
+    // var scorecard_header_view = new ScorecardHeaders({ model: me });
+    // this.renderSubview(scorecard_header_view, '.my-scorecard');
 
     var course = this.model.course;
     course.holes.each(_.bind(this.renderHole, this));
   },
 
   renderHole: function(hole){
-    var view = new ScorecardHoleView({ model: hole });
+    var view = new ScorecardHoleView({ 
+      hole: hole,
+      tee_time: this.model
+    });
     this.renderSubview(view, '.my-scorecard');
   }
 });
