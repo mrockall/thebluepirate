@@ -140,9 +140,9 @@
         var jade_mixins = {};
         var jade_interp;
         var locals_for_with = locals || {};
-        (function(model) {
-            buf.push('<li><div class="name">' + jade.escape(null == (jade_interp = model.player.name) ? "" : jade_interp) + '</div><div class="score-panel"><div class="minus"></div><div class="score">4</div><div class="plus"></div></div></li>');
-        }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
+        (function(model, score) {
+            buf.push('<li><div class="name">' + jade.escape(null == (jade_interp = model.player.name) ? "" : jade_interp) + '</div><div class="score-panel"><div class="minus"></div><div class="score">' + jade.escape(null == (jade_interp = score.pretty_score) ? "" : jade_interp) + '</div><div class="plus"></div></div></li>');
+        }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined, "score" in locals_for_with ? locals_for_with.score : typeof score !== "undefined" ? score : undefined);
         return buf.join("");
     };
 
