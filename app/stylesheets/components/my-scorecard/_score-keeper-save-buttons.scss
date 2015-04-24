@@ -1,0 +1,25 @@
+a {
+  margin: .5em 0 0;
+  position: relative;
+  overflow: hidden;
+  display: block;
+  text-decoration: none;
+  font-size: 1.75em;
+  line-height: 3;
+  color: white;
+  background-color: $blue;
+  text-align: center;
+  font-weight: 300;
+
+  @include ripple-effect(rgba(133, 155, 163, 0.21), .15s);
+
+  &:after{
+    content: '';
+    position: absolute;
+    top: 50%; left: 2rem;
+    background: url(svg/check.svg) center center no-repeat;
+    height: 24px;
+    width: 24px;
+    @include transform(translateY(-50%));
+  }
+}

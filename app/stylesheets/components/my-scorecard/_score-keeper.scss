@@ -1,0 +1,66 @@
+.score-keeper{
+  // display: none;
+  list-style: none;
+  margin: 0;
+  padding: 1em;
+  background: #dedede;
+
+  ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li{
+      @include box-sizing(border-box);
+      @include flexbox();
+      position: relative;
+      overflow: hidden;
+      padding: .5em;
+
+      align-items: center;
+      color: $text-dark;
+    }
+
+    .name{
+      flex: 1 auto;
+      font-size: 2em;
+      line-height: 2.75em;
+      padding: 0 .75em;
+    }
+
+    .score-panel{
+      flex: 1 auto;
+      flex-grow: 0;
+
+      @include flexbox();
+      align-items: center;
+    }
+
+    .minus{
+      flex: 1 auto;
+      width: 24px;
+      height: 24px;
+      padding: 1.25em 1.75em 1.25em 0;
+      background: url(svg/circle-minus.svg) left center no-repeat;
+      @include background-size(20px 20px);
+    }
+
+    .plus{
+      flex: 1 auto;
+      width: 24px;
+      height: 24px;
+      padding: 1.25em 0 1.25em 1.75em;
+      background: url(svg/circle-plus.svg) right center no-repeat;
+      @include background-size(20px 20px);
+    }
+
+    .score{
+      flex: 1 auto;
+      font-size: 2.5em;
+      line-height: 2em;
+      color: #7e7e7e;
+    }
+  }
+
+  @import "score-keeper-save-buttons";
+}

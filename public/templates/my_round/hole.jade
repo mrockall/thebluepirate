@@ -8,4 +8,7 @@ li
           div= "Idx: " + hole.index
     each score in scores
       .cell.two.score 
-        div(class=score.result)= score.score
+        div(class=score.result)= score.pretty_score
+  .score-keeper
+    ul.score-players
+    a(href="#")= "Save Scores for Hole #" + hole.number

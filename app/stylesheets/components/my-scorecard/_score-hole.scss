@@ -1,0 +1,45 @@
+.cell{
+  padding: 1em .5em;
+  flex: 1 auto;
+  color: $text-light;
+  text-align: center;
+
+  &.two{
+    flex-grow: 2;
+  }
+
+  &.name{
+    flex-grow: 0;
+    text-align: left;
+    color: $text-dark;
+  }
+
+  .hole{
+    @include flexbox();
+    min-width: 7em;
+    font-size: 2em;
+
+    div{
+      padding-right: .5em;
+      font-size: 1.25em;
+
+      &.par_idx{
+        margin: 0.2em;
+
+        > div {
+          color: $text-light;
+          font-size: 0.5em;
+          text-transform: uppercase;
+          font-weight: bold;
+          line-height: 1.7em;
+        }
+      }
+    }
+  }
+
+  &.score{
+    color: $text-dark;
+  }
+
+  @import "score-colours";
+}

@@ -79,18 +79,18 @@
                 if ("number" == typeof $obj.length) {
                     for (var $index = 0, $l = $obj.length; $index < $l; $index++) {
                         var score = $obj[$index];
-                        buf.push('<div class="cell two score"> <div' + jade.cls([ score.result ], [ true ]) + ">" + jade.escape(null == (jade_interp = score.score) ? "" : jade_interp) + "</div></div>");
+                        buf.push('<div class="cell two score"> <div' + jade.cls([ score.result ], [ true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_score) ? "" : jade_interp) + "</div></div>");
                     }
                 } else {
                     var $l = 0;
                     for (var $index in $obj) {
                         $l++;
                         var score = $obj[$index];
-                        buf.push('<div class="cell two score"> <div' + jade.cls([ score.result ], [ true ]) + ">" + jade.escape(null == (jade_interp = score.score) ? "" : jade_interp) + "</div></div>");
+                        buf.push('<div class="cell two score"> <div' + jade.cls([ score.result ], [ true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_score) ? "" : jade_interp) + "</div></div>");
                     }
                 }
             }).call(this);
-            buf.push("</a></li>");
+            buf.push('</a><div class="score-keeper"><ul class="score-players"></ul><a href="#">' + jade.escape(null == (jade_interp = "Save Scores for Hole #" + hole.number) ? "" : jade_interp) + "</a></div></li>");
         }).call(this, "hole" in locals_for_with ? locals_for_with.hole : typeof hole !== "undefined" ? hole : undefined, "scores" in locals_for_with ? locals_for_with.scores : typeof scores !== "undefined" ? scores : undefined, "undefined" in locals_for_with ? locals_for_with.undefined : typeof undefined !== "undefined" ? undefined : undefined);
         return buf.join("");
     };
@@ -132,6 +132,18 @@
     // my_round/scorecard_header.jade compiled template
     templatizer["my_round"]["scorecard_header"] = function tmpl_my_round_scorecard_header() {
         return '<li><a><div class="cell one name"></div><div class="cell two score">Mike</div><div class="cell two score">Steve</div><div class="cell two score">Ryan</div></a></li>';
+    };
+
+    // my_round/scorecard_hole_player.jade compiled template
+    templatizer["my_round"]["scorecard_hole_player"] = function tmpl_my_round_scorecard_hole_player(locals) {
+        var buf = [];
+        var jade_mixins = {};
+        var jade_interp;
+        var locals_for_with = locals || {};
+        (function(model) {
+            buf.push('<li><div class="name">' + jade.escape(null == (jade_interp = model.player.name) ? "" : jade_interp) + '</div><div class="score-panel"><div class="minus"></div><div class="score">4</div><div class="plus"></div></div></li>');
+        }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
+        return buf.join("");
     };
 
     // my_round/view.jade compiled template

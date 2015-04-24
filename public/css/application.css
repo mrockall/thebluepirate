@@ -1595,3 +1595,106 @@ header {
           line-height: 2em;
           height: 2.6em;
           width: 2.6em; }
+  .my-scorecard .score-keeper {
+    list-style: none;
+    margin: 0;
+    padding: 1em;
+    background: #dedede; }
+    .my-scorecard .score-keeper ul {
+      list-style: none;
+      margin: 0;
+      padding: 0; }
+      .my-scorecard .score-keeper ul li {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-flex;
+        display: -ms-flexbox;
+        display: flex;
+        position: relative;
+        overflow: hidden;
+        padding: .5em;
+        align-items: center;
+        color: #323232; }
+      .my-scorecard .score-keeper ul .name {
+        flex: 1 auto;
+        font-size: 2em;
+        line-height: 2.75em;
+        padding: 0 .75em; }
+      .my-scorecard .score-keeper ul .score-panel {
+        flex: 1 auto;
+        flex-grow: 0;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-flex;
+        display: -ms-flexbox;
+        display: flex;
+        align-items: center; }
+      .my-scorecard .score-keeper ul .minus {
+        flex: 1 auto;
+        width: 24px;
+        height: 24px;
+        padding: 1.25em 1.75em 1.25em 0;
+        background: url(svg/circle-minus.svg) left center no-repeat;
+        -webkit-background-size: 20px 20px;
+        -moz-background-size: 20px 20px;
+        background-size: 20px 20px; }
+      .my-scorecard .score-keeper ul .plus {
+        flex: 1 auto;
+        width: 24px;
+        height: 24px;
+        padding: 1.25em 0 1.25em 1.75em;
+        background: url(svg/circle-plus.svg) right center no-repeat;
+        -webkit-background-size: 20px 20px;
+        -moz-background-size: 20px 20px;
+        background-size: 20px 20px; }
+      .my-scorecard .score-keeper ul .score {
+        flex: 1 auto;
+        font-size: 2.5em;
+        line-height: 2em;
+        color: #7e7e7e; }
+    .my-scorecard .score-keeper a {
+      margin: .5em 0 0;
+      position: relative;
+      overflow: hidden;
+      display: block;
+      text-decoration: none;
+      font-size: 1.75em;
+      line-height: 3;
+      color: white;
+      background-color: #116493;
+      text-align: center;
+      font-weight: 300; }
+      .my-scorecard .score-keeper a:before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        display: block;
+        width: 0;
+        padding-top: 0;
+        border-radius: 100%;
+        background-color: rgba(133, 155, 163, 0.21);
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%); }
+      .my-scorecard .score-keeper a:active:before, .my-scorecard .score-keeper a.ripple:before {
+        width: 120%;
+        padding-top: 120%;
+        background-color: rgba(133, 155, 163, 0.21);
+        -webkit-transition: width 0.15s ease-out, padding-top 0.15s ease-out;
+        -moz-transition: width 0.15s ease-out, padding-top 0.15s ease-out;
+        transition: width 0.15s ease-out, padding-top 0.15s ease-out; }
+      .my-scorecard .score-keeper a:after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 2rem;
+        background: url(svg/check.svg) center center no-repeat;
+        height: 24px;
+        width: 24px;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%); }

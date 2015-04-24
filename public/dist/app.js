@@ -26928,18 +26928,18 @@ Velocity's structure:
                 if ("number" == typeof $obj.length) {
                     for (var $index = 0, $l = $obj.length; $index < $l; $index++) {
                         var score = $obj[$index];
-                        buf.push('<div class="cell two score"> <div' + jade.cls([ score.result ], [ true ]) + ">" + jade.escape(null == (jade_interp = score.score) ? "" : jade_interp) + "</div></div>");
+                        buf.push('<div class="cell two score"> <div' + jade.cls([ score.result ], [ true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_score) ? "" : jade_interp) + "</div></div>");
                     }
                 } else {
                     var $l = 0;
                     for (var $index in $obj) {
                         $l++;
                         var score = $obj[$index];
-                        buf.push('<div class="cell two score"> <div' + jade.cls([ score.result ], [ true ]) + ">" + jade.escape(null == (jade_interp = score.score) ? "" : jade_interp) + "</div></div>");
+                        buf.push('<div class="cell two score"> <div' + jade.cls([ score.result ], [ true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_score) ? "" : jade_interp) + "</div></div>");
                     }
                 }
             }).call(this);
-            buf.push("</a></li>");
+            buf.push('</a><div class="score-keeper"><ul class="score-players"></ul><a href="#">' + jade.escape(null == (jade_interp = "Save Scores for Hole #" + hole.number) ? "" : jade_interp) + "</a></div></li>");
         }).call(this, "hole" in locals_for_with ? locals_for_with.hole : typeof hole !== "undefined" ? hole : undefined, "scores" in locals_for_with ? locals_for_with.scores : typeof scores !== "undefined" ? scores : undefined, "undefined" in locals_for_with ? locals_for_with.undefined : typeof undefined !== "undefined" ? undefined : undefined);
         return buf.join("");
     };
@@ -26981,6 +26981,18 @@ Velocity's structure:
     // my_round/scorecard_header.jade compiled template
     templatizer["my_round"]["scorecard_header"] = function tmpl_my_round_scorecard_header() {
         return '<li><a><div class="cell one name"></div><div class="cell two score">Mike</div><div class="cell two score">Steve</div><div class="cell two score">Ryan</div></a></li>';
+    };
+
+    // my_round/scorecard_hole_player.jade compiled template
+    templatizer["my_round"]["scorecard_hole_player"] = function tmpl_my_round_scorecard_hole_player(locals) {
+        var buf = [];
+        var jade_mixins = {};
+        var jade_interp;
+        var locals_for_with = locals || {};
+        (function(model) {
+            buf.push('<li><div class="name">' + jade.escape(null == (jade_interp = model.player.name) ? "" : jade_interp) + '</div><div class="score-panel"><div class="minus"></div><div class="score">4</div><div class="plus"></div></div></li>');
+        }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
+        return buf.join("");
     };
 
     // my_round/view.jade compiled template
@@ -28100,11 +28112,19 @@ var View = require('ampersand-view');
 var templates = require('../../../dist/templates');
 var LoginPage = require('./login');
 
-var LoggedInAsView = View.extend({
+/**
+ * Scorecard Views
+ *
+ * The views required to render the logged in scorecard views
+ * 
+ */
+var LoggedInAs = View.extend({
   template: templates.my_round.logged_in_as
 });
-
-var ScorecardHoleView = View.extend({
+var ScorecardHolePlayer = View.extend({
+  template: templates.my_round.scorecard_hole_player
+});
+var ScorecardHole = View.extend({
   template: templates.my_round.hole,
   initialize: function(options){
     this.hole = options.hole;
@@ -28113,20 +28133,25 @@ var ScorecardHoleView = View.extend({
   render: function(){
     var hole = this.hole;
 
-    all_tee_times_in_group = this.tee_time.findAllTeeTimes();
-    this.scores = _(all_tee_times_in_group).map(function(tee_time){
+    this.group_tee_times = this.tee_time.findAllTeeTimes();
+    this.scores = _(this.group_tee_times).map(function(tee_time){
       return tee_time.score_on_hole(hole.id);
     });
-    
+
     this.renderWithTemplate();
+    this.renderPlayers();
+  },
+  renderPlayers: function(){
+    _(this.group_tee_times).map(_.bind(function(tee_time){
+      var view = new ScorecardHolePlayer({ model: tee_time });
+      this.renderSubview(view, '.score-players');
+    }, this));
   }
 });
-
 var ScorecardHeaders = View.extend({
   template: templates.my_round.scorecard_header
 });
-
-var ScorecardView = View.extend({
+var Scorecard = View.extend({
   template: templates.my_round.scorecard,
   render: function(){
     this.renderWithTemplate();
@@ -28139,7 +28164,7 @@ var ScorecardView = View.extend({
   },
 
   renderHole: function(hole){
-    var view = new ScorecardHoleView({ 
+    var view = new ScorecardHole({ 
       hole: hole,
       tee_time: this.model
     });
@@ -28147,6 +28172,12 @@ var ScorecardView = View.extend({
   }
 });
 
+/**
+ * Main View Returned
+ *
+ * Renders either the Logged in screen or the Login screen..
+ * 
+ */
 module.exports = View.extend({
   template: templates.my_round.base,
 
@@ -28154,10 +28185,10 @@ module.exports = View.extend({
     this.renderWithTemplate();
 
     if(me.id){
-      var scorecard_view = new ScorecardView({ model: me.tee_time });
+      var scorecard_view = new Scorecard({ model: me.tee_time });
       this.renderSubview(scorecard_view, '.page');
 
-      var logged_in_as = new LoggedInAsView({ model: me.tee_time });
+      var logged_in_as = new LoggedInAs({ model: me.tee_time });
       this.renderSubview(logged_in_as, '.page');
 
     } else {
