@@ -1577,7 +1577,7 @@ header {
         .my-scorecard li .cell > div.birdie {
           color: #3C6BA1;
           border: 3px solid #3C6BA1;
-          line-height: 2.1em;
+          line-height: 2em;
           -webkit-border-radius: 50%;
           border-radius: 50%; }
         .my-scorecard li .cell > div.eagle {
@@ -1591,7 +1591,7 @@ header {
         .my-scorecard li .cell > div.bogey {
           color: #B56161;
           border: 3px solid #B56161;
-          line-height: 2.2em; }
+          line-height: 2.1em; }
         .my-scorecard li .cell > div.dbl_bogey {
           color: #B56161;
           border: 6px double #B56161;

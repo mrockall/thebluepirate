@@ -26868,7 +26868,7 @@ Velocity's structure:
 
     // body.jade compiled template
     templatizer["body"] = function tmpl_body() {
-        return '<div class="main"><div class="content"><header><div href="/" class="logo"></div><div class="title">Blue Pirate #7</div><div class="subtitle">Athenry Golf Course</div><div class="tabs"><a href="/leaderboard" class="ldrboard">Leaderboard</a><a href="/my-round" class="me_user">Me</a></div></header><div class="container pages page-container"><div class="page"></div></div></div><div role="modal-container" class="modals"><div class="modal"></div></div></div>';
+        return '<div class="main"><div class="content"><header><div href="/" class="logo"></div><div class="title">Blue Pirate #7</div><div class="subtitle">Bearna Golf Club</div><div class="tabs"><a href="/leaderboard" class="ldrboard">Leaderboard</a><a href="/my-round" class="me_user">Me</a></div></header><div class="container pages page-container"><div class="page"></div></div></div><div role="modal-container" class="modals"><div class="modal"></div></div></div>';
     };
 
     // login/base.jade compiled template
@@ -27060,7 +27060,7 @@ Velocity's structure:
         var jade_interp;
         var locals_for_with = locals || {};
         (function(model, pos, score, undefined) {
-            buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + '><div role="pretty_through" class="cell one">' + jade.escape(null == (jade_interp = pos) ? "" : jade_interp) + '</div><div class="cell six ellipsis name">' + jade.escape(null == (jade_interp = model.player.name) ? "" : jade_interp) + '</div><div role="pretty_score" class="cell one score blue">' + jade.escape(null == (jade_interp = model.pretty_score) ? "" : jade_interp) + '</div><div role="points" class="cell one score">' + jade.escape(null == (jade_interp = model.points) ? "" : jade_interp) + '</div><div role="through" class="cell one thru">' + jade.escape(null == (jade_interp = model.through) ? "" : jade_interp) + '</div><div class="cell three time">' + jade.escape(null == (jade_interp = model.time_parsed) ? "" : jade_interp) + "</div></a><div" + jade.cls([ "scorecard", model.is_expanded ], [ null, true ]) + '><div class="nine"><div class="hole"><div class="label">Hole</div><div class="label">Par</div><div class="label">Idx</div><div class="label score">Str</div><div class="label points">Pts</div></div>');
+            buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + '><div role="pretty_through" class="cell one">' + jade.escape(null == (jade_interp = pos) ? "" : jade_interp) + '</div><div class="cell six ellipsis name">' + jade.escape(null == (jade_interp = model.player.name) ? "" : jade_interp) + '</div><div role="pretty_score" class="cell one score blue">' + jade.escape(null == (jade_interp = model.pretty_score) ? "" : jade_interp) + '</div><div role="points" class="cell one score">' + jade.escape(null == (jade_interp = model.points) ? "" : jade_interp) + '</div><div role="through" class="cell one thru">' + jade.escape(null == (jade_interp = model.through) ? "" : jade_interp) + "</div></a><div" + jade.cls([ "scorecard", model.is_expanded ], [ null, true ]) + '><div class="nine"><div class="hole"><div class="label">Hole</div><div class="label">Par</div><div class="label">Idx</div><div class="label score">Str</div><div class="label points">Pts</div></div>');
             (function() {
                 var $obj = model.course.front_nine;
                 if ("number" == typeof $obj.length) {
@@ -27885,6 +27885,7 @@ module.exports = View.extend({
     switch(this.swipe_view.pageIndex){
       case 0:
         url = 'leaderboard';
+        app.trigger('refresh');
         break;
       case 1:
         url = 'my-round';
@@ -28406,6 +28407,7 @@ var PlayerListItem = View.extend({
     this.pos = options.position;
   },
   render: function(){
+    console.log('leaderboard item', this.model.points);
     this.renderWithTemplate(this);
     this.cacheElements({
       scorecard: '.scorecard'
@@ -28467,6 +28469,11 @@ module.exports = View.extend({
     return this;
   },
   renderLeaderboard: function(){
+    if(this.views){
+      _(this.views).each(function(view){
+        view.remove();
+      });
+    }
     this.views = [];
     this.$players.empty();
     
@@ -28488,7 +28495,9 @@ module.exports = View.extend({
   refetchDataSuccess: function(data_model, data){
     app.scores.set(data.scores);
     this.tee_times.set(data.tee_times);
-    this.renderLeaderboard();
+    setTimeout(_.bind(function(){
+      this.renderLeaderboard();
+    }, this), 500);
   },
   show_loading: function(){
     $(this.el).find(".list-loading").show();

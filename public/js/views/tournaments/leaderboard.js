@@ -27,6 +27,7 @@ var PlayerListItem = View.extend({
     this.pos = options.position;
   },
   render: function(){
+    console.log('leaderboard item', this.model.points);
     this.renderWithTemplate(this);
     this.cacheElements({
       scorecard: '.scorecard'
@@ -88,6 +89,11 @@ module.exports = View.extend({
     return this;
   },
   renderLeaderboard: function(){
+    if(this.views){
+      _(this.views).each(function(view){
+        view.remove();
+      });
+    }
     this.views = [];
     this.$players.empty();
     
@@ -109,7 +115,9 @@ module.exports = View.extend({
   refetchDataSuccess: function(data_model, data){
     app.scores.set(data.scores);
     this.tee_times.set(data.tee_times);
-    this.renderLeaderboard();
+    setTimeout(_.bind(function(){
+      this.renderLeaderboard();
+    }, this), 500);
   },
   show_loading: function(){
     $(this.el).find(".list-loading").show();

@@ -102,6 +102,7 @@ module.exports = View.extend({
     switch(this.swipe_view.pageIndex){
       case 0:
         url = 'leaderboard';
+        app.trigger('refresh');
         break;
       case 1:
         url = 'my-round';

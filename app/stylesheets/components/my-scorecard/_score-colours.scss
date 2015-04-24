@@ -9,7 +9,7 @@
   &.birdie{
     color: #3C6BA1;
     border: 3px solid #3C6BA1;
-    line-height: 2.1em;
+    line-height: 2em;
     @include border-radius(50%);
   }
   &.eagle{
@@ -23,7 +23,7 @@
   &.bogey{ 
     color: #B56161;
     border: 3px solid #B56161;
-    line-height: 2.2em;
+    line-height: 2.1em;
   }
   &.dbl_bogey{ 
     color: #B56161;
