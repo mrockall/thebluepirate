@@ -73,7 +73,7 @@
         var jade_interp;
         var locals_for_with = locals || {};
         (function(hole, scores, undefined) {
-            buf.push('<li><a><div class="cell one name"><div class="hole"><div class="num">' + jade.escape(null == (jade_interp = "#" + hole.number) ? "" : jade_interp) + '</div><div class="par_idx"><div>' + jade.escape(null == (jade_interp = "Par: " + hole.par) ? "" : jade_interp) + "</div><div>" + jade.escape(null == (jade_interp = "Idx: " + hole.index) ? "" : jade_interp) + "</div></div></div></div>");
+            buf.push('<li><a class="hole"><div class="cell one name"><div class="hole"><div class="num">' + jade.escape(null == (jade_interp = "#" + hole.number) ? "" : jade_interp) + '</div><div class="par_idx"><div>' + jade.escape(null == (jade_interp = "Par: " + hole.par) ? "" : jade_interp) + "</div><div>" + jade.escape(null == (jade_interp = "Idx: " + hole.index) ? "" : jade_interp) + "</div></div></div></div>");
             (function() {
                 var $obj = scores;
                 if ("number" == typeof $obj.length) {
@@ -90,7 +90,7 @@
                     }
                 }
             }).call(this);
-            buf.push('</a><div class="score-keeper"><ul class="score-players"></ul><a href="#">' + jade.escape(null == (jade_interp = "Save Scores for Hole #" + hole.number) ? "" : jade_interp) + "</a></div></li>");
+            buf.push('</a><div class="score-keeper"><ul class="score-players"></ul><a href="#" class="save">' + jade.escape(null == (jade_interp = "Save Scores for Hole #" + hole.number) ? "" : jade_interp) + "</a></div></li>");
         }).call(this, "hole" in locals_for_with ? locals_for_with.hole : typeof hole !== "undefined" ? hole : undefined, "scores" in locals_for_with ? locals_for_with.scores : typeof scores !== "undefined" ? scores : undefined, "undefined" in locals_for_with ? locals_for_with.undefined : typeof undefined !== "undefined" ? undefined : undefined);
         return buf.join("");
     };
@@ -140,9 +140,9 @@
         var jade_mixins = {};
         var jade_interp;
         var locals_for_with = locals || {};
-        (function(model, score) {
-            buf.push('<li><div class="name">' + jade.escape(null == (jade_interp = model.player.name) ? "" : jade_interp) + '</div><div class="score-panel"><div class="minus"></div><div class="score">' + jade.escape(null == (jade_interp = score.pretty_score) ? "" : jade_interp) + '</div><div class="plus"></div></div></li>');
-        }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined, "score" in locals_for_with ? locals_for_with.score : typeof score !== "undefined" ? score : undefined);
+        (function(model, player) {
+            buf.push('<li><div class="name">' + jade.escape(null == (jade_interp = player.name) ? "" : jade_interp) + '</div><div class="score-panel"><div class="minus"></div><div data-hook="pretty_score" class="score">' + jade.escape(null == (jade_interp = model.pretty_score) ? "" : jade_interp) + '</div><div class="plus"></div></div></li>');
+        }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined, "player" in locals_for_with ? locals_for_with.player : typeof player !== "undefined" ? player : undefined);
         return buf.join("");
     };
 

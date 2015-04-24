@@ -26922,7 +26922,7 @@ Velocity's structure:
         var jade_interp;
         var locals_for_with = locals || {};
         (function(hole, scores, undefined) {
-            buf.push('<li><a><div class="cell one name"><div class="hole"><div class="num">' + jade.escape(null == (jade_interp = "#" + hole.number) ? "" : jade_interp) + '</div><div class="par_idx"><div>' + jade.escape(null == (jade_interp = "Par: " + hole.par) ? "" : jade_interp) + "</div><div>" + jade.escape(null == (jade_interp = "Idx: " + hole.index) ? "" : jade_interp) + "</div></div></div></div>");
+            buf.push('<li><a class="hole"><div class="cell one name"><div class="hole"><div class="num">' + jade.escape(null == (jade_interp = "#" + hole.number) ? "" : jade_interp) + '</div><div class="par_idx"><div>' + jade.escape(null == (jade_interp = "Par: " + hole.par) ? "" : jade_interp) + "</div><div>" + jade.escape(null == (jade_interp = "Idx: " + hole.index) ? "" : jade_interp) + "</div></div></div></div>");
             (function() {
                 var $obj = scores;
                 if ("number" == typeof $obj.length) {
@@ -26939,7 +26939,7 @@ Velocity's structure:
                     }
                 }
             }).call(this);
-            buf.push('</a><div class="score-keeper"><ul class="score-players"></ul><a href="#">' + jade.escape(null == (jade_interp = "Save Scores for Hole #" + hole.number) ? "" : jade_interp) + "</a></div></li>");
+            buf.push('</a><div class="score-keeper"><ul class="score-players"></ul><a href="#" class="save">' + jade.escape(null == (jade_interp = "Save Scores for Hole #" + hole.number) ? "" : jade_interp) + "</a></div></li>");
         }).call(this, "hole" in locals_for_with ? locals_for_with.hole : typeof hole !== "undefined" ? hole : undefined, "scores" in locals_for_with ? locals_for_with.scores : typeof scores !== "undefined" ? scores : undefined, "undefined" in locals_for_with ? locals_for_with.undefined : typeof undefined !== "undefined" ? undefined : undefined);
         return buf.join("");
     };
@@ -26989,9 +26989,9 @@ Velocity's structure:
         var jade_mixins = {};
         var jade_interp;
         var locals_for_with = locals || {};
-        (function(model, score) {
-            buf.push('<li><div class="name">' + jade.escape(null == (jade_interp = model.player.name) ? "" : jade_interp) + '</div><div class="score-panel"><div class="minus"></div><div class="score">' + jade.escape(null == (jade_interp = score.pretty_score) ? "" : jade_interp) + '</div><div class="plus"></div></div></li>');
-        }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined, "score" in locals_for_with ? locals_for_with.score : typeof score !== "undefined" ? score : undefined);
+        (function(model, player) {
+            buf.push('<li><div class="name">' + jade.escape(null == (jade_interp = player.name) ? "" : jade_interp) + '</div><div class="score-panel"><div class="minus"></div><div data-hook="pretty_score" class="score">' + jade.escape(null == (jade_interp = model.pretty_score) ? "" : jade_interp) + '</div><div class="plus"></div></div></li>');
+        }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined, "player" in locals_for_with ? locals_for_with.player : typeof player !== "undefined" ? player : undefined);
         return buf.join("");
     };
 
@@ -28125,8 +28125,24 @@ var ScorecardHolePlayer = View.extend({
   template: templates.my_round.scorecard_hole_player,
   initialize: function(options){
     this.hole = options.hole;
-    this.score = this.model.score_on_hole(this.hole.id);
-  }
+    this.player = options.player;
+  },
+  events: {
+    'click .minus': 'downScore',
+    'click .plus': 'upScore'
+  },
+  bindings: {
+    'model.pretty_score': {
+      type: 'text',
+      hook: 'pretty_score'
+    }
+  },
+  downScore: function(){
+    this.model.score = this.model.score - 1 > 0 ? this.model.score - 1 : null
+  },
+  upScore: function(){
+    this.model.score = this.model.score + 1 <= 10 ? this.model.score + 1 : 10
+  },
 });
 var ScorecardHole = View.extend({
   template: templates.my_round.hole,
@@ -28138,7 +28154,8 @@ var ScorecardHole = View.extend({
     expanded: ['boolean', true, false]
   },
   events: {
-    'click a': 'toggleScorecard'
+    'click a.hole': 'toggleScorecard',
+    'click a.save': 'saveScores'
   },
   render: function(){
     var hole = this.hole;
@@ -28152,14 +28169,17 @@ var ScorecardHole = View.extend({
     this.renderPlayers();
 
     this.cacheElements({
-      scorecard: '.score-keeper'
+      scorecard: '.score-keeper',
+      save_button: '.save'
     });
   },
   renderPlayers: function(){
     _(this.group_tee_times).map(_.bind(function(tee_time){
+      var score = tee_time.score_on_hole(this.hole.id);
       var view = new ScorecardHolePlayer({ 
-        model: tee_time,
-        hole: this.hole
+        model: score,
+        hole: this.hole,
+        player: tee_time.player
       });
       this.renderSubview(view, '.score-players');
     }, this));
@@ -28169,21 +28189,35 @@ var ScorecardHole = View.extend({
     ev.stopPropagation();
     this._rippleEffect(ev);
 
-    if(this.expanded){
-      $(this.scorecard).velocity('slideUp', {
-        complete: function(){
-          app.trigger('updateHeight');
-        }
-      });
-    } else {
-      $(this.scorecard).velocity('slideDown', {
-        complete: function(){
-          app.trigger('updateHeight');
-        }
-      });
-    }
+    this.expanded ? this._slideScorecardUp() : this._slideScorecardDown();
+  },
+  saveScores: function(ev){
+    ev.preventDefault();
+    ev.stopPropagation();
 
-    this.expanded = !this.expanded;
+    $(this.save_button).addClass('is-loading');
+
+    // Fake the saving just for now..
+    setTimeout(_.bind(function(){
+      $(this.save_button).removeClass('is-loading');
+      this._slideScorecardUp();
+    }, this), 1500);
+  },
+  _slideScorecardUp: function(){
+    $(this.scorecard).velocity('slideUp', {
+      complete: _.bind(function(){
+        app.trigger('updateHeight');
+        this.expanded = false;
+      }, this)
+    });
+  },
+  _slideScorecardDown: function(){
+    $(this.scorecard).velocity('slideDown', {
+      complete: _.bind(function(){
+        app.trigger('updateHeight');
+        this.expanded = true;
+      }, this)
+    });
   },
   _rippleEffect: function(ev) {
     $(ev.delegateTarget).one(app.whichTransitionEvent, function() {

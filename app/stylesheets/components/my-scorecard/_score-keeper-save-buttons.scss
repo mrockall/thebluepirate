@@ -20,6 +20,13 @@ a {
     background: url(svg/check.svg) center center no-repeat;
     height: 24px;
     width: 24px;
+    @include background-size(18px 18px);
     @include transform(translateY(-50%));
+  }
+
+  &.is-loading:after{
+    background: url(svg/reload.svg) center center no-repeat;
+    @include background-size(18px 18px);
+    @include animation(button-loading .75s linear infinite);
   }
 }

@@ -20,8 +20,24 @@ var ScorecardHolePlayer = View.extend({
   template: templates.my_round.scorecard_hole_player,
   initialize: function(options){
     this.hole = options.hole;
-    this.score = this.model.score_on_hole(this.hole.id);
-  }
+    this.player = options.player;
+  },
+  events: {
+    'click .minus': 'downScore',
+    'click .plus': 'upScore'
+  },
+  bindings: {
+    'model.pretty_score': {
+      type: 'text',
+      hook: 'pretty_score'
+    }
+  },
+  downScore: function(){
+    this.model.score = this.model.score - 1 > 0 ? this.model.score - 1 : null
+  },
+  upScore: function(){
+    this.model.score = this.model.score + 1 <= 10 ? this.model.score + 1 : 10
+  },
 });
 var ScorecardHole = View.extend({
   template: templates.my_round.hole,
@@ -33,7 +49,8 @@ var ScorecardHole = View.extend({
     expanded: ['boolean', true, false]
   },
   events: {
-    'click a': 'toggleScorecard'
+    'click a.hole': 'toggleScorecard',
+    'click a.save': 'saveScores'
   },
   render: function(){
     var hole = this.hole;
@@ -47,14 +64,17 @@ var ScorecardHole = View.extend({
     this.renderPlayers();
 
     this.cacheElements({
-      scorecard: '.score-keeper'
+      scorecard: '.score-keeper',
+      save_button: '.save'
     });
   },
   renderPlayers: function(){
     _(this.group_tee_times).map(_.bind(function(tee_time){
+      var score = tee_time.score_on_hole(this.hole.id);
       var view = new ScorecardHolePlayer({ 
-        model: tee_time,
-        hole: this.hole
+        model: score,
+        hole: this.hole,
+        player: tee_time.player
       });
       this.renderSubview(view, '.score-players');
     }, this));
@@ -64,21 +84,35 @@ var ScorecardHole = View.extend({
     ev.stopPropagation();
     this._rippleEffect(ev);
 
-    if(this.expanded){
-      $(this.scorecard).velocity('slideUp', {
-        complete: function(){
-          app.trigger('updateHeight');
-        }
-      });
-    } else {
-      $(this.scorecard).velocity('slideDown', {
-        complete: function(){
-          app.trigger('updateHeight');
-        }
-      });
-    }
+    this.expanded ? this._slideScorecardUp() : this._slideScorecardDown();
+  },
+  saveScores: function(ev){
+    ev.preventDefault();
+    ev.stopPropagation();
 
-    this.expanded = !this.expanded;
+    $(this.save_button).addClass('is-loading');
+
+    // Fake the saving just for now..
+    setTimeout(_.bind(function(){
+      $(this.save_button).removeClass('is-loading');
+      this._slideScorecardUp();
+    }, this), 1500);
+  },
+  _slideScorecardUp: function(){
+    $(this.scorecard).velocity('slideUp', {
+      complete: _.bind(function(){
+        app.trigger('updateHeight');
+        this.expanded = false;
+      }, this)
+    });
+  },
+  _slideScorecardDown: function(){
+    $(this.scorecard).velocity('slideDown', {
+      complete: _.bind(function(){
+        app.trigger('updateHeight');
+        this.expanded = true;
+      }, this)
+    });
   },
   _rippleEffect: function(ev) {
     $(ev.delegateTarget).one(app.whichTransitionEvent, function() {

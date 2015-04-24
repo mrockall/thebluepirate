@@ -1623,7 +1623,7 @@ header {
         flex: 1 auto;
         font-size: 2em;
         line-height: 2.75em;
-        padding: 0 .75em; }
+        padding: 0 .75em 0 .25em; }
       .my-scorecard .score-keeper ul .score-panel {
         flex: 1 auto;
         flex-grow: 0;
@@ -1696,6 +1696,27 @@ header {
         background: url(svg/check.svg) center center no-repeat;
         height: 24px;
         width: 24px;
+        -webkit-background-size: 18px 18px;
+        -moz-background-size: 18px 18px;
+        background-size: 18px 18px;
         -webkit-transform: translateY(-50%);
         -ms-transform: translateY(-50%);
         transform: translateY(-50%); }
+      .my-scorecard .score-keeper a.is-loading:after {
+        background: url(svg/reload.svg) center center no-repeat;
+        -webkit-background-size: 18px 18px;
+        -moz-background-size: 18px 18px;
+        background-size: 18px 18px;
+        -webkit-animation: button-loading 0.75s linear infinite;
+        animation: button-loading 0.75s linear infinite; }
+
+@keyframes button-loading {
+  from {
+    -webkit-transform: translateY(-50%) rotate(0deg);
+    -ms-transform: translateY(-50%) rotate(0deg);
+    transform: translateY(-50%) rotate(0deg); }
+
+  to {
+    -webkit-transform: translateY(-50%) rotate(360deg);
+    -ms-transform: translateY(-50%) rotate(360deg);
+    transform: translateY(-50%) rotate(360deg); } }

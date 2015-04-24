@@ -1,6 +1,6 @@
 li
-  .name= model.player.name
+  .name= player.name
   .score-panel
     .minus
-    .score= score.pretty_score
+    .score(data-hook='pretty_score')= model.pretty_score
     .plus

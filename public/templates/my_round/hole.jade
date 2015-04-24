@@ -1,5 +1,5 @@
 li
-  a
+  a.hole
     .cell.one.name
       .hole
         div.num= "#" + hole.number
@@ -11,4 +11,4 @@ li
         div(class=score.result)= score.pretty_score
   .score-keeper
     ul.score-players
-    a(href="#")= "Save Scores for Hole #" + hole.number
+    a.save(href="#")= "Save Scores for Hole #" + hole.number

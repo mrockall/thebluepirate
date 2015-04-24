@@ -26,3 +26,12 @@
 
   @import "score-keeper";
 }
+
+@keyframes button-loading{
+  from {
+    @include transform(translateY(-50%) rotate(0deg));
+  }
+  to {
+    @include transform(translateY(-50%) rotate(360deg));
+  }
+}
