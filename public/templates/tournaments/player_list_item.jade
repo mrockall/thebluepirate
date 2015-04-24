@@ -21,8 +21,8 @@ li
           .hole_num= hole.number
           .par= hole.par
           .index= hole.index
-          .score(class=score.result)= score.score
-          .points(class=score.result)= score.points
+          .score(class= (score ? score.result : ''))= score.pretty_score
+          .points(class= (score ? score.result : ''))= score.pretty_points
       .hole.total
         .hole_num &nbsp;
         .par= model.course.front_nine_total_par()
@@ -43,8 +43,8 @@ li
           .hole_num= hole.number
           .par= hole.par
           .index= hole.index
-          .score(class=score.result)= score.score
-          .points(class=score.result)= score.points
+          .score(class=score.result)= score.pretty_score
+          .points(class=score.result)= score.pretty_points
       .hole.total
         .hole_num &nbsp;
         .par= model.course.front_nine_total_par()

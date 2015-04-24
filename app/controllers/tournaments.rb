@@ -10,7 +10,7 @@ BluePirate::App.controllers :tournaments do
   end
 
   get :tee_times, :map => '/tee_times', :provides => :json do
-    t = Tournament.includes(:tee_times, :scores).last
+    t = Tournament.includes(:players, :scores => [:hole, :player], :tee_times => [:scores]).last
 
     {
       :tournament => Rabl.render(t, 'tournaments/view', :view_path => 'app/views', :format => 'hash'),

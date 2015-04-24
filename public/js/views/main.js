@@ -21,6 +21,8 @@ module.exports = View.extend({
 
   initialize: function(){
     app.router.on('newPage', this.setPage, this);
+    app.on('refresh', this.refetchData, this);
+    this.tournament = app.tournaments.first();
   },
 
   events: {
@@ -29,13 +31,14 @@ module.exports = View.extend({
   },
 
   render: function () {
+    this.pages = {};
     this.renderWithTemplate();
     this.page_container = this.query('.page-container');
     this.$nav_links = $(this.el).find('.tabs a');
 
     this.swipe_view = new SwipeView(this.page_container, {
       numberOfPages: 2,
-      generatePage: this.buildPage,
+      generatePage: _.bind(this.buildPage, this),
     });
 
     this.swipe_view.onFlip(_.bind(this.pageChanged, this));
@@ -51,21 +54,17 @@ module.exports = View.extend({
 
   buildPage: function(i, page) {
     var el = page.querySelector('.page');
-    var tournament = app.tournaments.first();
     var view;
 
     switch(i){
       case 0:
-        view = new TournamentLeaderboard({
-          model: tournament
-        });
+        view = this.getOrCreatePage('leaderboard', TournamentLeaderboard);
         break;
       case 1:
-        view = new MyRound();
+        view = this.getOrCreatePage('my-round', MyRound);
         break;
     }
 
-    view.render();
     $(el).html(view.el);
   },
 
@@ -83,6 +82,20 @@ module.exports = View.extend({
     }
   },
 
+  getOrCreatePage: function(page_name, View) {
+    // if(this.pages[page_name]){
+    //   return this.pages[page_name];
+    // }
+
+    var view = this.pages[page_name] = new View({
+      model: this.tournament
+    });
+
+    view.render();
+
+    return view;
+  },
+
   pageChanged: function(){
     var url = '';
 
@@ -97,6 +110,12 @@ module.exports = View.extend({
 
     app.router.history.navigate(url, {trigger: false});
     this.updateActiveNav();
+  },
+
+  refetchData: function(){
+    if(this.pages['leaderboard']){
+      this.pages['leaderboard'].refetchData();
+    }
   },
 
   // We need to set the outer height of the page container because the swipe library sets everything as height: 100%

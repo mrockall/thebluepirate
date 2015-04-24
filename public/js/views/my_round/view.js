@@ -39,18 +39,11 @@ var ScorecardHolePlayer = View.extend({
     this.model.score = this.model.score + 1 <= 10 ? this.model.score + 1 : 10
   },
 });
-var ScorecardHole = View.extend({
-  template: templates.my_round.hole,
+var ScorecardHoleSummary = View.extend({
+  template: templates.my_round.hole_summary,
   initialize: function(options){
     this.hole = options.hole;
     this.tee_time = options.tee_time;
-  },
-  props:{
-    expanded: ['boolean', true, false]
-  },
-  events: {
-    'click a.hole': 'toggleScorecard',
-    'click a.save': 'saveScores'
   },
   render: function(){
     var hole = this.hole;
@@ -61,12 +54,40 @@ var ScorecardHole = View.extend({
     });
 
     this.renderWithTemplate();
+  }
+})
+var ScorecardHole = View.extend({
+  template: templates.my_round.hole,
+  initialize: function(options){
+    this.hole = options.hole;
+    this.tee_time = options.tee_time;
+  },
+  props:{
+    expanded: ['boolean', true, false]
+  },
+  events: {
+    'click .hole': 'toggleScorecard',
+    'click a.save': 'saveScores'
+  },
+  render: function(){
+    this.renderWithTemplate();
+
+    this.summary_view = new ScorecardHoleSummary({
+      hole: this.hole,
+      tee_time: this.tee_time
+    });
+    this.renderSubview(this.summary_view, '.hole');
+
+    this.group_tee_times = this.tee_time.findAllTeeTimes();
     this.renderPlayers();
 
     this.cacheElements({
       scorecard: '.score-keeper',
       save_button: '.save'
     });
+  },
+  renderHoleScores: function(){
+    this.summary_view.render();
   },
   renderPlayers: function(){
     _(this.group_tee_times).map(_.bind(function(tee_time){
@@ -92,11 +113,29 @@ var ScorecardHole = View.extend({
 
     $(this.save_button).addClass('is-loading');
 
-    // Fake the saving just for now..
-    setTimeout(_.bind(function(){
-      $(this.save_button).removeClass('is-loading');
-      this._slideScorecardUp();
-    }, this), 1500);
+    var hole = this.hole;
+    var data = _(this.group_tee_times).map(function(tee_time){
+      var score = tee_time.score_on_hole(hole.id);
+
+      if(score){
+        return score.getAttributes({props: true}, true);
+      } else {
+        console.log(tee_time, hole, score);
+      }
+    });
+
+    $.ajax({
+      type: "POST",
+      url: "/scores/multi",
+      dataType: "json",
+      data: JSON.stringify(data),
+      success: _.bind(function(data){
+        $(this.save_button).removeClass('is-loading');
+        app.scores.set(data, {remove: false});
+        this._slideScorecardUp();
+        this.renderHoleScores();
+      }, this)
+    });
   },
   _slideScorecardUp: function(){
     $(this.scorecard).velocity('slideUp', {
@@ -165,5 +204,7 @@ module.exports = View.extend({
       this.renderSubview(login_page, '.page');
       login_page.once('login:success', this.render, this);
     }
+
+    return this;
   }
 });

@@ -79,14 +79,13 @@ module.exports = View.extend({
     this.renderWithTemplate(this.serialize());
     this.$players = $(this.el).find('.players');
 
-    app.on('refresh', this.refetch_data, this);
-
     this.tee_times = new TeeTimes(this.model.tee_times());
 
     this.tee_times.on('request', this.show_loading, this);
     this.tee_times.on('sync', this.hide_loading, this);
 
     this.renderLeaderboard();
+    return this;
   },
   renderLeaderboard: function(){
     this.views = [];
@@ -102,12 +101,12 @@ module.exports = View.extend({
       this.views.push(view);
     }, this));
   },
-  refetch_data: function(){
+  refetchData: function(){
     this.data_model.fetch({
-      success: _.bind(this.refetch_data_success, this)
+      success: _.bind(this.refetchDataSuccess, this)
     });
   },
-  refetch_data_success: function(data_model, data){
+  refetchDataSuccess: function(data_model, data){
     app.scores.set(data.scores);
     this.tee_times.set(data.tee_times);
     this.renderLeaderboard();

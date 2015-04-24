@@ -8,17 +8,20 @@
     line-height: 2.25em;
     padding: 0;
 
-    a{
+    .hole{
       @include ripple-effect(rgba(133, 155, 163, 0.21), .25s);
       @include box-sizing(border-box);
-      @include flexbox();
       position: relative;
       overflow: hidden;
       width: 100%;
       padding: 0 .75rem;
-      align-items: center;
       text-decoration: none;
       color: $text-dark;
+
+      .summary{
+        @include flexbox();
+        align-items: center;
+      }
     }
 
     @import "score-hole";

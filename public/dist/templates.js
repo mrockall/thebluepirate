@@ -72,26 +72,9 @@
         var jade_mixins = {};
         var jade_interp;
         var locals_for_with = locals || {};
-        (function(hole, scores, undefined) {
-            buf.push('<li><a class="hole"><div class="cell one name"><div class="hole"><div class="num">' + jade.escape(null == (jade_interp = "#" + hole.number) ? "" : jade_interp) + '</div><div class="par_idx"><div>' + jade.escape(null == (jade_interp = "Par: " + hole.par) ? "" : jade_interp) + "</div><div>" + jade.escape(null == (jade_interp = "Idx: " + hole.index) ? "" : jade_interp) + "</div></div></div></div>");
-            (function() {
-                var $obj = scores;
-                if ("number" == typeof $obj.length) {
-                    for (var $index = 0, $l = $obj.length; $index < $l; $index++) {
-                        var score = $obj[$index];
-                        buf.push('<div class="cell two score"> <div' + jade.cls([ score.result ], [ true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_score) ? "" : jade_interp) + "</div></div>");
-                    }
-                } else {
-                    var $l = 0;
-                    for (var $index in $obj) {
-                        $l++;
-                        var score = $obj[$index];
-                        buf.push('<div class="cell two score"> <div' + jade.cls([ score.result ], [ true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_score) ? "" : jade_interp) + "</div></div>");
-                    }
-                }
-            }).call(this);
-            buf.push('</a><div class="score-keeper"><ul class="score-players"></ul><a href="#" class="save">' + jade.escape(null == (jade_interp = "Save Scores for Hole #" + hole.number) ? "" : jade_interp) + "</a></div></li>");
-        }).call(this, "hole" in locals_for_with ? locals_for_with.hole : typeof hole !== "undefined" ? hole : undefined, "scores" in locals_for_with ? locals_for_with.scores : typeof scores !== "undefined" ? scores : undefined, "undefined" in locals_for_with ? locals_for_with.undefined : typeof undefined !== "undefined" ? undefined : undefined);
+        (function(hole) {
+            buf.push('<li><div class="hole"></div><div class="score-keeper"><ul class="score-players"></ul><a href="#" class="save">' + jade.escape(null == (jade_interp = "Save Scores for Hole #" + hole.number) ? "" : jade_interp) + "</a></div></li>");
+        }).call(this, "hole" in locals_for_with ? locals_for_with.hole : typeof hole !== "undefined" ? hole : undefined);
         return buf.join("");
     };
 
@@ -116,6 +99,35 @@
         (function(player_name) {
             buf.push('<div class="player_scores"><h2>' + jade.escape(null == (jade_interp = player_name) ? "" : jade_interp) + '</h2><ul class="course_tiles"><li data-attr="score" data-title="Strokes"><a href="#"><div class="meta">Strokes</div><div role="pretty_score" class="hole_num"></div></a></li><li data-attr="points" data-title="Points"><div><div class="meta">Points</div><div role="points" class="hole_num"></div></div></li></ul></div>');
         }).call(this, "player_name" in locals_for_with ? locals_for_with.player_name : typeof player_name !== "undefined" ? player_name : undefined);
+        return buf.join("");
+    };
+
+    // my_round/hole_summary.jade compiled template
+    templatizer["my_round"]["hole_summary"] = function tmpl_my_round_hole_summary(locals) {
+        var buf = [];
+        var jade_mixins = {};
+        var jade_interp;
+        var locals_for_with = locals || {};
+        (function(hole, scores, undefined) {
+            buf.push('<div class="summary"><div class="cell one name"><div class="hole"><div class="num">' + jade.escape(null == (jade_interp = "#" + hole.number) ? "" : jade_interp) + '</div><div class="par_idx"><div>' + jade.escape(null == (jade_interp = "Par: " + hole.par) ? "" : jade_interp) + "</div><div>" + jade.escape(null == (jade_interp = "Idx: " + hole.index) ? "" : jade_interp) + "</div></div></div></div>");
+            (function() {
+                var $obj = scores;
+                if ("number" == typeof $obj.length) {
+                    for (var $index = 0, $l = $obj.length; $index < $l; $index++) {
+                        var score = $obj[$index];
+                        buf.push('<div class="cell two score"> <div' + jade.cls([ score.result ], [ true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_score) ? "" : jade_interp) + "</div></div>");
+                    }
+                } else {
+                    var $l = 0;
+                    for (var $index in $obj) {
+                        $l++;
+                        var score = $obj[$index];
+                        buf.push('<div class="cell two score"> <div' + jade.cls([ score.result ], [ true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_score) ? "" : jade_interp) + "</div></div>");
+                    }
+                }
+            }).call(this);
+            buf.push("</div>");
+        }).call(this, "hole" in locals_for_with ? locals_for_with.hole : typeof hole !== "undefined" ? hole : undefined, "scores" in locals_for_with ? locals_for_with.scores : typeof scores !== "undefined" ? scores : undefined, "undefined" in locals_for_with ? locals_for_with.undefined : typeof undefined !== "undefined" ? undefined : undefined);
         return buf.join("");
     };
 
@@ -206,7 +218,7 @@
                     for (var $index = 0, $l = $obj.length; $index < $l; $index++) {
                         var hole = $obj[$index];
                         score = model.score_on_hole(hole.id);
-                        buf.push('<div class="hole"><div class="hole_num">' + jade.escape(null == (jade_interp = hole.number) ? "" : jade_interp) + '</div><div class="par">' + jade.escape(null == (jade_interp = hole.par) ? "" : jade_interp) + '</div><div class="index">' + jade.escape(null == (jade_interp = hole.index) ? "" : jade_interp) + "</div><div" + jade.cls([ "score", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.score) ? "" : jade_interp) + "</div><div" + jade.cls([ "points", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.points) ? "" : jade_interp) + "</div></div>");
+                        buf.push('<div class="hole"><div class="hole_num">' + jade.escape(null == (jade_interp = hole.number) ? "" : jade_interp) + '</div><div class="par">' + jade.escape(null == (jade_interp = hole.par) ? "" : jade_interp) + '</div><div class="index">' + jade.escape(null == (jade_interp = hole.index) ? "" : jade_interp) + "</div><div" + jade.cls([ "score", score ? score.result : "" ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_score) ? "" : jade_interp) + "</div><div" + jade.cls([ "points", score ? score.result : "" ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_points) ? "" : jade_interp) + "</div></div>");
                     }
                 } else {
                     var $l = 0;
@@ -214,7 +226,7 @@
                         $l++;
                         var hole = $obj[$index];
                         score = model.score_on_hole(hole.id);
-                        buf.push('<div class="hole"><div class="hole_num">' + jade.escape(null == (jade_interp = hole.number) ? "" : jade_interp) + '</div><div class="par">' + jade.escape(null == (jade_interp = hole.par) ? "" : jade_interp) + '</div><div class="index">' + jade.escape(null == (jade_interp = hole.index) ? "" : jade_interp) + "</div><div" + jade.cls([ "score", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.score) ? "" : jade_interp) + "</div><div" + jade.cls([ "points", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.points) ? "" : jade_interp) + "</div></div>");
+                        buf.push('<div class="hole"><div class="hole_num">' + jade.escape(null == (jade_interp = hole.number) ? "" : jade_interp) + '</div><div class="par">' + jade.escape(null == (jade_interp = hole.par) ? "" : jade_interp) + '</div><div class="index">' + jade.escape(null == (jade_interp = hole.index) ? "" : jade_interp) + "</div><div" + jade.cls([ "score", score ? score.result : "" ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_score) ? "" : jade_interp) + "</div><div" + jade.cls([ "points", score ? score.result : "" ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_points) ? "" : jade_interp) + "</div></div>");
                     }
                 }
             }).call(this);
@@ -225,7 +237,7 @@
                     for (var $index = 0, $l = $obj.length; $index < $l; $index++) {
                         var hole = $obj[$index];
                         score = model.score_on_hole(hole.id);
-                        buf.push('<div class="hole"><div class="hole_num">' + jade.escape(null == (jade_interp = hole.number) ? "" : jade_interp) + '</div><div class="par">' + jade.escape(null == (jade_interp = hole.par) ? "" : jade_interp) + '</div><div class="index">' + jade.escape(null == (jade_interp = hole.index) ? "" : jade_interp) + "</div><div" + jade.cls([ "score", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.score) ? "" : jade_interp) + "</div><div" + jade.cls([ "points", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.points) ? "" : jade_interp) + "</div></div>");
+                        buf.push('<div class="hole"><div class="hole_num">' + jade.escape(null == (jade_interp = hole.number) ? "" : jade_interp) + '</div><div class="par">' + jade.escape(null == (jade_interp = hole.par) ? "" : jade_interp) + '</div><div class="index">' + jade.escape(null == (jade_interp = hole.index) ? "" : jade_interp) + "</div><div" + jade.cls([ "score", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_score) ? "" : jade_interp) + "</div><div" + jade.cls([ "points", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_points) ? "" : jade_interp) + "</div></div>");
                     }
                 } else {
                     var $l = 0;
@@ -233,7 +245,7 @@
                         $l++;
                         var hole = $obj[$index];
                         score = model.score_on_hole(hole.id);
-                        buf.push('<div class="hole"><div class="hole_num">' + jade.escape(null == (jade_interp = hole.number) ? "" : jade_interp) + '</div><div class="par">' + jade.escape(null == (jade_interp = hole.par) ? "" : jade_interp) + '</div><div class="index">' + jade.escape(null == (jade_interp = hole.index) ? "" : jade_interp) + "</div><div" + jade.cls([ "score", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.score) ? "" : jade_interp) + "</div><div" + jade.cls([ "points", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.points) ? "" : jade_interp) + "</div></div>");
+                        buf.push('<div class="hole"><div class="hole_num">' + jade.escape(null == (jade_interp = hole.number) ? "" : jade_interp) + '</div><div class="par">' + jade.escape(null == (jade_interp = hole.par) ? "" : jade_interp) + '</div><div class="index">' + jade.escape(null == (jade_interp = hole.index) ? "" : jade_interp) + "</div><div" + jade.cls([ "score", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_score) ? "" : jade_interp) + "</div><div" + jade.cls([ "points", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_points) ? "" : jade_interp) + "</div></div>");
                     }
                 }
             }).call(this);

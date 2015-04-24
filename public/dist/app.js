@@ -26921,26 +26921,9 @@ Velocity's structure:
         var jade_mixins = {};
         var jade_interp;
         var locals_for_with = locals || {};
-        (function(hole, scores, undefined) {
-            buf.push('<li><a class="hole"><div class="cell one name"><div class="hole"><div class="num">' + jade.escape(null == (jade_interp = "#" + hole.number) ? "" : jade_interp) + '</div><div class="par_idx"><div>' + jade.escape(null == (jade_interp = "Par: " + hole.par) ? "" : jade_interp) + "</div><div>" + jade.escape(null == (jade_interp = "Idx: " + hole.index) ? "" : jade_interp) + "</div></div></div></div>");
-            (function() {
-                var $obj = scores;
-                if ("number" == typeof $obj.length) {
-                    for (var $index = 0, $l = $obj.length; $index < $l; $index++) {
-                        var score = $obj[$index];
-                        buf.push('<div class="cell two score"> <div' + jade.cls([ score.result ], [ true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_score) ? "" : jade_interp) + "</div></div>");
-                    }
-                } else {
-                    var $l = 0;
-                    for (var $index in $obj) {
-                        $l++;
-                        var score = $obj[$index];
-                        buf.push('<div class="cell two score"> <div' + jade.cls([ score.result ], [ true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_score) ? "" : jade_interp) + "</div></div>");
-                    }
-                }
-            }).call(this);
-            buf.push('</a><div class="score-keeper"><ul class="score-players"></ul><a href="#" class="save">' + jade.escape(null == (jade_interp = "Save Scores for Hole #" + hole.number) ? "" : jade_interp) + "</a></div></li>");
-        }).call(this, "hole" in locals_for_with ? locals_for_with.hole : typeof hole !== "undefined" ? hole : undefined, "scores" in locals_for_with ? locals_for_with.scores : typeof scores !== "undefined" ? scores : undefined, "undefined" in locals_for_with ? locals_for_with.undefined : typeof undefined !== "undefined" ? undefined : undefined);
+        (function(hole) {
+            buf.push('<li><div class="hole"></div><div class="score-keeper"><ul class="score-players"></ul><a href="#" class="save">' + jade.escape(null == (jade_interp = "Save Scores for Hole #" + hole.number) ? "" : jade_interp) + "</a></div></li>");
+        }).call(this, "hole" in locals_for_with ? locals_for_with.hole : typeof hole !== "undefined" ? hole : undefined);
         return buf.join("");
     };
 
@@ -26965,6 +26948,35 @@ Velocity's structure:
         (function(player_name) {
             buf.push('<div class="player_scores"><h2>' + jade.escape(null == (jade_interp = player_name) ? "" : jade_interp) + '</h2><ul class="course_tiles"><li data-attr="score" data-title="Strokes"><a href="#"><div class="meta">Strokes</div><div role="pretty_score" class="hole_num"></div></a></li><li data-attr="points" data-title="Points"><div><div class="meta">Points</div><div role="points" class="hole_num"></div></div></li></ul></div>');
         }).call(this, "player_name" in locals_for_with ? locals_for_with.player_name : typeof player_name !== "undefined" ? player_name : undefined);
+        return buf.join("");
+    };
+
+    // my_round/hole_summary.jade compiled template
+    templatizer["my_round"]["hole_summary"] = function tmpl_my_round_hole_summary(locals) {
+        var buf = [];
+        var jade_mixins = {};
+        var jade_interp;
+        var locals_for_with = locals || {};
+        (function(hole, scores, undefined) {
+            buf.push('<div class="summary"><div class="cell one name"><div class="hole"><div class="num">' + jade.escape(null == (jade_interp = "#" + hole.number) ? "" : jade_interp) + '</div><div class="par_idx"><div>' + jade.escape(null == (jade_interp = "Par: " + hole.par) ? "" : jade_interp) + "</div><div>" + jade.escape(null == (jade_interp = "Idx: " + hole.index) ? "" : jade_interp) + "</div></div></div></div>");
+            (function() {
+                var $obj = scores;
+                if ("number" == typeof $obj.length) {
+                    for (var $index = 0, $l = $obj.length; $index < $l; $index++) {
+                        var score = $obj[$index];
+                        buf.push('<div class="cell two score"> <div' + jade.cls([ score.result ], [ true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_score) ? "" : jade_interp) + "</div></div>");
+                    }
+                } else {
+                    var $l = 0;
+                    for (var $index in $obj) {
+                        $l++;
+                        var score = $obj[$index];
+                        buf.push('<div class="cell two score"> <div' + jade.cls([ score.result ], [ true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_score) ? "" : jade_interp) + "</div></div>");
+                    }
+                }
+            }).call(this);
+            buf.push("</div>");
+        }).call(this, "hole" in locals_for_with ? locals_for_with.hole : typeof hole !== "undefined" ? hole : undefined, "scores" in locals_for_with ? locals_for_with.scores : typeof scores !== "undefined" ? scores : undefined, "undefined" in locals_for_with ? locals_for_with.undefined : typeof undefined !== "undefined" ? undefined : undefined);
         return buf.join("");
     };
 
@@ -27055,7 +27067,7 @@ Velocity's structure:
                     for (var $index = 0, $l = $obj.length; $index < $l; $index++) {
                         var hole = $obj[$index];
                         score = model.score_on_hole(hole.id);
-                        buf.push('<div class="hole"><div class="hole_num">' + jade.escape(null == (jade_interp = hole.number) ? "" : jade_interp) + '</div><div class="par">' + jade.escape(null == (jade_interp = hole.par) ? "" : jade_interp) + '</div><div class="index">' + jade.escape(null == (jade_interp = hole.index) ? "" : jade_interp) + "</div><div" + jade.cls([ "score", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.score) ? "" : jade_interp) + "</div><div" + jade.cls([ "points", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.points) ? "" : jade_interp) + "</div></div>");
+                        buf.push('<div class="hole"><div class="hole_num">' + jade.escape(null == (jade_interp = hole.number) ? "" : jade_interp) + '</div><div class="par">' + jade.escape(null == (jade_interp = hole.par) ? "" : jade_interp) + '</div><div class="index">' + jade.escape(null == (jade_interp = hole.index) ? "" : jade_interp) + "</div><div" + jade.cls([ "score", score ? score.result : "" ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_score) ? "" : jade_interp) + "</div><div" + jade.cls([ "points", score ? score.result : "" ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_points) ? "" : jade_interp) + "</div></div>");
                     }
                 } else {
                     var $l = 0;
@@ -27063,7 +27075,7 @@ Velocity's structure:
                         $l++;
                         var hole = $obj[$index];
                         score = model.score_on_hole(hole.id);
-                        buf.push('<div class="hole"><div class="hole_num">' + jade.escape(null == (jade_interp = hole.number) ? "" : jade_interp) + '</div><div class="par">' + jade.escape(null == (jade_interp = hole.par) ? "" : jade_interp) + '</div><div class="index">' + jade.escape(null == (jade_interp = hole.index) ? "" : jade_interp) + "</div><div" + jade.cls([ "score", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.score) ? "" : jade_interp) + "</div><div" + jade.cls([ "points", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.points) ? "" : jade_interp) + "</div></div>");
+                        buf.push('<div class="hole"><div class="hole_num">' + jade.escape(null == (jade_interp = hole.number) ? "" : jade_interp) + '</div><div class="par">' + jade.escape(null == (jade_interp = hole.par) ? "" : jade_interp) + '</div><div class="index">' + jade.escape(null == (jade_interp = hole.index) ? "" : jade_interp) + "</div><div" + jade.cls([ "score", score ? score.result : "" ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_score) ? "" : jade_interp) + "</div><div" + jade.cls([ "points", score ? score.result : "" ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_points) ? "" : jade_interp) + "</div></div>");
                     }
                 }
             }).call(this);
@@ -27074,7 +27086,7 @@ Velocity's structure:
                     for (var $index = 0, $l = $obj.length; $index < $l; $index++) {
                         var hole = $obj[$index];
                         score = model.score_on_hole(hole.id);
-                        buf.push('<div class="hole"><div class="hole_num">' + jade.escape(null == (jade_interp = hole.number) ? "" : jade_interp) + '</div><div class="par">' + jade.escape(null == (jade_interp = hole.par) ? "" : jade_interp) + '</div><div class="index">' + jade.escape(null == (jade_interp = hole.index) ? "" : jade_interp) + "</div><div" + jade.cls([ "score", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.score) ? "" : jade_interp) + "</div><div" + jade.cls([ "points", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.points) ? "" : jade_interp) + "</div></div>");
+                        buf.push('<div class="hole"><div class="hole_num">' + jade.escape(null == (jade_interp = hole.number) ? "" : jade_interp) + '</div><div class="par">' + jade.escape(null == (jade_interp = hole.par) ? "" : jade_interp) + '</div><div class="index">' + jade.escape(null == (jade_interp = hole.index) ? "" : jade_interp) + "</div><div" + jade.cls([ "score", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_score) ? "" : jade_interp) + "</div><div" + jade.cls([ "points", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_points) ? "" : jade_interp) + "</div></div>");
                     }
                 } else {
                     var $l = 0;
@@ -27082,7 +27094,7 @@ Velocity's structure:
                         $l++;
                         var hole = $obj[$index];
                         score = model.score_on_hole(hole.id);
-                        buf.push('<div class="hole"><div class="hole_num">' + jade.escape(null == (jade_interp = hole.number) ? "" : jade_interp) + '</div><div class="par">' + jade.escape(null == (jade_interp = hole.par) ? "" : jade_interp) + '</div><div class="index">' + jade.escape(null == (jade_interp = hole.index) ? "" : jade_interp) + "</div><div" + jade.cls([ "score", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.score) ? "" : jade_interp) + "</div><div" + jade.cls([ "points", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.points) ? "" : jade_interp) + "</div></div>");
+                        buf.push('<div class="hole"><div class="hole_num">' + jade.escape(null == (jade_interp = hole.number) ? "" : jade_interp) + '</div><div class="par">' + jade.escape(null == (jade_interp = hole.par) ? "" : jade_interp) + '</div><div class="index">' + jade.escape(null == (jade_interp = hole.index) ? "" : jade_interp) + "</div><div" + jade.cls([ "score", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_score) ? "" : jade_interp) + "</div><div" + jade.cls([ "points", score.result ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score.pretty_points) ? "" : jade_interp) + "</div></div>");
                     }
                 }
             }).call(this);
@@ -27792,6 +27804,8 @@ module.exports = View.extend({
 
   initialize: function(){
     app.router.on('newPage', this.setPage, this);
+    app.on('refresh', this.refetchData, this);
+    this.tournament = app.tournaments.first();
   },
 
   events: {
@@ -27800,13 +27814,14 @@ module.exports = View.extend({
   },
 
   render: function () {
+    this.pages = {};
     this.renderWithTemplate();
     this.page_container = this.query('.page-container');
     this.$nav_links = $(this.el).find('.tabs a');
 
     this.swipe_view = new SwipeView(this.page_container, {
       numberOfPages: 2,
-      generatePage: this.buildPage,
+      generatePage: _.bind(this.buildPage, this),
     });
 
     this.swipe_view.onFlip(_.bind(this.pageChanged, this));
@@ -27822,21 +27837,17 @@ module.exports = View.extend({
 
   buildPage: function(i, page) {
     var el = page.querySelector('.page');
-    var tournament = app.tournaments.first();
     var view;
 
     switch(i){
       case 0:
-        view = new TournamentLeaderboard({
-          model: tournament
-        });
+        view = this.getOrCreatePage('leaderboard', TournamentLeaderboard);
         break;
       case 1:
-        view = new MyRound();
+        view = this.getOrCreatePage('my-round', MyRound);
         break;
     }
 
-    view.render();
     $(el).html(view.el);
   },
 
@@ -27854,6 +27865,20 @@ module.exports = View.extend({
     }
   },
 
+  getOrCreatePage: function(page_name, View) {
+    // if(this.pages[page_name]){
+    //   return this.pages[page_name];
+    // }
+
+    var view = this.pages[page_name] = new View({
+      model: this.tournament
+    });
+
+    view.render();
+
+    return view;
+  },
+
   pageChanged: function(){
     var url = '';
 
@@ -27868,6 +27893,12 @@ module.exports = View.extend({
 
     app.router.history.navigate(url, {trigger: false});
     this.updateActiveNav();
+  },
+
+  refetchData: function(){
+    if(this.pages['leaderboard']){
+      this.pages['leaderboard'].refetchData();
+    }
   },
 
   // We need to set the outer height of the page container because the swipe library sets everything as height: 100%
@@ -28162,18 +28193,11 @@ var ScorecardHolePlayer = View.extend({
     this.model.score = this.model.score + 1 <= 10 ? this.model.score + 1 : 10
   },
 });
-var ScorecardHole = View.extend({
-  template: templates.my_round.hole,
+var ScorecardHoleSummary = View.extend({
+  template: templates.my_round.hole_summary,
   initialize: function(options){
     this.hole = options.hole;
     this.tee_time = options.tee_time;
-  },
-  props:{
-    expanded: ['boolean', true, false]
-  },
-  events: {
-    'click a.hole': 'toggleScorecard',
-    'click a.save': 'saveScores'
   },
   render: function(){
     var hole = this.hole;
@@ -28184,12 +28208,40 @@ var ScorecardHole = View.extend({
     });
 
     this.renderWithTemplate();
+  }
+})
+var ScorecardHole = View.extend({
+  template: templates.my_round.hole,
+  initialize: function(options){
+    this.hole = options.hole;
+    this.tee_time = options.tee_time;
+  },
+  props:{
+    expanded: ['boolean', true, false]
+  },
+  events: {
+    'click .hole': 'toggleScorecard',
+    'click a.save': 'saveScores'
+  },
+  render: function(){
+    this.renderWithTemplate();
+
+    this.summary_view = new ScorecardHoleSummary({
+      hole: this.hole,
+      tee_time: this.tee_time
+    });
+    this.renderSubview(this.summary_view, '.hole');
+
+    this.group_tee_times = this.tee_time.findAllTeeTimes();
     this.renderPlayers();
 
     this.cacheElements({
       scorecard: '.score-keeper',
       save_button: '.save'
     });
+  },
+  renderHoleScores: function(){
+    this.summary_view.render();
   },
   renderPlayers: function(){
     _(this.group_tee_times).map(_.bind(function(tee_time){
@@ -28215,11 +28267,29 @@ var ScorecardHole = View.extend({
 
     $(this.save_button).addClass('is-loading');
 
-    // Fake the saving just for now..
-    setTimeout(_.bind(function(){
-      $(this.save_button).removeClass('is-loading');
-      this._slideScorecardUp();
-    }, this), 1500);
+    var hole = this.hole;
+    var data = _(this.group_tee_times).map(function(tee_time){
+      var score = tee_time.score_on_hole(hole.id);
+
+      if(score){
+        return score.getAttributes({props: true}, true);
+      } else {
+        console.log(tee_time, hole, score);
+      }
+    });
+
+    $.ajax({
+      type: "POST",
+      url: "/scores/multi",
+      dataType: "json",
+      data: JSON.stringify(data),
+      success: _.bind(function(data){
+        $(this.save_button).removeClass('is-loading');
+        app.scores.set(data, {remove: false});
+        this._slideScorecardUp();
+        this.renderHoleScores();
+      }, this)
+    });
   },
   _slideScorecardUp: function(){
     $(this.scorecard).velocity('slideUp', {
@@ -28288,6 +28358,8 @@ module.exports = View.extend({
       this.renderSubview(login_page, '.page');
       login_page.once('login:success', this.render, this);
     }
+
+    return this;
   }
 });
 },{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","./login":"/Library/WebServer/Server/bp_tournaments/public/js/views/my_round/login.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/tournaments/home.js":[function(require,module,exports){
@@ -28386,14 +28458,13 @@ module.exports = View.extend({
     this.renderWithTemplate(this.serialize());
     this.$players = $(this.el).find('.players');
 
-    app.on('refresh', this.refetch_data, this);
-
     this.tee_times = new TeeTimes(this.model.tee_times());
 
     this.tee_times.on('request', this.show_loading, this);
     this.tee_times.on('sync', this.hide_loading, this);
 
     this.renderLeaderboard();
+    return this;
   },
   renderLeaderboard: function(){
     this.views = [];
@@ -28409,12 +28480,12 @@ module.exports = View.extend({
       this.views.push(view);
     }, this));
   },
-  refetch_data: function(){
+  refetchData: function(){
     this.data_model.fetch({
-      success: _.bind(this.refetch_data_success, this)
+      success: _.bind(this.refetchDataSuccess, this)
     });
   },
-  refetch_data_success: function(data_model, data){
+  refetchDataSuccess: function(data_model, data){
     app.scores.set(data.scores);
     this.tee_times.set(data.tee_times);
     this.renderLeaderboard();

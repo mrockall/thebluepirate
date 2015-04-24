@@ -15,7 +15,7 @@
   &.eagle{
     color: #3C6BA1;
     border: 6px double #3C6BA1; 
-    line-height: 2em;
+    line-height: 1.8em;
     height: 2.6em;
     width: 2.6em;
     @include border-radius(50%);
@@ -28,7 +28,7 @@
   &.dbl_bogey{ 
     color: #B56161;
     border: 6px double #B56161;
-    line-height: 2em;
+    line-height: 1.8em;
     height: 2.6em;
     width: 2.6em;
   }

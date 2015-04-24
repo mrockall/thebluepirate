@@ -1,14 +1,5 @@
 li
-  a.hole
-    .cell.one.name
-      .hole
-        div.num= "#" + hole.number
-        div.par_idx
-          div= "Par: " + hole.par
-          div= "Idx: " + hole.index
-    each score in scores
-      .cell.two.score 
-        div(class=score.result)= score.pretty_score
+  .hole
   .score-keeper
     ul.score-players
     a.save(href="#")= "Save Scores for Hole #" + hole.number
