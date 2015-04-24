@@ -128,9 +128,6 @@ var Scorecard = View.extend({
   render: function(){
     this.renderWithTemplate();
 
-    // var scorecard_header_view = new ScorecardHeaders({ model: me });
-    // this.renderSubview(scorecard_header_view, '.my-scorecard');
-
     var course = this.model.course;
     course.holes.each(_.bind(this.renderHole, this));
   },

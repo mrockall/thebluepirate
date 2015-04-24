@@ -1141,6 +1141,8 @@ header {
   margin: 0;
   padding: 1em;
   background: #dedede; }
+  .scorecard.expanded {
+    display: block; }
   .scorecard .nine {
     display: -webkit-box;
     display: -webkit-flex;

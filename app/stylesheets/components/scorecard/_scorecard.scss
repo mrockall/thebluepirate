@@ -8,6 +8,10 @@ $birdie_blue: #3C6BA1;
   padding: 1em;
   background: #dedede;
 
+  &.expanded{
+    display: block;
+  }
+
   .nine{
     @include flexbox();
     @include justify-content(space-around);

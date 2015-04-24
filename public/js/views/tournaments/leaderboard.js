@@ -3,22 +3,28 @@ var _ = require('underscore');
 var $ = require('jquery');
 var velocity = require('velocity-animate');
 var velocity_ui = require('velocity-animate/velocity.ui');
+var Model = require('ampersand-model');
 
 // ---- BP Modules ----
 var TeeTimes = require('../../collections/tee_times');
 var View = require('ampersand-view');
 var templates = require('../../../dist/templates');
 
+var DataLayer = Model.extend({
+  type: 'data_layer',
+  url: 'tee_times'
+})
+
 // ---- PlayerListItem ----
 // Leaderboard Item for every Player..
-// model -> Player
+// model -> TeeTime
 var PlayerListItem = View.extend({
   template: templates.tournaments.player_list_item,
-  props:{
-    expanded: ['boolean', true, false]
-  },
   events: {
     'click a': 'toggleScorecard'
+  },
+  initialize: function(options){
+    this.pos = options.position;
   },
   render: function(){
     this.renderWithTemplate(this);
@@ -32,7 +38,7 @@ var PlayerListItem = View.extend({
     ev.stopPropagation();
     this._rippleEffect(ev);
 
-    if(this.expanded){
+    if(this.model.expanded){
       $(this.scorecard).velocity('slideUp', {
         complete: function(){
           app.trigger('updateHeight');
@@ -46,7 +52,7 @@ var PlayerListItem = View.extend({
       });
     }
 
-    this.expanded = !this.expanded;
+    this.model.expanded = !this.model.expanded;
   },
   _rippleEffect: function(ev) {
     $(ev.delegateTarget).one(app.whichTransitionEvent, function() {
@@ -68,14 +74,17 @@ module.exports = View.extend({
     };
   },
   render: function () {
+    this.data_model = new DataLayer();
+
     this.renderWithTemplate(this.serialize());
     this.$players = $(this.el).find('.players');
+
+    app.on('refresh', this.refetch_data, this);
 
     this.tee_times = new TeeTimes(this.model.tee_times());
 
     this.tee_times.on('request', this.show_loading, this);
     this.tee_times.on('sync', this.hide_loading, this);
-    this.tee_times.on('sort', this.renderLeaderboard, this);
 
     this.renderLeaderboard();
   },
@@ -83,14 +92,25 @@ module.exports = View.extend({
     this.views = [];
     this.$players.empty();
     
-    this.tee_times.each(_.bind(function(m){
+    this.tee_times.each(_.bind(function(m, i){
       var view = new PlayerListItem({
-        model: m
+        model: m,
+        position: i + 1
       }).render();
 
       this.$players.append(view.el);
       this.views.push(view);
     }, this));
+  },
+  refetch_data: function(){
+    this.data_model.fetch({
+      success: _.bind(this.refetch_data_success, this)
+    });
+  },
+  refetch_data_success: function(data_model, data){
+    app.scores.set(data.scores);
+    this.tee_times.set(data.tee_times);
+    this.renderLeaderboard();
   },
   show_loading: function(){
     $(this.el).find(".list-loading").show();

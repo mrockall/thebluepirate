@@ -5,8 +5,14 @@ module.exports = Collection.extend({
   model: TeeTime,
   url: '/tee_times',
 
-  comparator: function(model){
-    return model.golf_score;
+  comparator: function(model, other_model){
+    if(model.golf_score > other_model.golf_score){
+      return 1;
+    } else if(model.golf_score == other_model.golf_score){
+      return model.score > other_model.score ? 1 : -1;
+    } else if(model.golf_score < other_model.golf_score){
+      return -1;
+    }
   },
 
   findByID: function(id) {

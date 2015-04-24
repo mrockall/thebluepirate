@@ -11,7 +11,6 @@ module.exports = AmpersandModel.extend({
     through: ['integer', true, 0],
     score: ['integer', true, 0],
     points: ['integer', true, 0],
-    position: ['integer', true, 0],
     putts: ['integer', false, 0],
     fairways: ['integer', false, 0],
     greens_played: ['integer', false, 0],
@@ -19,6 +18,10 @@ module.exports = AmpersandModel.extend({
     greens_hit: ['integer', false, 0],
     fairways_hit: ['integer', false, 0],
     time_parsed: ['string']
+  },
+
+  session: {
+    expanded: ['boolean', true, false]
   },
 
   derived: {
@@ -71,18 +74,26 @@ module.exports = AmpersandModel.extend({
         return (this.greens_hit/this.greens_played)*100;
       }
     },
-    pretty_through: {
-      deps: ['through', 'position'],
-      fn: function(){
-        return this.through > 0 ? this.position : "-"
-      }
-    },
     pretty_score: {
       deps: ['through', 'golf_score'],
       fn: function(){
         return this.through > 0 ? this.golf_score_pretty : "";
       }
+    },
+    is_expanded: {
+      deps: ['expanded'],
+      fn: function(){
+        return this.expanded ? 'expanded' : '';
+      }
     }
+  },
+
+  position: function(){
+    return this.collection.models.indexOf(this) + 1;
+  }, 
+
+  pretty_through: function(){
+    return this.through > 0 ? this.position() : "-"
   },
 
   findAllTeeTimes: function(){
@@ -95,7 +106,8 @@ module.exports = AmpersandModel.extend({
   },
 
   score_on_hole: function(hole_id){
-    return app.scores.findByTeeTimeAndHole(this.id, hole_id);
+    var score = app.scores.findByTeeTimeAndHole(this.id, hole_id);
+    return score;
   },
 
   get_totals: function(name) {

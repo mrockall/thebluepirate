@@ -27047,8 +27047,8 @@ Velocity's structure:
         var jade_mixins = {};
         var jade_interp;
         var locals_for_with = locals || {};
-        (function(model, score, undefined) {
-            buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + '><div role="pretty_through" class="cell one">' + jade.escape(null == (jade_interp = model.pretty_through) ? "" : jade_interp) + '</div><div class="cell six ellipsis name">' + jade.escape(null == (jade_interp = model.player.name) ? "" : jade_interp) + '</div><div role="pretty_score" class="cell one score blue">' + jade.escape(null == (jade_interp = model.pretty_score) ? "" : jade_interp) + '</div><div role="points" class="cell one score">' + jade.escape(null == (jade_interp = model.points) ? "" : jade_interp) + '</div><div role="through" class="cell one thru">' + jade.escape(null == (jade_interp = model.through) ? "" : jade_interp) + '</div><div class="cell three time">' + jade.escape(null == (jade_interp = model.time_parsed) ? "" : jade_interp) + '</div></a><div class="scorecard"><div class="nine"><div class="hole"><div class="label">Hole</div><div class="label">Par</div><div class="label">Idx</div><div class="label score">Str</div><div class="label points">Pts</div></div>');
+        (function(model, pos, score, undefined) {
+            buf.push("<li><a" + jade.attr("href", model.player_url, true, false) + '><div role="pretty_through" class="cell one">' + jade.escape(null == (jade_interp = pos) ? "" : jade_interp) + '</div><div class="cell six ellipsis name">' + jade.escape(null == (jade_interp = model.player.name) ? "" : jade_interp) + '</div><div role="pretty_score" class="cell one score blue">' + jade.escape(null == (jade_interp = model.pretty_score) ? "" : jade_interp) + '</div><div role="points" class="cell one score">' + jade.escape(null == (jade_interp = model.points) ? "" : jade_interp) + '</div><div role="through" class="cell one thru">' + jade.escape(null == (jade_interp = model.through) ? "" : jade_interp) + '</div><div class="cell three time">' + jade.escape(null == (jade_interp = model.time_parsed) ? "" : jade_interp) + "</div></a><div" + jade.cls([ "scorecard", model.is_expanded ], [ null, true ]) + '><div class="nine"><div class="hole"><div class="label">Hole</div><div class="label">Par</div><div class="label">Idx</div><div class="label score">Str</div><div class="label points">Pts</div></div>');
             (function() {
                 var $obj = model.course.front_nine;
                 if ("number" == typeof $obj.length) {
@@ -27087,7 +27087,7 @@ Velocity's structure:
                 }
             }).call(this);
             buf.push('<div class="hole total"><div class="hole_num">&nbsp;</div><div class="par">' + jade.escape(null == (jade_interp = model.course.front_nine_total_par()) ? "" : jade_interp) + '</div><div class="index">&nbsp;</div><div class="score">' + jade.escape(null == (jade_interp = model.get_totals("Back 9").strokes) ? "" : jade_interp) + '</div><div class="points">' + jade.escape(null == (jade_interp = model.get_totals("Back 9").points) ? "" : jade_interp) + "</div></div></div></div></li>");
-        }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined, "score" in locals_for_with ? locals_for_with.score : typeof score !== "undefined" ? score : undefined, "undefined" in locals_for_with ? locals_for_with.undefined : typeof undefined !== "undefined" ? undefined : undefined);
+        }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined, "pos" in locals_for_with ? locals_for_with.pos : typeof pos !== "undefined" ? pos : undefined, "score" in locals_for_with ? locals_for_with.score : typeof score !== "undefined" ? score : undefined, "undefined" in locals_for_with ? locals_for_with.undefined : typeof undefined !== "undefined" ? undefined : undefined);
         return buf.join("");
     };
 
@@ -27268,8 +27268,14 @@ module.exports = Collection.extend({
   model: TeeTime,
   url: '/tee_times',
 
-  comparator: function(model){
-    return model.golf_score;
+  comparator: function(model, other_model){
+    if(model.golf_score > other_model.golf_score){
+      return 1;
+    } else if(model.golf_score == other_model.golf_score){
+      return model.score > other_model.score ? 1 : -1;
+    } else if(model.golf_score < other_model.golf_score){
+      return -1;
+    }
   },
 
   findByID: function(id) {
@@ -27545,7 +27551,6 @@ module.exports = AmpersandModel.extend({
     through: ['integer', true, 0],
     score: ['integer', true, 0],
     points: ['integer', true, 0],
-    position: ['integer', true, 0],
     putts: ['integer', false, 0],
     fairways: ['integer', false, 0],
     greens_played: ['integer', false, 0],
@@ -27553,6 +27558,10 @@ module.exports = AmpersandModel.extend({
     greens_hit: ['integer', false, 0],
     fairways_hit: ['integer', false, 0],
     time_parsed: ['string']
+  },
+
+  session: {
+    expanded: ['boolean', true, false]
   },
 
   derived: {
@@ -27605,18 +27614,26 @@ module.exports = AmpersandModel.extend({
         return (this.greens_hit/this.greens_played)*100;
       }
     },
-    pretty_through: {
-      deps: ['through', 'position'],
-      fn: function(){
-        return this.through > 0 ? this.position : "-"
-      }
-    },
     pretty_score: {
       deps: ['through', 'golf_score'],
       fn: function(){
         return this.through > 0 ? this.golf_score_pretty : "";
       }
+    },
+    is_expanded: {
+      deps: ['expanded'],
+      fn: function(){
+        return this.expanded ? 'expanded' : '';
+      }
     }
+  },
+
+  position: function(){
+    return this.collection.models.indexOf(this) + 1;
+  }, 
+
+  pretty_through: function(){
+    return this.through > 0 ? this.position() : "-"
   },
 
   findAllTeeTimes: function(){
@@ -27629,7 +27646,8 @@ module.exports = AmpersandModel.extend({
   },
 
   score_on_hole: function(hole_id){
-    return app.scores.findByTeeTimeAndHole(this.id, hole_id);
+    var score = app.scores.findByTeeTimeAndHole(this.id, hole_id);
+    return score;
   },
 
   get_totals: function(name) {
@@ -28233,9 +28251,6 @@ var Scorecard = View.extend({
   render: function(){
     this.renderWithTemplate();
 
-    // var scorecard_header_view = new ScorecardHeaders({ model: me });
-    // this.renderSubview(scorecard_header_view, '.my-scorecard');
-
     var course = this.model.course;
     course.holes.each(_.bind(this.renderHole, this));
   },
@@ -28295,22 +28310,28 @@ var _ = require('underscore');
 var $ = require('jquery');
 var velocity = require('velocity-animate');
 var velocity_ui = require('velocity-animate/velocity.ui');
+var Model = require('ampersand-model');
 
 // ---- BP Modules ----
 var TeeTimes = require('../../collections/tee_times');
 var View = require('ampersand-view');
 var templates = require('../../../dist/templates');
 
+var DataLayer = Model.extend({
+  type: 'data_layer',
+  url: 'tee_times'
+})
+
 // ---- PlayerListItem ----
 // Leaderboard Item for every Player..
-// model -> Player
+// model -> TeeTime
 var PlayerListItem = View.extend({
   template: templates.tournaments.player_list_item,
-  props:{
-    expanded: ['boolean', true, false]
-  },
   events: {
     'click a': 'toggleScorecard'
+  },
+  initialize: function(options){
+    this.pos = options.position;
   },
   render: function(){
     this.renderWithTemplate(this);
@@ -28324,7 +28345,7 @@ var PlayerListItem = View.extend({
     ev.stopPropagation();
     this._rippleEffect(ev);
 
-    if(this.expanded){
+    if(this.model.expanded){
       $(this.scorecard).velocity('slideUp', {
         complete: function(){
           app.trigger('updateHeight');
@@ -28338,7 +28359,7 @@ var PlayerListItem = View.extend({
       });
     }
 
-    this.expanded = !this.expanded;
+    this.model.expanded = !this.model.expanded;
   },
   _rippleEffect: function(ev) {
     $(ev.delegateTarget).one(app.whichTransitionEvent, function() {
@@ -28360,14 +28381,17 @@ module.exports = View.extend({
     };
   },
   render: function () {
+    this.data_model = new DataLayer();
+
     this.renderWithTemplate(this.serialize());
     this.$players = $(this.el).find('.players');
+
+    app.on('refresh', this.refetch_data, this);
 
     this.tee_times = new TeeTimes(this.model.tee_times());
 
     this.tee_times.on('request', this.show_loading, this);
     this.tee_times.on('sync', this.hide_loading, this);
-    this.tee_times.on('sort', this.renderLeaderboard, this);
 
     this.renderLeaderboard();
   },
@@ -28375,14 +28399,25 @@ module.exports = View.extend({
     this.views = [];
     this.$players.empty();
     
-    this.tee_times.each(_.bind(function(m){
+    this.tee_times.each(_.bind(function(m, i){
       var view = new PlayerListItem({
-        model: m
+        model: m,
+        position: i + 1
       }).render();
 
       this.$players.append(view.el);
       this.views.push(view);
     }, this));
+  },
+  refetch_data: function(){
+    this.data_model.fetch({
+      success: _.bind(this.refetch_data_success, this)
+    });
+  },
+  refetch_data_success: function(data_model, data){
+    app.scores.set(data.scores);
+    this.tee_times.set(data.tee_times);
+    this.renderLeaderboard();
   },
   show_loading: function(){
     $(this.el).find(".list-loading").show();
@@ -28392,6 +28427,6 @@ module.exports = View.extend({
   }
 });
 
-},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","../../collections/tee_times":"/Library/WebServer/Server/bp_tournaments/public/js/collections/tee_times.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js","velocity-animate":"/Library/WebServer/Server/bp_tournaments/node_modules/velocity-animate/jquery.velocity.js","velocity-animate/velocity.ui":"/Library/WebServer/Server/bp_tournaments/node_modules/velocity-animate/velocity.ui.js"}],"/usr/local/share/npm/lib/node_modules/watchify/node_modules/browserify/lib/_empty.js":[function(require,module,exports){
+},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","../../collections/tee_times":"/Library/WebServer/Server/bp_tournaments/public/js/collections/tee_times.js","ampersand-model":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js","velocity-animate":"/Library/WebServer/Server/bp_tournaments/node_modules/velocity-animate/jquery.velocity.js","velocity-animate/velocity.ui":"/Library/WebServer/Server/bp_tournaments/node_modules/velocity-animate/velocity.ui.js"}],"/usr/local/share/npm/lib/node_modules/watchify/node_modules/browserify/lib/_empty.js":[function(require,module,exports){
 
 },{}]},{},["/Library/WebServer/Server/bp_tournaments/public/js/app.js"]);

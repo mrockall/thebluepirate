@@ -1,13 +1,13 @@
 li
   a(href=model.player_url)
-    .cell.one(role='pretty_through')= model.pretty_through
+    .cell.one(role='pretty_through')= pos
     .cell.six.ellipsis.name= model.player.name
     .cell.one.score.blue(role='pretty_score')= model.pretty_score
     .cell.one.score(role='points')= model.points
     .cell.one.thru(role='through')= model.through
 
     .cell.three.time= model.time_parsed
-  .scorecard
+  .scorecard(class=model.is_expanded)
     .nine
       .hole
         .label Hole
