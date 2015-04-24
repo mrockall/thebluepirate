@@ -25,6 +25,12 @@ var ScorecardHole = View.extend({
     this.hole = options.hole;
     this.tee_time = options.tee_time;
   },
+  props:{
+    expanded: ['boolean', true, false]
+  },
+  events: {
+    'click a': 'toggleScorecard'
+  },
   render: function(){
     var hole = this.hole;
 
@@ -35,12 +41,42 @@ var ScorecardHole = View.extend({
 
     this.renderWithTemplate();
     this.renderPlayers();
+
+    this.cacheElements({
+      scorecard: '.score-keeper'
+    });
   },
   renderPlayers: function(){
     _(this.group_tee_times).map(_.bind(function(tee_time){
       var view = new ScorecardHolePlayer({ model: tee_time });
       this.renderSubview(view, '.score-players');
     }, this));
+  },
+  toggleScorecard: function(ev){
+    ev.preventDefault();
+    ev.stopPropagation();
+    this._rippleEffect(ev);
+
+    if(this.expanded){
+      $(this.scorecard).velocity('slideUp', {
+        complete: function(){
+          app.trigger('updateHeight');
+        }
+      });
+    } else {
+      $(this.scorecard).velocity('slideDown', {
+        complete: function(){
+          app.trigger('updateHeight');
+        }
+      });
+    }
+
+    this.expanded = !this.expanded;
+  },
+  _rippleEffect: function(ev) {
+    $(ev.delegateTarget).one(app.whichTransitionEvent, function() {
+      $(this).removeClass('ripple');
+    }).addClass('ripple');
   }
 });
 var ScorecardHeaders = View.extend({
