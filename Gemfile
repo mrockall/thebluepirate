@@ -28,6 +28,9 @@ gem 'warden'
 gem 'padrino-warden', :github => 'jondot/padrino-warden'
 gem 'declarative_authorization_padrino'
 
+# Spreadsheet
+gem 'spreadsheet'
+
 # Omniauth
 # gem 'omniauth'
 # gem 'omniauth-twitter'
