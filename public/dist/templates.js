@@ -19,7 +19,7 @@
 
     // body.jade compiled template
     templatizer["body"] = function tmpl_body() {
-        return '<div class="main"><div class="content"><header><div href="/" class="logo"></div><div class="title">Blue Pirate #7</div><div class="subtitle">Bearna Golf Club</div><div class="tabs"><a href="/leaderboard" class="ldrboard">Leaderboard</a><a href="/my-round" class="me_user">Me</a></div></header><div class="container pages page-container"><div class="page"></div></div></div><div role="modal-container" class="modals"><div class="modal"></div></div></div>';
+        return '<div class="main"><div class="content"><header><div href="/" class="logo"></div><div class="title">Blue Pirate #8</div><div class="subtitle">Cregmore Golf Club</div><div class="tabs"><a href="/leaderboard" class="ldrboard">Leaderboard</a><a href="/my-round" class="me_user">Me</a></div></header><div class="container pages page-container"><div class="page"></div></div></div><div role="modal-container" class="modals"><div class="modal"></div></div></div>';
     };
 
     // login/base.jade compiled template
