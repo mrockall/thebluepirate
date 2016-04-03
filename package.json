@@ -38,7 +38,9 @@
     "web-swipe-view": "0.0.5"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run": "watchify public/js/app.js -o public/dist/app.js -v",
+    "dev": "grunt"
   },
   "author": "Mike Rockall <mrockall@gmail.com>",
   "license": "BSD-2-Clause"
