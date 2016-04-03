@@ -8,7 +8,7 @@ var View = require('ampersand-view');
 var templates = require('../../dist/templates.js');
 
 // ---- Pages ----
-var TournamentHome = require('./tournaments/home');
+var TournamentHome = require('./home/view');
 var TournamentLeaderboard = require('./tournaments/leaderboard');
 var MyRound = require('./my_round/view');
 
@@ -37,7 +37,7 @@ module.exports = View.extend({
     this.$nav_links = $(this.el).find('.tabs a');
 
     this.swipe_view = new SwipeView(this.page_container, {
-      numberOfPages: 2,
+      numberOfPages: 3,
       generatePage: _.bind(this.buildPage, this),
     });
 
@@ -58,9 +58,12 @@ module.exports = View.extend({
 
     switch(i){
       case 0:
-        view = this.getOrCreatePage('leaderboard', TournamentLeaderboard);
+        view = this.getOrCreatePage('home', TournamentHome);
         break;
       case 1:
+        view = this.getOrCreatePage('leaderboard', TournamentLeaderboard);
+        break;
+      case 2:
         view = this.getOrCreatePage('my-round', MyRound);
         break;
     }
@@ -70,11 +73,14 @@ module.exports = View.extend({
 
   setPage: function(page_name) {
     switch(page_name){
-      case 'leaderboard':
+      case 'home':
         this.swipe_view.goToPage(0);
         break;
-      case 'my_round':
+      case 'leaderboard':
         this.swipe_view.goToPage(1);
+        break;
+      case 'my_round':
+        this.swipe_view.goToPage(2);
         break;
       default:
         this.swipe_view.goToPage(0);
@@ -101,10 +107,13 @@ module.exports = View.extend({
 
     switch(this.swipe_view.pageIndex){
       case 0:
+        url = 'home';
+        break;
+      case 1:
         url = 'leaderboard';
         app.trigger('refresh');
         break;
-      case 1:
+      case 2:
         url = 'my-round';
         break;
     }
