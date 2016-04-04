@@ -26869,12 +26869,12 @@ Velocity's structure:
 
     // body.jade compiled template
     templatizer["body"] = function tmpl_body() {
-        return '<div class="main"><div class="content"><header><div href="/" class="logo"></div><div class="title">Blue Pirate #9</div><div class="subtitle">Donabate Golf Club</div><div class="tabs"><a href="/home" class="home active">Home</a><a href="/leaderboard" class="ldrboard">Leaderboard</a><a href="/my-round" class="me_user">Me</a></div></header><div class="container pages page-container"><div class="page"></div></div></div><div role="modal-container" class="modals"><div class="modal"></div></div></div>';
+        return '<div class="main"><div class="content"><header class="page-header"><div href="/" class="logo"></div><div class="title">Blue Pirate #9</div><div class="subtitle">Donabate Golf Club</div><div class="tabs"><a href="/home" class="home active">Home</a><a href="/leaderboard" class="ldrboard">Leaderboard</a><a href="/my-round" class="me_user">Me</a></div></header><div class="container pages page-container"><div class="page"></div></div></div><div role="modal-container" class="modals"><div class="modal"></div></div></div>';
     };
 
     // home/base.jade compiled template
     templatizer["home"]["base"] = function tmpl_home_base() {
-        return '<div class="page"><p>Hello World</p></div>';
+        return '<ul class="feed"><li class="feed-item"><header><div class="timestamp">Ten minutes ago</div><div class="result dbl_bogey">Double Bogey</div></header><section><p>On the 18th hole, Dave picked up a double bogey 6. It is his first double bogey of the round. He didn\'t pick up any points.</p></section></li><li class="feed-item"><header><div class="timestamp">Twelve minutes ago</div><div class="result par">Par</div></header><section><p>On the 18th hole, Dave picked up a double bogey 6. It is his first double bogey of the round. He didn\'t pick up any points.</p></section></li><li class="feed-item"><header><div class="timestamp">Ten minutes ago</div><div class="result birdie">Birdie</div></header><section><p>On the 18th hole, Dave picked up a double bogey 6. It is his first double bogey of the round. He didn\'t pick up any points.</p></section></li></ul>';
     };
 
     // login/base.jade compiled template
