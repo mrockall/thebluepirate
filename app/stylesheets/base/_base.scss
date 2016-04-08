@@ -20,13 +20,18 @@ body, html{
   }
 }
 
-.content{
+.main{
   @include box-sizing(border-box);
   position: absolute;
   top: 0; left: 0;
   height: 100%;
   width: 100%;
   overflow: scroll;
+}
+
+.max-width-wrapper{
+  max-width: 40em;
+  margin: 0 auto;
 }
 
 .no-scroll{

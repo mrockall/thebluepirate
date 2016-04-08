@@ -1,27 +1,39 @@
 header.page-header{
-  background: $blue url(images/bg.jpg) center center no-repeat;
-  padding: 2em 2em 0;
+  background: $blue url(images/bg-large.jpg) center center no-repeat;
+  padding: 2em 0 0;
   color: white;
   -webkit-box-shadow: 0px 1px 5px 0px #222;
           box-shadow: 0px 1px 5px 0px #222;
 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
 
   .logo{
     display: block;
+    margin: 0 2rem;
     height: 50px;
     background: url(images/logo.png) left center no-repeat;
+    -webkit-background-size: 50px 50px;
+    -moz-background-size: 50px 50px;
+    -o-background-size: 50px 50px;
+    background-size: 50px 50px;
   }
 
   .title{
     font-size: 2.5em;
     font-weight: 300;
     margin: 2rem .5rem 0.25rem;
+    padding: 0 2rem;
   }
 
   .subtitle{
     font-size: 2em;
     font-weight: 100;
     margin: 0 .5rem;
+    padding: 0 2rem;
   }
 
   @include retina {
