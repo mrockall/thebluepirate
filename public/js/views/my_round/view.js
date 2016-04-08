@@ -119,8 +119,6 @@ var ScorecardHole = View.extend({
 
       if(score){
         return score.getAttributes({props: true}, true);
-      } else {
-        console.log(tee_time, hole, score);
       }
     });
 

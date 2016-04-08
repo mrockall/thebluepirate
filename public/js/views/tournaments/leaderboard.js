@@ -27,7 +27,6 @@ var PlayerListItem = View.extend({
     this.pos = options.position;
   },
   render: function(){
-    console.log('leaderboard item', this.model.points);
     this.renderWithTemplate(this);
     this.cacheElements({
       scorecard: '.scorecard'
