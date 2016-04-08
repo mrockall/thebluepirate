@@ -14,6 +14,7 @@ class Score < ActiveRecord::Base
   ## 
   before_save :calculate_points, :if => ->(s) { s.score_changed? }
   after_save :update_tee_time
+  after_save :create_or_update_event
 
   # before_save: Figures out how many points this player gets for his score.
   def calculate_points
@@ -24,6 +25,11 @@ class Score < ActiveRecord::Base
   # after_save: Update the tee time with the totals
   def update_tee_time
     self.tee_time.update_scores
+  end
+
+  # after_save: 
+  def create_or_update_event
+    Events::NewPlayerScore.new(self)
   end
 
   # Public: Returns the name of the score achieved

@@ -48,13 +48,16 @@ class TeeTime < ActiveRecord::Base
 
   # Public: Updates the cached scores on the tee time
   def update_scores
-    self.score = self.scores.map(&:score).reject {|s| s.nil? }.reduce(:+) || 0
-    self.points = self.scores.map(&:points).reject {|s| s.nil? }.reduce(:+) || 0
-    self.putts = self.scores.map(&:putts).reject {|s| s.nil? }.reduce(:+) || 0
-    self.through = self.scores.map {|s| s.score.nil? ? nil : s.hole.number }.reject {|s| s.nil? }.max || 0
-    self.fairways = self.scores.map{|s|
+    my_scores = self.scores.includes(:hole)
+
+    self.score = my_scores.map(&:score).reject {|s| s.nil? }.reduce(:+) || 0
+    self.points = my_scores.map(&:points).reject {|s| s.nil? }.reduce(:+) || 0
+    self.putts = my_scores.map(&:putts).reject {|s| s.nil? }.reduce(:+) || 0
+    self.through = my_scores.map {|s| s.score.nil? ? nil : s.hole.number }.reject {|s| s.nil? }.max || 0
+    self.fairways = my_scores.map{|s|
       s.fairway ? 1 : 0
     }.reject {|s| s.nil? }.reduce(:+) || 0
+
     self.save
   end
 
