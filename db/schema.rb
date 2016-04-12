@@ -21,8 +21,7 @@ ActiveRecord::Schema.define(:version => 17) do
 
   create_table "events", :force => true do |t|
     t.integer  "tournament_id"
-    t.integer  "player_id"
-    t.integer  "hole_id"
+    t.integer  "score_id"
     t.string   "message"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false

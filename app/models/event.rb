@@ -7,7 +7,8 @@
 class Event < ActiveRecord::Base
 
   belongs_to :tournament
+  belongs_to :score
 
-  validates_presence_of :tournament, :player, :hole, :message
+  validates_presence_of :tournament, :score, :message
 
 end
