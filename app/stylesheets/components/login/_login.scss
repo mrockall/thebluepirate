@@ -9,6 +9,7 @@ $options-border-colour: #ddd;
   }
 
   .options {
+    @include clearfix();
     margin-top: 2rem;
     .option:nth-child(1), .option:nth-child(2){
       border-top-width: 1px;

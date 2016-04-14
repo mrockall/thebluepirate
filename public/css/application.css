@@ -1433,6 +1433,8 @@ header.page-header {
     font-size: 1.25rem;
     color: #a0a0a0; }
   .login_page .options {
+    overflow: hidden;
+    *zoom: 1;
     margin-top: 2rem; }
     .login_page .options .option:nth-child(1), .login_page .options .option:nth-child(2) {
       border-top-width: 1px; }

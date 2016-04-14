@@ -48,6 +48,8 @@ module.exports = View.extend({
     this.setPageContainerHeight();
     app.on('updateHeight', this.setPageContainerHeight, this);
 
+    this.setMinPagesHeight();
+
     setFavicon('/images/favicon.png');
     return this;
   },
@@ -130,8 +132,16 @@ module.exports = View.extend({
 
   // We need to set the outer height of the page container because the swipe library sets everything as height: 100%
   setPageContainerHeight: function() {
-    var h = $(this.page_container).find('.swipeview-active .page').outerHeight();
+    var current_page_height = $(this.page_container).find('.swipeview-active .page').outerHeight();
+    var h = this.min_page_height > current_page_height ? this.min_page_height : current_page_height;
     $(this.page_container).outerHeight(h);
+  },
+
+  setMinPagesHeight: function(){
+    var overall_height = $(this.el).outerHeight();
+    var header_height = $(this.el).find('header').outerHeight();
+    this.min_page_height = overall_height - header_height;
+    $(this.el).find('.page-tabs').css('min-height', this.min_page_height);
   },
 
   handleLinkClick: function (e) {
