@@ -19,8 +19,15 @@
     templatizer["tournaments"] = {};
 
     // body.jade compiled template
-    templatizer["body"] = function tmpl_body() {
-        return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><div href="/home" class="logo"></div><div class="title">Blue Pirate #9</div><div class="subtitle">Donabate Golf Club</div><div class="tabs"><a href="/leaderboard" class="ldrboard">Leaderboard</a><a href="/my-round" class="me_user">Me</a></div></div></header><section class="page-tabs max-width-wrapper"><div class="container pages page-container"><div class="page"></div></div></section></div>';
+    templatizer["body"] = function tmpl_body(locals) {
+        var buf = [];
+        var jade_mixins = {};
+        var jade_interp;
+        var locals_for_with = locals || {};
+        (function(course_name, tournament_name) {
+            buf.push('<div class="main"><header class="page-header"><div class="max-width-wrapper"><div href="/home" class="logo"></div><div class="title">' + jade.escape(null == (jade_interp = tournament_name) ? "" : jade_interp) + '</div><div class="subtitle">' + jade.escape(null == (jade_interp = course_name) ? "" : jade_interp) + '</div><div class="tabs"><a href="/leaderboard" class="ldrboard">Leaderboard</a><a href="/my-round" class="me_user">Me</a></div></div></header><section class="page-tabs max-width-wrapper"><div class="container pages page-container"><div class="page"></div></div></section></div>');
+        }).call(this, "course_name" in locals_for_with ? locals_for_with.course_name : typeof course_name !== "undefined" ? course_name : undefined, "tournament_name" in locals_for_with ? locals_for_with.tournament_name : typeof tournament_name !== "undefined" ? tournament_name : undefined);
+        return buf.join("");
     };
 
     // home/base.jade compiled template

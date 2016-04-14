@@ -32,7 +32,11 @@ module.exports = View.extend({
 
   render: function () {
     this.pages = {};
-    this.renderWithTemplate();
+    this.renderWithTemplate({
+      tournament_name: this.tournament.name,
+      course_name: this.tournament.course.name,
+    });
+
     this.page_container = this.query('.page-container');
     this.$nav_links = $(this.el).find('.tabs a');
 
