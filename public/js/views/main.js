@@ -37,7 +37,7 @@ module.exports = View.extend({
     this.$nav_links = $(this.el).find('.tabs a');
 
     this.swipe_view = new SwipeView(this.page_container, {
-      numberOfPages: 3,
+      numberOfPages: 2,
       generatePage: _.bind(this.buildPage, this),
     });
 
@@ -57,13 +57,13 @@ module.exports = View.extend({
     var view;
 
     switch(i){
+      // case 0:
+      //   view = this.getOrCreatePage('home', TournamentHome);
+      //   break;
       case 0:
-        view = this.getOrCreatePage('home', TournamentHome);
-        break;
-      case 1:
         view = this.getOrCreatePage('leaderboard', TournamentLeaderboard);
         break;
-      case 2:
+      case 1:
         view = this.getOrCreatePage('my-round', MyRound);
         break;
     }
@@ -73,14 +73,14 @@ module.exports = View.extend({
 
   setPage: function(page_name) {
     switch(page_name){
-      case 'home':
+      // case 'home':
+      //   this.swipe_view.goToPage(0);
+      //   break;
+      case 'leaderboard':
         this.swipe_view.goToPage(0);
         break;
-      case 'leaderboard':
-        this.swipe_view.goToPage(1);
-        break;
       case 'my_round':
-        this.swipe_view.goToPage(2);
+        this.swipe_view.goToPage(1);
         break;
       default:
         this.swipe_view.goToPage(0);
@@ -106,14 +106,14 @@ module.exports = View.extend({
     var url = '';
 
     switch(this.swipe_view.pageIndex){
+      // case 0:
+      //   url = 'home';
+      //   break;
       case 0:
-        url = 'home';
-        break;
-      case 1:
         url = 'leaderboard';
         app.trigger('refresh');
         break;
-      case 2:
+      case 1:
         url = 'my-round';
         break;
     }

@@ -1641,9 +1641,7 @@ module.exports = function arrayNext(array, currentItem) {
     return array[newIndex];
 };
 
-},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/backbone-events-standalone/backbone-events-standalone.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/backbone-events-standalone.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/backbone-events-standalone.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/backbone-events-standalone.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/backbone-events-standalone/index.js":[function(require,module,exports){
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/backbone-events-standalone/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js")
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/key-tree-store/key-tree-store.js":[function(require,module,exports){
 function KeyTreeStore() {
@@ -2607,23 +2605,7 @@ module.exports = {
 
 },{"ampersand-sync":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-rest-mixin/node_modules/ampersand-sync/ampersand-sync.js","extend-object":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-rest-mixin/node_modules/extend-object/extend-object.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-rest-mixin/node_modules/ampersand-sync/ampersand-sync.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/ampersand-sync.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/ampersand-sync.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/ampersand-sync.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-rest-mixin/node_modules/ampersand-sync/node_modules/qs/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/qs/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/qs/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/qs/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-rest-mixin/node_modules/ampersand-sync/node_modules/xhr/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-rest-mixin/node_modules/ampersand-sync/node_modules/xhr/node_modules/global/window.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/global/window.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/global/window.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/global/window.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-rest-mixin/node_modules/ampersand-sync/node_modules/xhr/node_modules/once/once.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/once/once.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/once/once.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/once/once.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-rest-mixin/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/node_modules/for-each/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/node_modules/for-each/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/node_modules/for-each/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/node_modules/for-each/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-rest-mixin/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/node_modules/for-each/node_modules/is-function/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/node_modules/for-each/node_modules/is-function/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/node_modules/for-each/node_modules/is-function/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/node_modules/for-each/node_modules/is-function/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-rest-mixin/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/node_modules/trim/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/node_modules/trim/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/node_modules/trim/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/node_modules/trim/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-rest-mixin/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/parse-headers.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/parse-headers.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/parse-headers.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/parse-headers.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-rest-mixin/node_modules/extend-object/extend-object.js":[function(require,module,exports){
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/ampersand-sync.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/ampersand-sync.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-rest-mixin/node_modules/extend-object/extend-object.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/extend-object/extend-object.js")
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/extend-object/extend-object.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/extend-object/extend-object.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-underscore-mixin/ampersand-collection-underscore-mixin.js":[function(require,module,exports){
 ;if (typeof window !== "undefined") {  window.ampersand = window.ampersand || {};  window.ampersand["ampersand-collection-underscore-mixin"] = window.ampersand["ampersand-collection-underscore-mixin"] || [];  window.ampersand["ampersand-collection-underscore-mixin"].push("1.0.3");}
@@ -3034,13 +3016,9 @@ Router.extend = classExtend;
 
 },{"./ampersand-history":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/ampersand-history.js","ampersand-class-extend":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/ampersand-class-extend/ampersand-class-extend.js","backbone-events-standalone":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/ampersand-class-extend/ampersand-class-extend.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/ampersand-class-extend/ampersand-class-extend.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/ampersand-class-extend/ampersand-class-extend.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/ampersand-class-extend/ampersand-class-extend.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/ampersand-class-extend/node_modules/extend-object/extend-object.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/extend-object/extend-object.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/extend-object/extend-object.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/extend-object/extend-object.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/backbone-events-standalone/backbone-events-standalone.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/backbone-events-standalone.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/backbone-events-standalone.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/backbone-events-standalone.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js":[function(require,module,exports){
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/ampersand-class-extend/ampersand-class-extend.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/ampersand-class-extend/ampersand-class-extend.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/backbone-events-standalone/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/backbone-events-standalone/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/backbone-events-standalone/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js":[function(require,module,exports){
 ;if (typeof window !== "undefined") {  window.ampersand = window.ampersand || {};  window.ampersand["ampersand-view"] = window.ampersand["ampersand-view"] || [];  window.ampersand["ampersand-view"].push("7.3.0");}
 var State = require('ampersand-state');
 var CollectionView = require('ampersand-collection-view');
@@ -5192,10 +5170,10 @@ function isLength(value) {
 module.exports = baseFlatten;
 
 },{"lodash.isarguments":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.isarguments/index.js","lodash.isarray":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.isarguments/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.isarray/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.restparam/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isarguments/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isarguments/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isarguments/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.isarray/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isarray/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.restparam/index.js":[function(require,module,exports){
 /**
  * lodash 3.6.1 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -6343,14 +6321,10 @@ function baseFindIndex(array, predicate, fromRight) {
 module.exports = baseFindIndex;
 
 },{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash.isarray/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash.keys/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.isarray/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash.keys/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash.keys/node_modules/lodash.isarguments/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash.keys/node_modules/lodash.isnative/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isnative/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isnative/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isnative/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-dom-bindings/ampersand-dom-bindings.js":[function(require,module,exports){
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-dom-bindings/ampersand-dom-bindings.js":[function(require,module,exports){
 ;if (typeof window !== "undefined") {  window.ampersand = window.ampersand || {};  window.ampersand["ampersand-dom-bindings"] = window.ampersand["ampersand-dom-bindings"] || [];  window.ampersand["ampersand-dom-bindings"].push("3.5.0");}
 var Store = require('key-tree-store');
 var dom = require('ampersand-dom');
@@ -7608,11 +7582,7 @@ module.exports = Base;
 
 },{"ampersand-events":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/ampersand-events/ampersand-events.js","array-next":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/array-next/array-next.js","key-tree-store":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/key-tree-store/key-tree-store.js","lodash.assign":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/index.js","lodash.bind":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/index.js","lodash.clone":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/index.js","lodash.defaults":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.defaults/index.js","lodash.escape":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.escape/index.js","lodash.foreach":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/index.js","lodash.has":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.has/index.js","lodash.includes":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.includes/index.js","lodash.isarray":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isarray/index.js","lodash.isdate":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isdate/index.js","lodash.isempty":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isempty/index.js","lodash.isequal":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isequal/index.js","lodash.isfunction":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isfunction/index.js","lodash.isnull":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isnull/index.js","lodash.isobject":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isobject/index.js","lodash.isstring":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.isstring/index.js","lodash.isundefined":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isundefined/index.js","lodash.keys":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.keys/index.js","lodash.omit":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/index.js","lodash.result":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/index.js","lodash.union":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/index.js","lodash.uniqueid":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.uniqueid/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/ampersand-events/ampersand-events.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/ampersand-events.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/ampersand-events.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/ampersand-events.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/ampersand-events/node_modules/lodash.once/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.once/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.once/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.once/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/ampersand-events/node_modules/lodash.once/node_modules/lodash.before/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.once/node_modules/lodash.before/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.once/node_modules/lodash.before/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.once/node_modules/lodash.before/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/array-next/array-next.js":[function(require,module,exports){
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/ampersand-events.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/ampersand-events.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/array-next/array-next.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/array-next/array-next.js")
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/array-next/array-next.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/array-next/array-next.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/key-tree-store/key-tree-store.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-dom-bindings/node_modules/key-tree-store/key-tree-store.js")
@@ -8333,8 +8303,8 @@ function isObject(value) {
 module.exports = baseFor;
 
 },{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._baseclone/node_modules/lodash.isnative/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isnative/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isnative/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isnative/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._bindcallback/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._createcache/node_modules/lodash.isnative/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._createcache/node_modules/lodash.isnative/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._createcache/node_modules/lodash.isnative/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._bindcallback/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._basecallback/node_modules/lodash._bindcallback/index.js")
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._basecallback/node_modules/lodash._bindcallback/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._basecallback/node_modules/lodash._bindcallback/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._isiterateecall/index.js":[function(require,module,exports){
 /**
@@ -9100,8 +9070,8 @@ module.exports = baseValues;
 },{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.includes/node_modules/lodash._isiterateecall/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._isiterateecall/index.js")
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._isiterateecall/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._isiterateecall/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isarray/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isdate/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash.isarray/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isdate/index.js":[function(require,module,exports){
 /**
  * lodash 3.0.1 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -9158,9 +9128,7 @@ module.exports = isDate;
 
 },{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isempty/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isequal/index.js":[function(require,module,exports){
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isequal/index.js":[function(require,module,exports){
 /**
  * lodash 3.0.2 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -9267,11 +9235,9 @@ module.exports = isEqual;
 
 },{"lodash._baseisequal":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isequal/node_modules/lodash._baseisequal/index.js","lodash._bindcallback":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isequal/node_modules/lodash._bindcallback/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isequal/node_modules/lodash._baseisequal/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._basecallback/node_modules/lodash._baseisequal/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._basecallback/node_modules/lodash._baseisequal/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._basecallback/node_modules/lodash._baseisequal/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isequal/node_modules/lodash._baseisequal/node_modules/lodash.istypedarray/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._basecallback/node_modules/lodash._baseisequal/node_modules/lodash.istypedarray/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._basecallback/node_modules/lodash._baseisequal/node_modules/lodash.istypedarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._basecallback/node_modules/lodash._baseisequal/node_modules/lodash.istypedarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isequal/node_modules/lodash._bindcallback/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._basecallback/node_modules/lodash._bindcallback/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._basecallback/node_modules/lodash._bindcallback/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._basecallback/node_modules/lodash._bindcallback/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isfunction/index.js":[function(require,module,exports){
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._basecallback/node_modules/lodash._baseisequal/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._basecallback/node_modules/lodash._baseisequal/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isequal/node_modules/lodash._bindcallback/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._bindcallback/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._bindcallback/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._bindcallback/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isfunction/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isfunction/index.js")
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isfunction/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isfunction/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isnull/index.js":[function(require,module,exports){
 /**
@@ -9377,12 +9343,8 @@ function isUndefined(value) {
 module.exports = isUndefined;
 
 },{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.keys/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.keys/node_modules/lodash.isarguments/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.keys/node_modules/lodash.isnative/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isnative/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isnative/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isnative/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash.keys/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash.keys/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash.keys/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/index.js":[function(require,module,exports){
 /**
  * lodash 3.1.0 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -9478,21 +9440,11 @@ module.exports = arrayMap;
 
 },{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._basedifference/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._basedifference/node_modules/lodash._baseindexof/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._baseindexof/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._baseindexof/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._baseindexof/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._basedifference/node_modules/lodash._cacheindexof/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._cacheindexof/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._cacheindexof/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._cacheindexof/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._basedifference/node_modules/lodash._createcache/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._createcache/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._createcache/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._createcache/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._basedifference/node_modules/lodash._createcache/node_modules/lodash.isnative/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isnative/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isnative/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isnative/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._baseflatten/index.js":[function(require,module,exports){
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._baseflatten/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._baseflatten/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._baseflatten/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._baseflatten/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._baseflatten/node_modules/lodash.isarguments/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._bindcallback/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._basecallback/node_modules/lodash._bindcallback/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._basecallback/node_modules/lodash._bindcallback/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._basecallback/node_modules/lodash._bindcallback/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._pickbyarray/index.js":[function(require,module,exports){
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._baseflatten/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._baseflatten/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._bindcallback/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isequal/node_modules/lodash._bindcallback/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isequal/node_modules/lodash._bindcallback/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isequal/node_modules/lodash._bindcallback/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._pickbyarray/index.js":[function(require,module,exports){
 /**
  * lodash 3.0.1 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -9786,10 +9738,10 @@ function keysIn(object) {
 module.exports = keysIn;
 
 },{"lodash.isarguments":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash.keysin/node_modules/lodash.isarguments/index.js","lodash.isarray":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash.keysin/node_modules/lodash.isarguments/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash.restparam/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.restparam/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.restparam/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.isarguments/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.isarguments/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.isarguments/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash.restparam/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.defaults/node_modules/lodash.restparam/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.defaults/node_modules/lodash.restparam/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.defaults/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/index.js":[function(require,module,exports){
 /**
  * lodash 3.1.0 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -9827,10 +9779,8 @@ var union = restParam(function(arrays) {
 module.exports = union;
 
 },{"lodash._baseflatten":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash._baseflatten/index.js","lodash._baseuniq":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash._baseuniq/index.js","lodash.restparam":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash._baseflatten/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._baseflatten/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._baseflatten/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._baseflatten/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash._baseflatten/node_modules/lodash.isarguments/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash._baseuniq/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._baseflatten/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._baseflatten/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._baseflatten/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash._baseuniq/index.js":[function(require,module,exports){
 /**
  * lodash 3.0.2 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -9898,16 +9848,14 @@ function baseUniq(array, iteratee) {
 module.exports = baseUniq;
 
 },{"lodash._baseindexof":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash._baseuniq/node_modules/lodash._baseindexof/index.js","lodash._cacheindexof":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash._baseuniq/node_modules/lodash._cacheindexof/index.js","lodash._createcache":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash._baseuniq/node_modules/lodash._createcache/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash._baseuniq/node_modules/lodash._baseindexof/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._baseindexof/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._baseindexof/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._baseindexof/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash._baseuniq/node_modules/lodash._cacheindexof/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.includes/node_modules/lodash._baseindexof/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.includes/node_modules/lodash._baseindexof/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.includes/node_modules/lodash._baseindexof/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash._baseuniq/node_modules/lodash._cacheindexof/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._cacheindexof/index.js")
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._cacheindexof/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._cacheindexof/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash._baseuniq/node_modules/lodash._createcache/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._createcache/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._createcache/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._createcache/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash._baseuniq/node_modules/lodash._createcache/node_modules/lodash.isnative/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isnative/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isnative/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isnative/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash.restparam/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.restparam/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.restparam/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/domify/index.js":[function(require,module,exports){
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._createcache/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._createcache/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash.restparam/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash.restparam/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash.restparam/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/domify/index.js":[function(require,module,exports){
 
 /**
  * Expose `parse`.
@@ -10537,9 +10485,7 @@ module.exports = assign;
 
 },{"lodash._baseassign":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._baseassign/index.js","lodash._createassigner":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/index.js","lodash.isnative":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.isnative/index.js","lodash.keys":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.keys/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._baseassign/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._baseclone/node_modules/lodash._baseassign/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._baseclone/node_modules/lodash._baseassign/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._baseclone/node_modules/lodash._baseassign/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._baseassign/node_modules/lodash._basecopy/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._baseclone/node_modules/lodash._baseassign/node_modules/lodash._basecopy/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._baseclone/node_modules/lodash._baseassign/node_modules/lodash._basecopy/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._baseclone/node_modules/lodash._baseassign/node_modules/lodash._basecopy/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/index.js":[function(require,module,exports){
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._baseclone/node_modules/lodash._baseassign/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._baseclone/node_modules/lodash._baseassign/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/index.js":[function(require,module,exports){
 /**
  * lodash 3.1.0 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -10594,20 +10540,16 @@ function createAssigner(assigner) {
 module.exports = createAssigner;
 
 },{"lodash._bindcallback":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._bindcallback/index.js","lodash._isiterateecall":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._isiterateecall/index.js","lodash.restparam":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._bindcallback/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._basecallback/node_modules/lodash._bindcallback/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._basecallback/node_modules/lodash._bindcallback/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._basecallback/node_modules/lodash._bindcallback/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._isiterateecall/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._isiterateecall/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._isiterateecall/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._isiterateecall/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash.restparam/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.restparam/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.restparam/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.isnative/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isnative/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isnative/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isnative/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.keys/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.keys/node_modules/lodash.isarguments/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.keys/node_modules/lodash.isarray/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._bindcallback/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._bindcallback/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._bindcallback/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._isiterateecall/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.includes/node_modules/lodash._isiterateecall/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.includes/node_modules/lodash._isiterateecall/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.includes/node_modules/lodash._isiterateecall/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash.restparam/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash.restparam/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash.restparam/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.isnative/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._baseclone/node_modules/lodash.isnative/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._baseclone/node_modules/lodash.isnative/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._baseclone/node_modules/lodash.isnative/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.keys/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.keys/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.keys/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.keys/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/index.js":[function(require,module,exports){
 /**
  * lodash 3.1.0 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -11159,8 +11101,8 @@ function replaceHolders(array, placeholder) {
 module.exports = replaceHolders;
 
 },{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/node_modules/lodash.restparam/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.restparam/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.restparam/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash.restparam/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash.restparam/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/index.js":[function(require,module,exports){
 /**
  * lodash 3.0.2 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -11203,14 +11145,10 @@ function flatten(array, isDeep, guard) {
 module.exports = flatten;
 
 },{"lodash._baseflatten":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/index.js","lodash._isiterateecall":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._isiterateecall/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._baseflatten/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._baseflatten/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._baseflatten/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/node_modules/lodash.isarguments/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/node_modules/lodash.isarray/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._isiterateecall/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._isiterateecall/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._isiterateecall/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._isiterateecall/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash._baseflatten/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash._baseflatten/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash._baseflatten/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._isiterateecall/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._isiterateecall/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._isiterateecall/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._isiterateecall/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/index.js":[function(require,module,exports){
 /**
  * lodash 3.0.3 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -11278,17 +11216,11 @@ module.exports = forEach;
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._baseclone/node_modules/lodash._arrayeach/index.js")
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._baseclone/node_modules/lodash._arrayeach/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._baseclone/node_modules/lodash._arrayeach/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._baseeach/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._baseeach/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._baseeach/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._baseeach/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._baseeach/node_modules/lodash.keys/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._baseeach/node_modules/lodash.keys/node_modules/lodash.isarguments/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._baseeach/node_modules/lodash.keys/node_modules/lodash.isnative/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isnative/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isnative/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isnative/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._bindcallback/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._basecallback/node_modules/lodash._bindcallback/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._basecallback/node_modules/lodash._bindcallback/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._basecallback/node_modules/lodash._bindcallback/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash.isarray/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/index.js":[function(require,module,exports){
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._baseeach/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._baseeach/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._bindcallback/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._bindcallback/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._bindcallback/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._bindcallback/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash.isarray/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isarray/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/index.js":[function(require,module,exports){
 /**
  * lodash 3.2.0 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -11447,14 +11379,8 @@ function isObject(value) {
 module.exports = invoke;
 
 },{"lodash._baseeach":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._baseeach/index.js","lodash._invokepath":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/index.js","lodash.isarray":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.isarray/index.js","lodash.restparam":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._baseeach/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._baseeach/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._baseeach/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._baseeach/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._baseeach/node_modules/lodash.keys/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._baseeach/node_modules/lodash.keys/node_modules/lodash.isarguments/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._baseeach/node_modules/lodash.keys/node_modules/lodash.isnative/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isnative/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isnative/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isnative/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._baseeach/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._baseeach/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._baseeach/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/index.js":[function(require,module,exports){
 /**
  * lodash 3.7.0 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -11575,13 +11501,11 @@ module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/am
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.has/node_modules/lodash._baseslice/index.js")
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.has/node_modules/lodash._baseslice/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.has/node_modules/lodash._baseslice/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._topath/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.has/node_modules/lodash._topath/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.has/node_modules/lodash._topath/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.has/node_modules/lodash._topath/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._topath/node_modules/lodash._basetostring/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.escape/node_modules/lodash._basetostring/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.escape/node_modules/lodash._basetostring/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.escape/node_modules/lodash._basetostring/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.isarray/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.restparam/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.restparam/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.restparam/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.isstring/index.js":[function(require,module,exports){
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.has/node_modules/lodash._topath/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.has/node_modules/lodash._topath/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.isarray/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash.isarray/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.restparam/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/node_modules/lodash.restparam/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/node_modules/lodash.restparam/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.isstring/index.js":[function(require,module,exports){
 /**
  * lodash 3.0.1 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -11719,28 +11643,16 @@ var pick = restParam(function(object, props) {
 module.exports = pick;
 
 },{"lodash._baseflatten":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._baseflatten/index.js","lodash._bindcallback":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._bindcallback/index.js","lodash._pickbyarray":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbyarray/index.js","lodash._pickbycallback":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbycallback/index.js","lodash.restparam":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._baseflatten/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._baseflatten/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._baseflatten/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._baseflatten/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._baseflatten/node_modules/lodash.isarguments/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._baseflatten/node_modules/lodash.isarray/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._bindcallback/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._basecallback/node_modules/lodash._bindcallback/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._basecallback/node_modules/lodash._bindcallback/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._basecallback/node_modules/lodash._bindcallback/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbyarray/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._bindcallback/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._bindcallback/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._bindcallback/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._bindcallback/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbyarray/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._pickbyarray/index.js")
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._pickbyarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._pickbyarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbycallback/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._pickbycallback/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._pickbycallback/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._pickbycallback/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbycallback/node_modules/lodash._basefor/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._baseclone/node_modules/lodash._basefor/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._baseclone/node_modules/lodash._basefor/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._baseclone/node_modules/lodash._basefor/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbycallback/node_modules/lodash.keysin/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash.keysin/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash.keysin/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash.keysin/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbycallback/node_modules/lodash.keysin/node_modules/lodash.isarguments/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarguments/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbycallback/node_modules/lodash.keysin/node_modules/lodash.isarray/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash.restparam/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.restparam/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.restparam/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/index.js":[function(require,module,exports){
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._pickbycallback/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._pickbycallback/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash.restparam/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/node_modules/lodash.restparam/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/node_modules/lodash.restparam/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/index.js":[function(require,module,exports){
 /**
  * lodash 3.1.0 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -11879,18 +11791,16 @@ function result(object, path, defaultValue) {
 module.exports = result;
 
 },{"lodash._baseget":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash._baseget/index.js","lodash._baseslice":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash._baseslice/index.js","lodash._topath":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash._topath/index.js","lodash.isarray":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash.isarray/index.js","lodash.isfunction":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash.isfunction/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash._baseget/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.has/node_modules/lodash._baseget/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.has/node_modules/lodash._baseget/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.has/node_modules/lodash._baseget/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash._baseslice/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.has/node_modules/lodash._baseslice/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.has/node_modules/lodash._baseslice/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.has/node_modules/lodash._baseslice/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash._topath/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.has/node_modules/lodash._topath/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.has/node_modules/lodash._topath/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.has/node_modules/lodash._topath/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash._topath/node_modules/lodash._basetostring/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.escape/node_modules/lodash._basetostring/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.escape/node_modules/lodash._basetostring/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.escape/node_modules/lodash._basetostring/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash.isarray/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash.isfunction/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isfunction/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isfunction/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.isempty/node_modules/lodash.isfunction/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.uniqueid/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._baseget/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._baseget/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._baseget/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash._baseslice/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._baseslice/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._baseslice/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._baseslice/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash._topath/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._topath/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._topath/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._topath/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash.isarray/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash.isarray/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash.isfunction/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isfunction/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isfunction/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isfunction/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.uniqueid/index.js":[function(require,module,exports){
 /**
  * lodash 3.0.0 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -11928,8 +11838,8 @@ function uniqueId(prefix) {
 module.exports = uniqueId;
 
 },{"lodash._basetostring":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.uniqueid/node_modules/lodash._basetostring/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.uniqueid/node_modules/lodash._basetostring/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.escape/node_modules/lodash._basetostring/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.escape/node_modules/lodash._basetostring/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.escape/node_modules/lodash._basetostring/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/matches-selector/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.has/node_modules/lodash._topath/node_modules/lodash._basetostring/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.has/node_modules/lodash._topath/node_modules/lodash._basetostring/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.has/node_modules/lodash._topath/node_modules/lodash._basetostring/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/matches-selector/index.js":[function(require,module,exports){
 'use strict';
 
 var proto = Element.prototype;
@@ -11959,288 +11869,9 @@ function match(el, selector) {
   }
   return false;
 }
-},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/backbone-events-standalone/backbone-events-standalone.js":[function(require,module,exports){
-/**
- * Standalone extraction of Backbone.Events, no external dependency required.
- * Degrades nicely when Backone/underscore are already available in the current
- * global context.
- *
- * Note that docs suggest to use underscore's `_.extend()` method to add Events
- * support to some given object. A `mixin()` method has been added to the Events
- * prototype to avoid using underscore for that sole purpose:
- *
- *     var myEventEmitter = BackboneEvents.mixin({});
- *
- * Or for a function constructor:
- *
- *     function MyConstructor(){}
- *     MyConstructor.prototype.foo = function(){}
- *     BackboneEvents.mixin(MyConstructor.prototype);
- *
- * (c) 2009-2013 Jeremy Ashkenas, DocumentCloud Inc.
- * (c) 2013 Nicolas Perriault
- */
-/* global exports:true, define, module */
-(function() {
-  var root = this,
-      breaker = {},
-      nativeForEach = Array.prototype.forEach,
-      hasOwnProperty = Object.prototype.hasOwnProperty,
-      slice = Array.prototype.slice,
-      idCounter = 0;
-
-  // Returns a partial implementation matching the minimal API subset required
-  // by Backbone.Events
-  function miniscore() {
-    return {
-      keys: Object.keys || function (obj) {
-        if (typeof obj !== "object" && typeof obj !== "function" || obj === null) {
-          throw new TypeError("keys() called on a non-object");
-        }
-        var key, keys = [];
-        for (key in obj) {
-          if (obj.hasOwnProperty(key)) {
-            keys[keys.length] = key;
-          }
-        }
-        return keys;
-      },
-
-      uniqueId: function(prefix) {
-        var id = ++idCounter + '';
-        return prefix ? prefix + id : id;
-      },
-
-      has: function(obj, key) {
-        return hasOwnProperty.call(obj, key);
-      },
-
-      each: function(obj, iterator, context) {
-        if (obj == null) return;
-        if (nativeForEach && obj.forEach === nativeForEach) {
-          obj.forEach(iterator, context);
-        } else if (obj.length === +obj.length) {
-          for (var i = 0, l = obj.length; i < l; i++) {
-            if (iterator.call(context, obj[i], i, obj) === breaker) return;
-          }
-        } else {
-          for (var key in obj) {
-            if (this.has(obj, key)) {
-              if (iterator.call(context, obj[key], key, obj) === breaker) return;
-            }
-          }
-        }
-      },
-
-      once: function(func) {
-        var ran = false, memo;
-        return function() {
-          if (ran) return memo;
-          ran = true;
-          memo = func.apply(this, arguments);
-          func = null;
-          return memo;
-        };
-      }
-    };
-  }
-
-  var _ = miniscore(), Events;
-
-  // Backbone.Events
-  // ---------------
-
-  // A module that can be mixed in to *any object* in order to provide it with
-  // custom events. You may bind with `on` or remove with `off` callback
-  // functions to an event; `trigger`-ing an event fires all callbacks in
-  // succession.
-  //
-  //     var object = {};
-  //     _.extend(object, Backbone.Events);
-  //     object.on('expand', function(){ alert('expanded'); });
-  //     object.trigger('expand');
-  //
-  Events = {
-
-    // Bind an event to a `callback` function. Passing `"all"` will bind
-    // the callback to all events fired.
-    on: function(name, callback, context) {
-      if (!eventsApi(this, 'on', name, [callback, context]) || !callback) return this;
-      this._events || (this._events = {});
-      var events = this._events[name] || (this._events[name] = []);
-      events.push({callback: callback, context: context, ctx: context || this});
-      return this;
-    },
-
-    // Bind an event to only be triggered a single time. After the first time
-    // the callback is invoked, it will be removed.
-    once: function(name, callback, context) {
-      if (!eventsApi(this, 'once', name, [callback, context]) || !callback) return this;
-      var self = this;
-      var once = _.once(function() {
-        self.off(name, once);
-        callback.apply(this, arguments);
-      });
-      once._callback = callback;
-      return this.on(name, once, context);
-    },
-
-    // Remove one or many callbacks. If `context` is null, removes all
-    // callbacks with that function. If `callback` is null, removes all
-    // callbacks for the event. If `name` is null, removes all bound
-    // callbacks for all events.
-    off: function(name, callback, context) {
-      var retain, ev, events, names, i, l, j, k;
-      if (!this._events || !eventsApi(this, 'off', name, [callback, context])) return this;
-      if (!name && !callback && !context) {
-        this._events = {};
-        return this;
-      }
-
-      names = name ? [name] : _.keys(this._events);
-      for (i = 0, l = names.length; i < l; i++) {
-        name = names[i];
-        if (events = this._events[name]) {
-          this._events[name] = retain = [];
-          if (callback || context) {
-            for (j = 0, k = events.length; j < k; j++) {
-              ev = events[j];
-              if ((callback && callback !== ev.callback && callback !== ev.callback._callback) ||
-                  (context && context !== ev.context)) {
-                retain.push(ev);
-              }
-            }
-          }
-          if (!retain.length) delete this._events[name];
-        }
-      }
-
-      return this;
-    },
-
-    // Trigger one or many events, firing all bound callbacks. Callbacks are
-    // passed the same arguments as `trigger` is, apart from the event name
-    // (unless you're listening on `"all"`, which will cause your callback to
-    // receive the true name of the event as the first argument).
-    trigger: function(name) {
-      if (!this._events) return this;
-      var args = slice.call(arguments, 1);
-      if (!eventsApi(this, 'trigger', name, args)) return this;
-      var events = this._events[name];
-      var allEvents = this._events.all;
-      if (events) triggerEvents(events, args);
-      if (allEvents) triggerEvents(allEvents, arguments);
-      return this;
-    },
-
-    // Tell this object to stop listening to either specific events ... or
-    // to every object it's currently listening to.
-    stopListening: function(obj, name, callback) {
-      var listeners = this._listeners;
-      if (!listeners) return this;
-      var deleteListener = !name && !callback;
-      if (typeof name === 'object') callback = this;
-      if (obj) (listeners = {})[obj._listenerId] = obj;
-      for (var id in listeners) {
-        listeners[id].off(name, callback, this);
-        if (deleteListener) delete this._listeners[id];
-      }
-      return this;
-    }
-
-  };
-
-  // Regular expression used to split event strings.
-  var eventSplitter = /\s+/;
-
-  // Implement fancy features of the Events API such as multiple event
-  // names `"change blur"` and jQuery-style event maps `{change: action}`
-  // in terms of the existing API.
-  var eventsApi = function(obj, action, name, rest) {
-    if (!name) return true;
-
-    // Handle event maps.
-    if (typeof name === 'object') {
-      for (var key in name) {
-        obj[action].apply(obj, [key, name[key]].concat(rest));
-      }
-      return false;
-    }
-
-    // Handle space separated event names.
-    if (eventSplitter.test(name)) {
-      var names = name.split(eventSplitter);
-      for (var i = 0, l = names.length; i < l; i++) {
-        obj[action].apply(obj, [names[i]].concat(rest));
-      }
-      return false;
-    }
-
-    return true;
-  };
-
-  // A difficult-to-believe, but optimized internal dispatch function for
-  // triggering events. Tries to keep the usual cases speedy (most internal
-  // Backbone events have 3 arguments).
-  var triggerEvents = function(events, args) {
-    var ev, i = -1, l = events.length, a1 = args[0], a2 = args[1], a3 = args[2];
-    switch (args.length) {
-      case 0: while (++i < l) (ev = events[i]).callback.call(ev.ctx); return;
-      case 1: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1); return;
-      case 2: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1, a2); return;
-      case 3: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1, a2, a3); return;
-      default: while (++i < l) (ev = events[i]).callback.apply(ev.ctx, args);
-    }
-  };
-
-  var listenMethods = {listenTo: 'on', listenToOnce: 'once'};
-
-  // Inversion-of-control versions of `on` and `once`. Tell *this* object to
-  // listen to an event in another object ... keeping track of what it's
-  // listening to.
-  _.each(listenMethods, function(implementation, method) {
-    Events[method] = function(obj, name, callback) {
-      var listeners = this._listeners || (this._listeners = {});
-      var id = obj._listenerId || (obj._listenerId = _.uniqueId('l'));
-      listeners[id] = obj;
-      if (typeof name === 'object') callback = this;
-      obj[implementation](name, callback, this);
-      return this;
-    };
-  });
-
-  // Aliases for backwards compatibility.
-  Events.bind   = Events.on;
-  Events.unbind = Events.off;
-
-  // Mixin utility
-  Events.mixin = function(proto) {
-    var exports = ['on', 'once', 'off', 'trigger', 'stopListening', 'listenTo',
-                   'listenToOnce', 'bind', 'unbind'];
-    _.each(exports, function(name) {
-      proto[name] = this[name];
-    }, this);
-    return proto;
-  };
-
-  // Export Events as BackboneEvents depending on current context
-  if (typeof define === "function") {
-    define(function() {
-      return Events;
-    });
-  } else if (typeof exports !== 'undefined') {
-    if (typeof module !== 'undefined' && module.exports) {
-      exports = module.exports = Events;
-    }
-    exports.BackboneEvents = Events;
-  } else {
-    root.BackboneEvents = Events;
-  }
-})(this);
-
 },{}],"/Library/WebServer/Server/bp_tournaments/node_modules/backbone-events-standalone/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/favicon-setter/favicon-setter.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/favicon-setter/favicon-setter.js":[function(require,module,exports){
 // follow @HenrikJoreteg and @andyet if you like this ;)
 // props to @mathias for this https://gist.github.com/428626 which served as starting point
 // for this code.
@@ -27238,7 +26869,7 @@ Velocity's structure:
 
     // body.jade compiled template
     templatizer["body"] = function tmpl_body() {
-        return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><div href="/home" class="logo"></div><div class="title">Blue Pirate #9</div><div class="subtitle">Donabate Golf Club</div><div class="tabs"><a href="/home" class="home active">Home</a><a href="/leaderboard" class="ldrboard">Leaderboard</a><a href="/my-round" class="me_user">Me</a></div></div></header><section class="max-width-wrapper"><div class="container pages page-container"><div class="page"></div></div></section></div>';
+        return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><div href="/home" class="logo"></div><div class="title">Blue Pirate #9</div><div class="subtitle">Donabate Golf Club</div><div class="tabs"><a href="/leaderboard" class="ldrboard">Leaderboard</a><a href="/my-round" class="me_user">Me</a></div></div></header><section class="max-width-wrapper"><div class="container pages page-container"><div class="page"></div></div></section></div>';
     };
 
     // home/base.jade compiled template
@@ -28207,7 +27838,7 @@ module.exports = View.extend({
     this.$nav_links = $(this.el).find('.tabs a');
 
     this.swipe_view = new SwipeView(this.page_container, {
-      numberOfPages: 3,
+      numberOfPages: 2,
       generatePage: _.bind(this.buildPage, this),
     });
 
@@ -28227,13 +27858,13 @@ module.exports = View.extend({
     var view;
 
     switch(i){
+      // case 0:
+      //   view = this.getOrCreatePage('home', TournamentHome);
+      //   break;
       case 0:
-        view = this.getOrCreatePage('home', TournamentHome);
-        break;
-      case 1:
         view = this.getOrCreatePage('leaderboard', TournamentLeaderboard);
         break;
-      case 2:
+      case 1:
         view = this.getOrCreatePage('my-round', MyRound);
         break;
     }
@@ -28243,14 +27874,14 @@ module.exports = View.extend({
 
   setPage: function(page_name) {
     switch(page_name){
-      case 'home':
+      // case 'home':
+      //   this.swipe_view.goToPage(0);
+      //   break;
+      case 'leaderboard':
         this.swipe_view.goToPage(0);
         break;
-      case 'leaderboard':
-        this.swipe_view.goToPage(1);
-        break;
       case 'my_round':
-        this.swipe_view.goToPage(2);
+        this.swipe_view.goToPage(1);
         break;
       default:
         this.swipe_view.goToPage(0);
@@ -28276,14 +27907,14 @@ module.exports = View.extend({
     var url = '';
 
     switch(this.swipe_view.pageIndex){
+      // case 0:
+      //   url = 'home';
+      //   break;
       case 0:
-        url = 'home';
-        break;
-      case 1:
         url = 'leaderboard';
         app.trigger('refresh');
         break;
-      case 2:
+      case 1:
         url = 'my-round';
         break;
     }
