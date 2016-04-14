@@ -7,7 +7,7 @@ class Score < ActiveRecord::Base
   belongs_to :tee_time
   belongs_to :hole
   belongs_to :player
-  has_one :event, through: :tee_time
+  has_one :event
 
   ##
   # Hooks

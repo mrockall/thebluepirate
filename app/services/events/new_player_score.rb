@@ -11,11 +11,7 @@ module Events
 
     def execute
 
-      # Find any existing event for this score?
-      
-      # If found, then we need to update that.
-
-      # Otherwise, we need to create a brand new one.
+      message = ""
       
     end
   end
