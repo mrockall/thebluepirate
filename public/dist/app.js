@@ -28033,7 +28033,7 @@ Velocity's structure:
         var jade_interp;
         var locals_for_with = locals || {};
         (function(course_name, tournament_name) {
-            buf.push('<div class="main"><header class="page-header"><div class="max-width-wrapper"><div href="/home" class="logo"></div><div class="title">' + jade.escape(null == (jade_interp = tournament_name) ? "" : jade_interp) + '</div><div class="subtitle">' + jade.escape(null == (jade_interp = course_name) ? "" : jade_interp) + '</div><div class="tabs"><a href="/leaderboard" class="ldrboard">Leaderboard</a><a href="/my-round" class="me_user">Me</a></div></div></header><section class="page-tabs max-width-wrapper"><div class="container pages page-container"><div class="page"></div></div></section></div>');
+            buf.push('<div class="main"><header class="page-header"><div class="max-width-wrapper"><a href="/" class="back">Back to all Events</a><a href="/" class="headline"><div class="content"><div class="title">' + jade.escape(null == (jade_interp = tournament_name) ? "" : jade_interp) + '</div><div class="subtitle">' + jade.escape(null == (jade_interp = course_name) ? "" : jade_interp) + '</div></div><div class="logo"></div></a></div></header><div class="max-width-wrapper"><div class="tabs"><a href="/leaderboard" class="ldrboard">Leaderboard</a><a href="/my-round" class="me_user">Me</a></div></div><section class="page-tabs max-width-wrapper"><div class="container pages page-container"><div class="page"></div></div></section></div>');
         }).call(this, "course_name" in locals_for_with ? locals_for_with.course_name : typeof course_name !== "undefined" ? course_name : undefined, "tournament_name" in locals_for_with ? locals_for_with.tournament_name : typeof tournament_name !== "undefined" ? tournament_name : undefined);
         return buf.join("");
     };
@@ -28045,7 +28045,7 @@ Velocity's structure:
 
     // landing/index.jade compiled template
     templatizer["landing"]["index"] = function tmpl_landing_index() {
-        return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><div href="/home" class="logo">Liamo Cup</div></div></header><div class="max-width-wrapper"><section class="intro"><p>The Liamo Cup was founded at Christmas 2019 so that the lads could have something to do during the five year wait for Liam &amp; Lisa to get married. It\'s two-day, invite-only event with 36 holes of golf to be played and almost as many pints to be consumed.</p><p>The inaugural event will be held in Champion Golfer of the Year\'s backyard of Esker Hills in Offaly. The lads will find shelter in a house in Tullamore. Big enough to fit everyone, and a quick jaunt to the pubs; tis an ideal hidey-hole between rounds.</p></section><ul class="events"><li class="event"><a href="/tournament/1"><div class="title">Esker Hills</div><div class="date">27 - 29 March 2020</div><ul><li><div class="position">1.</div><div class="name">Liam Rockall</div><div class="score">E</div></li><li><div class="position">2.</div><div class="name">Mike Rockall</div><div class="score">E</div></li><li><div class="position">3.</div><div class="name">Eoin Rockall</div><div class="score">E</div></li><li><div class="position">4.</div><div class="name">Danny Finn</div><div class="score">E</div></li></ul><div class="actions"><p>Full Leaderboard &amp; Scoring</p></div></a></li><li class="event future"><a href="/tournament/1"><div class="title">Location: TBD</div><div class="date">March 2021</div></a></li><li class="event future"><a href="/tournament/1"><div class="title">Location: TBD</div><div class="date">March 2022</div></a></li><li class="event future"><a href="/tournament/1"><div class="title">Location: TBD</div><div class="date">March 2023</div></a></li><li class="event future"><a href="/tournament/1"><div class="title">Location: TBD</div><div class="date">March 2024</div></a></li><li class="event future"><a href="/tournament/1"><div class="title">Location: TBD</div><div class="date">March 2025</div></a></li></ul></div></div>';
+        return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><a href="/" class="headline"><div class="content"><div class="title">Liamo Cup</div></div><div class="logo"></div></a></div></header><div class="max-width-wrapper"><section class="intro"><p>The Liamo Cup was founded at Christmas 2019 so that the lads could have something to do during the five year wait for Liam &amp; Lisa to get married. It\'s two-day, invite-only event with 36 holes of golf to be played and almost as many pints to be consumed.</p><p>The inaugural event will be held in Champion Golfer of the Year\'s backyard of Esker Hills in Offaly. The lads will find shelter in a house in Tullamore. Big enough to fit everyone, and a quick jaunt to the pubs; tis an ideal hidey-hole between rounds.</p></section><ul class="events"><li class="event"><a href="/tournament/1"><div class="title">Esker Hills</div><div class="date">27 - 29 March 2020</div><ul><li><div class="position">1.</div><div class="name">Liam Rockall</div><div class="score">E</div></li><li><div class="position">2.</div><div class="name">Mike Rockall</div><div class="score">E</div></li><li><div class="position">3.</div><div class="name">Eoin Rockall</div><div class="score">E</div></li><li><div class="position">4.</div><div class="name">Danny Finn</div><div class="score">E</div></li></ul><div class="actions"><p>Full Leaderboard &amp; Scoring</p></div></a></li><li class="event future"><a href="/tournament/1"><div class="title">Location: TBD</div><div class="date">March 2021</div></a></li><li class="event future"><a href="/tournament/1"><div class="title">Location: TBD</div><div class="date">March 2022</div></a></li><li class="event future"><a href="/tournament/1"><div class="title">Location: TBD</div><div class="date">March 2023</div></a></li><li class="event future"><a href="/tournament/1"><div class="title">Location: TBD</div><div class="date">March 2024</div></a></li><li class="event future"><a href="/tournament/1"><div class="title">Location: TBD</div><div class="date">March 2025</div></a></li></ul></div></div>';
     };
 
     // login/base.jade compiled template
@@ -28377,7 +28377,7 @@ module.exports = _.extend({
   },
 
   setupBackboneNavigation: function(){
-    $(document).on('click', 'a:not([data-bypass])', _.bind(function(evt) {
+    $(document).on('click', 'a:not([data-bypass])', function(evt) {
       // Get the anchor href and protcol
       var href = $(this).attr('href');
       var protocol = this.protocol + '//';
@@ -28388,14 +28388,15 @@ module.exports = _.extend({
         // Stop the default event to ensure the link will not cause a page
         // refresh.
         evt.preventDefault();
+        evt.stopPropagation();
 
         // We don't use # alone in Ex Ordo, therefore just ignore any link
         // like that which might be triggered accidentaly by a plugin.
         if (href !== '#') {
-          this.router.history.navigate(href, true);
+          window.app.router.history.navigate(href, {trigger: true});
         }
       }
-    }, this));
+    });
   }
 }, BBEvents);
 
@@ -28955,7 +28956,7 @@ module.exports = Router.extend({
 
   home: function () {
     var mainView = self.view = new LandingView({
-      el: document.querySelector('.content')
+      el: document.querySelector('.main')
     });
 
     mainView.render();
@@ -28963,9 +28964,10 @@ module.exports = Router.extend({
 
   tournament: function (id) {
     var mainView = self.view = new TournamentView({
-      el: document.querySelector('.content'),
+      el: document.querySelector('.main'),
       model: window.me
     });
+
     mainView.render();
   },
 

@@ -87,7 +87,7 @@ module.exports = _.extend({
   },
 
   setupBackboneNavigation: function(){
-    $(document).on('click', 'a:not([data-bypass])', _.bind(function(evt) {
+    $(document).on('click', 'a:not([data-bypass])', function(evt) {
       // Get the anchor href and protcol
       var href = $(this).attr('href');
       var protocol = this.protocol + '//';
@@ -98,14 +98,15 @@ module.exports = _.extend({
         // Stop the default event to ensure the link will not cause a page
         // refresh.
         evt.preventDefault();
+        evt.stopPropagation();
 
         // We don't use # alone in Ex Ordo, therefore just ignore any link
         // like that which might be triggered accidentaly by a plugin.
         if (href !== '#') {
-          this.router.history.navigate(href, true);
+          window.app.router.history.navigate(href, {trigger: true});
         }
       }
-    }, this));
+    });
   }
 }, BBEvents);
 

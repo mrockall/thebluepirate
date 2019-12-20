@@ -20,7 +20,7 @@ module.exports = Router.extend({
 
   home: function () {
     var mainView = self.view = new LandingView({
-      el: document.querySelector('.content')
+      el: document.querySelector('.main')
     });
 
     mainView.render();
@@ -28,9 +28,10 @@ module.exports = Router.extend({
 
   tournament: function (id) {
     var mainView = self.view = new TournamentView({
-      el: document.querySelector('.content'),
+      el: document.querySelector('.main'),
       model: window.me
     });
+
     mainView.render();
   },
 

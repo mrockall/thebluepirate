@@ -1,6 +1,5 @@
 .tabs{
   @include clearfix();
-  margin: 2em 0 0;
 
   a{
     float: left;
@@ -9,7 +8,7 @@
     outline: none;
     width: 50%;
     padding: 1.25rem 0;
-    color: rgba(255, 255, 255, 1);
+    color: $text-dark;
     text-indent: -9999em;
     text-align: center;
     border-bottom: 5px solid transparent;

@@ -1,13 +1,17 @@
 .main
   header.page-header
     .max-width-wrapper
-      .logo(href='/home')
-      .title= tournament_name
-      .subtitle= course_name
-      .tabs
-        //- a.home.active(href='/home') Home
-        a.ldrboard(href='/leaderboard') Leaderboard
-        a.me_user(href='/my-round') Me
+      a.back(href='/') Back to all Events
+      a.headline(href='/')
+        .content
+          .title= tournament_name
+          .subtitle= course_name
+        .logo
+
+  .max-width-wrapper
+    .tabs
+      a.ldrboard(href='/leaderboard') Leaderboard
+      a.me_user(href='/my-round') Me
 
   section.page-tabs.max-width-wrapper
     .container.pages.page-container
