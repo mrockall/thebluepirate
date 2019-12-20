@@ -20,8 +20,7 @@ gem 'activerecord', :require => "active_record"
 gem 'haml'
 gem 'sass'
 gem 'puma'
-gem 'mysql2'
-gem 'sqlite3'
+gem 'mysql2', '0.3.17'
 
 # Auth
 gem 'warden'
