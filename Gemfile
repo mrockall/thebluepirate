@@ -19,7 +19,7 @@ gem 'sinatra-flash'
 gem 'activerecord', :require => "active_record"
 gem 'haml'
 gem 'sass'
-gem 'puma'
+gem 'puma', '2.9.2'
 gem 'mysql2', '0.3.17'
 
 # Auth
