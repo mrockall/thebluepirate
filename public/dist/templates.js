@@ -13,6 +13,7 @@
 
     var templatizer = {};
     templatizer["home"] = {};
+    templatizer["landing"] = {};
     templatizer["login"] = {};
     templatizer["modals"] = {};
     templatizer["my_round"] = {};
@@ -33,6 +34,11 @@
     // home/base.jade compiled template
     templatizer["home"]["base"] = function tmpl_home_base() {
         return '<ul class="feed"><li class="feed-item"><header><div class="timestamp">Ten asdasd ago</div><div class="result dbl_bogey">Double Bogey</div></header><section><p>On the 18th hole, Dave picked up a double bogey 6. It is his first double bogey of the round. He didn\'t pick up any points.</p></section></li><li class="feed-item"><header><div class="timestamp">Twelve minutes ago</div><div class="result par">Par</div></header><section><p>On the 18th hole, Dave picked up a double bogey 6. It is his first double bogey of the round. He didn\'t pick up any points.</p></section></li><li class="feed-item"><header><div class="timestamp">Ten minutes ago</div><div class="result birdie">Birdie</div></header><section><p>On the 18th hole, Dave picked up a double bogey 6. It is his first double bogey of the round. He didn\'t pick up any points.</p></section></li></ul>';
+    };
+
+    // landing/index.jade compiled template
+    templatizer["landing"]["index"] = function tmpl_landing_index() {
+        return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><div href="/home" class="logo">Liamo Cup</div></div></header><section class="intro"><p>The Liamo Cup was founded at Christmas 2019 so that the lads could have something to do during the five year wait for Liam &amp; Lisa to get married. It\'s two-day, invite-only event with 36 holes of golf to be played and almost as many pints to be consumed.</p><p>The inaugural event will be held in Champion Golfer of the Year\'s backyard of Esker Hills in Offaly. The lads will find shelter in a house in Tullamore. Big enough to fit everyone, and a quick jaunt to the pubs; tis an ideal hidey-hole between rounds.</p></section><ul class="events"><li class="event"><a href="/tournament/1"><div class="title">Esker Hills</div><div class="date">27 - 29 March 2020</div><ul><li><div class="position">1.</div><div class="name">Liam Rockall</div><div class="score">E</div></li><li><div class="position">2.</div><div class="name">Mike Rockall</div><div class="score">E</div></li><li><div class="position">3.</div><div class="name">Eoin Rockall</div><div class="score">E</div></li><li><div class="position">4.</div><div class="name">Danny Finn</div><div class="score">E</div></li></ul><div class="actions"><p>Full Leaderboard &amp; Scoring</p></div></a></li><li class="event future"><a href="/tournament/1"><div class="title">Location: TBD</div><div class="date">March 2021</div></a></li><li class="event future"><a href="/tournament/1"><div class="title">Location: TBD</div><div class="date">March 2022</div></a></li><li class="event future"><a href="/tournament/1"><div class="title">Location: TBD</div><div class="date">March 2023</div></a></li><li class="event future"><a href="/tournament/1"><div class="title">Location: TBD</div><div class="date">March 2024</div></a></li><li class="event future"><a href="/tournament/1"><div class="title">Location: TBD</div><div class="date">March 2025</div></a></li></ul></div>';
     };
 
     // login/base.jade compiled template

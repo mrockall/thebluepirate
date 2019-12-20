@@ -1886,9 +1886,7 @@ extend(Router.prototype, Events, {
 
 Router.extend = classExtend;
 
-},{"./ampersand-history":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-router/ampersand-history.js","amp-extend":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/amp-extend/extend.js","amp-is-function":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/amp-is-function/is-function.js","amp-is-regexp":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/amp-is-regexp/is-regexp.js","amp-result":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/amp-result/result.js","ampersand-class-extend":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-class-extend/ampersand-class-extend.js","backbone-events-standalone":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js"}],"/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-router/node_modules/backbone-events-standalone/backbone-events-standalone.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-collection/node_modules/backbone-events-standalone/backbone-events-standalone.js")
-},{"/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-collection/node_modules/backbone-events-standalone/backbone-events-standalone.js":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-collection/node_modules/backbone-events-standalone/backbone-events-standalone.js"}],"/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js":[function(require,module,exports){
+},{"./ampersand-history":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-router/ampersand-history.js","amp-extend":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/amp-extend/extend.js","amp-is-function":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/amp-is-function/is-function.js","amp-is-regexp":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/amp-is-regexp/is-regexp.js","amp-result":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/amp-result/result.js","ampersand-class-extend":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-class-extend/ampersand-class-extend.js","backbone-events-standalone":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js"}],"/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js")
 },{"/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js"}],"/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-state/ampersand-state.js":[function(require,module,exports){
 'use strict';
@@ -5945,287 +5943,9 @@ module.exports = function arrayNext(array, currentItem) {
     return array[newIndex];
 };
 
-},{}],"/Library/WebServer/Server/liam_and_lisa_open/node_modules/backbone-events-standalone/backbone-events-standalone.js":[function(require,module,exports){
-/**
- * Standalone extraction of Backbone.Events, no external dependency required.
- * Degrades nicely when Backone/underscore are already available in the current
- * global context.
- *
- * Note that docs suggest to use underscore's `_.extend()` method to add Events
- * support to some given object. A `mixin()` method has been added to the Events
- * prototype to avoid using underscore for that sole purpose:
- *
- *     var myEventEmitter = BackboneEvents.mixin({});
- *
- * Or for a function constructor:
- *
- *     function MyConstructor(){}
- *     MyConstructor.prototype.foo = function(){}
- *     BackboneEvents.mixin(MyConstructor.prototype);
- *
- * (c) 2009-2013 Jeremy Ashkenas, DocumentCloud Inc.
- * (c) 2013 Nicolas Perriault
- */
-/* global exports:true, define, module */
-(function() {
-  var root = this,
-      nativeForEach = Array.prototype.forEach,
-      hasOwnProperty = Object.prototype.hasOwnProperty,
-      slice = Array.prototype.slice,
-      idCounter = 0;
-
-  // Returns a partial implementation matching the minimal API subset required
-  // by Backbone.Events
-  function miniscore() {
-    return {
-      keys: Object.keys || function (obj) {
-        if (typeof obj !== "object" && typeof obj !== "function" || obj === null) {
-          throw new TypeError("keys() called on a non-object");
-        }
-        var key, keys = [];
-        for (key in obj) {
-          if (obj.hasOwnProperty(key)) {
-            keys[keys.length] = key;
-          }
-        }
-        return keys;
-      },
-
-      uniqueId: function(prefix) {
-        var id = ++idCounter + '';
-        return prefix ? prefix + id : id;
-      },
-
-      has: function(obj, key) {
-        return hasOwnProperty.call(obj, key);
-      },
-
-      each: function(obj, iterator, context) {
-        if (obj == null) return;
-        if (nativeForEach && obj.forEach === nativeForEach) {
-          obj.forEach(iterator, context);
-        } else if (obj.length === +obj.length) {
-          for (var i = 0, l = obj.length; i < l; i++) {
-            iterator.call(context, obj[i], i, obj);
-          }
-        } else {
-          for (var key in obj) {
-            if (this.has(obj, key)) {
-              iterator.call(context, obj[key], key, obj);
-            }
-          }
-        }
-      },
-
-      once: function(func) {
-        var ran = false, memo;
-        return function() {
-          if (ran) return memo;
-          ran = true;
-          memo = func.apply(this, arguments);
-          func = null;
-          return memo;
-        };
-      }
-    };
-  }
-
-  var _ = miniscore(), Events;
-
-  // Backbone.Events
-  // ---------------
-
-  // A module that can be mixed in to *any object* in order to provide it with
-  // custom events. You may bind with `on` or remove with `off` callback
-  // functions to an event; `trigger`-ing an event fires all callbacks in
-  // succession.
-  //
-  //     var object = {};
-  //     _.extend(object, Backbone.Events);
-  //     object.on('expand', function(){ alert('expanded'); });
-  //     object.trigger('expand');
-  //
-  Events = {
-
-    // Bind an event to a `callback` function. Passing `"all"` will bind
-    // the callback to all events fired.
-    on: function(name, callback, context) {
-      if (!eventsApi(this, 'on', name, [callback, context]) || !callback) return this;
-      this._events || (this._events = {});
-      var events = this._events[name] || (this._events[name] = []);
-      events.push({callback: callback, context: context, ctx: context || this});
-      return this;
-    },
-
-    // Bind an event to only be triggered a single time. After the first time
-    // the callback is invoked, it will be removed.
-    once: function(name, callback, context) {
-      if (!eventsApi(this, 'once', name, [callback, context]) || !callback) return this;
-      var self = this;
-      var once = _.once(function() {
-        self.off(name, once);
-        callback.apply(this, arguments);
-      });
-      once._callback = callback;
-      return this.on(name, once, context);
-    },
-
-    // Remove one or many callbacks. If `context` is null, removes all
-    // callbacks with that function. If `callback` is null, removes all
-    // callbacks for the event. If `name` is null, removes all bound
-    // callbacks for all events.
-    off: function(name, callback, context) {
-      var retain, ev, events, names, i, l, j, k;
-      if (!this._events || !eventsApi(this, 'off', name, [callback, context])) return this;
-      if (!name && !callback && !context) {
-        this._events = {};
-        return this;
-      }
-
-      names = name ? [name] : _.keys(this._events);
-      for (i = 0, l = names.length; i < l; i++) {
-        name = names[i];
-        if (events = this._events[name]) {
-          this._events[name] = retain = [];
-          if (callback || context) {
-            for (j = 0, k = events.length; j < k; j++) {
-              ev = events[j];
-              if ((callback && callback !== ev.callback && callback !== ev.callback._callback) ||
-                  (context && context !== ev.context)) {
-                retain.push(ev);
-              }
-            }
-          }
-          if (!retain.length) delete this._events[name];
-        }
-      }
-
-      return this;
-    },
-
-    // Trigger one or many events, firing all bound callbacks. Callbacks are
-    // passed the same arguments as `trigger` is, apart from the event name
-    // (unless you're listening on `"all"`, which will cause your callback to
-    // receive the true name of the event as the first argument).
-    trigger: function(name) {
-      if (!this._events) return this;
-      var args = slice.call(arguments, 1);
-      if (!eventsApi(this, 'trigger', name, args)) return this;
-      var events = this._events[name];
-      var allEvents = this._events.all;
-      if (events) triggerEvents(events, args);
-      if (allEvents) triggerEvents(allEvents, arguments);
-      return this;
-    },
-
-    // Tell this object to stop listening to either specific events ... or
-    // to every object it's currently listening to.
-    stopListening: function(obj, name, callback) {
-      var listeners = this._listeners;
-      if (!listeners) return this;
-      var deleteListener = !name && !callback;
-      if (typeof name === 'object') callback = this;
-      if (obj) (listeners = {})[obj._listenerId] = obj;
-      for (var id in listeners) {
-        listeners[id].off(name, callback, this);
-        if (deleteListener) delete this._listeners[id];
-      }
-      return this;
-    }
-
-  };
-
-  // Regular expression used to split event strings.
-  var eventSplitter = /\s+/;
-
-  // Implement fancy features of the Events API such as multiple event
-  // names `"change blur"` and jQuery-style event maps `{change: action}`
-  // in terms of the existing API.
-  var eventsApi = function(obj, action, name, rest) {
-    if (!name) return true;
-
-    // Handle event maps.
-    if (typeof name === 'object') {
-      for (var key in name) {
-        obj[action].apply(obj, [key, name[key]].concat(rest));
-      }
-      return false;
-    }
-
-    // Handle space separated event names.
-    if (eventSplitter.test(name)) {
-      var names = name.split(eventSplitter);
-      for (var i = 0, l = names.length; i < l; i++) {
-        obj[action].apply(obj, [names[i]].concat(rest));
-      }
-      return false;
-    }
-
-    return true;
-  };
-
-  // A difficult-to-believe, but optimized internal dispatch function for
-  // triggering events. Tries to keep the usual cases speedy (most internal
-  // Backbone events have 3 arguments).
-  var triggerEvents = function(events, args) {
-    var ev, i = -1, l = events.length, a1 = args[0], a2 = args[1], a3 = args[2];
-    switch (args.length) {
-      case 0: while (++i < l) (ev = events[i]).callback.call(ev.ctx); return;
-      case 1: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1); return;
-      case 2: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1, a2); return;
-      case 3: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1, a2, a3); return;
-      default: while (++i < l) (ev = events[i]).callback.apply(ev.ctx, args);
-    }
-  };
-
-  var listenMethods = {listenTo: 'on', listenToOnce: 'once'};
-
-  // Inversion-of-control versions of `on` and `once`. Tell *this* object to
-  // listen to an event in another object ... keeping track of what it's
-  // listening to.
-  _.each(listenMethods, function(implementation, method) {
-    Events[method] = function(obj, name, callback) {
-      var listeners = this._listeners || (this._listeners = {});
-      var id = obj._listenerId || (obj._listenerId = _.uniqueId('l'));
-      listeners[id] = obj;
-      if (typeof name === 'object') callback = this;
-      obj[implementation](name, callback, this);
-      return this;
-    };
-  });
-
-  // Aliases for backwards compatibility.
-  Events.bind   = Events.on;
-  Events.unbind = Events.off;
-
-  // Mixin utility
-  Events.mixin = function(proto) {
-    var exports = ['on', 'once', 'off', 'trigger', 'stopListening', 'listenTo',
-                   'listenToOnce', 'bind', 'unbind'];
-    _.each(exports, function(name) {
-      proto[name] = this[name];
-    }, this);
-    return proto;
-  };
-
-  // Export Events as BackboneEvents depending on current context
-  if (typeof exports !== 'undefined') {
-    if (typeof module !== 'undefined' && module.exports) {
-      exports = module.exports = Events;
-    }
-    exports.BackboneEvents = Events;
-  }else if (typeof define === "function"  && typeof define.amd == "object") {
-    define(function() {
-      return Events;
-    });
-  } else {
-    root.BackboneEvents = Events;
-  }
-})(this);
-
 },{}],"/Library/WebServer/Server/liam_and_lisa_open/node_modules/backbone-events-standalone/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js")
-},{"/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js"}],"/Library/WebServer/Server/liam_and_lisa_open/node_modules/closest/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js")
+},{"/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js"}],"/Library/WebServer/Server/liam_and_lisa_open/node_modules/closest/index.js":[function(require,module,exports){
 var matches = require('matches-selector')
 
 module.exports = function (element, selector, checkYoSelf) {
@@ -22335,8 +22055,8 @@ function result(object, path, defaultValue) {
 module.exports = result;
 
 },{"lodash._baseget":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/lodash._baseget/index.js","lodash._baseslice":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/lodash._baseslice/index.js","lodash._topath":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/lodash._topath/index.js","lodash.isarray":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/lodash.isarray/index.js","lodash.isfunction":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/lodash.result/node_modules/lodash.isfunction/index.js"}],"/Library/WebServer/Server/liam_and_lisa_open/node_modules/lodash.result/node_modules/lodash.isfunction/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-state/node_modules/lodash.isfunction/index.js")
-},{"/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-state/node_modules/lodash.isfunction/index.js":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-state/node_modules/lodash.isfunction/index.js"}],"/Library/WebServer/Server/liam_and_lisa_open/node_modules/lodash.union/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/liam_and_lisa_open/node_modules/lodash.isempty/node_modules/lodash.isfunction/index.js")
+},{"/Library/WebServer/Server/liam_and_lisa_open/node_modules/lodash.isempty/node_modules/lodash.isfunction/index.js":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/lodash.isempty/node_modules/lodash.isfunction/index.js"}],"/Library/WebServer/Server/liam_and_lisa_open/node_modules/lodash.union/index.js":[function(require,module,exports){
 /**
  * lodash 3.1.0 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -28300,6 +28020,7 @@ Velocity's structure:
 
     var templatizer = {};
     templatizer["home"] = {};
+    templatizer["landing"] = {};
     templatizer["login"] = {};
     templatizer["modals"] = {};
     templatizer["my_round"] = {};
@@ -28320,6 +28041,11 @@ Velocity's structure:
     // home/base.jade compiled template
     templatizer["home"]["base"] = function tmpl_home_base() {
         return '<ul class="feed"><li class="feed-item"><header><div class="timestamp">Ten asdasd ago</div><div class="result dbl_bogey">Double Bogey</div></header><section><p>On the 18th hole, Dave picked up a double bogey 6. It is his first double bogey of the round. He didn\'t pick up any points.</p></section></li><li class="feed-item"><header><div class="timestamp">Twelve minutes ago</div><div class="result par">Par</div></header><section><p>On the 18th hole, Dave picked up a double bogey 6. It is his first double bogey of the round. He didn\'t pick up any points.</p></section></li><li class="feed-item"><header><div class="timestamp">Ten minutes ago</div><div class="result birdie">Birdie</div></header><section><p>On the 18th hole, Dave picked up a double bogey 6. It is his first double bogey of the round. He didn\'t pick up any points.</p></section></li></ul>';
+    };
+
+    // landing/index.jade compiled template
+    templatizer["landing"]["index"] = function tmpl_landing_index() {
+        return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><div href="/home" class="logo">Liamo Cup</div></div></header><section class="intro"><p>The Liamo Cup was founded at Christmas 2019 so that the lads could have something to do during the five year wait for Liam &amp; Lisa to get married. It\'s two-day, invite-only event with 36 holes of golf to be played and almost as many pints to be consumed.</p><p>The inaugural event will be held in Champion Golfer of the Year\'s backyard of Esker Hills in Offaly. The lads will find shelter in a house in Tullamore. Big enough to fit everyone, and a quick jaunt to the pubs; tis an ideal hidey-hole between rounds.</p></section><ul class="events"><li class="event"><a href="/tournament/1"><div class="title">Esker Hills</div><div class="date">27 - 29 March 2020</div><ul><li><div class="position">1.</div><div class="name">Liam Rockall</div><div class="score">E</div></li><li><div class="position">2.</div><div class="name">Mike Rockall</div><div class="score">E</div></li><li><div class="position">3.</div><div class="name">Eoin Rockall</div><div class="score">E</div></li><li><div class="position">4.</div><div class="name">Danny Finn</div><div class="score">E</div></li></ul><div class="actions"><p>Full Leaderboard &amp; Scoring</p></div></a></li><li class="event future"><a href="/tournament/1"><div class="title">Location: TBD</div><div class="date">March 2021</div></a></li><li class="event future"><a href="/tournament/1"><div class="title">Location: TBD</div><div class="date">March 2022</div></a></li><li class="event future"><a href="/tournament/1"><div class="title">Location: TBD</div><div class="date">March 2023</div></a></li><li class="event future"><a href="/tournament/1"><div class="title">Location: TBD</div><div class="date">March 2024</div></a></li><li class="event future"><a href="/tournament/1"><div class="title">Location: TBD</div><div class="date">March 2025</div></a></li></ul></div>';
     };
 
     // login/base.jade compiled template
@@ -28573,7 +28299,6 @@ window.jQuery = window.$ = $;
 var Router = require('./router');
 
 // ---- Models ----
-var MainView = require('./views/main');
 var Me = require('./models/me');
 
 // ---- Collections ----
@@ -28641,12 +28366,7 @@ module.exports = _.extend({
     self.scores.reset(InitialData.scores);
 
     $('document').ready(function () {
-      var mainView = self.view = new MainView({
-        model: me,
-        el: document.querySelector('.content')
-      });
-      mainView.render();
-
+      self.setupBackboneNavigation();
       self.router.history.start({pushState: true, root: '/'});
     });
   },
@@ -28654,12 +28374,34 @@ module.exports = _.extend({
   navigate: function (page) {
     var url = (page.charAt(0) === '/') ? page.slice(1) : page;
     this.router.history.navigate(url, {trigger: true});
+  },
+
+  setupBackboneNavigation: function(){
+    $(document).on('click', 'a:not([data-bypass])', _.bind(function(evt) {
+      // Get the anchor href and protcol
+      var href = $(this).attr('href');
+      var protocol = this.protocol + '//';
+
+      // Ensure the protocol is not part of URL, meaning its relative.
+      if (href && href.slice(0, protocol.length) !== protocol &&
+          href.indexOf('javascript:') !== 0) {
+        // Stop the default event to ensure the link will not cause a page
+        // refresh.
+        evt.preventDefault();
+
+        // We don't use # alone in Ex Ordo, therefore just ignore any link
+        // like that which might be triggered accidentaly by a plugin.
+        if (href !== '#') {
+          this.router.history.navigate(href, true);
+        }
+      }
+    }, this));
   }
 }, BBEvents);
 
 // lets go!
 module.exports.blastoff();
-},{"./collections/courses":"/Library/WebServer/Server/liam_and_lisa_open/public/js/collections/courses.js","./collections/holes":"/Library/WebServer/Server/liam_and_lisa_open/public/js/collections/holes.js","./collections/players":"/Library/WebServer/Server/liam_and_lisa_open/public/js/collections/players.js","./collections/scores":"/Library/WebServer/Server/liam_and_lisa_open/public/js/collections/scores.js","./collections/tee_times":"/Library/WebServer/Server/liam_and_lisa_open/public/js/collections/tee_times.js","./collections/tournaments":"/Library/WebServer/Server/liam_and_lisa_open/public/js/collections/tournaments.js","./models/me":"/Library/WebServer/Server/liam_and_lisa_open/public/js/models/me.js","./router":"/Library/WebServer/Server/liam_and_lisa_open/public/js/router.js","./views/main":"/Library/WebServer/Server/liam_and_lisa_open/public/js/views/main.js","backbone-events-standalone":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/backbone-events-standalone/index.js","jquery":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/liam_and_lisa_open/public/js/collections/courses.js":[function(require,module,exports){
+},{"./collections/courses":"/Library/WebServer/Server/liam_and_lisa_open/public/js/collections/courses.js","./collections/holes":"/Library/WebServer/Server/liam_and_lisa_open/public/js/collections/holes.js","./collections/players":"/Library/WebServer/Server/liam_and_lisa_open/public/js/collections/players.js","./collections/scores":"/Library/WebServer/Server/liam_and_lisa_open/public/js/collections/scores.js","./collections/tee_times":"/Library/WebServer/Server/liam_and_lisa_open/public/js/collections/tee_times.js","./collections/tournaments":"/Library/WebServer/Server/liam_and_lisa_open/public/js/collections/tournaments.js","./models/me":"/Library/WebServer/Server/liam_and_lisa_open/public/js/models/me.js","./router":"/Library/WebServer/Server/liam_and_lisa_open/public/js/router.js","backbone-events-standalone":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/backbone-events-standalone/index.js","jquery":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/liam_and_lisa_open/public/js/collections/courses.js":[function(require,module,exports){
 var Collection = require('ampersand-rest-collection');
 var Course = require('../models/course');
 
@@ -29195,10 +28937,15 @@ module.exports = AmpersandModel.extend({
 var _ = require('underscore');
 var Router = require('ampersand-router');
 
+// ---- Views ----
+var LandingView = require('./views/landing/index');
+var TournamentView = require('./views/main');
+
 // ---- Router ----
 module.exports = Router.extend({
   routes: {
     '': 'home',
+    'tournament/:tournament_id': 'tournament',
     'leaderboard': 'leaderboard',
     'my-round': 'myRound',
     'my-round/:hole_id': 'myRoundHole',
@@ -29207,7 +28954,19 @@ module.exports = Router.extend({
   },
 
   home: function () {
-    this.trigger('newPage', 'home');
+    var mainView = self.view = new LandingView({
+      el: document.querySelector('.content')
+    });
+
+    mainView.render();
+  },
+
+  tournament: function (id) {
+    var mainView = self.view = new TournamentView({
+      el: document.querySelector('.content'),
+      model: window.me
+    });
+    mainView.render();
   },
 
   leaderboard: function() {
@@ -29231,7 +28990,7 @@ module.exports = Router.extend({
     this.redirectTo('');
   }
 });
-},{"ampersand-router":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-router/ampersand-router.js","underscore":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/liam_and_lisa_open/public/js/views/home/view.js":[function(require,module,exports){
+},{"./views/landing/index":"/Library/WebServer/Server/liam_and_lisa_open/public/js/views/landing/index.js","./views/main":"/Library/WebServer/Server/liam_and_lisa_open/public/js/views/main.js","ampersand-router":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-router/ampersand-router.js","underscore":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/liam_and_lisa_open/public/js/views/home/view.js":[function(require,module,exports){
 // ---- Vendor ----
 var _ = require('underscore');
 var $ = require('jquery');
@@ -29243,6 +29002,19 @@ var templates = require('../../../dist/templates');
 module.exports = View.extend({
   template: templates.home.base
 });
+},{"../../../dist/templates":"/Library/WebServer/Server/liam_and_lisa_open/public/dist/templates.js","ampersand-view":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/liam_and_lisa_open/public/js/views/landing/index.js":[function(require,module,exports){
+// ---- Vendor ----
+var _ = require('underscore');
+var $ = require('jquery');
+
+// ---- BP Modules ----
+var View = require('ampersand-view');
+var templates = require('../../../dist/templates');
+
+module.exports = View.extend({
+  template: templates.landing.index
+});
+
 },{"../../../dist/templates":"/Library/WebServer/Server/liam_and_lisa_open/public/dist/templates.js","ampersand-view":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/liam_and_lisa_open/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/liam_and_lisa_open/public/js/views/main.js":[function(require,module,exports){
 // ---- Vendor ----
 var _ = require('underscore');

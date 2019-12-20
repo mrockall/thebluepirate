@@ -2,10 +2,15 @@
 var _ = require('underscore');
 var Router = require('ampersand-router');
 
+// ---- Views ----
+var LandingView = require('./views/landing/index');
+var TournamentView = require('./views/main');
+
 // ---- Router ----
 module.exports = Router.extend({
   routes: {
     '': 'home',
+    'tournament/:tournament_id': 'tournament',
     'leaderboard': 'leaderboard',
     'my-round': 'myRound',
     'my-round/:hole_id': 'myRoundHole',
@@ -14,7 +19,19 @@ module.exports = Router.extend({
   },
 
   home: function () {
-    this.trigger('newPage', 'home');
+    var mainView = self.view = new LandingView({
+      el: document.querySelector('.content')
+    });
+
+    mainView.render();
+  },
+
+  tournament: function (id) {
+    var mainView = self.view = new TournamentView({
+      el: document.querySelector('.content'),
+      model: window.me
+    });
+    mainView.render();
   },
 
   leaderboard: function() {

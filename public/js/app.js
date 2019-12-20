@@ -9,7 +9,6 @@ window.jQuery = window.$ = $;
 var Router = require('./router');
 
 // ---- Models ----
-var MainView = require('./views/main');
 var Me = require('./models/me');
 
 // ---- Collections ----
@@ -77,12 +76,7 @@ module.exports = _.extend({
     self.scores.reset(InitialData.scores);
 
     $('document').ready(function () {
-      var mainView = self.view = new MainView({
-        model: me,
-        el: document.querySelector('.content')
-      });
-      mainView.render();
-
+      self.setupBackboneNavigation();
       self.router.history.start({pushState: true, root: '/'});
     });
   },
@@ -90,6 +84,28 @@ module.exports = _.extend({
   navigate: function (page) {
     var url = (page.charAt(0) === '/') ? page.slice(1) : page;
     this.router.history.navigate(url, {trigger: true});
+  },
+
+  setupBackboneNavigation: function(){
+    $(document).on('click', 'a:not([data-bypass])', _.bind(function(evt) {
+      // Get the anchor href and protcol
+      var href = $(this).attr('href');
+      var protocol = this.protocol + '//';
+
+      // Ensure the protocol is not part of URL, meaning its relative.
+      if (href && href.slice(0, protocol.length) !== protocol &&
+          href.indexOf('javascript:') !== 0) {
+        // Stop the default event to ensure the link will not cause a page
+        // refresh.
+        evt.preventDefault();
+
+        // We don't use # alone in Ex Ordo, therefore just ignore any link
+        // like that which might be triggered accidentaly by a plugin.
+        if (href !== '#') {
+          this.router.history.navigate(href, true);
+        }
+      }
+    }, this));
   }
 }, BBEvents);
 

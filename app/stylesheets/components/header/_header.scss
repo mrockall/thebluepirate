@@ -1,6 +1,9 @@
+$logo-size: 36px;
+
 header.page-header{
-  background: $blue url(images/bg-large.jpg) center center no-repeat;
-  padding: 2em 0 0;
+  position: relative;
+  background: $green url(images/liam-bg.png) center center no-repeat;
+  padding: 1.2em;
   color: white;
   -webkit-box-shadow: 0px 1px 5px 0px #222;
           box-shadow: 0px 1px 5px 0px #222;
@@ -10,16 +13,19 @@ header.page-header{
   -o-background-size: cover;
   background-size: cover;
 
-
   .logo{
     display: block;
-    margin: 0 2rem;
-    height: 50px;
-    background: url(images/logo.png) left center no-repeat;
-    -webkit-background-size: 50px 50px;
-    -moz-background-size: 50px 50px;
-    -o-background-size: 50px 50px;
-    background-size: 50px 50px;
+    margin: 0;
+    height: $logo-size;
+    padding-right: $logo-size + 18px;
+    line-height: $logo-size;
+    font-size: 24px;
+    font-weight: 400;
+    background: url(images/logo.png) right center no-repeat;
+    -webkit-background-size: $logo-size $logo-size;
+    -moz-background-size: $logo-size $logo-size;
+    -o-background-size: $logo-size $logo-size;
+    background-size: $logo-size $logo-size;
   }
 
   .title{
@@ -39,10 +45,6 @@ header.page-header{
   @include retina {
     .logo{
       background-image: url(images/logo-big.png);
-      -webkit-background-size: 50px 50px;
-      -moz-background-size: 50px 50px;
-      -o-background-size: 50px 50px;
-      background-size: 50px 50px;
     }
   }
 

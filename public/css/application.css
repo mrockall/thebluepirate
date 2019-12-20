@@ -954,8 +954,9 @@ h3 {
     opacity: 0; } }
 
 header.page-header {
-  background: #116493 url(images/bg-large.jpg) center center no-repeat;
-  padding: 2em 0 0;
+  position: relative;
+  background: #2c641f url(images/liam-bg.png) center center no-repeat;
+  padding: 1.2em;
   color: white;
   -webkit-box-shadow: 0px 1px 5px 0px #222;
   box-shadow: 0px 1px 5px 0px #222;
@@ -965,13 +966,17 @@ header.page-header {
   background-size: cover; }
   header.page-header .logo {
     display: block;
-    margin: 0 2rem;
-    height: 50px;
-    background: url(images/logo.png) left center no-repeat;
-    -webkit-background-size: 50px 50px;
-    -moz-background-size: 50px 50px;
-    -o-background-size: 50px 50px;
-    background-size: 50px 50px; }
+    margin: 0;
+    height: 36px;
+    padding-right: 54px;
+    line-height: 36px;
+    font-size: 24px;
+    font-weight: 400;
+    background: url(images/logo.png) right center no-repeat;
+    -webkit-background-size: 36px 36px;
+    -moz-background-size: 36px 36px;
+    -o-background-size: 36px 36px;
+    background-size: 36px 36px; }
   header.page-header .title {
     font-size: 2.5em;
     font-weight: 300;
@@ -984,11 +989,7 @@ header.page-header {
     padding: 0 2rem; }
   @media screen and (-webkit-min-device-pixel-ratio: 1.3), screen and (min--moz-device-pixel-ratio: 1.3), screen and (-o-min-device-pixel-ratio: 2 / 1), screen and (min-device-pixel-ratio: 1.3), screen and (min-resolution: 192dpi), screen and (min-resolution: 2dppx) {
     header.page-header .logo {
-      background-image: url(images/logo-big.png);
-      -webkit-background-size: 50px 50px;
-      -moz-background-size: 50px 50px;
-      -o-background-size: 50px 50px;
-      background-size: 50px 50px; } }
+      background-image: url(images/logo-big.png); } }
   header.page-header .tabs {
     overflow: hidden;
     *zoom: 1;
@@ -1762,3 +1763,62 @@ header.page-header {
   font-size: 1.15rem;
   line-height: 1.6;
   color: #323232; }
+
+section.intro {
+  margin: 1.2em 1.8em;
+  color: #323232; }
+
+ul.events {
+  list-style: none;
+  padding: 0;
+  margin: 0; }
+  ul.events > li {
+    position: relative;
+    background: #f4f2ec;
+    margin: 0 1.2em 1.2em;
+    padding: 1.2em 40% 1.2em 1.2em;
+    border-radius: 4px; }
+    ul.events > li.future {
+      background: #f1f1f1;
+      opacity: 0.5; }
+      ul.events > li.future:after {
+        background: #dedede none; }
+    ul.events > li a {
+      display: block;
+      text-decoration: none;
+      color: #323232; }
+    ul.events > li:after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 40%;
+      clip-path: polygon(20% 0%, 100% 0, 100% 100%, 0% 100%);
+      background: url(images/esker-hills.png) center center no-repeat;
+      background-size: cover;
+      border-radius: 0 4px 4px 0; }
+    ul.events > li .title {
+      font-size: 18px;
+      font-weight: 400; }
+    ul.events > li .date {
+      font-size: 14px;
+      font-weight: 300; }
+    ul.events > li ul {
+      list-style: none;
+      padding: 0;
+      margin: 0.6em 0 0; }
+      ul.events > li ul li {
+        display: flex;
+        font-weight: 300; }
+        ul.events > li ul li .position {
+          width: 8%; }
+        ul.events > li ul li .name {
+          flex-grow: 1; }
+        ul.events > li ul li .score {
+          width: 15%;
+          text-align: right; }
+    ul.events > li .actions p {
+      margin: 0.6em 0 0;
+      color: #2c641f;
+      font-weight: 300; }
