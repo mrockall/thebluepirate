@@ -1002,53 +1002,40 @@ header.page-header {
       background-image: url(images/logo-big.png); } }
 
 .tabs {
-  overflow: hidden;
-  *zoom: 1; }
+  display: flex;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
   .tabs a {
-    float: left;
-    position: relative;
-    overflow: hidden;
     outline: none;
     width: 50%;
-    padding: 1.25rem 0;
+    padding: 1.2rem 0;
     color: #323232;
-    text-indent: -9999em;
+    font-size: 0.66em;
+    font-weight: 400;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     text-align: center;
-    border-bottom: 5px solid transparent;
     background: url(images/icons.png) center no-repeat;
     -webkit-background-size: 24px;
     -moz-background-size: 24px;
-    background-size: 24px;
-    -webkit-transition: border-color 0.25s ease-out;
-    -moz-transition: border-color 0.25s ease-out;
-    transition: border-color 0.25s ease-out; }
+    background-size: 24px; }
     .tabs a:before {
       content: "";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      display: block;
-      width: 0;
-      padding-top: 0;
-      border-radius: 100%;
-      background-color: rgba(236, 240, 241, 0.3);
-      -webkit-transform: translate(-50%, -50%);
-      -ms-transform: translate(-50%, -50%);
-      transform: translate(-50%, -50%); }
-    .tabs a:active:before, .tabs a.ripple:before {
-      width: 120%;
-      padding-top: 120%;
-      background-color: rgba(236, 240, 241, 0.1);
-      -webkit-transition: width 0.5s ease-out, padding-top 0.5s ease-out;
-      -moz-transition: width 0.5s ease-out, padding-top 0.5s ease-out;
-      transition: width 0.5s ease-out, padding-top 0.5s ease-out; }
+      display: inline-block;
+      margin-right: 12px;
+      height: 16px;
+      width: 16px;
+      vertical-align: -3px;
+      -webkit-background-size: 16px 16px;
+      -moz-background-size: 16px 16px;
+      background-size: 16px 16px; }
     .tabs a.active {
       border-bottom-color: rgba(255, 255, 255, 0.3); }
-    .tabs a.home {
+    .tabs a.home:before {
       background-image: url(svg/home.svg); }
-    .tabs a.me_user {
+    .tabs a.me_user:before {
       background-image: url(svg/user.svg); }
-    .tabs a.ldrboard {
+    .tabs a.ldrboard:before {
       background-image: url(svg/trophy.svg); }
 
 .tournament {
@@ -1090,7 +1077,7 @@ header.page-header {
 .leaderboard, .headers {
   list-style: none;
   margin: 0;
-  padding: 1.5rem 0; }
+  padding: 0 0 1.5rem; }
   .leaderboard li, .headers li {
     font-size: 1rem;
     line-height: 2.25em;
