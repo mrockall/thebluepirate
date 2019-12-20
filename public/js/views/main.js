@@ -116,11 +116,11 @@ module.exports = View.extend({
       //   url = 'home';
       //   break;
       case 0:
-        url = 'leaderboard';
+        url = 'tournament/1/leaderboard';
         app.trigger('refresh');
         break;
       case 1:
-        url = 'my-round';
+        url = 'tournament/1/my-round';
         break;
     }
 

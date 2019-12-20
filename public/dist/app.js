@@ -28027,15 +28027,8 @@ Velocity's structure:
     templatizer["tournaments"] = {};
 
     // body.jade compiled template
-    templatizer["body"] = function tmpl_body(locals) {
-        var buf = [];
-        var jade_mixins = {};
-        var jade_interp;
-        var locals_for_with = locals || {};
-        (function(course_name, tournament_name) {
-            buf.push('<div class="main"><header class="page-header"><div class="max-width-wrapper"><a href="/" class="back">Back to all Events</a><a href="/" class="headline"><div class="content"><div class="title">' + jade.escape(null == (jade_interp = tournament_name) ? "" : jade_interp) + '</div><div class="subtitle">' + jade.escape(null == (jade_interp = course_name) ? "" : jade_interp) + '</div></div><div class="logo"></div></a></div></header><div class="max-width-wrapper"><div class="tabs"><a href="/leaderboard" class="ldrboard">Leaderboard</a><a href="/my-round" class="me_user">Me</a></div></div><section class="page-tabs max-width-wrapper"><div class="container pages page-container"><div class="page"></div></div></section></div>');
-        }).call(this, "course_name" in locals_for_with ? locals_for_with.course_name : typeof course_name !== "undefined" ? course_name : undefined, "tournament_name" in locals_for_with ? locals_for_with.tournament_name : typeof tournament_name !== "undefined" ? tournament_name : undefined);
-        return buf.join("");
+    templatizer["body"] = function tmpl_body() {
+        return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><a href="/" class="back">Back to all Events</a><a href="/" class="headline"><div class="content"><div class="title">Esker Hills</div><div class="subtitle">27 - 29 March 2020</div></div><div class="logo"></div></a></div></header><div class="max-width-wrapper"><div class="tabs"><a href="/tournament/1/leaderboard" class="ldrboard">Leaderboard</a><a href="/tournament/1/my-round" class="me_user">My Round</a></div></div><section class="page-tabs max-width-wrapper"><div class="container pages page-container"><div class="page"></div></div></section></div>';
     };
 
     // home/base.jade compiled template
@@ -28045,7 +28038,7 @@ Velocity's structure:
 
     // landing/index.jade compiled template
     templatizer["landing"]["index"] = function tmpl_landing_index() {
-        return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><a href="/" class="headline"><div class="content"><div class="title">Liamo Cup</div><div class="subtitle">Est 2019</div></div><div class="logo"></div></a></div></header><div class="max-width-wrapper"><section class="intro"><p>The Liamo Cup was founded at Christmas 2019 so that the lads could have something to do during the five year wait for Liam &amp; Lisa to get married. It\'s two-day, invite-only event with 36 holes of golf to be played and almost as many pints to be consumed.</p><p>The inaugural event will be held in Champion Golfer of the Year\'s backyard of Esker Hills in Offaly. The lads will find shelter in a house in Tullamore. Big enough to fit everyone, and a quick jaunt to the pubs; tis an ideal hidey-hole between rounds.</p></section><ul class="events"><li class="event"><a href="/tournament/1"><div class="title">Esker Hills</div><div class="date">27 - 29 March 2020</div><ul><li><div class="position">1.</div><div class="name">Liam Rockall</div><div class="score">E</div></li><li><div class="position">2.</div><div class="name">Mike Rockall</div><div class="score">E</div></li><li><div class="position">3.</div><div class="name">Eoin Rockall</div><div class="score">E</div></li><li><div class="position">4.</div><div class="name">Danny Finn</div><div class="score">E</div></li></ul><div class="actions"><p>Full Leaderboard &amp; Scoring</p></div></a></li><li class="event future"><a href="/tournament/1"><div class="title">Location: TBD</div><div class="date">March 2021</div></a></li><li class="event future"><a href="/tournament/1"><div class="title">Location: TBD</div><div class="date">March 2022</div></a></li><li class="event future"><a href="/tournament/1"><div class="title">Location: TBD</div><div class="date">March 2023</div></a></li><li class="event future"><a href="/tournament/1"><div class="title">Location: TBD</div><div class="date">March 2024</div></a></li><li class="event future"><a href="/tournament/1"><div class="title">Location: TBD</div><div class="date">March 2025</div></a></li></ul></div></div>';
+        return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><a href="/" class="headline"><div class="content"><div class="title">Liamo Cup</div><div class="subtitle">Est 2019</div></div><div class="logo"></div></a></div></header><div class="max-width-wrapper"><section class="intro"><p>The Liamo Cup was founded at Christmas 2019 so that the lads could have something to do during the five year wait for Liam &amp; Lisa to get married. It\'s two-day, invite-only event with 36 holes of golf to be played and almost as many pints to be consumed.</p><p>The inaugural event will be held in Champion Golfer of the Year\'s backyard of Esker Hills in Offaly. The lads will find shelter in a house in Tullamore. Big enough to fit everyone, and a quick jaunt to the pubs; tis an ideal hidey-hole between rounds.</p></section><ul class="events"><li class="event"><a href="/tournament/1/leaderboard"><div class="title">Esker Hills</div><div class="date">27 - 29 March 2020</div><ul><li><div class="position">1.</div><div class="name">Liam Rockall</div><div class="score">E</div></li><li><div class="position">2.</div><div class="name">Mike Rockall</div><div class="score">E</div></li><li><div class="position">3.</div><div class="name">Eoin Rockall</div><div class="score">E</div></li><li><div class="position">4.</div><div class="name">Danny Finn</div><div class="score">E</div></li></ul><div class="actions"><p>Full Leaderboard &amp; Scoring</p></div></a></li><li class="event future"><a href="/tournament/1/leaderboard"><div class="title">Location: TBD</div><div class="date">March 2021</div></a></li><li class="event future"><a href="/tournament/1/leaderboard"><div class="title">Location: TBD</div><div class="date">March 2022</div></a></li><li class="event future"><a href="/tournament/1/leaderboard"><div class="title">Location: TBD</div><div class="date">March 2023</div></a></li><li class="event future"><a href="/tournament/1/leaderboard"><div class="title">Location: TBD</div><div class="date">March 2024</div></a></li><li class="event future"><a href="/tournament/1/leaderboard"><div class="title">Location: TBD</div><div class="date">March 2025</div></a></li></ul></div></div>';
     };
 
     // login/base.jade compiled template
@@ -28947,23 +28940,48 @@ module.exports = Router.extend({
   routes: {
     '': 'home',
     'tournament/:tournament_id': 'tournament',
-    'leaderboard': 'leaderboard',
-    'my-round': 'myRound',
-    'my-round/:hole_id': 'myRoundHole',
-    'login': 'login',
+    'tournament/:tournament_id/leaderboard': 'leaderboard',
+    'tournament/:tournament_id/my-round': 'myRound',
+    'tournament/:tournament_id/my-round/:hole_id': 'myRoundHole',
+    'tournament/:tournament_id/login': 'login',
     '(*path)': 'catchAll'
   },
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
   home: function () {
-    var mainView = self.view = new LandingView({
+    this.view = 'home';
+
+    var mainView = new LandingView({
       el: document.querySelector('.main')
     });
 
     mainView.render();
   },
 
-  tournament: function (id) {
-    var mainView = self.view = new TournamentView({
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+  tournament: function(id) {
+    this.redirectTo('/tournament/' + id + '/leaderboard');
+  },
+
+  leaderboard: function() {
+    this.renderTournamentPageIfNotRendered();
+    this.trigger('newPage', 'leaderboard');
+  },
+
+  myRound: function() {
+    this.renderTournamentPageIfNotRendered();
+    this.trigger('newPage', 'my_round');
+  },
+
+  renderTournamentPageIfNotRendered: function(){
+    if(this.view == 'tournament')
+      return;
+    
+    this.view = 'tournament';
+
+    var mainView = this.view = new TournamentView({
       el: document.querySelector('.main'),
       model: window.me
     });
@@ -28971,13 +28989,7 @@ module.exports = Router.extend({
     mainView.render();
   },
 
-  leaderboard: function() {
-    this.trigger('newPage', 'leaderboard');
-  },
-
-  myRound: function() {
-    this.trigger('newPage', 'my_round');
-  },
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
   myRoundHole: function(hole_id) {
     if(!me.is_logged_in){ return this.redirectTo('/login'); }
@@ -28987,6 +28999,8 @@ module.exports = Router.extend({
 
     this.trigger('newPage', 'my_round_hole', tee_time, hole_id);
   },
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
   catchAll: function () {
     this.redirectTo('');
@@ -29136,11 +29150,11 @@ module.exports = View.extend({
       //   url = 'home';
       //   break;
       case 0:
-        url = 'leaderboard';
+        url = 'tournament/1/leaderboard';
         app.trigger('refresh');
         break;
       case 1:
-        url = 'my-round';
+        url = 'tournament/1/my-round';
         break;
     }
 
