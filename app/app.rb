@@ -64,7 +64,7 @@ module BluePirate
       @courses = Rabl.render(c, 'courses/view', :view_path => 'app/views', :format => 'json')
       @holes = Rabl.render(c.holes, 'holes/view', :view_path => 'app/views', :format => 'json')
       
-      @title = "Blue Pirate"
+      @title = "Liam & Lisa Open"
       render :index
     end
   end
