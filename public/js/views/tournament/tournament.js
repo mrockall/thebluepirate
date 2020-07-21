@@ -8,7 +8,6 @@ var View = require('ampersand-view');
 var templates = require('../../dist/templates.js');
 
 // ---- Pages ----
-var TournamentHome = require('./home/view');
 var TournamentLeaderboard = require('./tournaments/leaderboard');
 var MyRound = require('./my_round/view');
 
@@ -63,9 +62,6 @@ module.exports = View.extend({
     var view;
 
     switch(i){
-      // case 0:
-      //   view = this.getOrCreatePage('home', TournamentHome);
-      //   break;
       case 0:
         view = this.getOrCreatePage('leaderboard', TournamentLeaderboard);
         break;
@@ -112,9 +108,6 @@ module.exports = View.extend({
     var url = '';
 
     switch(this.swipe_view.pageIndex){
-      // case 0:
-      //   url = 'home';
-      //   break;
       case 0:
         url = 'tournament/1/leaderboard';
         app.trigger('refresh');

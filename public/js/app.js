@@ -11,14 +11,6 @@ var Router = require('./router');
 // ---- Models ----
 var Me = require('./models/me');
 
-// ---- Collections ----
-var Tournaments = require('./collections/tournaments');
-var TeeTimes = require('./collections/tee_times');
-var Players = require('./collections/players');
-var Courses = require('./collections/courses');
-var Scores = require('./collections/scores');
-var Holes = require('./collections/holes');
-
 /** 
  * Adds CSRF support to Backbone
  */
@@ -56,24 +48,9 @@ module.exports = _.extend({
   blastoff: function () {
     var self = window.app = this;
 
-    app.whichTransitionEvent = whichTransitionEvent();
-
     window.me = new Me(InitialData.me);
 
     this.router = new Router();
-    this.tournaments = new Tournaments();
-    this.tee_times = new TeeTimes();
-    this.players = new Players();
-    this.courses = new Courses();
-    this.scores = new Scores();
-    this.holes = new Holes();
-
-    self.tournaments.reset(InitialData.tournaments);
-    self.tee_times.reset(InitialData.tee_times);
-    self.players.reset(InitialData.players);
-    self.courses.reset(InitialData.courses);
-    self.holes.reset(InitialData.holes);
-    self.scores.reset(InitialData.scores);
 
     $('document').ready(function () {
       self.setupBackboneNavigation();
@@ -110,5 +87,4 @@ module.exports = _.extend({
   }
 }, BBEvents);
 
-// lets go!
 module.exports.blastoff();

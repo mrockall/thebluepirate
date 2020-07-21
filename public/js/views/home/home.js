@@ -7,5 +7,5 @@ var View = require('ampersand-view');
 var templates = require('../../../dist/templates');
 
 module.exports = View.extend({
-  template: templates.home.base
+  template: templates.home.home
 });

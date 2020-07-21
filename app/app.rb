@@ -54,16 +54,6 @@ module BluePirate
     end
     
     get :index, :map => '/*page', :priority => :low do
-      t = Tournament.includes(:players, :scores => [:hole, :player], :tee_times => [:scores]).last
-      c = Course.includes(:holes).find_by_id(t.course_id)
-
-      @tournaments = Rabl.render(t, 'tournaments/view', :view_path => 'app/views', :format => 'json')
-      @tee_times = Rabl.render(t.tee_times, 'tee_times/view', :view_path => 'app/views', :format => 'json')
-      @players = Rabl.render(t.players, 'players/view', :view_path => 'app/views', :format => 'json')
-      @scores = Rabl.render(t.scores, 'scores/view', :view_path => 'app/views', :format => 'json')
-      @courses = Rabl.render(c, 'courses/view', :view_path => 'app/views', :format => 'json')
-      @holes = Rabl.render(c.holes, 'holes/view', :view_path => 'app/views', :format => 'json')
-      
       @title = "Blue Pirate"
       render :index
     end

@@ -3,27 +3,26 @@ var _ = require('underscore');
 var Router = require('ampersand-router');
 
 // ---- Views ----
-var LandingView = require('./views/landing/index');
-var TournamentView = require('./views/main');
+var HomePage = require('./views/home/home');
+// var TournamentView = require('./views/tournament/tournament');
 
 // ---- Router ----
 module.exports = Router.extend({
   routes: {
     '': 'home',
     'tournament/:tournament_id': 'tournament',
-    'tournament/:tournament_id/leaderboard': 'leaderboard',
-    'tournament/:tournament_id/my-round': 'myRound',
-    'tournament/:tournament_id/my-round/:hole_id': 'myRoundHole',
-    'tournament/:tournament_id/login': 'login',
+
+    // 'tournament/:tournament_id/leaderboard': 'leaderboard',
+    // 'tournament/:tournament_id/my-round': 'myRound',
+    // 'tournament/:tournament_id/my-round/:hole_id': 'myRoundHole',
+    // 'tournament/:tournament_id/login': 'login',
     '(*path)': 'catchAll'
   },
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
   home: function () {
-    this.view = 'home';
-
-    var mainView = new LandingView({
+    var mainView = new HomePage({
       el: document.querySelector('.main')
     });
 
@@ -33,28 +32,8 @@ module.exports = Router.extend({
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
   tournament: function(id) {
-    this.redirectTo('/tournament/' + id + '/leaderboard');
-  },
-
-  leaderboard: function() {
-    this.renderTournamentPageIfNotRendered();
-    this.trigger('newPage', 'leaderboard');
-  },
-
-  myRound: function() {
-    this.renderTournamentPageIfNotRendered();
-    this.trigger('newPage', 'my_round');
-  },
-
-  renderTournamentPageIfNotRendered: function(){
-    if(this.view == 'tournament')
-      return;
-    
-    this.view = 'tournament';
-
-    var mainView = this.view = new TournamentView({
-      el: document.querySelector('.main'),
-      model: window.me
+    var mainView = new TournamentView({
+      el: document.querySelector('.main')
     });
 
     mainView.render();
