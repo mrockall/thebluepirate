@@ -1,14 +1,14 @@
-var _      = require('underscore');
-var Router = require('ampersand-router');
-
-// ---- Views ----
+var _              = require('underscore');
+var Router         = require('ampersand-router');
+var Layout         = require('./layout');
 var HomePage       = require('./views/home/home');
-var LoginPage       = require('./views/login/login');
+var LoginPage      = require('./views/login/login');
 var CardPage       = require('./views/card/card');
 var TournamentView = require('./views/tournament/tournament');
-var PlayerPage       = require('./views/player/player');
+var PlayerPage     = require('./views/player/player');
 
-// ---- Router ----
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
 module.exports = Router.extend({
   routes: {
     '': 'home',
@@ -20,44 +20,50 @@ module.exports = Router.extend({
   },
 
   home: function () {
-    var mainView = new HomePage({
-      el: document.querySelector('.main')
-    });
-
-    mainView.render();
+    var workspace = new HomePage();
+    workspace.render();
+    this.renderIntoLayout(workspace)
   },
 
   login: function () {
-    var mainView = new LoginPage({
-      el: document.querySelector('.main')
-    });
-
-    mainView.render();
+    var workspace = new LoginPage();
+    workspace.render();
+    this.renderIntoLayout(workspace);
   },
 
   card: function () {
-    var mainView = new CardPage({
-      el: document.querySelector('.main')
-    });
-
-    mainView.render();
+    var workspace = new CardPage();
+    workspace.render();
+    this.renderIntoLayout(workspace);
   },
 
   tournament: function(id) {
-    var mainView = new TournamentView({
-      el: document.querySelector('.main')
-    });
-
-    mainView.render();
+    var workspace = new TournamentView();
+    workspace.render();
+    this.renderIntoLayout(workspace);
   },
 
   player: function(id) {
-    var mainView = new PlayerView({
-      el: document.querySelector('.main')
-    });
-
-    mainView.render();
+    var workspace = new PlayerView();
+    workspace.render();
+    this.renderIntoLayout(workspace);
   },
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  renderIntoLayout: function(workspace){
+    if(!this.layout){
+      this.layout = new Layout({
+        el: document.querySelector('.main')
+      });
+
+      this.layout.render();
+    }
+
+    this.layout.renderWorkspace(workspace);
+  },
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   catchAll: function () {
     this.redirectTo('');

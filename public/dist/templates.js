@@ -27,12 +27,17 @@
 
     // card/card.jade compiled template
     templatizer["card"]["card"] = function tmpl_card_card() {
-        return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><a href="/" class="headline"><div class="content"><div class="title">Blue Pirate</div><div class="subtitle">Est 2013</div></div><div class="logo"></div></a></div></header></div><p>Card</p>';
+        return '<div class="max-width-wrapper"><p>Card</p></div>';
     };
 
     // home/home.jade compiled template
     templatizer["home"]["home"] = function tmpl_home_home() {
-        return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><a href="/" class="headline"><div class="content"><div class="title">Blue Pirate</div><div class="subtitle">Est 2013</div></div><div class="logo"></div></a></div></header><div class="max-width-wrapper"><ul class="events"><li class="event"><a href="/tournament/1"><div class="title">Esker Hills</div><div class="date">27 - 29 March 2020</div><ul><li><div class="position">1.</div><div class="name">Liam Rockall</div><div class="score">E</div></li><li><div class="position">2.</div><div class="name">Mike Rockall</div><div class="score">E</div></li><li><div class="position">3.</div><div class="name">Eoin Rockall</div><div class="score">E</div></li><li><div class="position">4.</div><div class="name">Danny Finn</div><div class="score">E</div></li></ul><div class="actions"><p>Full Leaderboard &amp; Scoring</p></div></a></li><li class="event future"><a href="/tournament/2"><div class="title">Location: TBD</div><div class="date">March 2021</div></a></li><li class="event future"><a href="/tournament/3"><div class="title">Location: TBD</div><div class="date">March 2022</div></a></li><li class="event future"><a href="/tournament/4"><div class="title">Location: TBD</div><div class="date">March 2023</div></a></li><li class="event future"><a href="/tournament/5"><div class="title">Location: TBD</div><div class="date">March 2024</div></a></li><li class="event future"><a href="/tournament/6"><div class="title">Location: TBD</div><div class="date">March 2025</div></a></li></ul></div></div>';
+        return '<div class="max-width-wrapper"><ul class="events"><li class="event"><a href="/tournament/1"><div class="title">Esker Hills</div><div class="date">27 - 29 March 2020</div><ul><li><div class="position">1.</div><div class="name">Liam Rockall</div><div class="score">E</div></li><li><div class="position">2.</div><div class="name">Mike Rockall</div><div class="score">E</div></li><li><div class="position">3.</div><div class="name">Eoin Rockall</div><div class="score">E</div></li><li><div class="position">4.</div><div class="name">Danny Finn</div><div class="score">E</div></li></ul><div class="actions"><p>Full Leaderboard &amp; Scoring</p></div></a></li><li class="event future"><a href="/tournament/2"><div class="title">Location: TBD</div><div class="date">March 2021</div></a></li><li class="event future"><a href="/tournament/3"><div class="title">Location: TBD</div><div class="date">March 2022</div></a></li><li class="event future"><a href="/tournament/4"><div class="title">Location: TBD</div><div class="date">March 2023</div></a></li><li class="event future"><a href="/tournament/5"><div class="title">Location: TBD</div><div class="date">March 2024</div></a></li><li class="event future"><a href="/tournament/6"><div class="title">Location: TBD</div><div class="date">March 2025</div></a></li></ul></div>';
+    };
+
+    // layout.jade compiled template
+    templatizer["layout"] = function tmpl_layout() {
+        return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><a href="/" class="headline"><div class="content"><div class="title">Blue Pirate</div><div class="subtitle">Est 2013</div></div><div class="logo"></div></a></div></header><div class="js-workspace-container"></div></div>';
     };
 
     // login/base.jade compiled template
@@ -52,7 +57,7 @@
 
     // login/login.jade compiled template
     templatizer["login"]["login"] = function tmpl_login_login() {
-        return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><a href="/" class="headline"><div class="content"><div class="title">Blue Pirate</div><div class="subtitle">Est 2013</div></div><div class="logo"></div></a></div></header></div><p>Login</p>';
+        return '<div class="max-width-wrapper"><p>Login</p></div>';
     };
 
     // login/option.jade compiled template
@@ -183,7 +188,7 @@
 
     // player/player.jade compiled template
     templatizer["player"]["player"] = function tmpl_player_player() {
-        return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><a href="/" class="headline"><div class="content"><div class="title">Blue Pirate</div><div class="subtitle">Est 2013</div></div><div class="logo"></div></a></div></header></div><p>Player</p>';
+        return '<div class="max-width-wrapper"><p>Player</p></div>';
     };
 
     // tournament/hole_list_item.jade compiled template
@@ -279,7 +284,7 @@
 
     // tournament/tournament.jade compiled template
     templatizer["tournament"]["tournament"] = function tmpl_tournament_tournament() {
-        return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><a href="/" class="headline"><div class="content"><div class="title">Blue Pirate</div><div class="subtitle">Est 2013</div></div><div class="logo"></div></a></div></header></div><p>Tournament</p>';
+        return '<div class="max-width-wrapper"><p>Tournament</p></div>';
     };
 
     // tournament/view.jade compiled template
