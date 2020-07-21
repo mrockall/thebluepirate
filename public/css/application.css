@@ -729,7 +729,7 @@ body, html {
   min-height: 100%;
   margin: 0;
   padding: 0;
-  font-family: 'Lato', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 17px;
   line-height: 1.5; }
   @media only screen and (max-width: 767px) {
@@ -739,14 +739,14 @@ body, html {
     body, html {
       font-size: 12px; } }
 
-.phone-wrapper {
+body {
   background: #424242;
   padding: 1em 0;
   -webkit-transition: all 200ms ease;
   -moz-transition: all 200ms ease;
   transition: all 200ms ease; }
 
-.main {
+.app-wrapper {
   max-width: 767px;
   margin: 0 auto;
   background: white;
@@ -755,10 +755,10 @@ body, html {
   overflow: hidden; }
 
 @media only screen and (max-width: 767px) {
-  .phone-wrapper {
+  body {
     padding: 0; }
 
-  .main {
+  .app-wrapper {
     border-radius: 0;
     box-shadow: 0 0 0 0 transparent; } }
 .max-width-wrapper {
@@ -768,10 +768,6 @@ body, html {
 .no-scroll {
   height: 100%;
   overflow: hidden; }
-
-.pages {
-  height: 100%;
-  min-height: 100%; }
 
 h1 {
   color: #323232;
@@ -801,7 +797,6 @@ h3 {
   border-bottom: 1px solid #dddddd; }
 
 .loading-page {
-  display: none;
   position: fixed;
   top: 0;
   bottom: 0;
@@ -964,90 +959,32 @@ h3 {
     transform: translateX(200px);
     opacity: 0; } }
 
-header.page-header {
+header {
   position: relative;
+  padding: 0.75em;
+  margin: 0 0 1em;
   background: #116493 url(images/bg-large.jpg) center center no-repeat;
-  padding: 1.2em;
-  color: white;
-  -webkit-box-shadow: 0px 1px 5px 0px #222;
-  box-shadow: 0px 1px 5px 0px #222;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover; }
-  header.page-header .headline {
-    display: flex;
-    align-items: center;
+  background-size: cover;
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.5);
+  display: flex; }
+  header .brand {
+    flex-basis: 3em;
+    min-height: 3em;
+    background: url(images/logo-big.png) center center no-repeat;
+    background-size: 3em 3em;
+    text-indent: -999em; }
+  header h1 {
+    flex-grow: 1;
+    margin: 0;
     color: white;
-    text-decoration: none; }
-    header.page-header .headline .content {
-      flex-grow: 1; }
-      header.page-header .headline .content .title {
-        font-size: 1.5em;
-        font-weight: 400; }
-      header.page-header .headline .content .date {
-        font-size: 1.2em;
-        font-weight: 300; }
-    header.page-header .headline .logo {
-      height: 2.5em;
-      width: 2.5em;
-      background: url(images/logo.png) center center no-repeat;
-      background-size: 2.5em 2.5em; }
-  header.page-header .back {
-    display: block;
-    margin: -1.2em -1.2em 1.2em;
-    padding: 1.2em;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 0.66em;
-    font-weight: 300;
-    text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: white;
-    text-align: center; }
-  header.page-header .subtitle {
-    font-size: 1em;
+    font-size: 1.5em;
+    line-height: 2em;
     font-weight: 300; }
-  @media screen and (-webkit-min-device-pixel-ratio: 1.3), screen and (min--moz-device-pixel-ratio: 1.3), screen and (-o-min-device-pixel-ratio: 2 / 1), screen and (min-device-pixel-ratio: 1.3), screen and (min-resolution: 192dpi), screen and (min-resolution: 2dppx) {
-    header.page-header .logo {
-      background-image: url(images/logo-big.png); } }
-
-.tabs {
-  display: flex;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
-  .tabs a {
-    outline: none;
-    width: 50%;
-    padding: 1.2rem 0;
-    color: #323232;
-    font-size: 0.66em;
-    font-weight: 400;
-    text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-align: center;
-    background: url(images/icons.png) center no-repeat;
-    -webkit-background-size: 24px;
-    -moz-background-size: 24px;
-    background-size: 24px; }
-    .tabs a:before {
-      content: "";
-      display: inline-block;
-      margin-right: 12px;
-      height: 16px;
-      width: 16px;
-      vertical-align: -3px;
-      -webkit-background-size: 16px 16px;
-      -moz-background-size: 16px 16px;
-      background-size: 16px 16px; }
-    .tabs a.active {
-      border-bottom-color: rgba(255, 255, 255, 0.3); }
-    .tabs a.home:before {
-      background-image: url(svg/home.svg); }
-    .tabs a.me_user:before {
-      background-image: url(svg/user.svg); }
-    .tabs a.ldrboard:before {
-      background-image: url(svg/trophy.svg); }
+  header .profile {
+    flex-basis: 3em;
+    min-height: 3em;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%; }
 
 .tournament {
   overflow: hidden;

@@ -2,12 +2,12 @@
 @import 'variables';
 @import 'grid';
 
-body, html{
+body, html {
   background: #fff;
   min-height: 100%;
   margin: 0;
   padding: 0;
-  font-family: 'Lato', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 17px;
   line-height: 1.5;
 
@@ -20,13 +20,13 @@ body, html{
   }
 }
 
-.phone-wrapper{
+body {
   background: #424242;
   padding: 1em 0;
   @include transition(all 200ms ease);
 }
 
-.main{
+.app-wrapper {
   max-width: $break-mobile;
   margin: 0 auto;
   background: white;
@@ -36,11 +36,11 @@ body, html{
 }
 
 @include bp(mobile) {
-  .phone-wrapper{
+  body {
     padding: 0;
   }
 
-  .main{
+  .app-wrapper {
     border-radius: 0;
     box-shadow: 0 0 0 0 transparent;
   }
@@ -54,11 +54,6 @@ body, html{
 .no-scroll{
   height: 100%;
   overflow: hidden;
-}
-
-.pages{
-  height: 100%;
-  min-height: 100%;
 }
 
 @import 'typography';

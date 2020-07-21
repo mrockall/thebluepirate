@@ -21891,7 +21891,7 @@ return jQuery;
 
     // layout.jade compiled template
     templatizer["layout"] = function tmpl_layout() {
-        return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><a href="/" class="headline"><div class="content"><div class="title">Blue Pirate</div><div class="subtitle">Est 2013</div></div><div class="logo"></div></a></div></header><div class="js-workspace-container"></div></div>';
+        return '<body><div class="app-wrapper"><header><a href="/" class="brand">Home</a><h1>Blue Pirate</h1><div class="profile"></div></header><div class="workspace-container"></div></div></body>';
     };
 
     // login/base.jade compiled template
@@ -22261,7 +22261,7 @@ module.exports = View.extend({
   },
 
   cacheDOM: function(){
-    this.$workspace_container = this.query('.js-workspace-container');
+    this.$workspace_container = this.query('.workspace-container');
   },
 
   renderWorkspace: function(workspace){
@@ -22376,7 +22376,7 @@ module.exports = Router.extend({
   renderIntoLayout: function(workspace){
     if(!this.layout){
       this.layout = new Layout({
-        el: document.querySelector('.main')
+        el: document.querySelector('body')
       });
 
       this.layout.render();

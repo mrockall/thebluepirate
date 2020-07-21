@@ -54,7 +54,7 @@ module.exports = Router.extend({
   renderIntoLayout: function(workspace){
     if(!this.layout){
       this.layout = new Layout({
-        el: document.querySelector('.main')
+        el: document.querySelector('body')
       });
 
       this.layout.render();

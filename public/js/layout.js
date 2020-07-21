@@ -18,7 +18,7 @@ module.exports = View.extend({
   },
 
   cacheDOM: function(){
-    this.$workspace_container = this.query('.js-workspace-container');
+    this.$workspace_container = this.query('.workspace-container');
   },
 
   renderWorkspace: function(workspace){
