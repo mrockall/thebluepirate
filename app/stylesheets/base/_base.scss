@@ -20,17 +20,31 @@ body, html{
   }
 }
 
+.phone-wrapper{
+  background: #424242;
+  padding: 1em 0;
+  @include transition(all 200ms ease);
+}
+
+@include bp(mobile) {
+  .phone-wrapper{
+    padding: 0;
+  }
+
+  .main{
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
 .main{
-  @include box-sizing(border-box);
-  position: absolute;
-  top: 0; left: 0;
-  height: 100%;
-  width: 100%;
-  overflow: scroll;
+  max-width: $break-mobile;
+  margin: 0 auto;
+  background: white;
+  box-shadow: 0 0 8px 8px rgba(0, 0, 0, 0.1);
 }
 
 .max-width-wrapper{
-  max-width: 40em;
+  max-width: $break-mobile;
   margin: 0 auto;
 }
 

@@ -739,19 +739,27 @@ body, html {
     body, html {
       font-size: 12px; } }
 
+.phone-wrapper {
+  background: #424242;
+  padding: 1em 0;
+  -webkit-transition: all 200ms ease;
+  -moz-transition: all 200ms ease;
+  transition: all 200ms ease; }
+
+@media only screen and (max-width: 767px) {
+  .phone-wrapper {
+    padding: 0; }
+
+  .main {
+    box-shadow: 0 0 0 0 transparent; } }
 .main {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  overflow: scroll; }
+  max-width: 767px;
+  margin: 0 auto;
+  background: white;
+  box-shadow: 0 0 8px 8px rgba(0, 0, 0, 0.1); }
 
 .max-width-wrapper {
-  max-width: 40em;
+  max-width: 767px;
   margin: 0 auto; }
 
 .no-scroll {
@@ -972,10 +980,10 @@ header.page-header {
     header.page-header .headline .content {
       flex-grow: 1; }
       header.page-header .headline .content .title {
-        font-size: 18px;
+        font-size: 1.5em;
         font-weight: 400; }
       header.page-header .headline .content .date {
-        font-size: 14px;
+        font-size: 1.2em;
         font-weight: 300; }
     header.page-header .headline .logo {
       height: 2.5em;
@@ -1762,12 +1770,13 @@ header.page-header {
   color: #323232; }
 
 section.intro {
+  font-size: 1em;
   margin: 1.2em 1.8em;
   color: #323232; }
 
 ul.events {
   list-style: none;
-  padding: 0;
+  padding: 0 0 1em;
   margin: 0; }
   ul.events > li {
     position: relative;
@@ -1796,10 +1805,10 @@ ul.events {
       background-size: cover;
       border-radius: 0 4px 4px 0; }
     ul.events > li .title {
-      font-size: 18px;
+      font-size: 1.5em;
       font-weight: 400; }
     ul.events > li .date {
-      font-size: 14px;
+      font-size: 1.2em;
       font-weight: 300; }
     ul.events > li ul {
       list-style: none;

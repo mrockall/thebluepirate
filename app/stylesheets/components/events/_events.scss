@@ -1,6 +1,6 @@
 ul.events{
   list-style: none;
-  padding: 0;
+  padding: 0 0 1em;
   margin: 0;
 
   > li {
@@ -39,12 +39,12 @@ ul.events{
     }
 
     .title{
-      font-size: 18px;
+      font-size: 1.5em;
       font-weight: 400;
     }
 
     .date{
-      font-size: 14px;
+      font-size: 1.2em;
       font-weight: 300;
     }
 
