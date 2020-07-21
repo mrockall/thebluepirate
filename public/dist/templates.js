@@ -12,15 +12,22 @@
     var jade=function(){function e(e){return null!=e&&""!==e}function n(t){return(Array.isArray(t)?t.map(n):t&&"object"==typeof t?Object.keys(t).filter(function(e){return t[e]}):[t]).filter(e).join(" ")}var t={};return t.merge=function r(n,t){if(1===arguments.length){for(var a=n[0],i=1;i<n.length;i++)a=r(a,n[i]);return a}var o=n["class"],s=t["class"];(o||s)&&(o=o||[],s=s||[],Array.isArray(o)||(o=[o]),Array.isArray(s)||(s=[s]),n["class"]=o.concat(s).filter(e));for(var l in t)"class"!=l&&(n[l]=t[l]);return n},t.joinClasses=n,t.cls=function(e,r){for(var a=[],i=0;i<e.length;i++)a.push(r&&r[i]?t.escape(n([e[i]])):n(e[i]));var o=n(a);return o.length?' class="'+o+'"':""},t.style=function(e){return e&&"object"==typeof e?Object.keys(e).map(function(n){return n+":"+e[n]}).join(";"):e},t.attr=function(e,n,r,a){return"style"===e&&(n=t.style(n)),"boolean"==typeof n||null==n?n?" "+(a?e:e+'="'+e+'"'):"":0==e.indexOf("data")&&"string"!=typeof n?(-1!==JSON.stringify(n).indexOf("&")&&console.warn("Since Jade 2.0.0, ampersands (`&`) in data attributes will be escaped to `&amp;`"),n&&"function"==typeof n.toISOString&&console.warn("Jade will eliminate the double quotes around dates in ISO form after 2.0.0")," "+e+"='"+JSON.stringify(n).replace(/'/g,"&apos;")+"'"):r?(n&&"function"==typeof n.toISOString&&console.warn("Jade will stringify dates in ISO form after 2.0.0")," "+e+'="'+t.escape(n)+'"'):(n&&"function"==typeof n.toISOString&&console.warn("Jade will stringify dates in ISO form after 2.0.0")," "+e+'="'+n+'"')},t.attrs=function(e,r){var a=[],i=Object.keys(e);if(i.length)for(var o=0;o<i.length;++o){var s=i[o],l=e[s];"class"==s?(l=n(l))&&a.push(" "+s+'="'+l+'"'):a.push(t.attr(s,l,!1,r))}return a.join("")},t.escape=function(e){var n=String(e).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");return n===""+e?e:n},t.rethrow=function a(e,n,t,r){if(!(e instanceof Error))throw e;if(!("undefined"==typeof window&&n||r))throw e.message+=" on line "+t,e;try{r=r||require("fs").readFileSync(n,"utf8")}catch(i){a(e,null,t)}var o=3,s=r.split("\n"),l=Math.max(t-o,0),f=Math.min(s.length,t+o),o=s.slice(l,f).map(function(e,n){var r=n+l+1;return(r==t?"  > ":"    ")+r+"| "+e}).join("\n");throw e.path=n,e.message=(n||"Jade")+":"+t+"\n"+o+"\n\n"+e.message,e},t}();
 
     var templatizer = {};
+    templatizer["card"] = {};
     templatizer["home"] = {};
     templatizer["login"] = {};
     templatizer["modals"] = {};
     templatizer["my_round"] = {};
-    templatizer["tournaments"] = {};
+    templatizer["player"] = {};
+    templatizer["tournament"] = {};
 
     // body.jade compiled template
     templatizer["body"] = function tmpl_body() {
         return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><a href="/" class="back">Back to all Events</a><a href="/" class="headline"><div class="content"><div class="title">Esker Hills</div><div class="subtitle">27 - 29 March 2020</div></div><div class="logo"></div></a></div></header><div class="max-width-wrapper"><div class="tabs"><a href="/tournament/1/leaderboard" class="ldrboard">Leaderboard</a><a href="/tournament/1/my-round" class="me_user">My Round</a></div></div><section class="page-tabs max-width-wrapper"><div class="container pages page-container"><div class="page"></div></div></section></div>';
+    };
+
+    // card/card.jade compiled template
+    templatizer["card"]["card"] = function tmpl_card_card() {
+        return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><a href="/" class="headline"><div class="content"><div class="title">Blue Pirate</div><div class="subtitle">Est 2013</div></div><div class="logo"></div></a></div></header></div><p>Card</p>';
     };
 
     // home/home.jade compiled template
@@ -41,6 +48,11 @@
     // login/loading.jade compiled template
     templatizer["login"]["loading"] = function tmpl_login_loading() {
         return '<div><div class="list-loading"><div class="loader"><div class="loader-block"></div><div class="loader-block"></div><div class="loader-block"></div></div></div><p>Logging you in</p></div>';
+    };
+
+    // login/login.jade compiled template
+    templatizer["login"]["login"] = function tmpl_login_login() {
+        return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><a href="/" class="headline"><div class="content"><div class="title">Blue Pirate</div><div class="subtitle">Est 2013</div></div><div class="logo"></div></a></div></header></div><p>Login</p>';
     };
 
     // login/option.jade compiled template
@@ -169,8 +181,13 @@
         return '<div class="page"><ul class="leaderboard"></ul><ul class="course_tiles"></ul></div>';
     };
 
-    // tournaments/hole_list_item.jade compiled template
-    templatizer["tournaments"]["hole_list_item"] = function tmpl_tournaments_hole_list_item(locals) {
+    // player/player.jade compiled template
+    templatizer["player"]["player"] = function tmpl_player_player() {
+        return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><a href="/" class="headline"><div class="content"><div class="title">Blue Pirate</div><div class="subtitle">Est 2013</div></div><div class="logo"></div></a></div></header></div><p>Player</p>';
+    };
+
+    // tournament/hole_list_item.jade compiled template
+    templatizer["tournament"]["hole_list_item"] = function tmpl_tournament_hole_list_item(locals) {
         var buf = [];
         var jade_mixins = {};
         var jade_interp;
@@ -181,13 +198,13 @@
         return buf.join("");
     };
 
-    // tournaments/home.jade compiled template
-    templatizer["tournaments"]["home"] = function tmpl_tournaments_home() {
+    // tournament/home.jade compiled template
+    templatizer["tournament"]["home"] = function tmpl_tournament_home() {
         return "<p>Hello Mike</p>";
     };
 
-    // tournaments/list_item.jade compiled template
-    templatizer["tournaments"]["list_item"] = function tmpl_tournaments_list_item(locals) {
+    // tournament/list_item.jade compiled template
+    templatizer["tournament"]["list_item"] = function tmpl_tournament_list_item(locals) {
         var buf = [];
         var jade_mixins = {};
         var jade_interp;
@@ -198,8 +215,8 @@
         return buf.join("");
     };
 
-    // tournaments/player.jade compiled template
-    templatizer["tournaments"]["player"] = function tmpl_tournaments_player(locals) {
+    // tournament/player.jade compiled template
+    templatizer["tournament"]["player"] = function tmpl_tournament_player(locals) {
         var buf = [];
         var jade_mixins = {};
         var jade_interp;
@@ -210,8 +227,8 @@
         return buf.join("");
     };
 
-    // tournaments/player_list_item.jade compiled template
-    templatizer["tournaments"]["player_list_item"] = function tmpl_tournaments_player_list_item(locals) {
+    // tournament/player_list_item.jade compiled template
+    templatizer["tournament"]["player_list_item"] = function tmpl_tournament_player_list_item(locals) {
         var buf = [];
         var jade_mixins = {};
         var jade_interp;
@@ -260,8 +277,13 @@
         return buf.join("");
     };
 
-    // tournaments/view.jade compiled template
-    templatizer["tournaments"]["view"] = function tmpl_tournaments_view() {
+    // tournament/tournament.jade compiled template
+    templatizer["tournament"]["tournament"] = function tmpl_tournament_tournament() {
+        return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><a href="/" class="headline"><div class="content"><div class="title">Blue Pirate</div><div class="subtitle">Est 2013</div></div><div class="logo"></div></a></div></header></div><p>Tournament</p>';
+    };
+
+    // tournament/view.jade compiled template
+    templatizer["tournament"]["view"] = function tmpl_tournament_view() {
         return '<div class="page"><ul class="leaderboard players"></ul></div>';
     };
 

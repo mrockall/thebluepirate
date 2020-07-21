@@ -6,5 +6,5 @@ var templates = require('../../../dist/templates');
 // - - - - - -  - - - - - -  - - - - - -  - - - - - -  - - - - - -  - - - - -
 
 module.exports = View.extend({
-  template: templates.tournament.tournament
+  template: templates.card.card
 });

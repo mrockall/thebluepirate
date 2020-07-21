@@ -1,25 +1,23 @@
-/*global me, app*/
-var _ = require('underscore');
+var _      = require('underscore');
 var Router = require('ampersand-router');
 
 // ---- Views ----
-var HomePage = require('./views/home/home');
-// var TournamentView = require('./views/tournament/tournament');
+var HomePage       = require('./views/home/home');
+var LoginPage       = require('./views/login/login');
+var CardPage       = require('./views/card/card');
+var TournamentView = require('./views/tournament/tournament');
+var PlayerPage       = require('./views/player/player');
 
 // ---- Router ----
 module.exports = Router.extend({
   routes: {
     '': 'home',
+    'login': 'login',
+    'card': 'card',
     'tournament/:tournament_id': 'tournament',
-
-    // 'tournament/:tournament_id/leaderboard': 'leaderboard',
-    // 'tournament/:tournament_id/my-round': 'myRound',
-    // 'tournament/:tournament_id/my-round/:hole_id': 'myRoundHole',
-    // 'tournament/:tournament_id/login': 'login',
+    'player/:player_id': 'player',
     '(*path)': 'catchAll'
   },
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
   home: function () {
     var mainView = new HomePage({
@@ -29,7 +27,21 @@ module.exports = Router.extend({
     mainView.render();
   },
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  login: function () {
+    var mainView = new LoginPage({
+      el: document.querySelector('.main')
+    });
+
+    mainView.render();
+  },
+
+  card: function () {
+    var mainView = new CardPage({
+      el: document.querySelector('.main')
+    });
+
+    mainView.render();
+  },
 
   tournament: function(id) {
     var mainView = new TournamentView({
@@ -39,18 +51,13 @@ module.exports = Router.extend({
     mainView.render();
   },
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  player: function(id) {
+    var mainView = new PlayerView({
+      el: document.querySelector('.main')
+    });
 
-  myRoundHole: function(hole_id) {
-    if(!me.is_logged_in){ return this.redirectTo('/login'); }
-
-    var tee_time = app.tee_times.findByID(me.id);
-    if(!tee_time){ return this.redirectTo('/login'); }
-
-    this.trigger('newPage', 'my_round_hole', tee_time, hole_id);
+    mainView.render();
   },
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
   catchAll: function () {
     this.redirectTo('');

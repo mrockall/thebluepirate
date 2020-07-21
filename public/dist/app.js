@@ -1,342 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/ampersand-class-extend/ampersand-class-extend.js":[function(require,module,exports){
-var objectExtend = require('extend-object');
-
-
-/// Following code is largely pasted from Backbone.js
-
-// Helper function to correctly set up the prototype chain, for subclasses.
-// Similar to `goog.inherits`, but uses a hash of prototype properties and
-// class properties to be extended.
-var extend = function(protoProps) {
-    var parent = this;
-    var child;
-    var args = [].slice.call(arguments);
-
-    // The constructor function for the new subclass is either defined by you
-    // (the "constructor" property in your `extend` definition), or defaulted
-    // by us to simply call the parent's constructor.
-    if (protoProps && protoProps.hasOwnProperty('constructor')) {
-        child = protoProps.constructor;
-    } else {
-        child = function () {
-            return parent.apply(this, arguments);
-        };
-    }
-
-    // Add static properties to the constructor function from parent
-    objectExtend(child, parent);
-
-    // Set the prototype chain to inherit from `parent`, without calling
-    // `parent`'s constructor function.
-    var Surrogate = function(){ this.constructor = child; };
-    Surrogate.prototype = parent.prototype;
-    child.prototype = new Surrogate();
-
-    // Mix in all prototype properties to the subclass if supplied.
-    if (protoProps) {
-        args.unshift(child.prototype);
-        objectExtend.apply(null, args);
-    }
-
-    // Set a convenience property in case the parent's prototype is needed
-    // later.
-    child.__super__ = parent.prototype;
-
-    return child;
-};
-
-// Expose the extend function
-module.exports = extend;
-
-},{"extend-object":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/extend-object/extend-object.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/backbone-events-standalone.js":[function(require,module,exports){
-/**
- * Standalone extraction of Backbone.Events, no external dependency required.
- * Degrades nicely when Backone/underscore are already available in the current
- * global context.
- *
- * Note that docs suggest to use underscore's `_.extend()` method to add Events
- * support to some given object. A `mixin()` method has been added to the Events
- * prototype to avoid using underscore for that sole purpose:
- *
- *     var myEventEmitter = BackboneEvents.mixin({});
- *
- * Or for a function constructor:
- *
- *     function MyConstructor(){}
- *     MyConstructor.prototype.foo = function(){}
- *     BackboneEvents.mixin(MyConstructor.prototype);
- *
- * (c) 2009-2013 Jeremy Ashkenas, DocumentCloud Inc.
- * (c) 2013 Nicolas Perriault
- */
-/* global exports:true, define, module */
-(function() {
-  var root = this,
-      breaker = {},
-      nativeForEach = Array.prototype.forEach,
-      hasOwnProperty = Object.prototype.hasOwnProperty,
-      slice = Array.prototype.slice,
-      idCounter = 0;
-
-  // Returns a partial implementation matching the minimal API subset required
-  // by Backbone.Events
-  function miniscore() {
-    return {
-      keys: Object.keys,
-
-      uniqueId: function(prefix) {
-        var id = ++idCounter + '';
-        return prefix ? prefix + id : id;
-      },
-
-      has: function(obj, key) {
-        return hasOwnProperty.call(obj, key);
-      },
-
-      each: function(obj, iterator, context) {
-        if (obj == null) return;
-        if (nativeForEach && obj.forEach === nativeForEach) {
-          obj.forEach(iterator, context);
-        } else if (obj.length === +obj.length) {
-          for (var i = 0, l = obj.length; i < l; i++) {
-            if (iterator.call(context, obj[i], i, obj) === breaker) return;
-          }
-        } else {
-          for (var key in obj) {
-            if (this.has(obj, key)) {
-              if (iterator.call(context, obj[key], key, obj) === breaker) return;
-            }
-          }
-        }
-      },
-
-      once: function(func) {
-        var ran = false, memo;
-        return function() {
-          if (ran) return memo;
-          ran = true;
-          memo = func.apply(this, arguments);
-          func = null;
-          return memo;
-        };
-      }
-    };
-  }
-
-  var _ = miniscore(), Events;
-
-  // Backbone.Events
-  // ---------------
-
-  // A module that can be mixed in to *any object* in order to provide it with
-  // custom events. You may bind with `on` or remove with `off` callback
-  // functions to an event; `trigger`-ing an event fires all callbacks in
-  // succession.
-  //
-  //     var object = {};
-  //     _.extend(object, Backbone.Events);
-  //     object.on('expand', function(){ alert('expanded'); });
-  //     object.trigger('expand');
-  //
-  Events = {
-
-    // Bind an event to a `callback` function. Passing `"all"` will bind
-    // the callback to all events fired.
-    on: function(name, callback, context) {
-      if (!eventsApi(this, 'on', name, [callback, context]) || !callback) return this;
-      this._events || (this._events = {});
-      var events = this._events[name] || (this._events[name] = []);
-      events.push({callback: callback, context: context, ctx: context || this});
-      return this;
-    },
-
-    // Bind an event to only be triggered a single time. After the first time
-    // the callback is invoked, it will be removed.
-    once: function(name, callback, context) {
-      if (!eventsApi(this, 'once', name, [callback, context]) || !callback) return this;
-      var self = this;
-      var once = _.once(function() {
-        self.off(name, once);
-        callback.apply(this, arguments);
-      });
-      once._callback = callback;
-      return this.on(name, once, context);
-    },
-
-    // Remove one or many callbacks. If `context` is null, removes all
-    // callbacks with that function. If `callback` is null, removes all
-    // callbacks for the event. If `name` is null, removes all bound
-    // callbacks for all events.
-    off: function(name, callback, context) {
-      var retain, ev, events, names, i, l, j, k;
-      if (!this._events || !eventsApi(this, 'off', name, [callback, context])) return this;
-      if (!name && !callback && !context) {
-        this._events = {};
-        return this;
-      }
-
-      names = name ? [name] : _.keys(this._events);
-      for (i = 0, l = names.length; i < l; i++) {
-        name = names[i];
-        if (events = this._events[name]) {
-          this._events[name] = retain = [];
-          if (callback || context) {
-            for (j = 0, k = events.length; j < k; j++) {
-              ev = events[j];
-              if ((callback && callback !== ev.callback && callback !== ev.callback._callback) ||
-                  (context && context !== ev.context)) {
-                retain.push(ev);
-              }
-            }
-          }
-          if (!retain.length) delete this._events[name];
-        }
-      }
-
-      return this;
-    },
-
-    // Trigger one or many events, firing all bound callbacks. Callbacks are
-    // passed the same arguments as `trigger` is, apart from the event name
-    // (unless you're listening on `"all"`, which will cause your callback to
-    // receive the true name of the event as the first argument).
-    trigger: function(name) {
-      if (!this._events) return this;
-      var args = slice.call(arguments, 1);
-      if (!eventsApi(this, 'trigger', name, args)) return this;
-      var events = this._events[name];
-      var allEvents = this._events.all;
-      if (events) triggerEvents(events, args);
-      if (allEvents) triggerEvents(allEvents, arguments);
-      return this;
-    },
-
-    // Tell this object to stop listening to either specific events ... or
-    // to every object it's currently listening to.
-    stopListening: function(obj, name, callback) {
-      var listeners = this._listeners;
-      if (!listeners) return this;
-      var deleteListener = !name && !callback;
-      if (typeof name === 'object') callback = this;
-      if (obj) (listeners = {})[obj._listenerId] = obj;
-      for (var id in listeners) {
-        listeners[id].off(name, callback, this);
-        if (deleteListener) delete this._listeners[id];
-      }
-      return this;
-    }
-
-  };
-
-  // Regular expression used to split event strings.
-  var eventSplitter = /\s+/;
-
-  // Implement fancy features of the Events API such as multiple event
-  // names `"change blur"` and jQuery-style event maps `{change: action}`
-  // in terms of the existing API.
-  var eventsApi = function(obj, action, name, rest) {
-    if (!name) return true;
-
-    // Handle event maps.
-    if (typeof name === 'object') {
-      for (var key in name) {
-        obj[action].apply(obj, [key, name[key]].concat(rest));
-      }
-      return false;
-    }
-
-    // Handle space separated event names.
-    if (eventSplitter.test(name)) {
-      var names = name.split(eventSplitter);
-      for (var i = 0, l = names.length; i < l; i++) {
-        obj[action].apply(obj, [names[i]].concat(rest));
-      }
-      return false;
-    }
-
-    return true;
-  };
-
-  // A difficult-to-believe, but optimized internal dispatch function for
-  // triggering events. Tries to keep the usual cases speedy (most internal
-  // Backbone events have 3 arguments).
-  var triggerEvents = function(events, args) {
-    var ev, i = -1, l = events.length, a1 = args[0], a2 = args[1], a3 = args[2];
-    switch (args.length) {
-      case 0: while (++i < l) (ev = events[i]).callback.call(ev.ctx); return;
-      case 1: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1); return;
-      case 2: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1, a2); return;
-      case 3: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1, a2, a3); return;
-      default: while (++i < l) (ev = events[i]).callback.apply(ev.ctx, args);
-    }
-  };
-
-  var listenMethods = {listenTo: 'on', listenToOnce: 'once'};
-
-  // Inversion-of-control versions of `on` and `once`. Tell *this* object to
-  // listen to an event in another object ... keeping track of what it's
-  // listening to.
-  _.each(listenMethods, function(implementation, method) {
-    Events[method] = function(obj, name, callback) {
-      var listeners = this._listeners || (this._listeners = {});
-      var id = obj._listenerId || (obj._listenerId = _.uniqueId('l'));
-      listeners[id] = obj;
-      if (typeof name === 'object') callback = this;
-      obj[implementation](name, callback, this);
-      return this;
-    };
-  });
-
-  // Aliases for backwards compatibility.
-  Events.bind   = Events.on;
-  Events.unbind = Events.off;
-
-  // Mixin utility
-  Events.mixin = function(proto) {
-    var exports = ['on', 'once', 'off', 'trigger', 'stopListening', 'listenTo',
-                   'listenToOnce', 'bind', 'unbind'];
-    _.each(exports, function(name) {
-      proto[name] = this[name];
-    }, this);
-    return proto;
-  };
-
-  // Export Events as BackboneEvents depending on current context
-  if (typeof define === "function") {
-    define(function() {
-      return Events;
-    });
-  } else if (typeof exports !== 'undefined') {
-    if (typeof module !== 'undefined' && module.exports) {
-      exports = module.exports = Events;
-    }
-    exports.BackboneEvents = Events;
-  } else {
-    root.BackboneEvents = Events;
-  }
-})(this);
-
-},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js":[function(require,module,exports){
-module.exports = require('./backbone-events-standalone');
-
-},{"./backbone-events-standalone":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/backbone-events-standalone.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/extend-object/extend-object.js":[function(require,module,exports){
-var arr = [];
-var each = arr.forEach;
-var slice = arr.slice;
-
-
-module.exports = function(obj) {
-    each.call(slice.call(arguments, 1), function(source) {
-        if (source) {
-            for (var prop in source) {
-                obj[prop] = source[prop];
-            }
-        }
-    });
-    return obj;
-};
-
-},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js":[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js":[function(require,module,exports){
 var State = require('ampersand-state');
 var _ = require('underscore');
 var sync = require('ampersand-sync');
@@ -1253,9 +915,278 @@ module.exports = function arrayNext(array, currentItem) {
     return array[newIndex];
 };
 
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/backbone-events-standalone/backbone-events-standalone.js":[function(require,module,exports){
+/**
+ * Standalone extraction of Backbone.Events, no external dependency required.
+ * Degrades nicely when Backone/underscore are already available in the current
+ * global context.
+ *
+ * Note that docs suggest to use underscore's `_.extend()` method to add Events
+ * support to some given object. A `mixin()` method has been added to the Events
+ * prototype to avoid using underscore for that sole purpose:
+ *
+ *     var myEventEmitter = BackboneEvents.mixin({});
+ *
+ * Or for a function constructor:
+ *
+ *     function MyConstructor(){}
+ *     MyConstructor.prototype.foo = function(){}
+ *     BackboneEvents.mixin(MyConstructor.prototype);
+ *
+ * (c) 2009-2013 Jeremy Ashkenas, DocumentCloud Inc.
+ * (c) 2013 Nicolas Perriault
+ */
+/* global exports:true, define, module */
+(function() {
+  var root = this,
+      breaker = {},
+      nativeForEach = Array.prototype.forEach,
+      hasOwnProperty = Object.prototype.hasOwnProperty,
+      slice = Array.prototype.slice,
+      idCounter = 0;
+
+  // Returns a partial implementation matching the minimal API subset required
+  // by Backbone.Events
+  function miniscore() {
+    return {
+      keys: Object.keys,
+
+      uniqueId: function(prefix) {
+        var id = ++idCounter + '';
+        return prefix ? prefix + id : id;
+      },
+
+      has: function(obj, key) {
+        return hasOwnProperty.call(obj, key);
+      },
+
+      each: function(obj, iterator, context) {
+        if (obj == null) return;
+        if (nativeForEach && obj.forEach === nativeForEach) {
+          obj.forEach(iterator, context);
+        } else if (obj.length === +obj.length) {
+          for (var i = 0, l = obj.length; i < l; i++) {
+            if (iterator.call(context, obj[i], i, obj) === breaker) return;
+          }
+        } else {
+          for (var key in obj) {
+            if (this.has(obj, key)) {
+              if (iterator.call(context, obj[key], key, obj) === breaker) return;
+            }
+          }
+        }
+      },
+
+      once: function(func) {
+        var ran = false, memo;
+        return function() {
+          if (ran) return memo;
+          ran = true;
+          memo = func.apply(this, arguments);
+          func = null;
+          return memo;
+        };
+      }
+    };
+  }
+
+  var _ = miniscore(), Events;
+
+  // Backbone.Events
+  // ---------------
+
+  // A module that can be mixed in to *any object* in order to provide it with
+  // custom events. You may bind with `on` or remove with `off` callback
+  // functions to an event; `trigger`-ing an event fires all callbacks in
+  // succession.
+  //
+  //     var object = {};
+  //     _.extend(object, Backbone.Events);
+  //     object.on('expand', function(){ alert('expanded'); });
+  //     object.trigger('expand');
+  //
+  Events = {
+
+    // Bind an event to a `callback` function. Passing `"all"` will bind
+    // the callback to all events fired.
+    on: function(name, callback, context) {
+      if (!eventsApi(this, 'on', name, [callback, context]) || !callback) return this;
+      this._events || (this._events = {});
+      var events = this._events[name] || (this._events[name] = []);
+      events.push({callback: callback, context: context, ctx: context || this});
+      return this;
+    },
+
+    // Bind an event to only be triggered a single time. After the first time
+    // the callback is invoked, it will be removed.
+    once: function(name, callback, context) {
+      if (!eventsApi(this, 'once', name, [callback, context]) || !callback) return this;
+      var self = this;
+      var once = _.once(function() {
+        self.off(name, once);
+        callback.apply(this, arguments);
+      });
+      once._callback = callback;
+      return this.on(name, once, context);
+    },
+
+    // Remove one or many callbacks. If `context` is null, removes all
+    // callbacks with that function. If `callback` is null, removes all
+    // callbacks for the event. If `name` is null, removes all bound
+    // callbacks for all events.
+    off: function(name, callback, context) {
+      var retain, ev, events, names, i, l, j, k;
+      if (!this._events || !eventsApi(this, 'off', name, [callback, context])) return this;
+      if (!name && !callback && !context) {
+        this._events = {};
+        return this;
+      }
+
+      names = name ? [name] : _.keys(this._events);
+      for (i = 0, l = names.length; i < l; i++) {
+        name = names[i];
+        if (events = this._events[name]) {
+          this._events[name] = retain = [];
+          if (callback || context) {
+            for (j = 0, k = events.length; j < k; j++) {
+              ev = events[j];
+              if ((callback && callback !== ev.callback && callback !== ev.callback._callback) ||
+                  (context && context !== ev.context)) {
+                retain.push(ev);
+              }
+            }
+          }
+          if (!retain.length) delete this._events[name];
+        }
+      }
+
+      return this;
+    },
+
+    // Trigger one or many events, firing all bound callbacks. Callbacks are
+    // passed the same arguments as `trigger` is, apart from the event name
+    // (unless you're listening on `"all"`, which will cause your callback to
+    // receive the true name of the event as the first argument).
+    trigger: function(name) {
+      if (!this._events) return this;
+      var args = slice.call(arguments, 1);
+      if (!eventsApi(this, 'trigger', name, args)) return this;
+      var events = this._events[name];
+      var allEvents = this._events.all;
+      if (events) triggerEvents(events, args);
+      if (allEvents) triggerEvents(allEvents, arguments);
+      return this;
+    },
+
+    // Tell this object to stop listening to either specific events ... or
+    // to every object it's currently listening to.
+    stopListening: function(obj, name, callback) {
+      var listeners = this._listeners;
+      if (!listeners) return this;
+      var deleteListener = !name && !callback;
+      if (typeof name === 'object') callback = this;
+      if (obj) (listeners = {})[obj._listenerId] = obj;
+      for (var id in listeners) {
+        listeners[id].off(name, callback, this);
+        if (deleteListener) delete this._listeners[id];
+      }
+      return this;
+    }
+
+  };
+
+  // Regular expression used to split event strings.
+  var eventSplitter = /\s+/;
+
+  // Implement fancy features of the Events API such as multiple event
+  // names `"change blur"` and jQuery-style event maps `{change: action}`
+  // in terms of the existing API.
+  var eventsApi = function(obj, action, name, rest) {
+    if (!name) return true;
+
+    // Handle event maps.
+    if (typeof name === 'object') {
+      for (var key in name) {
+        obj[action].apply(obj, [key, name[key]].concat(rest));
+      }
+      return false;
+    }
+
+    // Handle space separated event names.
+    if (eventSplitter.test(name)) {
+      var names = name.split(eventSplitter);
+      for (var i = 0, l = names.length; i < l; i++) {
+        obj[action].apply(obj, [names[i]].concat(rest));
+      }
+      return false;
+    }
+
+    return true;
+  };
+
+  // A difficult-to-believe, but optimized internal dispatch function for
+  // triggering events. Tries to keep the usual cases speedy (most internal
+  // Backbone events have 3 arguments).
+  var triggerEvents = function(events, args) {
+    var ev, i = -1, l = events.length, a1 = args[0], a2 = args[1], a3 = args[2];
+    switch (args.length) {
+      case 0: while (++i < l) (ev = events[i]).callback.call(ev.ctx); return;
+      case 1: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1); return;
+      case 2: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1, a2); return;
+      case 3: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1, a2, a3); return;
+      default: while (++i < l) (ev = events[i]).callback.apply(ev.ctx, args);
+    }
+  };
+
+  var listenMethods = {listenTo: 'on', listenToOnce: 'once'};
+
+  // Inversion-of-control versions of `on` and `once`. Tell *this* object to
+  // listen to an event in another object ... keeping track of what it's
+  // listening to.
+  _.each(listenMethods, function(implementation, method) {
+    Events[method] = function(obj, name, callback) {
+      var listeners = this._listeners || (this._listeners = {});
+      var id = obj._listenerId || (obj._listenerId = _.uniqueId('l'));
+      listeners[id] = obj;
+      if (typeof name === 'object') callback = this;
+      obj[implementation](name, callback, this);
+      return this;
+    };
+  });
+
+  // Aliases for backwards compatibility.
+  Events.bind   = Events.on;
+  Events.unbind = Events.off;
+
+  // Mixin utility
+  Events.mixin = function(proto) {
+    var exports = ['on', 'once', 'off', 'trigger', 'stopListening', 'listenTo',
+                   'listenToOnce', 'bind', 'unbind'];
+    _.each(exports, function(name) {
+      proto[name] = this[name];
+    }, this);
+    return proto;
+  };
+
+  // Export Events as BackboneEvents depending on current context
+  if (typeof define === "function") {
+    define(function() {
+      return Events;
+    });
+  } else if (typeof exports !== 'undefined') {
+    if (typeof module !== 'undefined' && module.exports) {
+      exports = module.exports = Events;
+    }
+    exports.BackboneEvents = Events;
+  } else {
+    root.BackboneEvents = Events;
+  }
+})(this);
+
 },{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/backbone-events-standalone/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/key-tree-store/key-tree-store.js":[function(require,module,exports){
+module.exports = require('./backbone-events-standalone');
+
+},{"./backbone-events-standalone":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/backbone-events-standalone/backbone-events-standalone.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/key-tree-store/key-tree-store.js":[function(require,module,exports){
 function KeyTreeStore() {
     this.storage = {};
 }
@@ -2447,8 +2378,73 @@ _.extend(Router.prototype, Events, {
 Router.extend = classExtend;
 
 },{"./ampersand-history":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/ampersand-history.js","ampersand-class-extend":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/ampersand-class-extend/ampersand-class-extend.js","backbone-events-standalone":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/ampersand-class-extend/ampersand-class-extend.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/ampersand-class-extend/ampersand-class-extend.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/ampersand-class-extend/ampersand-class-extend.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/ampersand-class-extend/ampersand-class-extend.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js":[function(require,module,exports){
+var objectExtend = require('extend-object');
+
+
+/// Following code is largely pasted from Backbone.js
+
+// Helper function to correctly set up the prototype chain, for subclasses.
+// Similar to `goog.inherits`, but uses a hash of prototype properties and
+// class properties to be extended.
+var extend = function(protoProps) {
+    var parent = this;
+    var child;
+    var args = [].slice.call(arguments);
+
+    // The constructor function for the new subclass is either defined by you
+    // (the "constructor" property in your `extend` definition), or defaulted
+    // by us to simply call the parent's constructor.
+    if (protoProps && protoProps.hasOwnProperty('constructor')) {
+        child = protoProps.constructor;
+    } else {
+        child = function () {
+            return parent.apply(this, arguments);
+        };
+    }
+
+    // Add static properties to the constructor function from parent
+    objectExtend(child, parent);
+
+    // Set the prototype chain to inherit from `parent`, without calling
+    // `parent`'s constructor function.
+    var Surrogate = function(){ this.constructor = child; };
+    Surrogate.prototype = parent.prototype;
+    child.prototype = new Surrogate();
+
+    // Mix in all prototype properties to the subclass if supplied.
+    if (protoProps) {
+        args.unshift(child.prototype);
+        objectExtend.apply(null, args);
+    }
+
+    // Set a convenience property in case the parent's prototype is needed
+    // later.
+    child.__super__ = parent.prototype;
+
+    return child;
+};
+
+// Expose the extend function
+module.exports = extend;
+
+},{"extend-object":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/ampersand-class-extend/node_modules/extend-object/extend-object.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/ampersand-class-extend/node_modules/extend-object/extend-object.js":[function(require,module,exports){
+var arr = [];
+var each = arr.forEach;
+var slice = arr.slice;
+
+
+module.exports = function(obj) {
+    each.call(slice.call(arguments, 1), function(source) {
+        if (source) {
+            for (var prop in source) {
+                obj[prop] = source[prop];
+            }
+        }
+    });
+    return obj;
+};
+
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/backbone-events-standalone/index.js")
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/backbone-events-standalone/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/backbone-events-standalone/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js":[function(require,module,exports){
 ;if (typeof window !== "undefined") {  window.ampersand = window.ampersand || {};  window.ampersand["ampersand-view"] = window.ampersand["ampersand-view"] || [];  window.ampersand["ampersand-view"].push("7.3.0");}
@@ -5753,8 +5749,8 @@ function baseFindIndex(array, predicate, fromRight) {
 module.exports = baseFindIndex;
 
 },{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash.isarray/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.isarray/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash.keys/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isarray/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash.keys/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/index.js")
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-dom-bindings/ampersand-dom-bindings.js":[function(require,module,exports){
 ;if (typeof window !== "undefined") {  window.ampersand = window.ampersand || {};  window.ampersand["ampersand-dom-bindings"] = window.ampersand["ampersand-dom-bindings"] || [];  window.ampersand["ampersand-dom-bindings"].push("3.5.0");}
@@ -8502,8 +8498,8 @@ module.exports = baseValues;
 },{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.includes/node_modules/lodash._isiterateecall/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._isiterateecall/index.js")
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._isiterateecall/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._isiterateecall/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isarray/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash.isarray/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isdate/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isarray/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isdate/index.js":[function(require,module,exports){
 /**
  * lodash 3.0.1 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -8875,8 +8871,8 @@ module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/am
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._baseflatten/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._baseflatten/index.js")
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._baseflatten/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._baseflatten/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._bindcallback/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isequal/node_modules/lodash._bindcallback/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isequal/node_modules/lodash._bindcallback/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isequal/node_modules/lodash._bindcallback/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._pickbyarray/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._bindcallback/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._bindcallback/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._bindcallback/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._pickbyarray/index.js":[function(require,module,exports){
 /**
  * lodash 3.0.1 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -9170,8 +9166,8 @@ function keysIn(object) {
 module.exports = keysIn;
 
 },{"lodash.isarguments":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash.keysin/node_modules/lodash.isarguments/index.js","lodash.isarray":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash.keysin/node_modules/lodash.isarguments/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.isarguments/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.isarguments/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash.isarguments/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash.restparam/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isarguments/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isarguments/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isarguments/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash.restparam/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.defaults/node_modules/lodash.restparam/index.js")
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.defaults/node_modules/lodash.restparam/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.defaults/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/index.js":[function(require,module,exports){
 /**
@@ -9286,8 +9282,8 @@ module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/am
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._cacheindexof/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._cacheindexof/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash._baseuniq/node_modules/lodash._createcache/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._createcache/index.js")
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._createcache/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._createcache/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash.restparam/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash.restparam/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash.restparam/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/domify/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.defaults/node_modules/lodash.restparam/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.defaults/node_modules/lodash.restparam/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.defaults/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/domify/index.js":[function(require,module,exports){
 
 /**
  * Expose `parse`.
@@ -9972,16 +9968,16 @@ function createAssigner(assigner) {
 module.exports = createAssigner;
 
 },{"lodash._bindcallback":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._bindcallback/index.js","lodash._isiterateecall":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._isiterateecall/index.js","lodash.restparam":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._bindcallback/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._bindcallback/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._bindcallback/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._bindcallback/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._isiterateecall/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._bindcallback/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._bindcallback/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._bindcallback/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._isiterateecall/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.includes/node_modules/lodash._isiterateecall/index.js")
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.includes/node_modules/lodash._isiterateecall/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.includes/node_modules/lodash._isiterateecall/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash.restparam/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash.restparam/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash.restparam/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.isnative/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._baseclone/node_modules/lodash.isnative/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._baseclone/node_modules/lodash.isnative/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._baseclone/node_modules/lodash.isnative/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.keys/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.keys/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.keys/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.keys/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.defaults/node_modules/lodash.restparam/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.defaults/node_modules/lodash.restparam/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.defaults/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.isnative/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._createcache/node_modules/lodash.isnative/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._createcache/node_modules/lodash.isnative/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.difference/node_modules/lodash._basedifference/node_modules/lodash._createcache/node_modules/lodash.isnative/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash.keys/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash.keys/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash.keys/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash.keys/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/index.js":[function(require,module,exports){
 /**
  * lodash 3.1.0 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -10533,8 +10529,8 @@ function replaceHolders(array, placeholder) {
 module.exports = replaceHolders;
 
 },{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/node_modules/lodash.restparam/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash.restparam/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash.restparam/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.defaults/node_modules/lodash.restparam/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.defaults/node_modules/lodash.restparam/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.defaults/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/index.js":[function(require,module,exports){
 /**
  * lodash 3.0.2 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -10577,10 +10573,10 @@ function flatten(array, isDeep, guard) {
 module.exports = flatten;
 
 },{"lodash._baseflatten":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/index.js","lodash._isiterateecall":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._isiterateecall/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash._baseflatten/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash._baseflatten/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.union/node_modules/lodash._baseflatten/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._isiterateecall/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._isiterateecall/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._isiterateecall/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._isiterateecall/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._baseflatten/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._baseflatten/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._baseflatten/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._isiterateecall/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.includes/node_modules/lodash._isiterateecall/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.includes/node_modules/lodash._isiterateecall/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.includes/node_modules/lodash._isiterateecall/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/index.js":[function(require,module,exports){
 /**
  * lodash 3.0.3 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -10649,10 +10645,10 @@ module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/am
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._baseclone/node_modules/lodash._arrayeach/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._baseclone/node_modules/lodash._arrayeach/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._baseeach/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._baseeach/index.js")
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._baseeach/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/lodash.find/node_modules/lodash._baseeach/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._bindcallback/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._bindcallback/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._bindcallback/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.assign/node_modules/lodash._createassigner/node_modules/lodash._bindcallback/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash.isarray/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isarray/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._bindcallback/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._bindcallback/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._bindcallback/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash.isarray/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isarray/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/index.js":[function(require,module,exports){
 /**
  * lodash 3.2.0 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -10934,10 +10930,10 @@ module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/am
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.has/node_modules/lodash._baseslice/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.has/node_modules/lodash._baseslice/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._topath/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.has/node_modules/lodash._topath/index.js")
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.has/node_modules/lodash._topath/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.has/node_modules/lodash._topath/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.isarray/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash.isarray/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.restparam/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/node_modules/lodash.restparam/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/node_modules/lodash.restparam/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.bind/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.isstring/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isarray/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.restparam/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.defaults/node_modules/lodash.restparam/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.defaults/node_modules/lodash.restparam/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.defaults/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.isstring/index.js":[function(require,module,exports){
 /**
  * lodash 3.0.1 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -11075,16 +11071,16 @@ var pick = restParam(function(object, props) {
 module.exports = pick;
 
 },{"lodash._baseflatten":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._baseflatten/index.js","lodash._bindcallback":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._bindcallback/index.js","lodash._pickbyarray":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbyarray/index.js","lodash._pickbycallback":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbycallback/index.js","lodash.restparam":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._baseflatten/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.flatten/node_modules/lodash._baseflatten/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._bindcallback/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._bindcallback/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._bindcallback/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.foreach/node_modules/lodash._bindcallback/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbyarray/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._baseflatten/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._baseflatten/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._baseflatten/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._bindcallback/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._bindcallback/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._bindcallback/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.clone/node_modules/lodash._bindcallback/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbyarray/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._pickbyarray/index.js")
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._pickbyarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._pickbyarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash._pickbycallback/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._pickbycallback/index.js")
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._pickbycallback/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.omit/node_modules/lodash._pickbycallback/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.pick/node_modules/lodash.restparam/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.restparam/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.restparam/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.defaults/node_modules/lodash.restparam/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.defaults/node_modules/lodash.restparam/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.defaults/node_modules/lodash.restparam/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/index.js":[function(require,module,exports){
 /**
  * lodash 3.1.0 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -11229,8 +11225,8 @@ module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/am
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._baseslice/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._baseslice/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash._topath/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._topath/index.js")
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._topath/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash._invokepath/node_modules/lodash._topath/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash.isarray/index.js":[function(require,module,exports){
-module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.isarray/index.js")
-},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.invoke/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash.isfunction/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isarray/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isarray/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-collection-view/node_modules/ampersand-events/node_modules/lodash.keys/node_modules/lodash.isarray/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.result/node_modules/lodash.isfunction/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isfunction/index.js")
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isfunction/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/ampersand-state/node_modules/lodash.isfunction/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/node_modules/lodash.uniqueid/index.js":[function(require,module,exports){
 /**
@@ -21870,15 +21866,22 @@ return jQuery;
     var jade=function(){function e(e){return null!=e&&""!==e}function n(t){return(Array.isArray(t)?t.map(n):t&&"object"==typeof t?Object.keys(t).filter(function(e){return t[e]}):[t]).filter(e).join(" ")}var t={};return t.merge=function r(n,t){if(1===arguments.length){for(var a=n[0],i=1;i<n.length;i++)a=r(a,n[i]);return a}var o=n["class"],s=t["class"];(o||s)&&(o=o||[],s=s||[],Array.isArray(o)||(o=[o]),Array.isArray(s)||(s=[s]),n["class"]=o.concat(s).filter(e));for(var l in t)"class"!=l&&(n[l]=t[l]);return n},t.joinClasses=n,t.cls=function(e,r){for(var a=[],i=0;i<e.length;i++)a.push(r&&r[i]?t.escape(n([e[i]])):n(e[i]));var o=n(a);return o.length?' class="'+o+'"':""},t.style=function(e){return e&&"object"==typeof e?Object.keys(e).map(function(n){return n+":"+e[n]}).join(";"):e},t.attr=function(e,n,r,a){return"style"===e&&(n=t.style(n)),"boolean"==typeof n||null==n?n?" "+(a?e:e+'="'+e+'"'):"":0==e.indexOf("data")&&"string"!=typeof n?(-1!==JSON.stringify(n).indexOf("&")&&console.warn("Since Jade 2.0.0, ampersands (`&`) in data attributes will be escaped to `&amp;`"),n&&"function"==typeof n.toISOString&&console.warn("Jade will eliminate the double quotes around dates in ISO form after 2.0.0")," "+e+"='"+JSON.stringify(n).replace(/'/g,"&apos;")+"'"):r?(n&&"function"==typeof n.toISOString&&console.warn("Jade will stringify dates in ISO form after 2.0.0")," "+e+'="'+t.escape(n)+'"'):(n&&"function"==typeof n.toISOString&&console.warn("Jade will stringify dates in ISO form after 2.0.0")," "+e+'="'+n+'"')},t.attrs=function(e,r){var a=[],i=Object.keys(e);if(i.length)for(var o=0;o<i.length;++o){var s=i[o],l=e[s];"class"==s?(l=n(l))&&a.push(" "+s+'="'+l+'"'):a.push(t.attr(s,l,!1,r))}return a.join("")},t.escape=function(e){var n=String(e).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");return n===""+e?e:n},t.rethrow=function a(e,n,t,r){if(!(e instanceof Error))throw e;if(!("undefined"==typeof window&&n||r))throw e.message+=" on line "+t,e;try{r=r||require("fs").readFileSync(n,"utf8")}catch(i){a(e,null,t)}var o=3,s=r.split("\n"),l=Math.max(t-o,0),f=Math.min(s.length,t+o),o=s.slice(l,f).map(function(e,n){var r=n+l+1;return(r==t?"  > ":"    ")+r+"| "+e}).join("\n");throw e.path=n,e.message=(n||"Jade")+":"+t+"\n"+o+"\n\n"+e.message,e},t}();
 
     var templatizer = {};
+    templatizer["card"] = {};
     templatizer["home"] = {};
     templatizer["login"] = {};
     templatizer["modals"] = {};
     templatizer["my_round"] = {};
-    templatizer["tournaments"] = {};
+    templatizer["player"] = {};
+    templatizer["tournament"] = {};
 
     // body.jade compiled template
     templatizer["body"] = function tmpl_body() {
         return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><a href="/" class="back">Back to all Events</a><a href="/" class="headline"><div class="content"><div class="title">Esker Hills</div><div class="subtitle">27 - 29 March 2020</div></div><div class="logo"></div></a></div></header><div class="max-width-wrapper"><div class="tabs"><a href="/tournament/1/leaderboard" class="ldrboard">Leaderboard</a><a href="/tournament/1/my-round" class="me_user">My Round</a></div></div><section class="page-tabs max-width-wrapper"><div class="container pages page-container"><div class="page"></div></div></section></div>';
+    };
+
+    // card/card.jade compiled template
+    templatizer["card"]["card"] = function tmpl_card_card() {
+        return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><a href="/" class="headline"><div class="content"><div class="title">Blue Pirate</div><div class="subtitle">Est 2013</div></div><div class="logo"></div></a></div></header></div><p>Card</p>';
     };
 
     // home/home.jade compiled template
@@ -21899,6 +21902,11 @@ return jQuery;
     // login/loading.jade compiled template
     templatizer["login"]["loading"] = function tmpl_login_loading() {
         return '<div><div class="list-loading"><div class="loader"><div class="loader-block"></div><div class="loader-block"></div><div class="loader-block"></div></div></div><p>Logging you in</p></div>';
+    };
+
+    // login/login.jade compiled template
+    templatizer["login"]["login"] = function tmpl_login_login() {
+        return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><a href="/" class="headline"><div class="content"><div class="title">Blue Pirate</div><div class="subtitle">Est 2013</div></div><div class="logo"></div></a></div></header></div><p>Login</p>';
     };
 
     // login/option.jade compiled template
@@ -22027,8 +22035,13 @@ return jQuery;
         return '<div class="page"><ul class="leaderboard"></ul><ul class="course_tiles"></ul></div>';
     };
 
-    // tournaments/hole_list_item.jade compiled template
-    templatizer["tournaments"]["hole_list_item"] = function tmpl_tournaments_hole_list_item(locals) {
+    // player/player.jade compiled template
+    templatizer["player"]["player"] = function tmpl_player_player() {
+        return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><a href="/" class="headline"><div class="content"><div class="title">Blue Pirate</div><div class="subtitle">Est 2013</div></div><div class="logo"></div></a></div></header></div><p>Player</p>';
+    };
+
+    // tournament/hole_list_item.jade compiled template
+    templatizer["tournament"]["hole_list_item"] = function tmpl_tournament_hole_list_item(locals) {
         var buf = [];
         var jade_mixins = {};
         var jade_interp;
@@ -22039,13 +22052,13 @@ return jQuery;
         return buf.join("");
     };
 
-    // tournaments/home.jade compiled template
-    templatizer["tournaments"]["home"] = function tmpl_tournaments_home() {
+    // tournament/home.jade compiled template
+    templatizer["tournament"]["home"] = function tmpl_tournament_home() {
         return "<p>Hello Mike</p>";
     };
 
-    // tournaments/list_item.jade compiled template
-    templatizer["tournaments"]["list_item"] = function tmpl_tournaments_list_item(locals) {
+    // tournament/list_item.jade compiled template
+    templatizer["tournament"]["list_item"] = function tmpl_tournament_list_item(locals) {
         var buf = [];
         var jade_mixins = {};
         var jade_interp;
@@ -22056,8 +22069,8 @@ return jQuery;
         return buf.join("");
     };
 
-    // tournaments/player.jade compiled template
-    templatizer["tournaments"]["player"] = function tmpl_tournaments_player(locals) {
+    // tournament/player.jade compiled template
+    templatizer["tournament"]["player"] = function tmpl_tournament_player(locals) {
         var buf = [];
         var jade_mixins = {};
         var jade_interp;
@@ -22068,8 +22081,8 @@ return jQuery;
         return buf.join("");
     };
 
-    // tournaments/player_list_item.jade compiled template
-    templatizer["tournaments"]["player_list_item"] = function tmpl_tournaments_player_list_item(locals) {
+    // tournament/player_list_item.jade compiled template
+    templatizer["tournament"]["player_list_item"] = function tmpl_tournament_player_list_item(locals) {
         var buf = [];
         var jade_mixins = {};
         var jade_interp;
@@ -22118,8 +22131,13 @@ return jQuery;
         return buf.join("");
     };
 
-    // tournaments/view.jade compiled template
-    templatizer["tournaments"]["view"] = function tmpl_tournaments_view() {
+    // tournament/tournament.jade compiled template
+    templatizer["tournament"]["tournament"] = function tmpl_tournament_tournament() {
+        return '<div class="main"><header class="page-header"><div class="max-width-wrapper"><a href="/" class="headline"><div class="content"><div class="title">Blue Pirate</div><div class="subtitle">Est 2013</div></div><div class="logo"></div></a></div></header></div><p>Tournament</p>';
+    };
+
+    // tournament/view.jade compiled template
+    templatizer["tournament"]["view"] = function tmpl_tournament_view() {
         return '<div class="page"><ul class="leaderboard players"></ul></div>';
     };
 
@@ -22264,28 +22282,26 @@ module.exports = AmpersandModel.extend({
   },
 });
 },{"ampersand-model":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/router.js":[function(require,module,exports){
-/*global me, app*/
-var _ = require('underscore');
+var _      = require('underscore');
 var Router = require('ampersand-router');
 
 // ---- Views ----
-var HomePage = require('./views/home/home');
-// var TournamentView = require('./views/tournament/tournament');
+var HomePage       = require('./views/home/home');
+var LoginPage       = require('./views/login/login');
+var CardPage       = require('./views/card/card');
+var TournamentView = require('./views/tournament/tournament');
+var PlayerPage       = require('./views/player/player');
 
 // ---- Router ----
 module.exports = Router.extend({
   routes: {
     '': 'home',
+    'login': 'login',
+    'card': 'card',
     'tournament/:tournament_id': 'tournament',
-
-    // 'tournament/:tournament_id/leaderboard': 'leaderboard',
-    // 'tournament/:tournament_id/my-round': 'myRound',
-    // 'tournament/:tournament_id/my-round/:hole_id': 'myRoundHole',
-    // 'tournament/:tournament_id/login': 'login',
+    'player/:player_id': 'player',
     '(*path)': 'catchAll'
   },
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
   home: function () {
     var mainView = new HomePage({
@@ -22295,7 +22311,21 @@ module.exports = Router.extend({
     mainView.render();
   },
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  login: function () {
+    var mainView = new LoginPage({
+      el: document.querySelector('.main')
+    });
+
+    mainView.render();
+  },
+
+  card: function () {
+    var mainView = new CardPage({
+      el: document.querySelector('.main')
+    });
+
+    mainView.render();
+  },
 
   tournament: function(id) {
     var mainView = new TournamentView({
@@ -22305,34 +22335,77 @@ module.exports = Router.extend({
     mainView.render();
   },
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  player: function(id) {
+    var mainView = new PlayerView({
+      el: document.querySelector('.main')
+    });
 
-  myRoundHole: function(hole_id) {
-    if(!me.is_logged_in){ return this.redirectTo('/login'); }
-
-    var tee_time = app.tee_times.findByID(me.id);
-    if(!tee_time){ return this.redirectTo('/login'); }
-
-    this.trigger('newPage', 'my_round_hole', tee_time, hole_id);
+    mainView.render();
   },
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
   catchAll: function () {
     this.redirectTo('');
   }
 });
-},{"./views/home/home":"/Library/WebServer/Server/bp_tournaments/public/js/views/home/home.js","ampersand-router":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/ampersand-router.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/home/home.js":[function(require,module,exports){
-// ---- Vendor ----
+
+},{"./views/card/card":"/Library/WebServer/Server/bp_tournaments/public/js/views/card/card.js","./views/home/home":"/Library/WebServer/Server/bp_tournaments/public/js/views/home/home.js","./views/login/login":"/Library/WebServer/Server/bp_tournaments/public/js/views/login/login.js","./views/player/player":"/Library/WebServer/Server/bp_tournaments/public/js/views/player/player.js","./views/tournament/tournament":"/Library/WebServer/Server/bp_tournaments/public/js/views/tournament/tournament.js","ampersand-router":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/ampersand-router.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/card/card.js":[function(require,module,exports){
 var _ = require('underscore');
 var $ = require('jquery');
-
-// ---- BP Modules ----
 var View = require('ampersand-view');
 var templates = require('../../../dist/templates');
 
+// - - - - - -  - - - - - -  - - - - - -  - - - - - -  - - - - - -  - - - - -
+
+module.exports = View.extend({
+  template: templates.card.card
+});
+
+},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/home/home.js":[function(require,module,exports){
+var _ = require('underscore');
+var $ = require('jquery');
+var View = require('ampersand-view');
+var templates = require('../../../dist/templates');
+
+// - - - - - -  - - - - - -  - - - - - -  - - - - - -  - - - - - -  - - - - -
+
 module.exports = View.extend({
   template: templates.home.home
+});
+
+},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/login/login.js":[function(require,module,exports){
+var _ = require('underscore');
+var $ = require('jquery');
+var View = require('ampersand-view');
+var templates = require('../../../dist/templates');
+
+// - - - - - -  - - - - - -  - - - - - -  - - - - - -  - - - - - -  - - - - -
+
+module.exports = View.extend({
+  template: templates.login.login
+});
+
+},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/player/player.js":[function(require,module,exports){
+var _ = require('underscore');
+var $ = require('jquery');
+var View = require('ampersand-view');
+var templates = require('../../../dist/templates');
+
+// - - - - - -  - - - - - -  - - - - - -  - - - - - -  - - - - - -  - - - - -
+
+module.exports = View.extend({
+  template: templates.player.player
+});
+
+},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/tournament/tournament.js":[function(require,module,exports){
+var _ = require('underscore');
+var $ = require('jquery');
+var View = require('ampersand-view');
+var templates = require('../../../dist/templates');
+
+// - - - - - -  - - - - - -  - - - - - -  - - - - - -  - - - - - -  - - - - -
+
+module.exports = View.extend({
+  template: templates.tournament.tournament
 });
 
 },{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/usr/local/share/npm/lib/node_modules/watchify/node_modules/browserify/lib/_empty.js":[function(require,module,exports){
