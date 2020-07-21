@@ -746,18 +746,21 @@ body, html {
   -moz-transition: all 200ms ease;
   transition: all 200ms ease; }
 
+.main {
+  max-width: 767px;
+  margin: 0 auto;
+  background: white;
+  box-shadow: 0 0 8px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  overflow: hidden; }
+
 @media only screen and (max-width: 767px) {
   .phone-wrapper {
     padding: 0; }
 
   .main {
+    border-radius: 0;
     box-shadow: 0 0 0 0 transparent; } }
-.main {
-  max-width: 767px;
-  margin: 0 auto;
-  background: white;
-  box-shadow: 0 0 8px 8px rgba(0, 0, 0, 0.1); }
-
 .max-width-wrapper {
   max-width: 767px;
   margin: 0 auto; }
@@ -963,7 +966,7 @@ h3 {
 
 header.page-header {
   position: relative;
-  background: #2c641f url(images/liam-bg.png) center center no-repeat;
+  background: #116493 url(images/bg-large.jpg) center center no-repeat;
   padding: 1.2em;
   color: white;
   -webkit-box-shadow: 0px 1px 5px 0px #222;

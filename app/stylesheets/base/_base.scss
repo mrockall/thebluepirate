@@ -26,21 +26,24 @@ body, html{
   @include transition(all 200ms ease);
 }
 
+.main{
+  max-width: $break-mobile;
+  margin: 0 auto;
+  background: white;
+  box-shadow: 0 0 8px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
 @include bp(mobile) {
   .phone-wrapper{
     padding: 0;
   }
 
   .main{
+    border-radius: 0;
     box-shadow: 0 0 0 0 transparent;
   }
-}
-
-.main{
-  max-width: $break-mobile;
-  margin: 0 auto;
-  background: white;
-  box-shadow: 0 0 8px 8px rgba(0, 0, 0, 0.1);
 }
 
 .max-width-wrapper{
