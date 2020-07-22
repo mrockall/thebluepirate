@@ -26,6 +26,10 @@ module.exports = View.extend({
       this.workspace.remove();
 
     this.$workspace_container.append(workspace.el);
+
+    if(_.isFunction(workspace.afterInsert))
+      workspace.afterInsert();
+    
     this.workspace = workspace;
   }
 });

@@ -8,5 +8,16 @@
   z-index: $z-loading-page;
 }
 
+.page-loader{
+  position: relative;
+  height: 200px;
+
+  .sk-spinner-double-bounce {
+    .sk-double-bounce1, .sk-double-bounce2 {
+      background-color: rgba(17,100,147,0.6);
+    }
+  }
+}
+
 @import 'bounce_loader';
 @import 'sweep_loader';

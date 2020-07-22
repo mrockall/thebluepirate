@@ -32,7 +32,17 @@
 
     // home/home.jade compiled template
     templatizer["home"]["home"] = function tmpl_home_home() {
-        return '<div class="max-width-wrapper"><ul class="events"><li class="event"><a href="/tournament/1"><div class="title">Esker Hills</div><div class="date">27 - 29 March 2020</div><ul><li><div class="position">1.</div><div class="name">Liam Rockall</div><div class="score">E</div></li><li><div class="position">2.</div><div class="name">Mike Rockall</div><div class="score">E</div></li><li><div class="position">3.</div><div class="name">Eoin Rockall</div><div class="score">E</div></li><li><div class="position">4.</div><div class="name">Danny Finn</div><div class="score">E</div></li></ul><div class="actions"><p>Full Leaderboard &amp; Scoring</p></div></a></li><li class="event future"><a href="/tournament/2"><div class="title">Location: TBD</div><div class="date">March 2021</div></a></li><li class="event future"><a href="/tournament/3"><div class="title">Location: TBD</div><div class="date">March 2022</div></a></li><li class="event future"><a href="/tournament/4"><div class="title">Location: TBD</div><div class="date">March 2023</div></a></li><li class="event future"><a href="/tournament/5"><div class="title">Location: TBD</div><div class="date">March 2024</div></a></li><li class="event future"><a href="/tournament/6"><div class="title">Location: TBD</div><div class="date">March 2025</div></a></li></ul></div>';
+        return '<ul class="events"></ul>';
+    };
+
+    // home/loading.jade compiled template
+    templatizer["home"]["loading"] = function tmpl_home_loading() {
+        return '<div class="page-loader"><div class="sk-spinner-double-bounce sk-spinner"><div class="sk-double-bounce1"></div><div class="sk-double-bounce2"></div></div></div>';
+    };
+
+    // home/tournament.jade compiled template
+    templatizer["home"]["tournament"] = function tmpl_home_tournament() {
+        return '<li class="event"><a href="/tournament/1"><div class="title">Esker Hills</div><div class="date">27 - 29 March 2020</div><ul><li><div class="position">1.</div><div class="name">Liam Rockall</div><div class="score">E</div></li><li><div class="position">2.</div><div class="name">Mike Rockall</div><div class="score">E</div></li><li><div class="position">3.</div><div class="name">Eoin Rockall</div><div class="score">E</div></li><li><div class="position">4.</div><div class="name">Danny Finn</div><div class="score">E</div></li></ul><div class="actions"><p>Full Leaderboard &amp; Scoring</p></div></a></li>';
     };
 
     // layout.jade compiled template

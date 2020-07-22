@@ -805,6 +805,12 @@ h3 {
   background: #116493;
   z-index: 1024; }
 
+.page-loader {
+  position: relative;
+  height: 200px; }
+  .page-loader .sk-spinner-double-bounce .sk-double-bounce1, .page-loader .sk-spinner-double-bounce .sk-double-bounce2 {
+    background-color: rgba(17, 100, 147, 0.6); }
+
 .sk-spinner-double-bounce.sk-spinner {
   width: 40px;
   height: 40px;
@@ -961,7 +967,7 @@ h3 {
 
 header {
   position: relative;
-  padding: 0.75em;
+  padding: 1em;
   margin: 0 0 1em;
   background: #116493 url(images/bg-large.jpg) center center no-repeat;
   background-size: cover;

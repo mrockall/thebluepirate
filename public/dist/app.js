@@ -1,4 +1,730 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js":[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/ampersand-collection.js":[function(require,module,exports){
+var BackboneEvents = require('backbone-events-standalone');
+var classExtend = require('ampersand-class-extend');
+var isArray = require('is-array');
+var extend = require('extend-object');
+var slice = [].slice;
+
+
+function Collection(models, options) {
+    options || (options = {});
+    if (options.model) this.model = options.model;
+    if (options.comparator) this.comparator = options.comparator;
+    if (options.parent) this.parent = options.parent;
+    if (!this.mainIndex) {
+        var idAttribute = this.model && this.model.prototype && this.model.prototype.idAttribute;
+        this.mainIndex = idAttribute || 'id';
+    }
+    this._reset();
+    this.initialize.apply(this, arguments);
+    if (models) this.reset(models, extend({silent: true}, options));
+}
+
+extend(Collection.prototype, BackboneEvents, {
+    initialize: function () {},
+
+    indexes: [],
+
+    isModel: function (model) {
+        return this.model && model instanceof this.model;
+    },
+
+    add: function (models, options) {
+        return this.set(models, extend({merge: false, add: true, remove: false}, options));
+    },
+
+    // overridable parse method
+    parse: function (res, options) {
+        return res;
+    },
+
+    // overridable serialize method
+    serialize: function () {
+        return this.map(function (model) {
+            if (model.serialize) {
+                return model.serialize();
+            } else {
+                var out = {};
+                extend(out, model);
+                delete out.collection;
+                return out;
+            }
+        });
+    },
+
+    toJSON: function () {
+        return this.serialize();
+    },
+
+    set: function (models, options) {
+        options = extend({add: true, remove: true, merge: true}, options);
+        if (options.parse) models = this.parse(models, options);
+        var singular = !isArray(models);
+        models = singular ? (models ? [models] : []) : models.slice();
+        var id, model, attrs, existing, sort, i, length;
+        var at = options.at;
+        var sortable = this.comparator && (at == null) && options.sort !== false;
+        var sortAttr = ('string' === typeof this.comparator) ? this.comparator : null;
+        var toAdd = [], toRemove = [], modelMap = {};
+        var add = options.add, merge = options.merge, remove = options.remove;
+        var order = !sortable && add && remove ? [] : false;
+        var targetProto = this.model && this.model.prototype || Object.prototype;
+
+        // Turn bare objects into model references, and prevent invalid models
+        // from being added.
+        for (i = 0, length = models.length; i < length; i++) {
+            attrs = models[i] || {};
+            if (this.isModel(attrs)) {
+                id = model = attrs;
+            } else if (targetProto.generateId) {
+                id = targetProto.generateId(attrs);
+            } else {
+                id = attrs[targetProto.idAttribute || this.mainIndex];
+            }
+
+            // If a duplicate is found, prevent it from being added and
+            // optionally merge it into the existing model.
+            if (existing = this.get(id)) {
+                if (remove) modelMap[existing.cid || existing[this.mainIndex]] = true;
+                if (merge) {
+                    attrs = attrs === model ? model.attributes : attrs;
+                    if (options.parse) attrs = existing.parse(attrs, options);
+                    // if this is model
+                    if (existing.set) {
+                        existing.set(attrs, options);
+                        if (sortable && !sort && existing.hasChanged(sortAttr)) sort = true;
+                    } else {
+                        // if not just update the properties
+                        extend(existing, attrs);
+                    }
+                }
+                models[i] = existing;
+
+            // If this is a new, valid model, push it to the `toAdd` list.
+            } else if (add) {
+                model = models[i] = this._prepareModel(attrs, options);
+                if (!model) continue;
+                toAdd.push(model);
+                this._addReference(model, options);
+            }
+
+            // Do not add multiple models with the same `id`.
+            model = existing || model;
+            if (!model) continue;
+            if (order && ((model.isNew && model.isNew() || !model[this.mainIndex]) || !modelMap[model.cid || model[this.mainIndex]])) order.push(model);
+            modelMap[model[this.mainIndex]] = true;
+        }
+
+        // Remove nonexistent models if appropriate.
+        if (remove) {
+            for (i = 0, length = this.length; i < length; i++) {
+                model = this.models[i];
+                if (!modelMap[model.cid || model[this.mainIndex]]) toRemove.push(model);
+            }
+            if (toRemove.length) this.remove(toRemove, options);
+        }
+
+        // See if sorting is needed, update `length` and splice in new models.
+        if (toAdd.length || (order && order.length)) {
+            if (sortable) sort = true;
+            if (at != null) {
+                for (i = 0, length = toAdd.length; i < length; i++) {
+                    this.models.splice(at + i, 0, toAdd[i]);
+                }
+            } else {
+                var orderedModels = order || toAdd;
+                for (i = 0, length = orderedModels.length; i < length; i++) {
+                    this.models.push(orderedModels[i]);
+                }
+            }
+        }
+
+        // Silently sort the collection if appropriate.
+        if (sort) this.sort({silent: true});
+
+        // Unless silenced, it's time to fire all appropriate add/sort events.
+        if (!options.silent) {
+            for (i = 0, length = toAdd.length; i < length; i++) {
+                model = toAdd[i];
+                if (model.trigger) {
+                    model.trigger('add', model, this, options);
+                } else {
+                    this.trigger('add', model, this, options);
+                }
+            }
+            if (sort || (order && order.length)) this.trigger('sort', this, options);
+        }
+
+        // Return the added (or merged) model (or models).
+        return singular ? models[0] : models;
+    },
+
+    get: function (query, indexName) {
+        if (!query) return;
+        var index = this._indexes[indexName || this.mainIndex];
+        return index[query] || index[query[this.mainIndex]] || this._indexes.cid[query.cid];
+    },
+
+    // Get the model at the given index.
+    at: function (index) {
+        return this.models[index];
+    },
+
+    remove: function (models, options) {
+        var singular = !isArray(models);
+        var i, length, model, index;
+
+        models = singular ? [models] : slice.call(models);
+        options || (options = {});
+        for (i = 0, length = models.length; i < length; i++) {
+            model = models[i] = this.get(models[i]);
+            if (!model) continue;
+            this._deIndex(model);
+            index = this.models.indexOf(model);
+            this.models.splice(index, 1);
+            if (!options.silent) {
+                options.index = index;
+                if (model.trigger) {
+                    model.trigger('remove', model, this, options);
+                } else {
+                    this.trigger('remove', model, this, options);
+                }
+            }
+            this._removeReference(model, options);
+        }
+        return singular ? models[0] : models;
+    },
+
+    // When you have more items than you want to add or remove individually,
+    // you can reset the entire set with a new list of models, without firing
+    // any granular `add` or `remove` events. Fires `reset` when finished.
+    // Useful for bulk operations and optimizations.
+    reset: function (models, options) {
+        options || (options = {});
+        for (var i = 0, length = this.models.length; i < length; i++) {
+            this._removeReference(this.models[i], options);
+        }
+        options.previousModels = this.models;
+        this._reset();
+        models = this.add(models, extend({silent: true}, options));
+        if (!options.silent) this.trigger('reset', this, options);
+        return models;
+    },
+
+    sort: function (options) {
+        var self = this;
+        if (!this.comparator) throw new Error('Cannot sort a set without a comparator');
+        options || (options = {});
+
+        if (typeof this.comparator === 'string') {
+            this.models.sort(function (left, right) {
+                if (left.get) {
+                    left = left.get(self.comparator);
+                    right = right.get(self.comparator);
+                } else {
+                    left = left[self.comparator];
+                    right = right[self.comparator];
+                }
+                if (left > right || left === void 0) return 1;
+                if (left < right || right === void 0) return -1;
+                return 0;
+            });
+        } else if (this.comparator.length === 1) {
+            this.models.sort(function (left, right) {
+                left = self.comparator(left);
+                right = self.comparator(right);
+                if (left > right || left === void 0) return 1;
+                if (left < right || right === void 0) return -1;
+                return 0;
+            });
+        } else {
+            this.models.sort(this.comparator.bind(this));
+        }
+
+        if (!options.silent) this.trigger('sort', this, options);
+        return this;
+    },
+
+    // Private method to reset all internal state. Called when the collection
+    // is first initialized or reset.
+    _reset: function () {
+        var list = this.indexes || [];
+        var i = 0;
+        list.push(this.mainIndex);
+        list.push('cid');
+        var l = list.length;
+        this.models = [];
+        this._indexes = {};
+        for (; i < l; i++) {
+            this._indexes[list[i]] = {};
+        }
+    },
+
+    _prepareModel: function (attrs, options) {
+        // if we haven't defined a constructor, skip this
+        if (!this.model) return attrs;
+
+        if (this.isModel(attrs)) {
+            if (!attrs.collection) attrs.collection = this;
+            return attrs;
+        } else {
+            options = options ? extend({}, options) : {};
+            options.collection = this;
+            var model = new this.model(attrs, options);
+            if (!model.validationError) return model;
+            this.trigger('invalid', this, model.validationError, options);
+            return false;
+        }
+    },
+
+    _deIndex: function (model) {
+        for (var name in this._indexes) {
+            delete this._indexes[name][model[name] || (model.get && model.get(name))];
+        }
+    },
+
+    _index: function (model) {
+        for (var name in this._indexes) {
+            var indexVal = model[name] || (model.get && model.get(name));
+            if (indexVal) this._indexes[name][indexVal] = model;
+        }
+    },
+
+    // Internal method to create a model's ties to a collection.
+    _addReference: function (model, options) {
+        this._index(model);
+        if (!model.collection) model.collection = this;
+        if (model.on) model.on('all', this._onModelEvent, this);
+    },
+
+        // Internal method to sever a model's ties to a collection.
+    _removeReference: function (model, options) {
+        if (this === model.collection) delete model.collection;
+        this._deIndex(model);
+        if (model.off) model.off('all', this._onModelEvent, this);
+    },
+
+    _onModelEvent: function (event, model, collection, options) {
+        if ((event === 'add' || event === 'remove') && collection !== this) return;
+        if (event === 'destroy') this.remove(model, options);
+        if (model && event === 'change:' + this.mainIndex) {
+            this._deIndex(model);
+            this._index(model);
+        }
+        this.trigger.apply(this, arguments);
+    }
+});
+
+Object.defineProperties(Collection.prototype, {
+    length: {
+        get: function () {
+            return this.models.length;
+        }
+    },
+    isCollection: {
+        value: true
+    }
+});
+
+var arrayMethods = [
+    'indexOf',
+    'lastIndexOf',
+    'every',
+    'some',
+    'forEach',
+    'map',
+    'filter',
+    'reduce',
+    'reduceRight'
+];
+
+arrayMethods.forEach(function (method) {
+    Collection.prototype[method] = function () {
+        return this.models[method].apply(this.models, arguments);
+    };
+});
+
+// alias each/forEach for maximum compatibility
+Collection.prototype.each = Collection.prototype.forEach;
+
+Collection.extend = classExtend;
+
+module.exports = Collection;
+
+},{"ampersand-class-extend":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/ampersand-class-extend/ampersand-class-extend.js","backbone-events-standalone":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js","extend-object":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/extend-object/extend-object.js","is-array":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/is-array/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/ampersand-class-extend/ampersand-class-extend.js":[function(require,module,exports){
+var objectExtend = require('extend-object');
+
+
+/// Following code is largely pasted from Backbone.js
+
+// Helper function to correctly set up the prototype chain, for subclasses.
+// Similar to `goog.inherits`, but uses a hash of prototype properties and
+// class properties to be extended.
+var extend = function(protoProps) {
+    var parent = this;
+    var child;
+    var args = [].slice.call(arguments);
+
+    // The constructor function for the new subclass is either defined by you
+    // (the "constructor" property in your `extend` definition), or defaulted
+    // by us to simply call the parent's constructor.
+    if (protoProps && protoProps.hasOwnProperty('constructor')) {
+        child = protoProps.constructor;
+    } else {
+        child = function () {
+            return parent.apply(this, arguments);
+        };
+    }
+
+    // Add static properties to the constructor function from parent
+    objectExtend(child, parent);
+
+    // Set the prototype chain to inherit from `parent`, without calling
+    // `parent`'s constructor function.
+    var Surrogate = function(){ this.constructor = child; };
+    Surrogate.prototype = parent.prototype;
+    child.prototype = new Surrogate();
+
+    // Mix in all prototype properties to the subclass if supplied.
+    if (protoProps) {
+        args.unshift(child.prototype);
+        objectExtend.apply(null, args);
+    }
+
+    // Set a convenience property in case the parent's prototype is needed
+    // later.
+    child.__super__ = parent.prototype;
+
+    return child;
+};
+
+// Expose the extend function
+module.exports = extend;
+
+},{"extend-object":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/extend-object/extend-object.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/backbone-events-standalone.js":[function(require,module,exports){
+/**
+ * Standalone extraction of Backbone.Events, no external dependency required.
+ * Degrades nicely when Backone/underscore are already available in the current
+ * global context.
+ *
+ * Note that docs suggest to use underscore's `_.extend()` method to add Events
+ * support to some given object. A `mixin()` method has been added to the Events
+ * prototype to avoid using underscore for that sole purpose:
+ *
+ *     var myEventEmitter = BackboneEvents.mixin({});
+ *
+ * Or for a function constructor:
+ *
+ *     function MyConstructor(){}
+ *     MyConstructor.prototype.foo = function(){}
+ *     BackboneEvents.mixin(MyConstructor.prototype);
+ *
+ * (c) 2009-2013 Jeremy Ashkenas, DocumentCloud Inc.
+ * (c) 2013 Nicolas Perriault
+ */
+/* global exports:true, define, module */
+(function() {
+  var root = this,
+      breaker = {},
+      nativeForEach = Array.prototype.forEach,
+      hasOwnProperty = Object.prototype.hasOwnProperty,
+      slice = Array.prototype.slice,
+      idCounter = 0;
+
+  // Returns a partial implementation matching the minimal API subset required
+  // by Backbone.Events
+  function miniscore() {
+    return {
+      keys: Object.keys,
+
+      uniqueId: function(prefix) {
+        var id = ++idCounter + '';
+        return prefix ? prefix + id : id;
+      },
+
+      has: function(obj, key) {
+        return hasOwnProperty.call(obj, key);
+      },
+
+      each: function(obj, iterator, context) {
+        if (obj == null) return;
+        if (nativeForEach && obj.forEach === nativeForEach) {
+          obj.forEach(iterator, context);
+        } else if (obj.length === +obj.length) {
+          for (var i = 0, l = obj.length; i < l; i++) {
+            if (iterator.call(context, obj[i], i, obj) === breaker) return;
+          }
+        } else {
+          for (var key in obj) {
+            if (this.has(obj, key)) {
+              if (iterator.call(context, obj[key], key, obj) === breaker) return;
+            }
+          }
+        }
+      },
+
+      once: function(func) {
+        var ran = false, memo;
+        return function() {
+          if (ran) return memo;
+          ran = true;
+          memo = func.apply(this, arguments);
+          func = null;
+          return memo;
+        };
+      }
+    };
+  }
+
+  var _ = miniscore(), Events;
+
+  // Backbone.Events
+  // ---------------
+
+  // A module that can be mixed in to *any object* in order to provide it with
+  // custom events. You may bind with `on` or remove with `off` callback
+  // functions to an event; `trigger`-ing an event fires all callbacks in
+  // succession.
+  //
+  //     var object = {};
+  //     _.extend(object, Backbone.Events);
+  //     object.on('expand', function(){ alert('expanded'); });
+  //     object.trigger('expand');
+  //
+  Events = {
+
+    // Bind an event to a `callback` function. Passing `"all"` will bind
+    // the callback to all events fired.
+    on: function(name, callback, context) {
+      if (!eventsApi(this, 'on', name, [callback, context]) || !callback) return this;
+      this._events || (this._events = {});
+      var events = this._events[name] || (this._events[name] = []);
+      events.push({callback: callback, context: context, ctx: context || this});
+      return this;
+    },
+
+    // Bind an event to only be triggered a single time. After the first time
+    // the callback is invoked, it will be removed.
+    once: function(name, callback, context) {
+      if (!eventsApi(this, 'once', name, [callback, context]) || !callback) return this;
+      var self = this;
+      var once = _.once(function() {
+        self.off(name, once);
+        callback.apply(this, arguments);
+      });
+      once._callback = callback;
+      return this.on(name, once, context);
+    },
+
+    // Remove one or many callbacks. If `context` is null, removes all
+    // callbacks with that function. If `callback` is null, removes all
+    // callbacks for the event. If `name` is null, removes all bound
+    // callbacks for all events.
+    off: function(name, callback, context) {
+      var retain, ev, events, names, i, l, j, k;
+      if (!this._events || !eventsApi(this, 'off', name, [callback, context])) return this;
+      if (!name && !callback && !context) {
+        this._events = {};
+        return this;
+      }
+
+      names = name ? [name] : _.keys(this._events);
+      for (i = 0, l = names.length; i < l; i++) {
+        name = names[i];
+        if (events = this._events[name]) {
+          this._events[name] = retain = [];
+          if (callback || context) {
+            for (j = 0, k = events.length; j < k; j++) {
+              ev = events[j];
+              if ((callback && callback !== ev.callback && callback !== ev.callback._callback) ||
+                  (context && context !== ev.context)) {
+                retain.push(ev);
+              }
+            }
+          }
+          if (!retain.length) delete this._events[name];
+        }
+      }
+
+      return this;
+    },
+
+    // Trigger one or many events, firing all bound callbacks. Callbacks are
+    // passed the same arguments as `trigger` is, apart from the event name
+    // (unless you're listening on `"all"`, which will cause your callback to
+    // receive the true name of the event as the first argument).
+    trigger: function(name) {
+      if (!this._events) return this;
+      var args = slice.call(arguments, 1);
+      if (!eventsApi(this, 'trigger', name, args)) return this;
+      var events = this._events[name];
+      var allEvents = this._events.all;
+      if (events) triggerEvents(events, args);
+      if (allEvents) triggerEvents(allEvents, arguments);
+      return this;
+    },
+
+    // Tell this object to stop listening to either specific events ... or
+    // to every object it's currently listening to.
+    stopListening: function(obj, name, callback) {
+      var listeners = this._listeners;
+      if (!listeners) return this;
+      var deleteListener = !name && !callback;
+      if (typeof name === 'object') callback = this;
+      if (obj) (listeners = {})[obj._listenerId] = obj;
+      for (var id in listeners) {
+        listeners[id].off(name, callback, this);
+        if (deleteListener) delete this._listeners[id];
+      }
+      return this;
+    }
+
+  };
+
+  // Regular expression used to split event strings.
+  var eventSplitter = /\s+/;
+
+  // Implement fancy features of the Events API such as multiple event
+  // names `"change blur"` and jQuery-style event maps `{change: action}`
+  // in terms of the existing API.
+  var eventsApi = function(obj, action, name, rest) {
+    if (!name) return true;
+
+    // Handle event maps.
+    if (typeof name === 'object') {
+      for (var key in name) {
+        obj[action].apply(obj, [key, name[key]].concat(rest));
+      }
+      return false;
+    }
+
+    // Handle space separated event names.
+    if (eventSplitter.test(name)) {
+      var names = name.split(eventSplitter);
+      for (var i = 0, l = names.length; i < l; i++) {
+        obj[action].apply(obj, [names[i]].concat(rest));
+      }
+      return false;
+    }
+
+    return true;
+  };
+
+  // A difficult-to-believe, but optimized internal dispatch function for
+  // triggering events. Tries to keep the usual cases speedy (most internal
+  // Backbone events have 3 arguments).
+  var triggerEvents = function(events, args) {
+    var ev, i = -1, l = events.length, a1 = args[0], a2 = args[1], a3 = args[2];
+    switch (args.length) {
+      case 0: while (++i < l) (ev = events[i]).callback.call(ev.ctx); return;
+      case 1: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1); return;
+      case 2: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1, a2); return;
+      case 3: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1, a2, a3); return;
+      default: while (++i < l) (ev = events[i]).callback.apply(ev.ctx, args);
+    }
+  };
+
+  var listenMethods = {listenTo: 'on', listenToOnce: 'once'};
+
+  // Inversion-of-control versions of `on` and `once`. Tell *this* object to
+  // listen to an event in another object ... keeping track of what it's
+  // listening to.
+  _.each(listenMethods, function(implementation, method) {
+    Events[method] = function(obj, name, callback) {
+      var listeners = this._listeners || (this._listeners = {});
+      var id = obj._listenerId || (obj._listenerId = _.uniqueId('l'));
+      listeners[id] = obj;
+      if (typeof name === 'object') callback = this;
+      obj[implementation](name, callback, this);
+      return this;
+    };
+  });
+
+  // Aliases for backwards compatibility.
+  Events.bind   = Events.on;
+  Events.unbind = Events.off;
+
+  // Mixin utility
+  Events.mixin = function(proto) {
+    var exports = ['on', 'once', 'off', 'trigger', 'stopListening', 'listenTo',
+                   'listenToOnce', 'bind', 'unbind'];
+    _.each(exports, function(name) {
+      proto[name] = this[name];
+    }, this);
+    return proto;
+  };
+
+  // Export Events as BackboneEvents depending on current context
+  if (typeof define === "function") {
+    define(function() {
+      return Events;
+    });
+  } else if (typeof exports !== 'undefined') {
+    if (typeof module !== 'undefined' && module.exports) {
+      exports = module.exports = Events;
+    }
+    exports.BackboneEvents = Events;
+  } else {
+    root.BackboneEvents = Events;
+  }
+})(this);
+
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js":[function(require,module,exports){
+module.exports = require('./backbone-events-standalone');
+
+},{"./backbone-events-standalone":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/backbone-events-standalone.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/extend-object/extend-object.js":[function(require,module,exports){
+var arr = [];
+var each = arr.forEach;
+var slice = arr.slice;
+
+
+module.exports = function(obj) {
+    each.call(slice.call(arguments, 1), function(source) {
+        if (source) {
+            for (var prop in source) {
+                obj[prop] = source[prop];
+            }
+        }
+    });
+    return obj;
+};
+
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/is-array/index.js":[function(require,module,exports){
+
+/**
+ * isArray
+ */
+
+var isArray = Array.isArray;
+
+/**
+ * toString
+ */
+
+var str = Object.prototype.toString;
+
+/**
+ * Whether or not the given `val`
+ * is an array.
+ *
+ * example:
+ *
+ *        isArray([]);
+ *        // > true
+ *        isArray(arguments);
+ *        // > false
+ *        isArray('');
+ *        // > false
+ *
+ * @param {mixed} val
+ * @return {bool}
+ */
+
+module.exports = isArray || function (val) {
+  return !! val && '[object Array]' == str.call(val);
+};
+
+},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js":[function(require,module,exports){
 var State = require('ampersand-state');
 var _ = require('underscore');
 var sync = require('ampersand-sync');
@@ -915,278 +1641,9 @@ module.exports = function arrayNext(array, currentItem) {
     return array[newIndex];
 };
 
-},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/backbone-events-standalone/backbone-events-standalone.js":[function(require,module,exports){
-/**
- * Standalone extraction of Backbone.Events, no external dependency required.
- * Degrades nicely when Backone/underscore are already available in the current
- * global context.
- *
- * Note that docs suggest to use underscore's `_.extend()` method to add Events
- * support to some given object. A `mixin()` method has been added to the Events
- * prototype to avoid using underscore for that sole purpose:
- *
- *     var myEventEmitter = BackboneEvents.mixin({});
- *
- * Or for a function constructor:
- *
- *     function MyConstructor(){}
- *     MyConstructor.prototype.foo = function(){}
- *     BackboneEvents.mixin(MyConstructor.prototype);
- *
- * (c) 2009-2013 Jeremy Ashkenas, DocumentCloud Inc.
- * (c) 2013 Nicolas Perriault
- */
-/* global exports:true, define, module */
-(function() {
-  var root = this,
-      breaker = {},
-      nativeForEach = Array.prototype.forEach,
-      hasOwnProperty = Object.prototype.hasOwnProperty,
-      slice = Array.prototype.slice,
-      idCounter = 0;
-
-  // Returns a partial implementation matching the minimal API subset required
-  // by Backbone.Events
-  function miniscore() {
-    return {
-      keys: Object.keys,
-
-      uniqueId: function(prefix) {
-        var id = ++idCounter + '';
-        return prefix ? prefix + id : id;
-      },
-
-      has: function(obj, key) {
-        return hasOwnProperty.call(obj, key);
-      },
-
-      each: function(obj, iterator, context) {
-        if (obj == null) return;
-        if (nativeForEach && obj.forEach === nativeForEach) {
-          obj.forEach(iterator, context);
-        } else if (obj.length === +obj.length) {
-          for (var i = 0, l = obj.length; i < l; i++) {
-            if (iterator.call(context, obj[i], i, obj) === breaker) return;
-          }
-        } else {
-          for (var key in obj) {
-            if (this.has(obj, key)) {
-              if (iterator.call(context, obj[key], key, obj) === breaker) return;
-            }
-          }
-        }
-      },
-
-      once: function(func) {
-        var ran = false, memo;
-        return function() {
-          if (ran) return memo;
-          ran = true;
-          memo = func.apply(this, arguments);
-          func = null;
-          return memo;
-        };
-      }
-    };
-  }
-
-  var _ = miniscore(), Events;
-
-  // Backbone.Events
-  // ---------------
-
-  // A module that can be mixed in to *any object* in order to provide it with
-  // custom events. You may bind with `on` or remove with `off` callback
-  // functions to an event; `trigger`-ing an event fires all callbacks in
-  // succession.
-  //
-  //     var object = {};
-  //     _.extend(object, Backbone.Events);
-  //     object.on('expand', function(){ alert('expanded'); });
-  //     object.trigger('expand');
-  //
-  Events = {
-
-    // Bind an event to a `callback` function. Passing `"all"` will bind
-    // the callback to all events fired.
-    on: function(name, callback, context) {
-      if (!eventsApi(this, 'on', name, [callback, context]) || !callback) return this;
-      this._events || (this._events = {});
-      var events = this._events[name] || (this._events[name] = []);
-      events.push({callback: callback, context: context, ctx: context || this});
-      return this;
-    },
-
-    // Bind an event to only be triggered a single time. After the first time
-    // the callback is invoked, it will be removed.
-    once: function(name, callback, context) {
-      if (!eventsApi(this, 'once', name, [callback, context]) || !callback) return this;
-      var self = this;
-      var once = _.once(function() {
-        self.off(name, once);
-        callback.apply(this, arguments);
-      });
-      once._callback = callback;
-      return this.on(name, once, context);
-    },
-
-    // Remove one or many callbacks. If `context` is null, removes all
-    // callbacks with that function. If `callback` is null, removes all
-    // callbacks for the event. If `name` is null, removes all bound
-    // callbacks for all events.
-    off: function(name, callback, context) {
-      var retain, ev, events, names, i, l, j, k;
-      if (!this._events || !eventsApi(this, 'off', name, [callback, context])) return this;
-      if (!name && !callback && !context) {
-        this._events = {};
-        return this;
-      }
-
-      names = name ? [name] : _.keys(this._events);
-      for (i = 0, l = names.length; i < l; i++) {
-        name = names[i];
-        if (events = this._events[name]) {
-          this._events[name] = retain = [];
-          if (callback || context) {
-            for (j = 0, k = events.length; j < k; j++) {
-              ev = events[j];
-              if ((callback && callback !== ev.callback && callback !== ev.callback._callback) ||
-                  (context && context !== ev.context)) {
-                retain.push(ev);
-              }
-            }
-          }
-          if (!retain.length) delete this._events[name];
-        }
-      }
-
-      return this;
-    },
-
-    // Trigger one or many events, firing all bound callbacks. Callbacks are
-    // passed the same arguments as `trigger` is, apart from the event name
-    // (unless you're listening on `"all"`, which will cause your callback to
-    // receive the true name of the event as the first argument).
-    trigger: function(name) {
-      if (!this._events) return this;
-      var args = slice.call(arguments, 1);
-      if (!eventsApi(this, 'trigger', name, args)) return this;
-      var events = this._events[name];
-      var allEvents = this._events.all;
-      if (events) triggerEvents(events, args);
-      if (allEvents) triggerEvents(allEvents, arguments);
-      return this;
-    },
-
-    // Tell this object to stop listening to either specific events ... or
-    // to every object it's currently listening to.
-    stopListening: function(obj, name, callback) {
-      var listeners = this._listeners;
-      if (!listeners) return this;
-      var deleteListener = !name && !callback;
-      if (typeof name === 'object') callback = this;
-      if (obj) (listeners = {})[obj._listenerId] = obj;
-      for (var id in listeners) {
-        listeners[id].off(name, callback, this);
-        if (deleteListener) delete this._listeners[id];
-      }
-      return this;
-    }
-
-  };
-
-  // Regular expression used to split event strings.
-  var eventSplitter = /\s+/;
-
-  // Implement fancy features of the Events API such as multiple event
-  // names `"change blur"` and jQuery-style event maps `{change: action}`
-  // in terms of the existing API.
-  var eventsApi = function(obj, action, name, rest) {
-    if (!name) return true;
-
-    // Handle event maps.
-    if (typeof name === 'object') {
-      for (var key in name) {
-        obj[action].apply(obj, [key, name[key]].concat(rest));
-      }
-      return false;
-    }
-
-    // Handle space separated event names.
-    if (eventSplitter.test(name)) {
-      var names = name.split(eventSplitter);
-      for (var i = 0, l = names.length; i < l; i++) {
-        obj[action].apply(obj, [names[i]].concat(rest));
-      }
-      return false;
-    }
-
-    return true;
-  };
-
-  // A difficult-to-believe, but optimized internal dispatch function for
-  // triggering events. Tries to keep the usual cases speedy (most internal
-  // Backbone events have 3 arguments).
-  var triggerEvents = function(events, args) {
-    var ev, i = -1, l = events.length, a1 = args[0], a2 = args[1], a3 = args[2];
-    switch (args.length) {
-      case 0: while (++i < l) (ev = events[i]).callback.call(ev.ctx); return;
-      case 1: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1); return;
-      case 2: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1, a2); return;
-      case 3: while (++i < l) (ev = events[i]).callback.call(ev.ctx, a1, a2, a3); return;
-      default: while (++i < l) (ev = events[i]).callback.apply(ev.ctx, args);
-    }
-  };
-
-  var listenMethods = {listenTo: 'on', listenToOnce: 'once'};
-
-  // Inversion-of-control versions of `on` and `once`. Tell *this* object to
-  // listen to an event in another object ... keeping track of what it's
-  // listening to.
-  _.each(listenMethods, function(implementation, method) {
-    Events[method] = function(obj, name, callback) {
-      var listeners = this._listeners || (this._listeners = {});
-      var id = obj._listenerId || (obj._listenerId = _.uniqueId('l'));
-      listeners[id] = obj;
-      if (typeof name === 'object') callback = this;
-      obj[implementation](name, callback, this);
-      return this;
-    };
-  });
-
-  // Aliases for backwards compatibility.
-  Events.bind   = Events.on;
-  Events.unbind = Events.off;
-
-  // Mixin utility
-  Events.mixin = function(proto) {
-    var exports = ['on', 'once', 'off', 'trigger', 'stopListening', 'listenTo',
-                   'listenToOnce', 'bind', 'unbind'];
-    _.each(exports, function(name) {
-      proto[name] = this[name];
-    }, this);
-    return proto;
-  };
-
-  // Export Events as BackboneEvents depending on current context
-  if (typeof define === "function") {
-    define(function() {
-      return Events;
-    });
-  } else if (typeof exports !== 'undefined') {
-    if (typeof module !== 'undefined' && module.exports) {
-      exports = module.exports = Events;
-    }
-    exports.BackboneEvents = Events;
-  } else {
-    root.BackboneEvents = Events;
-  }
-})(this);
-
 },{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/backbone-events-standalone/index.js":[function(require,module,exports){
-module.exports = require('./backbone-events-standalone');
-
-},{"./backbone-events-standalone":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/backbone-events-standalone/backbone-events-standalone.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/key-tree-store/key-tree-store.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/backbone-events-standalone/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/key-tree-store/key-tree-store.js":[function(require,module,exports){
 function KeyTreeStore() {
     this.storage = {};
 }
@@ -2037,7 +2494,187 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/node_modules/for-each/index.js","trim":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/node_modules/trim/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/ampersand-history.js":[function(require,module,exports){
+},{"for-each":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/node_modules/for-each/index.js","trim":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/node_modules/xhr/node_modules/parse-headers/node_modules/trim/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/ampersand-rest-collection.js":[function(require,module,exports){
+var Collection = require('ampersand-collection');
+var underscoreMixin = require('ampersand-collection-underscore-mixin');
+var restMixins = require('ampersand-collection-rest-mixin');
+
+
+module.exports = Collection.extend(underscoreMixin, restMixins);
+
+},{"ampersand-collection":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/ampersand-collection.js","ampersand-collection-rest-mixin":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-rest-mixin/ampersand-collection-rest-mixin.js","ampersand-collection-underscore-mixin":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-underscore-mixin/ampersand-collection-underscore-mixin.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-rest-mixin/ampersand-collection-rest-mixin.js":[function(require,module,exports){
+var sync = require('ampersand-sync');
+var extend = require('extend-object');
+
+
+// Wrap an optional error callback with a fallback error event.
+var wrapError = function(model, options) {
+    var error = options.error;
+    options.error = function(resp) {
+        if (error) error(model, resp, options);
+        model.trigger('error', model, resp, options);
+    };
+};
+
+module.exports = {
+    // Fetch the default set of models for this collection, resetting the
+    // collection when they arrive. If `reset: true` is passed, the response
+    // data will be passed through the `reset` method instead of `set`.
+    fetch: function(options) {
+        options = options ? extend({}, options) : {};
+        if (options.parse === void 0) options.parse = true;
+        var success = options.success;
+        var collection = this;
+        options.success = function(resp) {
+            var method = options.reset ? 'reset' : 'set';
+            collection[method](resp, options);
+            if (success) success(collection, resp, options);
+            collection.trigger('sync', collection, resp, options);
+        };
+        wrapError(this, options);
+        return this.sync('read', this, options);
+    },
+
+    // Create a new instance of a model in this collection. Add the model to the
+    // collection immediately, unless `wait: true` is passed, in which case we
+    // wait for the server to agree.
+    create: function(model, options) {
+        options = options ? extend({}, options) : {};
+        if (!(model = this._prepareModel(model, options))) return false;
+        if (!options.wait) this.add(model, options);
+        var collection = this;
+        var success = options.success;
+        options.success = function(model, resp) {
+            if (options.wait) collection.add(model, options);
+            if (success) success(model, resp, options);
+        };
+        model.save(null, options);
+        return model;
+    },
+
+    sync: function() {
+        return sync.apply(this, arguments);
+    },
+
+    // Get or fetch a model by Id.
+    getOrFetch: function (id, options, cb) {
+        if (arguments.length !== 3) {
+            cb = options;
+            options = {};
+        }
+        var self = this;
+        var model = this.get(id);
+        if (model) return cb(null, model);
+        function done() {
+            var model = self.get(id);
+            if (model) {
+                if (cb) cb(null, model);
+            } else {
+                cb(new Error('not found'));
+            }
+        }
+        if (options.all) {
+            this.fetch({
+                success: done,
+                error: done
+            });
+        } else {
+            this.fetchById(id, cb);
+        }
+    },
+
+    // fetchById: fetches a model and adds it to
+    // collection when fetched.
+    fetchById: function (id, cb) {
+        var self = this;
+        var idObj = {};
+        idObj[this.model.prototype.idAttribute] = id;
+        var model = new this.model(idObj, {collection: this});
+        model.fetch({
+            success: function () {
+                self.add(model);
+                if (cb) cb(null, model);
+            },
+            error: function () {
+                delete model.collection;
+                if (cb) cb(Error('not found'));
+            }
+        });
+    }
+};
+
+},{"ampersand-sync":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-rest-mixin/node_modules/ampersand-sync/ampersand-sync.js","extend-object":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-rest-mixin/node_modules/extend-object/extend-object.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-rest-mixin/node_modules/ampersand-sync/ampersand-sync.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/ampersand-sync.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/ampersand-sync.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-sync/ampersand-sync.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-rest-mixin/node_modules/extend-object/extend-object.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/extend-object/extend-object.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/extend-object/extend-object.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/extend-object/extend-object.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/node_modules/ampersand-collection-underscore-mixin/ampersand-collection-underscore-mixin.js":[function(require,module,exports){
+;if (typeof window !== "undefined") {  window.ampersand = window.ampersand || {};  window.ampersand["ampersand-collection-underscore-mixin"] = window.ampersand["ampersand-collection-underscore-mixin"] || [];  window.ampersand["ampersand-collection-underscore-mixin"].push("1.0.3");}
+var _ = require('underscore');
+var slice = [].slice;
+var mixins = {};
+
+
+// Underscore methods that we want to implement on the Collection.
+var methods = ['forEach', 'each', 'map', 'collect', 'reduce', 'foldl',
+    'inject', 'reduceRight', 'foldr', 'find', 'detect', 'filter', 'select',
+    'reject', 'every', 'all', 'some', 'any', 'include', 'contains', 'invoke',
+    'max', 'min', 'toArray', 'size', 'first', 'head', 'take', 'initial', 'rest',
+    'tail', 'drop', 'last', 'without', 'difference', 'indexOf', 'shuffle',
+    'lastIndexOf', 'isEmpty', 'chain', 'sample', 'partition'
+];
+
+// Mix in each Underscore method as a proxy to `Collection#models`.
+_.each(methods, function (method) {
+    if (!_[method]) return;
+    mixins[method] = function () {
+        var args = slice.call(arguments);
+        args.unshift(this.models);
+        return _[method].apply(_, args);
+    };
+});
+
+// Underscore methods that take a property name as an argument.
+var attributeMethods = ['groupBy', 'countBy', 'sortBy', 'indexBy'];
+
+// Use attributes instead of properties.
+_.each(attributeMethods, function (method) {
+    if (!_[method]) return;
+    mixins[method] = function (value, context) {
+        var iterator = _.isFunction(value) ? value : function (model) {
+            return model.get ? model.get(value) : model[value];
+        };
+        return _[method](this.models, iterator, context);
+    };
+});
+
+// Return models with matching attributes. Useful for simple cases of
+// `filter`.
+mixins.where = function (attrs, first) {
+    if (_.isEmpty(attrs)) return first ? void 0 : [];
+    return this[first ? 'find' : 'filter'](function (model) {
+        var value;
+        for (var key in attrs) {
+            value = model.get ? model.get(key) : model[key];
+            if (attrs[key] !== value) return false;
+        }
+        return true;
+    });
+};
+
+// Return the first model with matching attributes. Useful for simple cases
+// of `find`.
+mixins.findWhere = function (attrs) {
+    return this.where(attrs, true);
+};
+
+// Plucks an attribute from each model in the collection.
+mixins.pluck = function (attr) {
+    return _.invoke(this.models, 'get', attr);
+};
+
+module.exports = mixins;
+
+},{"underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/ampersand-history.js":[function(require,module,exports){
 var Events = require('backbone-events-standalone');
 var _ = require('underscore');
 
@@ -2378,73 +3015,8 @@ _.extend(Router.prototype, Events, {
 Router.extend = classExtend;
 
 },{"./ampersand-history":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/ampersand-history.js","ampersand-class-extend":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/ampersand-class-extend/ampersand-class-extend.js","backbone-events-standalone":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/ampersand-class-extend/ampersand-class-extend.js":[function(require,module,exports){
-var objectExtend = require('extend-object');
-
-
-/// Following code is largely pasted from Backbone.js
-
-// Helper function to correctly set up the prototype chain, for subclasses.
-// Similar to `goog.inherits`, but uses a hash of prototype properties and
-// class properties to be extended.
-var extend = function(protoProps) {
-    var parent = this;
-    var child;
-    var args = [].slice.call(arguments);
-
-    // The constructor function for the new subclass is either defined by you
-    // (the "constructor" property in your `extend` definition), or defaulted
-    // by us to simply call the parent's constructor.
-    if (protoProps && protoProps.hasOwnProperty('constructor')) {
-        child = protoProps.constructor;
-    } else {
-        child = function () {
-            return parent.apply(this, arguments);
-        };
-    }
-
-    // Add static properties to the constructor function from parent
-    objectExtend(child, parent);
-
-    // Set the prototype chain to inherit from `parent`, without calling
-    // `parent`'s constructor function.
-    var Surrogate = function(){ this.constructor = child; };
-    Surrogate.prototype = parent.prototype;
-    child.prototype = new Surrogate();
-
-    // Mix in all prototype properties to the subclass if supplied.
-    if (protoProps) {
-        args.unshift(child.prototype);
-        objectExtend.apply(null, args);
-    }
-
-    // Set a convenience property in case the parent's prototype is needed
-    // later.
-    child.__super__ = parent.prototype;
-
-    return child;
-};
-
-// Expose the extend function
-module.exports = extend;
-
-},{"extend-object":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/ampersand-class-extend/node_modules/extend-object/extend-object.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/ampersand-class-extend/node_modules/extend-object/extend-object.js":[function(require,module,exports){
-var arr = [];
-var each = arr.forEach;
-var slice = arr.slice;
-
-
-module.exports = function(obj) {
-    each.call(slice.call(arguments, 1), function(source) {
-        if (source) {
-            for (var prop in source) {
-                obj[prop] = source[prop];
-            }
-        }
-    });
-    return obj;
-};
-
-},{}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js":[function(require,module,exports){
+module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/ampersand-class-extend/ampersand-class-extend.js")
+},{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/ampersand-class-extend/ampersand-class-extend.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-collection/node_modules/ampersand-class-extend/ampersand-class-extend.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/node_modules/backbone-events-standalone/index.js":[function(require,module,exports){
 module.exports=require("/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/backbone-events-standalone/index.js")
 },{"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/backbone-events-standalone/index.js":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/node_modules/ampersand-state/node_modules/backbone-events-standalone/index.js"}],"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js":[function(require,module,exports){
 ;if (typeof window !== "undefined") {  window.ampersand = window.ampersand || {};  window.ampersand["ampersand-view"] = window.ampersand["ampersand-view"] || [];  window.ampersand["ampersand-view"].push("7.3.0");}
@@ -21886,7 +22458,17 @@ return jQuery;
 
     // home/home.jade compiled template
     templatizer["home"]["home"] = function tmpl_home_home() {
-        return '<div class="max-width-wrapper"><ul class="events"><li class="event"><a href="/tournament/1"><div class="title">Esker Hills</div><div class="date">27 - 29 March 2020</div><ul><li><div class="position">1.</div><div class="name">Liam Rockall</div><div class="score">E</div></li><li><div class="position">2.</div><div class="name">Mike Rockall</div><div class="score">E</div></li><li><div class="position">3.</div><div class="name">Eoin Rockall</div><div class="score">E</div></li><li><div class="position">4.</div><div class="name">Danny Finn</div><div class="score">E</div></li></ul><div class="actions"><p>Full Leaderboard &amp; Scoring</p></div></a></li><li class="event future"><a href="/tournament/2"><div class="title">Location: TBD</div><div class="date">March 2021</div></a></li><li class="event future"><a href="/tournament/3"><div class="title">Location: TBD</div><div class="date">March 2022</div></a></li><li class="event future"><a href="/tournament/4"><div class="title">Location: TBD</div><div class="date">March 2023</div></a></li><li class="event future"><a href="/tournament/5"><div class="title">Location: TBD</div><div class="date">March 2024</div></a></li><li class="event future"><a href="/tournament/6"><div class="title">Location: TBD</div><div class="date">March 2025</div></a></li></ul></div>';
+        return '<ul class="events"></ul>';
+    };
+
+    // home/loading.jade compiled template
+    templatizer["home"]["loading"] = function tmpl_home_loading() {
+        return '<div class="page-loader"><div class="sk-spinner-double-bounce sk-spinner"><div class="sk-double-bounce1"></div><div class="sk-double-bounce2"></div></div></div>';
+    };
+
+    // home/tournament.jade compiled template
+    templatizer["home"]["tournament"] = function tmpl_home_tournament() {
+        return '<li class="event"><a href="/tournament/1"><div class="title">Esker Hills</div><div class="date">27 - 29 March 2020</div><ul><li><div class="position">1.</div><div class="name">Liam Rockall</div><div class="score">E</div></li><li><div class="position">2.</div><div class="name">Mike Rockall</div><div class="score">E</div></li><li><div class="position">3.</div><div class="name">Eoin Rockall</div><div class="score">E</div></li><li><div class="position">4.</div><div class="name">Danny Finn</div><div class="score">E</div></li></ul><div class="actions"><p>Full Leaderboard &amp; Scoring</p></div></a></li>';
     };
 
     // layout.jade compiled template
@@ -22240,7 +22822,24 @@ module.exports = _.extend({
 
 module.exports.blastoff();
 
-},{"./models/me":"/Library/WebServer/Server/bp_tournaments/public/js/models/me.js","./router":"/Library/WebServer/Server/bp_tournaments/public/js/router.js","backbone-events-standalone":"/Library/WebServer/Server/bp_tournaments/node_modules/backbone-events-standalone/index.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/layout.js":[function(require,module,exports){
+},{"./models/me":"/Library/WebServer/Server/bp_tournaments/public/js/models/me.js","./router":"/Library/WebServer/Server/bp_tournaments/public/js/router.js","backbone-events-standalone":"/Library/WebServer/Server/bp_tournaments/node_modules/backbone-events-standalone/index.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/collections/tournaments.js":[function(require,module,exports){
+var Collection = require('ampersand-rest-collection');
+var Tournament = require('../models/tournament');
+
+module.exports = Collection.extend({
+    model: Tournament,
+    url: '/tournaments',
+
+    findBySlug: function(slug) {
+      return this.findWhere({slug: slug});
+    },
+
+    findByID: function(id) {
+      return this.findWhere({id: id});
+    }
+});
+
+},{"../models/tournament":"/Library/WebServer/Server/bp_tournaments/public/js/models/tournament.js","ampersand-rest-collection":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/ampersand-rest-collection.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/layout.js":[function(require,module,exports){
 var _ = require('underscore');
 var $ = require('jquery');
 var View = require('ampersand-view');
@@ -22269,6 +22868,10 @@ module.exports = View.extend({
       this.workspace.remove();
 
     this.$workspace_container.append(workspace.el);
+
+    if(_.isFunction(workspace.afterInsert))
+      workspace.afterInsert();
+    
     this.workspace = workspace;
   }
 });
@@ -22318,6 +22921,45 @@ module.exports = AmpersandModel.extend({
       }
     }
   },
+});
+},{"ampersand-model":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/models/tournament.js":[function(require,module,exports){
+var AmpersandModel = require('ampersand-model');
+
+module.exports = AmpersandModel.extend({
+  type: 'tournament',
+  url: '/tournaments',
+  props: {
+    id: ['integer'],
+    course_id: ['integer'],
+    name: ['string', true, ''],
+    date: ['date'],
+    slug: ['string']
+  },
+  derived: {
+    course: {
+      fn: function(){
+        return app.courses.findByID(this.course_id);
+      }
+    },
+    formatted_date: {
+      deps: ['date'],
+      fn: function() {
+        return "26th July 2014";
+      }
+    }
+  },
+
+  holes: function(){
+    return this.course().holes();
+  },
+
+  findHoleById: function(hole_id) {
+    return this.course().findHoleByID(hole_id);
+  },
+
+  tee_times: function(){
+    return app.tee_times.findByTournamentID(this.id);
+  }
 });
 },{"ampersand-model":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/router.js":[function(require,module,exports){
 var _              = require('underscore');
@@ -22405,18 +23047,47 @@ module.exports = View.extend({
 });
 
 },{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/home/home.js":[function(require,module,exports){
-var _ = require('underscore');
-var $ = require('jquery');
-var View = require('ampersand-view');
-var templates = require('../../../dist/templates');
+var _           = require('underscore');
+var $           = require('jquery');
+var View        = require('ampersand-view');
+var templates   = require('../../../dist/templates');
+var Tournaments = require('../../collections/tournaments');
 
-// - - - - - -  - - - - - -  - - - - - -  - - - - - -  - - - - - -  - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-module.exports = View.extend({
-  template: templates.home.home
+var Tournament = View.extend({
+  template: templates.home.tournament,
 });
 
-},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/login/login.js":[function(require,module,exports){
+module.exports = View.extend({
+  template: templates.home.loading,
+
+  initialize: function(){
+    this.tournaments = new Tournaments();
+  },
+
+  afterInsert: function(){
+    this.tournaments.fetch({
+      success: _.bind(this.afterFetchSuccess, this)
+    });
+  },
+
+  afterFetchSuccess: function(){
+    this.renderWithTemplate(this, templates.home.home);
+    console.log(this.tournaments);
+    this.tournaments.each(_.bind(this.renderTournament, this));
+  },
+
+  renderTournament: function(tournament){
+    var view = new Tournament({
+      model: tournament
+    });
+
+    this.renderSubview(view, ".events");
+  }
+});
+
+},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","../../collections/tournaments":"/Library/WebServer/Server/bp_tournaments/public/js/collections/tournaments.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/login/login.js":[function(require,module,exports){
 var _ = require('underscore');
 var $ = require('jquery');
 var View = require('ampersand-view');
@@ -22441,10 +23112,11 @@ module.exports = View.extend({
 });
 
 },{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/tournament/tournament.js":[function(require,module,exports){
-var _ = require('underscore');
-var $ = require('jquery');
-var View = require('ampersand-view');
-var templates = require('../../../dist/templates');
+var _           = require('underscore');
+var $           = require('jquery');
+var View        = require('ampersand-view');
+var templates   = require('../../../dist/templates');
+var Tournaments = require('../../collections/tournaments');
 
 // - - - - - -  - - - - - -  - - - - - -  - - - - - -  - - - - - -  - - - - -
 
@@ -22452,6 +23124,6 @@ module.exports = View.extend({
   template: templates.tournament.tournament
 });
 
-},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/usr/local/share/npm/lib/node_modules/watchify/node_modules/browserify/lib/_empty.js":[function(require,module,exports){
+},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","../../collections/tournaments":"/Library/WebServer/Server/bp_tournaments/public/js/collections/tournaments.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/usr/local/share/npm/lib/node_modules/watchify/node_modules/browserify/lib/_empty.js":[function(require,module,exports){
 
 },{}]},{},["/Library/WebServer/Server/bp_tournaments/public/js/app.js"]);
