@@ -1,4 +1,5 @@
 class TeeTime < ActiveRecord::Base
+  acts_as_paranoid
 
   # Default order for the leaderboard
   default_scope order("points desc, score desc, time asc")
@@ -8,7 +9,7 @@ class TeeTime < ActiveRecord::Base
   ## 
   belongs_to :player
   belongs_to :tournament
-  has_many :scores
+  has_many :scores, :dependent => :destroy  
 
   ##
   # Hooks

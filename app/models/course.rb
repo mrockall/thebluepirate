@@ -1,5 +1,5 @@
 class Course < ActiveRecord::Base
+  acts_as_paranoid
 
-  has_many :holes
-  
+  has_many :holes, :dependent => :destroy  
 end

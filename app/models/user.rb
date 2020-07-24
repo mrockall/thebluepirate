@@ -1,7 +1,8 @@
 class User < ActiveRecord::Base
+  acts_as_paranoid
 
-  has_many :players
-  has_many :identities
+  has_many :players, :dependent => :destroy  
+  has_many :identities, :dependent => :destroy  
 
   def self.find_or_create_with_identity(identity, auth)
     return identity.user if identity.user.present?

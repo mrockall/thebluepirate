@@ -22,6 +22,9 @@ gem 'sass'
 gem 'puma', '2.9.2'
 gem 'mysql2', '0.3.17'
 
+# Activerecord Extensions
+gem 'acts_as_paranoid', '0.4.3'
+
 # Auth
 gem 'warden'
 gem 'padrino-warden', :github => 'jondot/padrino-warden'

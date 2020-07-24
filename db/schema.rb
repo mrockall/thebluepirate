@@ -11,12 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 17) do
+ActiveRecord::Schema.define(:version => 18) do
 
   create_table "courses", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.datetime "deleted_at"
   end
 
   create_table "events", :force => true do |t|
@@ -25,6 +26,7 @@ ActiveRecord::Schema.define(:version => 17) do
     t.string   "message"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+    t.datetime "deleted_at"
   end
 
   create_table "holes", :force => true do |t|
@@ -35,6 +37,7 @@ ActiveRecord::Schema.define(:version => 17) do
     t.integer  "length"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.datetime "deleted_at"
   end
 
   create_table "identities", :force => true do |t|
@@ -44,6 +47,7 @@ ActiveRecord::Schema.define(:version => 17) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "player_id"
+    t.datetime "deleted_at"
   end
 
   create_table "players", :force => true do |t|
@@ -53,6 +57,7 @@ ActiveRecord::Schema.define(:version => 17) do
     t.datetime "updated_at",                  :null => false
     t.string   "facebook_id", :default => "", :null => false
     t.string   "email"
+    t.datetime "deleted_at"
   end
 
   create_table "scores", :force => true do |t|
@@ -65,6 +70,7 @@ ActiveRecord::Schema.define(:version => 17) do
     t.datetime "updated_at",  :null => false
     t.integer  "putts"
     t.boolean  "fairway"
+    t.datetime "deleted_at"
   end
 
   create_table "tee_times", :force => true do |t|
@@ -79,6 +85,7 @@ ActiveRecord::Schema.define(:version => 17) do
     t.string   "login_slug"
     t.integer  "putts",         :default => 0
     t.integer  "fairways",      :default => 0
+    t.datetime "deleted_at"
   end
 
   create_table "tournaments", :force => true do |t|
@@ -88,6 +95,7 @@ ActiveRecord::Schema.define(:version => 17) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.string   "slug"
+    t.datetime "deleted_at"
   end
 
   create_table "users", :force => true do |t|
@@ -96,6 +104,7 @@ ActiveRecord::Schema.define(:version => 17) do
     t.string   "image_url"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.datetime "deleted_at"
   end
 
 end

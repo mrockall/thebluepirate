@@ -1,4 +1,5 @@
 class Identity < ActiveRecord::Base
+  acts_as_paranoid
 
   PROVIDERS = {
     :twitter => 'twitter',

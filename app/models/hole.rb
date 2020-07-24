@@ -1,4 +1,5 @@
 class Hole < ActiveRecord::Base
+  acts_as_paranoid
 
   belongs_to :course
 
@@ -6,5 +7,4 @@ class Hole < ActiveRecord::Base
   def adjusted_par(player)
     self.par + player.handicap/18 + (self.index <= player.handicap%18 ? 1 : 0)
   end
-
 end

@@ -1,4 +1,6 @@
 class Score < ActiveRecord::Base
+  acts_as_paranoid
+  
   attr_accessor :result
 
   ##

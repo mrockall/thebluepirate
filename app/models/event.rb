@@ -5,10 +5,10 @@
 # throughout the tournament.
 # 
 class Event < ActiveRecord::Base
+  acts_as_paranoid
 
   belongs_to :tournament
   belongs_to :score
 
   validates_presence_of :tournament, :score, :message
-
 end
