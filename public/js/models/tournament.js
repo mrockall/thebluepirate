@@ -1,4 +1,7 @@
 var AmpersandModel = require('ampersand-model');
+var TeeTimes       = require('../collections/tee_times');
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 module.exports = AmpersandModel.extend({
   type: 'tournament',
@@ -9,6 +12,10 @@ module.exports = AmpersandModel.extend({
     name: ['string', true, ''],
     date: ['date'],
     slug: ['string']
+  },
+
+  collections: {
+    tee_times: TeeTimes
   },
 
   derived: {
@@ -43,9 +50,5 @@ module.exports = AmpersandModel.extend({
 
   findHoleById: function(hole_id) {
     return this.course().findHoleByID(hole_id);
-  },
-
-  tee_times: function(){
-    return app.tee_times.findByTournamentID(this.id);
   }
 });

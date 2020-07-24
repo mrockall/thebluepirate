@@ -7,9 +7,7 @@ attributes :id,
   :through, 
   :points, 
   :score
-  # :putts,
-  # :fairways,
-  # :fairways_hit,
-  # :fairways_played,
-  # :greens_hit,
-  # :greens_played
+
+child :player do
+  extends 'players/one', :unless => :deleted?
+end

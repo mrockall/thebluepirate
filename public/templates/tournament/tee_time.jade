@@ -1,0 +1,7 @@
+li
+  a(href='#')
+    .cell.one(role='pretty_through')= model.position()
+    .cell.six.ellipsis.name= model.player.name
+    .cell.one.score.blue(role='pretty_score')= model.pretty_score
+    .cell.one.score(role='points')= model.points
+    .cell.one.thru(role='through')= model.through

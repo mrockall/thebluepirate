@@ -4,7 +4,11 @@ var View        = require('ampersand-view');
 var templates   = require('../../../dist/templates');
 var Tournament  = require('../../models/tournament');
 
-// - - - - - -  - - - - - -  - - - - - -  - - - - - -  - - - - - -  - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+var TeeTime = View.extend({
+  template: templates.tournament.tee_time,
+});
 
 module.exports = View.extend({
   template: templates.loading,
@@ -23,5 +27,14 @@ module.exports = View.extend({
 
   afterFetchSuccess: function(){
     this.renderWithTemplate(this, templates.tournament.tournament);
+    this.tournament.tee_times.each(_.bind(this.renderTeeTime, this));
+  },
+
+  renderTeeTime: function(tee_time){
+    var view = new TeeTime({
+      model: tee_time
+    });
+
+    this.renderSubview(view, ".leaderboard");
   }
 });

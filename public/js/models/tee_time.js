@@ -1,5 +1,8 @@
 var _ = require('underscore');
 var AmpersandModel = require('ampersand-model');
+var Player = require('../models/player');
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 module.exports = AmpersandModel.extend({
   type: 'tournament',
@@ -24,20 +27,14 @@ module.exports = AmpersandModel.extend({
     expanded: ['boolean', true, false]
   },
 
+  children: {
+    player: Player
+  },
+
   derived: {
-    tournament: {
-      fn: function(){
-        return app.tournaments.findByID(this.tournament_id);
-      }
-    },
     course: {
       fn: function(){
         return this.tournament.course;
-      }
-    },
-    player: {
-      fn: function(){
-        return app.players.findByID(this.player_id);
       }
     },
     player_url: {

@@ -1,6 +1,8 @@
 var Collection = require('ampersand-rest-collection');
 var TeeTime = require('../models/tee_time');
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 module.exports = Collection.extend({
   model: TeeTime,
   url: '/tee_times',

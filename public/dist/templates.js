@@ -294,6 +294,18 @@
         return buf.join("");
     };
 
+    // tournament/tee_time.jade compiled template
+    templatizer["tournament"]["tee_time"] = function tmpl_tournament_tee_time(locals) {
+        var buf = [];
+        var jade_mixins = {};
+        var jade_interp;
+        var locals_for_with = locals || {};
+        (function(model) {
+            buf.push('<li><a href="#"><div role="pretty_through" class="cell one">' + jade.escape(null == (jade_interp = model.position()) ? "" : jade_interp) + '</div><div class="cell six ellipsis name">' + jade.escape(null == (jade_interp = model.player.name) ? "" : jade_interp) + '</div><div role="pretty_score" class="cell one score blue">' + jade.escape(null == (jade_interp = model.pretty_score) ? "" : jade_interp) + '</div><div role="points" class="cell one score">' + jade.escape(null == (jade_interp = model.points) ? "" : jade_interp) + '</div><div role="through" class="cell one thru">' + jade.escape(null == (jade_interp = model.through) ? "" : jade_interp) + "</div></a></li>");
+        }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
+        return buf.join("");
+    };
+
     // tournament/tournament.jade compiled template
     templatizer["tournament"]["tournament"] = function tmpl_tournament_tournament(locals) {
         var buf = [];
@@ -301,7 +313,7 @@
         var jade_interp;
         var locals_for_with = locals || {};
         (function(tournament) {
-            buf.push('<div class="tournament-page"><h1>' + jade.escape(null == (jade_interp = tournament.name) ? "" : jade_interp) + "</h1></div>");
+            buf.push('<div class="tournament-page"><h1>' + jade.escape(null == (jade_interp = tournament.name) ? "" : jade_interp) + '</h1><ul class="leaderboard"></ul></div>');
         }).call(this, "tournament" in locals_for_with ? locals_for_with.tournament : typeof tournament !== "undefined" ? tournament : undefined);
         return buf.join("");
     };

@@ -1,12 +1,16 @@
 BluePirate::App.controllers :tournaments do
   get :'/', :provides => :json do
-    @tournament = Tournament.includes(:tee_times).order('created_at DESC')
+    query = Tournament.includes(course: [], tee_times: [:player])
+    query = query.order('created_at DESC')
+    @tournament = query.all
+
     render 'tournaments/one'
   end
 
   get :'/:id', :provides => :json do
-    query = Tournament.includes(:tee_times)
+    query = Tournament.includes(course: [], tee_times: [:player])
     query = query.where(id: params[:id])
+    
     @tournament = query.first
     error 404 unless @tournament.present?
 
