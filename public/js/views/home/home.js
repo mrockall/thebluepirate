@@ -11,7 +11,7 @@ var Tournament = View.extend({
 });
 
 module.exports = View.extend({
-  template: templates.home.loading,
+  template: templates.loading,
 
   initialize: function(){
     this.tournaments = new Tournaments();

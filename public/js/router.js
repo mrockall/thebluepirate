@@ -38,7 +38,10 @@ module.exports = Router.extend({
   },
 
   tournament: function(id) {
-    var workspace = new TournamentView();
+    var workspace = new TournamentView({
+      id: id
+    });
+    
     workspace.render();
     this.renderIntoLayout(workspace);
   },

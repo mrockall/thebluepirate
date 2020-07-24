@@ -2,7 +2,6 @@ var AmpersandModel = require('ampersand-model');
 
 module.exports = AmpersandModel.extend({
   type: 'tournament',
-  url: '/tournaments',
 
   props: {
     id: ['integer'],
@@ -29,6 +28,13 @@ module.exports = AmpersandModel.extend({
         });
       }
     }
+  },
+
+  url: function(){
+    if(!this.id)
+      return '/tournaments';
+
+    return '/tournaments/' + this.id;
   },
 
   holes: function(){

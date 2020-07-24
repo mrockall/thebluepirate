@@ -35,11 +35,6 @@
         return '<ul class="events"></ul>';
     };
 
-    // home/loading.jade compiled template
-    templatizer["home"]["loading"] = function tmpl_home_loading() {
-        return '<div class="page-loader"><div class="sk-spinner-double-bounce sk-spinner"><div class="sk-double-bounce1"></div><div class="sk-double-bounce2"></div></div></div>';
-    };
-
     // home/tournament.jade compiled template
     templatizer["home"]["tournament"] = function tmpl_home_tournament(locals) {
         var buf = [];
@@ -47,7 +42,7 @@
         var jade_interp;
         var locals_for_with = locals || {};
         (function(model) {
-            buf.push('<li class="event"><a href="/tournament/1"><div class="title">' + jade.escape(null == (jade_interp = model.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = model.formatted_date) ? "" : jade_interp) + '</div><div class="actions"><p>Full Leaderboard &amp; Scoring</p></div></a></li>');
+            buf.push('<li class="event"><a' + jade.attr("href", "/tournament/" + model.id, true, false) + '><div class="title">' + jade.escape(null == (jade_interp = model.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = model.formatted_date) ? "" : jade_interp) + '</div><div class="actions"><p>Full Leaderboard &amp; Scoring</p></div></a></li>');
         }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
         return buf.join("");
     };
@@ -55,6 +50,11 @@
     // layout.jade compiled template
     templatizer["layout"] = function tmpl_layout() {
         return '<body><div class="app-wrapper"><header><a href="/" class="brand">Home</a><h1>Blue Pirate</h1><div class="profile"></div></header><div class="workspace-container"></div></div></body>';
+    };
+
+    // loading.jade compiled template
+    templatizer["loading"] = function tmpl_loading() {
+        return '<div class="page-loader"><div class="sk-spinner-double-bounce sk-spinner"><div class="sk-double-bounce1"></div><div class="sk-double-bounce2"></div></div></div>';
     };
 
     // login/base.jade compiled template
@@ -220,11 +220,6 @@
         return buf.join("");
     };
 
-    // tournament/home.jade compiled template
-    templatizer["tournament"]["home"] = function tmpl_tournament_home() {
-        return "<p>Hello Mike</p>";
-    };
-
     // tournament/list_item.jade compiled template
     templatizer["tournament"]["list_item"] = function tmpl_tournament_list_item(locals) {
         var buf = [];
@@ -300,8 +295,15 @@
     };
 
     // tournament/tournament.jade compiled template
-    templatizer["tournament"]["tournament"] = function tmpl_tournament_tournament() {
-        return '<div class="max-width-wrapper"><p>Tournament</p></div>';
+    templatizer["tournament"]["tournament"] = function tmpl_tournament_tournament(locals) {
+        var buf = [];
+        var jade_mixins = {};
+        var jade_interp;
+        var locals_for_with = locals || {};
+        (function(tournament) {
+            buf.push('<div class="tournament-page"><h1>' + jade.escape(null == (jade_interp = tournament.name) ? "" : jade_interp) + "</h1></div>");
+        }).call(this, "tournament" in locals_for_with ? locals_for_with.tournament : typeof tournament !== "undefined" ? tournament : undefined);
+        return buf.join("");
     };
 
     // tournament/view.jade compiled template
