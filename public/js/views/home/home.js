@@ -25,7 +25,6 @@ module.exports = View.extend({
 
   afterFetchSuccess: function(){
     this.renderWithTemplate(this, templates.home.home);
-    console.log(this.tournaments);
     this.tournaments.each(_.bind(this.renderTournament, this));
   },
 

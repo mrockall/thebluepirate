@@ -22467,8 +22467,15 @@ return jQuery;
     };
 
     // home/tournament.jade compiled template
-    templatizer["home"]["tournament"] = function tmpl_home_tournament() {
-        return '<li class="event"><a href="/tournament/1"><div class="title">Esker Hills</div><div class="date">27 - 29 March 2020</div><ul><li><div class="position">1.</div><div class="name">Liam Rockall</div><div class="score">E</div></li><li><div class="position">2.</div><div class="name">Mike Rockall</div><div class="score">E</div></li><li><div class="position">3.</div><div class="name">Eoin Rockall</div><div class="score">E</div></li><li><div class="position">4.</div><div class="name">Danny Finn</div><div class="score">E</div></li></ul><div class="actions"><p>Full Leaderboard &amp; Scoring</p></div></a></li>';
+    templatizer["home"]["tournament"] = function tmpl_home_tournament(locals) {
+        var buf = [];
+        var jade_mixins = {};
+        var jade_interp;
+        var locals_for_with = locals || {};
+        (function(model) {
+            buf.push('<li class="event"><a href="/tournament/1"><div class="title">' + jade.escape(null == (jade_interp = model.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = model.formatted_date) ? "" : jade_interp) + '</div><div class="actions"><p>Full Leaderboard &amp; Scoring</p></div></a></li>');
+        }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
+        return buf.join("");
     };
 
     // layout.jade compiled template
@@ -22928,6 +22935,7 @@ var AmpersandModel = require('ampersand-model');
 module.exports = AmpersandModel.extend({
   type: 'tournament',
   url: '/tournaments',
+
   props: {
     id: ['integer'],
     course_id: ['integer'],
@@ -22935,6 +22943,7 @@ module.exports = AmpersandModel.extend({
     date: ['date'],
     slug: ['string']
   },
+
   derived: {
     course: {
       fn: function(){
@@ -22944,7 +22953,12 @@ module.exports = AmpersandModel.extend({
     formatted_date: {
       deps: ['date'],
       fn: function() {
-        return "26th July 2014";
+        return this.date.toLocaleDateString("en-US", { 
+          weekday: 'short', 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        });
       }
     }
   },
@@ -23074,7 +23088,6 @@ module.exports = View.extend({
 
   afterFetchSuccess: function(){
     this.renderWithTemplate(this, templates.home.home);
-    console.log(this.tournaments);
     this.tournaments.each(_.bind(this.renderTournament, this));
   },
 

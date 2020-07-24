@@ -3,6 +3,7 @@ var AmpersandModel = require('ampersand-model');
 module.exports = AmpersandModel.extend({
   type: 'tournament',
   url: '/tournaments',
+
   props: {
     id: ['integer'],
     course_id: ['integer'],
@@ -10,6 +11,7 @@ module.exports = AmpersandModel.extend({
     date: ['date'],
     slug: ['string']
   },
+
   derived: {
     course: {
       fn: function(){
@@ -19,7 +21,12 @@ module.exports = AmpersandModel.extend({
     formatted_date: {
       deps: ['date'],
       fn: function() {
-        return "26th July 2014";
+        return this.date.toLocaleDateString("en-US", { 
+          weekday: 'short', 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        });
       }
     }
   },
