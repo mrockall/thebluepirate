@@ -6,8 +6,27 @@ var Tournaments = require('../../collections/tournaments');
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+var TeeTime = View.extend({
+  template: templates.home.tee_time
+});
+
 var Tournament = View.extend({
   template: templates.home.tournament,
+
+  render: function(){
+    this.renderWithTemplate();
+    
+    var tee_times = this.model.tee_times.first(3);
+    tee_times.forEach(_.bind(this.renderTeeTime, this));
+  },
+
+  renderTeeTime: function(tee_time){
+    var view = new TeeTime({
+      model: tee_time
+    });
+
+    this.renderSubview(view, "ul");
+  }
 });
 
 module.exports = View.extend({

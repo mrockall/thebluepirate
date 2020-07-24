@@ -35,6 +35,18 @@
         return '<ul class="events"></ul>';
     };
 
+    // home/tee_time.jade compiled template
+    templatizer["home"]["tee_time"] = function tmpl_home_tee_time(locals) {
+        var buf = [];
+        var jade_mixins = {};
+        var jade_interp;
+        var locals_for_with = locals || {};
+        (function(model) {
+            buf.push('<li><div class="position">' + jade.escape(null == (jade_interp = model.position()) ? "" : jade_interp) + '</div><div class="name">' + jade.escape(null == (jade_interp = model.player.name) ? "" : jade_interp) + '</div><div class="score">' + jade.escape(null == (jade_interp = model.pretty_score) ? "" : jade_interp) + "</div></li>");
+        }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
+        return buf.join("");
+    };
+
     // home/tournament.jade compiled template
     templatizer["home"]["tournament"] = function tmpl_home_tournament(locals) {
         var buf = [];
@@ -42,7 +54,7 @@
         var jade_interp;
         var locals_for_with = locals || {};
         (function(model) {
-            buf.push('<li class="event"><a' + jade.attr("href", "/tournament/" + model.id, true, false) + '><div class="title">' + jade.escape(null == (jade_interp = model.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = model.formatted_date) ? "" : jade_interp) + '</div><div class="actions"><p>Full Leaderboard &amp; Scoring</p></div></a></li>');
+            buf.push('<li class="event"><a' + jade.attr("href", "/tournament/" + model.id, true, false) + '><div class="title">' + jade.escape(null == (jade_interp = model.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = model.course.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = model.formatted_date) ? "" : jade_interp) + '</div><ul></ul><div class="actions"><p>Full Leaderboard &amp; Scoring</p></div></a></li>');
         }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
         return buf.join("");
     };

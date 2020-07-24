@@ -1,6 +1,8 @@
 li.event
   a(href="/tournament/" + model.id)
     .title= model.name
+    .date= model.course.name
     .date= model.formatted_date
+    ul
     .actions
       p Full Leaderboard &amp; Scoring
