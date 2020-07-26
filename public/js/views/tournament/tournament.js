@@ -20,6 +20,13 @@ module.exports = View.extend({
 
   afterInsert: function(){
     this.tournament.fetch({
+      data: {
+        expand: [
+          'course',
+          'tee_times',
+          'tee_times.player'
+        ].join(',')
+      },
       success: _.bind(this.afterFetchSuccess, this)
     });
   },
