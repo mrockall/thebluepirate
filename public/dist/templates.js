@@ -18,6 +18,7 @@
     templatizer["modals"] = {};
     templatizer["my_round"] = {};
     templatizer["player"] = {};
+    templatizer["tee_time"] = {};
     templatizer["tournament"] = {};
 
     // body.jade compiled template
@@ -220,6 +221,11 @@
         return '<div class="max-width-wrapper"><p>Player</p></div>';
     };
 
+    // tee_time/tee_time.jade compiled template
+    templatizer["tee_time"]["tee_time"] = function tmpl_tee_time_tee_time() {
+        return '<div class="workspace-container"><p>Mike</p></div>';
+    };
+
     // tournament/hole_list_item.jade compiled template
     templatizer["tournament"]["hole_list_item"] = function tmpl_tournament_hole_list_item(locals) {
         var buf = [];
@@ -313,7 +319,7 @@
         var jade_interp;
         var locals_for_with = locals || {};
         (function(model) {
-            buf.push('<li><a href="#"><div role="pretty_through" class="cell one">' + jade.escape(null == (jade_interp = model.position()) ? "" : jade_interp) + '</div><div class="cell six ellipsis name">' + jade.escape(null == (jade_interp = model.player.name) ? "" : jade_interp) + '</div><div role="pretty_score" class="cell one score blue">' + jade.escape(null == (jade_interp = model.pretty_score) ? "" : jade_interp) + '</div><div role="points" class="cell one score">' + jade.escape(null == (jade_interp = model.points) ? "" : jade_interp) + '</div><div role="through" class="cell one thru">' + jade.escape(null == (jade_interp = model.through) ? "" : jade_interp) + "</div></a></li>");
+            buf.push("<li><a" + jade.attr("href", "/tee-time/" + model.id, true, false) + '><div class="cell one">' + jade.escape(null == (jade_interp = model.position()) ? "" : jade_interp) + '</div><div class="cell six ellipsis name">' + jade.escape(null == (jade_interp = model.player.name) ? "" : jade_interp) + '</div><div class="cell one score blue">' + jade.escape(null == (jade_interp = model.pretty_score) ? "" : jade_interp) + '</div><div class="cell one score">' + jade.escape(null == (jade_interp = model.points) ? "" : jade_interp) + '</div><div class="cell one thru">' + jade.escape(null == (jade_interp = model.through) ? "" : jade_interp) + "</div></a></li>");
         }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
         return buf.join("");
     };
@@ -325,14 +331,21 @@
         var jade_interp;
         var locals_for_with = locals || {};
         (function(tournament) {
-            buf.push('<div class="tournament-page"><h1>' + jade.escape(null == (jade_interp = tournament.name) ? "" : jade_interp) + '</h1><ul class="leaderboard"></ul></div>');
+            buf.push('<div class="workspace-container"><ul class="events"><li class="event"><a href="#"><div class="title">' + jade.escape(null == (jade_interp = tournament.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = tournament.course.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = tournament.formatted_date) ? "" : jade_interp) + '</div></a></li></ul><ul class="leaderboard"></ul></div>');
         }).call(this, "tournament" in locals_for_with ? locals_for_with.tournament : typeof tournament !== "undefined" ? tournament : undefined);
         return buf.join("");
     };
 
     // tournament/view.jade compiled template
-    templatizer["tournament"]["view"] = function tmpl_tournament_view() {
-        return '<div class="page"><ul class="leaderboard players"></ul></div>';
+    templatizer["tournament"]["view"] = function tmpl_tournament_view(locals) {
+        var buf = [];
+        var jade_mixins = {};
+        var jade_interp;
+        var locals_for_with = locals || {};
+        (function(model) {
+            buf.push('<div class="workspace-container"><ul><li class="event"><a' + jade.attr("href", "/tournament/" + model.id, true, false) + '><div class="title">' + jade.escape(null == (jade_interp = model.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = model.course.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = model.formatted_date) ? "" : jade_interp) + '</div><ul></ul><div class="actions"><p>Full Leaderboard &amp; Scoring</p></div></a></li></ul><ul class="leaderboard players"></ul></div>');
+        }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
+        return buf.join("");
     };
 
     return templatizer;

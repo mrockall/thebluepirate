@@ -4,7 +4,7 @@ BluePirate::App.controllers :tournaments do
     query = query.order('created_at DESC')
     @tournament = query.all
 
-    render 'tournaments/one'
+    rabl 'tournaments/one'
   end
 
   get :'/:id', :provides => :json do
@@ -14,6 +14,6 @@ BluePirate::App.controllers :tournaments do
     @tournament = query.first
     error 404 unless @tournament.present?
 
-    render 'tournaments/one'
+    rabl 'tournaments/one'
   end
 end

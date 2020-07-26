@@ -5,6 +5,7 @@ var HomePage       = require('./views/home/home');
 var LoginPage      = require('./views/login/login');
 var CardPage       = require('./views/card/card');
 var TournamentView = require('./views/tournament/tournament');
+var TeeTimeView    = require('./views/tee_time/tee_time');
 var PlayerPage     = require('./views/player/player');
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -15,6 +16,7 @@ module.exports = Router.extend({
     'login': 'login',
     'card': 'card',
     'tournament/:tournament_id': 'tournament',
+    'tee-time/:tee_time': 'tee_time',
     'player/:player_id': 'player',
     '(*path)': 'catchAll'
   },
@@ -39,6 +41,15 @@ module.exports = Router.extend({
 
   tournament: function(id) {
     var workspace = new TournamentView({
+      id: id
+    });
+    
+    workspace.render();
+    this.renderIntoLayout(workspace);
+  },
+
+  tee_time: function(id){
+    var workspace = new TeeTimeView({
       id: id
     });
     

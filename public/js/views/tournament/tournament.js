@@ -1,5 +1,4 @@
 var _           = require('underscore');
-var $           = require('jquery');
 var View        = require('ampersand-view');
 var templates   = require('../../../dist/templates');
 var Tournament  = require('../../models/tournament');

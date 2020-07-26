@@ -5,7 +5,8 @@ var Player = require('../models/player');
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 module.exports = AmpersandModel.extend({
-  type: 'tournament',
+  type: 'tee_time',
+
   props: {
     id: ['integer', true],
     tournament_id: ['integer', true],
@@ -83,6 +84,13 @@ module.exports = AmpersandModel.extend({
         return this.expanded ? 'expanded' : '';
       }
     }
+  },
+
+  url: function(){
+    if(!this.id)
+      return '/tee_times';
+
+    return '/tee_times/' + this.id;
   },
 
   position: function(){

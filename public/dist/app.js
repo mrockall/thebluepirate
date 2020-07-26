@@ -22444,6 +22444,7 @@ return jQuery;
     templatizer["modals"] = {};
     templatizer["my_round"] = {};
     templatizer["player"] = {};
+    templatizer["tee_time"] = {};
     templatizer["tournament"] = {};
 
     // body.jade compiled template
@@ -22646,6 +22647,11 @@ return jQuery;
         return '<div class="max-width-wrapper"><p>Player</p></div>';
     };
 
+    // tee_time/tee_time.jade compiled template
+    templatizer["tee_time"]["tee_time"] = function tmpl_tee_time_tee_time() {
+        return '<div class="workspace-container"><p>Mike</p></div>';
+    };
+
     // tournament/hole_list_item.jade compiled template
     templatizer["tournament"]["hole_list_item"] = function tmpl_tournament_hole_list_item(locals) {
         var buf = [];
@@ -22739,7 +22745,7 @@ return jQuery;
         var jade_interp;
         var locals_for_with = locals || {};
         (function(model) {
-            buf.push('<li><a href="#"><div role="pretty_through" class="cell one">' + jade.escape(null == (jade_interp = model.position()) ? "" : jade_interp) + '</div><div class="cell six ellipsis name">' + jade.escape(null == (jade_interp = model.player.name) ? "" : jade_interp) + '</div><div role="pretty_score" class="cell one score blue">' + jade.escape(null == (jade_interp = model.pretty_score) ? "" : jade_interp) + '</div><div role="points" class="cell one score">' + jade.escape(null == (jade_interp = model.points) ? "" : jade_interp) + '</div><div role="through" class="cell one thru">' + jade.escape(null == (jade_interp = model.through) ? "" : jade_interp) + "</div></a></li>");
+            buf.push("<li><a" + jade.attr("href", "/tee-time/" + model.id, true, false) + '><div class="cell one">' + jade.escape(null == (jade_interp = model.position()) ? "" : jade_interp) + '</div><div class="cell six ellipsis name">' + jade.escape(null == (jade_interp = model.player.name) ? "" : jade_interp) + '</div><div class="cell one score blue">' + jade.escape(null == (jade_interp = model.pretty_score) ? "" : jade_interp) + '</div><div class="cell one score">' + jade.escape(null == (jade_interp = model.points) ? "" : jade_interp) + '</div><div class="cell one thru">' + jade.escape(null == (jade_interp = model.through) ? "" : jade_interp) + "</div></a></li>");
         }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
         return buf.join("");
     };
@@ -22751,14 +22757,21 @@ return jQuery;
         var jade_interp;
         var locals_for_with = locals || {};
         (function(tournament) {
-            buf.push('<div class="tournament-page"><h1>' + jade.escape(null == (jade_interp = tournament.name) ? "" : jade_interp) + '</h1><ul class="leaderboard"></ul></div>');
+            buf.push('<div class="workspace-container"><ul class="events"><li class="event"><a href="#"><div class="title">' + jade.escape(null == (jade_interp = tournament.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = tournament.course.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = tournament.formatted_date) ? "" : jade_interp) + '</div></a></li></ul><ul class="leaderboard"></ul></div>');
         }).call(this, "tournament" in locals_for_with ? locals_for_with.tournament : typeof tournament !== "undefined" ? tournament : undefined);
         return buf.join("");
     };
 
     // tournament/view.jade compiled template
-    templatizer["tournament"]["view"] = function tmpl_tournament_view() {
-        return '<div class="page"><ul class="leaderboard players"></ul></div>';
+    templatizer["tournament"]["view"] = function tmpl_tournament_view(locals) {
+        var buf = [];
+        var jade_mixins = {};
+        var jade_interp;
+        var locals_for_with = locals || {};
+        (function(model) {
+            buf.push('<div class="workspace-container"><ul><li class="event"><a' + jade.attr("href", "/tournament/" + model.id, true, false) + '><div class="title">' + jade.escape(null == (jade_interp = model.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = model.course.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = model.formatted_date) ? "" : jade_interp) + '</div><ul></ul><div class="actions"><p>Full Leaderboard &amp; Scoring</p></div></a></li></ul><ul class="leaderboard players"></ul></div>');
+        }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
+        return buf.join("");
     };
 
     return templatizer;
@@ -23137,7 +23150,8 @@ var Player = require('../models/player');
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 module.exports = AmpersandModel.extend({
-  type: 'tournament',
+  type: 'tee_time',
+
   props: {
     id: ['integer', true],
     tournament_id: ['integer', true],
@@ -23215,6 +23229,13 @@ module.exports = AmpersandModel.extend({
         return this.expanded ? 'expanded' : '';
       }
     }
+  },
+
+  url: function(){
+    if(!this.id)
+      return '/tee_times';
+
+    return '/tee_times/' + this.id;
   },
 
   position: function(){
@@ -23332,6 +23353,7 @@ var HomePage       = require('./views/home/home');
 var LoginPage      = require('./views/login/login');
 var CardPage       = require('./views/card/card');
 var TournamentView = require('./views/tournament/tournament');
+var TeeTimeView    = require('./views/tee_time/tee_time');
 var PlayerPage     = require('./views/player/player');
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -23342,6 +23364,7 @@ module.exports = Router.extend({
     'login': 'login',
     'card': 'card',
     'tournament/:tournament_id': 'tournament',
+    'tee-time/:tee_time': 'tee_time',
     'player/:player_id': 'player',
     '(*path)': 'catchAll'
   },
@@ -23366,6 +23389,15 @@ module.exports = Router.extend({
 
   tournament: function(id) {
     var workspace = new TournamentView({
+      id: id
+    });
+    
+    workspace.render();
+    this.renderIntoLayout(workspace);
+  },
+
+  tee_time: function(id){
+    var workspace = new TeeTimeView({
       id: id
     });
     
@@ -23400,7 +23432,7 @@ module.exports = Router.extend({
   }
 });
 
-},{"./layout":"/Library/WebServer/Server/bp_tournaments/public/js/layout.js","./views/card/card":"/Library/WebServer/Server/bp_tournaments/public/js/views/card/card.js","./views/home/home":"/Library/WebServer/Server/bp_tournaments/public/js/views/home/home.js","./views/login/login":"/Library/WebServer/Server/bp_tournaments/public/js/views/login/login.js","./views/player/player":"/Library/WebServer/Server/bp_tournaments/public/js/views/player/player.js","./views/tournament/tournament":"/Library/WebServer/Server/bp_tournaments/public/js/views/tournament/tournament.js","ampersand-router":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/ampersand-router.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/card/card.js":[function(require,module,exports){
+},{"./layout":"/Library/WebServer/Server/bp_tournaments/public/js/layout.js","./views/card/card":"/Library/WebServer/Server/bp_tournaments/public/js/views/card/card.js","./views/home/home":"/Library/WebServer/Server/bp_tournaments/public/js/views/home/home.js","./views/login/login":"/Library/WebServer/Server/bp_tournaments/public/js/views/login/login.js","./views/player/player":"/Library/WebServer/Server/bp_tournaments/public/js/views/player/player.js","./views/tee_time/tee_time":"/Library/WebServer/Server/bp_tournaments/public/js/views/tee_time/tee_time.js","./views/tournament/tournament":"/Library/WebServer/Server/bp_tournaments/public/js/views/tournament/tournament.js","ampersand-router":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-router/ampersand-router.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/card/card.js":[function(require,module,exports){
 var _ = require('underscore');
 var $ = require('jquery');
 var View = require('ampersand-view');
@@ -23495,9 +23527,42 @@ module.exports = View.extend({
   template: templates.player.player
 });
 
-},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/tournament/tournament.js":[function(require,module,exports){
+},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/tee_time/tee_time.js":[function(require,module,exports){
 var _           = require('underscore');
-var $           = require('jquery');
+var View        = require('ampersand-view');
+var templates   = require('../../../dist/templates');
+var TeeTime     = require('../../models/tee_time');
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+module.exports = View.extend({
+  template: templates.loading,
+
+  initialize: function(options){
+    this.tee_time = new TeeTime({
+      id: options.id
+    });
+  },
+
+  afterInsert: function(){
+    this.tee_time.fetch({
+      data: {
+        expand: [
+          'scores',
+          'scores.player'
+        ].join(',')
+      },
+      success: _.bind(this.afterFetchSuccess, this)
+    });
+  },
+
+  afterFetchSuccess: function(){
+    this.renderWithTemplate(this, templates.tee_time.tee_time);
+  }
+});
+
+},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","../../models/tee_time":"/Library/WebServer/Server/bp_tournaments/public/js/models/tee_time.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/tournament/tournament.js":[function(require,module,exports){
+var _           = require('underscore');
 var View        = require('ampersand-view');
 var templates   = require('../../../dist/templates');
 var Tournament  = require('../../models/tournament');
@@ -23537,6 +23602,6 @@ module.exports = View.extend({
   }
 });
 
-},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","../../models/tournament":"/Library/WebServer/Server/bp_tournaments/public/js/models/tournament.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","jquery":"/Library/WebServer/Server/bp_tournaments/node_modules/jquery/dist/jquery.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/usr/local/share/npm/lib/node_modules/watchify/node_modules/browserify/lib/_empty.js":[function(require,module,exports){
+},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","../../models/tournament":"/Library/WebServer/Server/bp_tournaments/public/js/models/tournament.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/usr/local/share/npm/lib/node_modules/watchify/node_modules/browserify/lib/_empty.js":[function(require,module,exports){
 
 },{}]},{},["/Library/WebServer/Server/bp_tournaments/public/js/app.js"]);
