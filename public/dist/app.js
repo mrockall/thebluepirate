@@ -22647,9 +22647,28 @@ return jQuery;
         return '<div class="max-width-wrapper"><p>Player</p></div>';
     };
 
+    // tee_time/hole.jade compiled template
+    templatizer["tee_time"]["hole"] = function tmpl_tee_time_hole(locals) {
+        var buf = [];
+        var jade_mixins = {};
+        var jade_interp;
+        var locals_for_with = locals || {};
+        (function(model) {
+            buf.push('<li> <div class="col is-10">' + jade.escape(null == (jade_interp = model.number) ? "" : jade_interp) + '</div><div class="col is-10">' + jade.escape(null == (jade_interp = model.par) ? "" : jade_interp) + '</div><div class="col is-10">' + jade.escape(null == (jade_interp = model.index) ? "" : jade_interp) + '</div><div class="col is-10">' + jade.escape(null == (jade_interp = model.length) ? "" : jade_interp) + "</div></li>");
+        }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
+        return buf.join("");
+    };
+
     // tee_time/tee_time.jade compiled template
-    templatizer["tee_time"]["tee_time"] = function tmpl_tee_time_tee_time() {
-        return '<div class="workspace-container"><p>Mike</p></div>';
+    templatizer["tee_time"]["tee_time"] = function tmpl_tee_time_tee_time(locals) {
+        var buf = [];
+        var jade_mixins = {};
+        var jade_interp;
+        var locals_for_with = locals || {};
+        (function(tee_time, tournament) {
+            buf.push('<div class="workspace-container"><ul class="events"><li class="event"><a href="#"><div class="title">' + jade.escape(null == (jade_interp = tournament.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = tournament.course.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = tournament.formatted_date) ? "" : jade_interp) + '</div><div class="title">' + jade.escape(null == (jade_interp = tee_time.player.name) ? "" : jade_interp) + '</div></a></li></ul><ul class="holes"></ul></div>');
+        }).call(this, "tee_time" in locals_for_with ? locals_for_with.tee_time : typeof tee_time !== "undefined" ? tee_time : undefined, "tournament" in locals_for_with ? locals_for_with.tournament : typeof tournament !== "undefined" ? tournament : undefined);
+        return buf.join("");
     };
 
     // tournament/hole_list_item.jade compiled template
@@ -22887,7 +22906,28 @@ module.exports = Collection.extend({
       return this.where({course_id: id});
     }
 });
-},{"../models/hole":"/Library/WebServer/Server/bp_tournaments/public/js/models/hole.js","ampersand-rest-collection":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/ampersand-rest-collection.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/collections/tee_times.js":[function(require,module,exports){
+},{"../models/hole":"/Library/WebServer/Server/bp_tournaments/public/js/models/hole.js","ampersand-rest-collection":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/ampersand-rest-collection.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/collections/scores.js":[function(require,module,exports){
+var Collection = require('ampersand-rest-collection');
+var Scores = require('../models/score');
+
+module.exports = Collection.extend({
+    model: Scores,
+    url: '/scores',
+
+    findByTeeTime: function(tee_time_id) {
+      return this.where({
+        tee_time_id: parseInt(tee_time_id)
+      })
+    },
+
+    findByTeeTimeAndHole: function(tee_time_id, hole_id) {
+      return this.findWhere({
+        tee_time_id: parseInt(tee_time_id),
+        hole_id: parseInt(hole_id)
+      })
+    }
+});
+},{"../models/score":"/Library/WebServer/Server/bp_tournaments/public/js/models/score.js","ampersand-rest-collection":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-rest-collection/ampersand-rest-collection.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/collections/tee_times.js":[function(require,module,exports){
 var Collection = require('ampersand-rest-collection');
 var TeeTime = require('../models/tee_time');
 
@@ -23012,19 +23052,17 @@ var _ = require('underscore');
 var AmpersandModel = require('ampersand-model');
 var Holes = require('../collections/holes');
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 module.exports = AmpersandModel.extend({
   type: 'course',
+
   props: {
     id: ['integer', true],
     name: ['string', true, '']
   },
 
   derived: {
-    holes: {
-      fn: function(){
-        return new Holes(app.holes.findAllByCourseID(this.id));
-      }
-    },
     front_nine: {
       fn: function(){
         return this.holes.models.slice(0,9);
@@ -23035,6 +23073,10 @@ module.exports = AmpersandModel.extend({
         return this.holes.models.slice(9,18);
       }
     }
+  },
+
+  collections: {
+    holes: Holes
   },
 
   findHoleByID: function(hole_id) {
@@ -23142,10 +23184,64 @@ module.exports = AmpersandModel.extend({
   }
 });
 
-},{"ampersand-model":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/models/tee_time.js":[function(require,module,exports){
+},{"ampersand-model":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/models/score.js":[function(require,module,exports){
 var _ = require('underscore');
 var AmpersandModel = require('ampersand-model');
-var Player = require('../models/player');
+
+module.exports = AmpersandModel.extend({
+  type: 'score',
+  props: {
+    id: ['integer', true],
+    tee_time_id: ['integer', true],
+    hole_id: ['integer', true],
+    player_id: ['integer', true],
+    score: ['integer'],
+    putts: ['integer'],
+    fairway: ['integer'],
+    points: ['integer'],
+    result: ['string']
+  },
+  derived: {
+    pretty_score: {
+      deps: ['score'],
+      fn: function() {
+        return _.isNull(this.score) ? "-" : this.score
+      }
+    },
+    pretty_points: {
+      deps: ['points'],
+      fn: function() {
+        return _.isNull(this.points) ? "-" : this.points
+      }
+    },
+    pretty_putts: {
+      deps: ['putts'],
+      fn: function() {
+        return _.isNull(this.putts) ? "-" : this.putts
+      }
+    },
+    pretty_fairway: {
+      deps: ['fairway'],
+      fn: function() {
+        return _.isNull(this.fairway) ? "-" : (this.fairway ? "Y" : "N")
+      }
+    }
+  },
+
+  // This is a bit lazy..
+  // It's to prevent us sending the whole model to the server
+  // during a save.
+  toJSON: function(options){
+    return _.extend(this.changedAttributes(), {
+      id: this.id
+    })
+  }
+});
+},{"ampersand-model":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/models/tee_time.js":[function(require,module,exports){
+var _ = require('underscore');
+var AmpersandModel = require('ampersand-model');
+var Player     = require('./player');
+var Scores     = require('../collections/scores');
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -23174,7 +23270,11 @@ module.exports = AmpersandModel.extend({
   },
 
   children: {
-    player: Player
+    player: Player,
+  },
+
+  collections: {
+    scores: Scores
   },
 
   derived: {
@@ -23298,7 +23398,7 @@ module.exports = AmpersandModel.extend({
     return total;
   }
 });
-},{"../models/player":"/Library/WebServer/Server/bp_tournaments/public/js/models/player.js","ampersand-model":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/models/tournament.js":[function(require,module,exports){
+},{"../collections/scores":"/Library/WebServer/Server/bp_tournaments/public/js/collections/scores.js","./player":"/Library/WebServer/Server/bp_tournaments/public/js/models/player.js","ampersand-model":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/models/tournament.js":[function(require,module,exports){
 var AmpersandModel = require('ampersand-model');
 var TeeTimes       = require('../collections/tee_times');
 var Course         = require('../models/course');
@@ -23345,6 +23445,7 @@ module.exports = AmpersandModel.extend({
     return '/tournaments/' + this.id;
   }
 });
+
 },{"../collections/tee_times":"/Library/WebServer/Server/bp_tournaments/public/js/collections/tee_times.js","../models/course":"/Library/WebServer/Server/bp_tournaments/public/js/models/course.js","ampersand-model":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-model/ampersand-model.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/router.js":[function(require,module,exports){
 var _              = require('underscore');
 var Router         = require('ampersand-router');
@@ -23539,8 +23640,13 @@ var _           = require('underscore');
 var View        = require('ampersand-view');
 var templates   = require('../../../dist/templates');
 var TeeTime     = require('../../models/tee_time');
+var Tournament  = require('../../models/tournament');
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+var Hole = View.extend({
+  template: templates.tee_time.hole,
+});
 
 module.exports = View.extend({
   template: templates.loading,
@@ -23549,6 +23655,8 @@ module.exports = View.extend({
     this.tee_time = new TeeTime({
       id: options.id
     });
+
+    this.tournament = new Tournament();
   },
 
   afterInsert: function(){
@@ -23556,7 +23664,21 @@ module.exports = View.extend({
       data: {
         expand: [
           'scores',
-          'scores.player'
+          'player'
+        ].join(',')
+      },
+      success: _.bind(this.afterTeeTimeFetch, this)
+    });
+  },
+
+  afterTeeTimeFetch: function(){
+    this.tournament.id = this.tee_time.tournament_id;
+
+    this.tournament.fetch({
+      data: {
+        expand: [
+          'course',
+          'course.holes'
         ].join(',')
       },
       success: _.bind(this.afterFetchSuccess, this)
@@ -23565,10 +23687,19 @@ module.exports = View.extend({
 
   afterFetchSuccess: function(){
     this.renderWithTemplate(this, templates.tee_time.tee_time);
+    this.tournament.course.holes.each(_.bind(this.renderHole, this));
+  },
+
+  renderHole: function(hole){
+    var view = new Hole({
+      model: hole
+    });
+
+    this.renderSubview(view, "ul.holes");
   }
 });
 
-},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","../../models/tee_time":"/Library/WebServer/Server/bp_tournaments/public/js/models/tee_time.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/tournament/tournament.js":[function(require,module,exports){
+},{"../../../dist/templates":"/Library/WebServer/Server/bp_tournaments/public/dist/templates.js","../../models/tee_time":"/Library/WebServer/Server/bp_tournaments/public/js/models/tee_time.js","../../models/tournament":"/Library/WebServer/Server/bp_tournaments/public/js/models/tournament.js","ampersand-view":"/Library/WebServer/Server/bp_tournaments/node_modules/ampersand-view/ampersand-view.js","underscore":"/Library/WebServer/Server/bp_tournaments/node_modules/underscore/underscore.js"}],"/Library/WebServer/Server/bp_tournaments/public/js/views/tournament/tournament.js":[function(require,module,exports){
 var _           = require('underscore');
 var View        = require('ampersand-view');
 var templates   = require('../../../dist/templates');

@@ -4,8 +4,8 @@ attributes :id,
   :tee_time_id, 
   :hole_id, 
   :player_id, 
-  :score, 
-  :points, 
+  :score,
+  :points
   :result
 
 when_expanded(:tee_time, locals) do |expansion_locals|

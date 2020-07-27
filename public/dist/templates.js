@@ -221,9 +221,28 @@
         return '<div class="max-width-wrapper"><p>Player</p></div>';
     };
 
+    // tee_time/hole.jade compiled template
+    templatizer["tee_time"]["hole"] = function tmpl_tee_time_hole(locals) {
+        var buf = [];
+        var jade_mixins = {};
+        var jade_interp;
+        var locals_for_with = locals || {};
+        (function(model) {
+            buf.push('<li> <div class="col is-10">' + jade.escape(null == (jade_interp = model.number) ? "" : jade_interp) + '</div><div class="col is-10">' + jade.escape(null == (jade_interp = model.par) ? "" : jade_interp) + '</div><div class="col is-10">' + jade.escape(null == (jade_interp = model.index) ? "" : jade_interp) + '</div><div class="col is-10">' + jade.escape(null == (jade_interp = model.length) ? "" : jade_interp) + "</div></li>");
+        }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
+        return buf.join("");
+    };
+
     // tee_time/tee_time.jade compiled template
-    templatizer["tee_time"]["tee_time"] = function tmpl_tee_time_tee_time() {
-        return '<div class="workspace-container"><p>Mike</p></div>';
+    templatizer["tee_time"]["tee_time"] = function tmpl_tee_time_tee_time(locals) {
+        var buf = [];
+        var jade_mixins = {};
+        var jade_interp;
+        var locals_for_with = locals || {};
+        (function(tee_time, tournament) {
+            buf.push('<div class="workspace-container"><ul class="events"><li class="event"><a href="#"><div class="title">' + jade.escape(null == (jade_interp = tournament.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = tournament.course.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = tournament.formatted_date) ? "" : jade_interp) + '</div><div class="title">' + jade.escape(null == (jade_interp = tee_time.player.name) ? "" : jade_interp) + '</div></a></li></ul><ul class="holes"></ul></div>');
+        }).call(this, "tee_time" in locals_for_with ? locals_for_with.tee_time : typeof tee_time !== "undefined" ? tee_time : undefined, "tournament" in locals_for_with ? locals_for_with.tournament : typeof tournament !== "undefined" ? tournament : undefined);
+        return buf.join("");
     };
 
     // tournament/hole_list_item.jade compiled template

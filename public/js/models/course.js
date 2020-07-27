@@ -2,19 +2,17 @@ var _ = require('underscore');
 var AmpersandModel = require('ampersand-model');
 var Holes = require('../collections/holes');
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 module.exports = AmpersandModel.extend({
   type: 'course',
+
   props: {
     id: ['integer', true],
     name: ['string', true, '']
   },
 
   derived: {
-    holes: {
-      fn: function(){
-        return new Holes(app.holes.findAllByCourseID(this.id));
-      }
-    },
     front_nine: {
       fn: function(){
         return this.holes.models.slice(0,9);
@@ -25,6 +23,10 @@ module.exports = AmpersandModel.extend({
         return this.holes.models.slice(9,18);
       }
     }
+  },
+
+  collections: {
+    holes: Holes
   },
 
   findHoleByID: function(hole_id) {

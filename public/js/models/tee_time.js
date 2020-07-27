@@ -1,6 +1,7 @@
 var _ = require('underscore');
 var AmpersandModel = require('ampersand-model');
-var Player = require('../models/player');
+var Player     = require('./player');
+var Scores     = require('../collections/scores');
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -29,7 +30,11 @@ module.exports = AmpersandModel.extend({
   },
 
   children: {
-    player: Player
+    player: Player,
+  },
+
+  collections: {
+    scores: Scores
   },
 
   derived: {

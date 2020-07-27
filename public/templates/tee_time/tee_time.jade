@@ -1,2 +1,9 @@
 .workspace-container
-  p Mike
+  ul.events
+    li.event
+      a(href="#")
+        .title= tournament.name
+        .date= tournament.course.name
+        .date= tournament.formatted_date
+        .title= tee_time.player.name
+  ul.holes

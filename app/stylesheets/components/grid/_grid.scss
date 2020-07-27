@@ -1,0 +1,80 @@
+[class^='col is-']{
+  box-sizing: border-box;
+  padding-right: 8px;
+  padding-bottom: 8px;
+
+  &:last-child{
+    padding-right: 0px;
+  }
+
+  &.will-truncate{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &.is-5{
+    width: 5%;
+    min-width: 5%; 
+  }
+  &.is-10{
+    width: 10%;
+    min-width: 10%; 
+  }
+  &.is-15{
+    width: 15%;
+    min-width: 15%; 
+  }
+  &.is-20{
+    width: 20%;
+    min-width: 20%; 
+  }
+  &.is-25{
+    width: 25%;
+    min-width: 25%; 
+  }
+  &.is-30{
+    width: 30%;
+    min-width: 30%; 
+  }
+  &.is-33{
+    width: 33%;
+    min-width: 33%; 
+  }
+  &.is-40{
+    width: 40%;
+    min-width: 40%; 
+  }
+  &.is-45{
+    width: 45%;
+    min-width: 45%; 
+  }
+  &.is-50{
+    width: 50%;
+    min-width: 50%; 
+  }
+  &.is-55{
+    width: 55%;
+    min-width: 55%; 
+  }
+  &.is-60{
+    width: 60%;
+    min-width: 60%; 
+  }
+  &.is-66{
+    width: 66%;
+    min-width: 66%; 
+  }
+  &.is-70{
+    width: 70%;
+    min-width: 70%; 
+  }
+  &.is-75{
+    width: 75%;
+    min-width: 75%; 
+  }
+  &.is-80{
+    width: 80%;
+    min-width: 80%; 
+  }
+}
