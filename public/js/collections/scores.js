@@ -16,5 +16,11 @@ module.exports = Collection.extend({
         tee_time_id: parseInt(tee_time_id),
         hole_id: parseInt(hole_id)
       })
+    },
+
+    findByHole: function(hole_id) {
+      return this.findWhere({
+        hole_id: parseInt(hole_id)
+      })
     }
 });

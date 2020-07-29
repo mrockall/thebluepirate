@@ -725,7 +725,7 @@ table {
   .push11 {
     margin-left: 0; } }
 body, html {
-  background: #fff;
+  background: #424242;
   min-height: 100%;
   margin: 0;
   padding: 0;
@@ -740,7 +740,6 @@ body, html {
       font-size: 12px; } }
 
 body {
-  background: #424242;
   padding: 1em 0;
   -webkit-transition: all 200ms ease;
   -moz-transition: all 200ms ease;
@@ -748,6 +747,7 @@ body {
 
 .app-wrapper {
   max-width: 767px;
+  min-height: 100vh;
   margin: 0 auto;
   background: white;
   box-shadow: 0 0 8px 8px rgba(0, 0, 0, 0.1);
@@ -761,9 +761,8 @@ body {
   .app-wrapper {
     border-radius: 0;
     box-shadow: 0 0 0 0 transparent; } }
-.max-width-wrapper {
-  max-width: 767px;
-  margin: 0 auto; }
+.workspace {
+  margin: 0 0.5em; }
 
 .no-scroll {
   height: 100%;
@@ -965,64 +964,65 @@ h3 {
     transform: translateX(200px);
     opacity: 0; } }
 
-[class^='col is-'] {
+[class^='col'] {
   box-sizing: border-box;
-  padding-right: 8px;
-  padding-bottom: 8px; }
-  [class^='col is-']:last-child {
-    padding-right: 0px; }
-  [class^='col is-'].will-truncate {
+  padding: 0 0.5em; }
+  [class^='col'].will-truncate {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
-  [class^='col is-'].is-5 {
+  [class^='col'].is-5 {
     width: 5%;
     min-width: 5%; }
-  [class^='col is-'].is-10 {
+  [class^='col'].is-10 {
     width: 10%;
     min-width: 10%; }
-  [class^='col is-'].is-15 {
+  [class^='col'].is-15 {
     width: 15%;
     min-width: 15%; }
-  [class^='col is-'].is-20 {
+  [class^='col'].is-20 {
     width: 20%;
     min-width: 20%; }
-  [class^='col is-'].is-25 {
+  [class^='col'].is-25 {
     width: 25%;
     min-width: 25%; }
-  [class^='col is-'].is-30 {
+  [class^='col'].is-30 {
     width: 30%;
     min-width: 30%; }
-  [class^='col is-'].is-33 {
+  [class^='col'].is-33 {
     width: 33%;
     min-width: 33%; }
-  [class^='col is-'].is-40 {
+  [class^='col'].is-40 {
     width: 40%;
     min-width: 40%; }
-  [class^='col is-'].is-45 {
+  [class^='col'].is-45 {
     width: 45%;
     min-width: 45%; }
-  [class^='col is-'].is-50 {
+  [class^='col'].is-50 {
     width: 50%;
     min-width: 50%; }
-  [class^='col is-'].is-55 {
+  [class^='col'].is-55 {
     width: 55%;
     min-width: 55%; }
-  [class^='col is-'].is-60 {
+  [class^='col'].is-60 {
     width: 60%;
     min-width: 60%; }
-  [class^='col is-'].is-66 {
+  [class^='col'].is-66 {
     width: 66%;
     min-width: 66%; }
-  [class^='col is-'].is-70 {
+  [class^='col'].is-70 {
     width: 70%;
     min-width: 70%; }
-  [class^='col is-'].is-75 {
+  [class^='col'].is-75 {
     width: 75%;
     min-width: 75%; }
-  [class^='col is-'].is-80 {
+  [class^='col'].is-80 {
     width: 80%;
     min-width: 80%; }
+  [class^='col'].will-grow {
+    flex-grow: 1; }
+  [class^='col'].is-right-aligned {
+    text-align: right; }
 
 header {
   position: relative;
@@ -1056,7 +1056,16 @@ header {
   padding: 0;
   margin: 0; }
   .holes li {
-    display: flex; }
+    display: flex;
+    margin-bottom: 1em;
+    align-items: center;
+    text-align: right;
+    font-size: 1.25rem; }
+    .holes li .hole_number {
+      font-size: 1.25em; }
+    .holes li .score {
+      font-size: 1.5em;
+      font-family: 'Indie Flower'; }
 
 .tournament {
   overflow: hidden;
@@ -1793,7 +1802,7 @@ ul.events {
   ul.events > li {
     position: relative;
     background: #f4f2ec;
-    margin: 0 1.2em 1.2em;
+    margin: 0 0 1.2em;
     padding: 1.2em 40% 1.2em 1.2em;
     border-radius: 4px; }
     ul.events > li:last-child {

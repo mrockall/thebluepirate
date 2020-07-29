@@ -22653,9 +22653,9 @@ return jQuery;
         var jade_mixins = {};
         var jade_interp;
         var locals_for_with = locals || {};
-        (function(model) {
-            buf.push('<li> <div class="col is-10">' + jade.escape(null == (jade_interp = model.number) ? "" : jade_interp) + '</div><div class="col is-10">' + jade.escape(null == (jade_interp = model.par) ? "" : jade_interp) + '</div><div class="col is-10">' + jade.escape(null == (jade_interp = model.index) ? "" : jade_interp) + '</div><div class="col is-10">' + jade.escape(null == (jade_interp = model.length) ? "" : jade_interp) + "</div></li>");
-        }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
+        (function(model, score) {
+            buf.push('<li> <div class="col is-10 hole_number">' + jade.escape(null == (jade_interp = model.number) ? "" : jade_interp) + '</div><div class="col is-10">' + jade.escape(null == (jade_interp = model.par) ? "" : jade_interp) + '</div><div class="col is-10">' + jade.escape(null == (jade_interp = model.index) ? "" : jade_interp) + '</div><div class="col is-10">' + jade.escape(null == (jade_interp = model.length) ? "" : jade_interp) + '</div><div class="col will-grow"><span' + jade.cls([ "score", score ? "is-" + score.points + "-points" : "" ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score ? score.score : "") ? "" : jade_interp) + '</span></div><div class="col is-10">' + jade.escape(null == (jade_interp = score ? score.points : "") ? "" : jade_interp) + "</div></li>");
+        }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined, "score" in locals_for_with ? locals_for_with.score : typeof score !== "undefined" ? score : undefined);
         return buf.join("");
     };
 
@@ -22666,7 +22666,7 @@ return jQuery;
         var jade_interp;
         var locals_for_with = locals || {};
         (function(tee_time, tournament) {
-            buf.push('<div class="workspace-container"><ul class="events"><li class="event"><a href="#"><div class="title">' + jade.escape(null == (jade_interp = tournament.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = tournament.course.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = tournament.formatted_date) ? "" : jade_interp) + '</div><div class="title">' + jade.escape(null == (jade_interp = tee_time.player.name) ? "" : jade_interp) + '</div></a></li></ul><ul class="holes"></ul></div>');
+            buf.push('<div class="workspace"><ul class="events"><li class="event"><a href="#"><div class="title">' + jade.escape(null == (jade_interp = tournament.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = tournament.course.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = tournament.formatted_date) ? "" : jade_interp) + '</div><div class="title">' + jade.escape(null == (jade_interp = tee_time.player.name) ? "" : jade_interp) + '</div></a></li></ul><ul class="holes"></ul></div>');
         }).call(this, "tee_time" in locals_for_with ? locals_for_with.tee_time : typeof tee_time !== "undefined" ? tee_time : undefined, "tournament" in locals_for_with ? locals_for_with.tournament : typeof tournament !== "undefined" ? tournament : undefined);
         return buf.join("");
     };
@@ -22776,7 +22776,7 @@ return jQuery;
         var jade_interp;
         var locals_for_with = locals || {};
         (function(tournament) {
-            buf.push('<div class="workspace-container"><ul class="events"><li class="event"><a href="#"><div class="title">' + jade.escape(null == (jade_interp = tournament.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = tournament.course.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = tournament.formatted_date) ? "" : jade_interp) + '</div></a></li></ul><ul class="leaderboard"></ul></div>');
+            buf.push('<div class="workspace"><ul class="events"><li class="event"><a href="#"><div class="title">' + jade.escape(null == (jade_interp = tournament.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = tournament.course.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = tournament.formatted_date) ? "" : jade_interp) + '</div></a></li></ul><ul class="leaderboard"></ul></div>');
         }).call(this, "tournament" in locals_for_with ? locals_for_with.tournament : typeof tournament !== "undefined" ? tournament : undefined);
         return buf.join("");
     };
@@ -22788,7 +22788,7 @@ return jQuery;
         var jade_interp;
         var locals_for_with = locals || {};
         (function(model) {
-            buf.push('<div class="workspace-container"><ul><li class="event"><a' + jade.attr("href", "/tournament/" + model.id, true, false) + '><div class="title">' + jade.escape(null == (jade_interp = model.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = model.course.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = model.formatted_date) ? "" : jade_interp) + '</div><ul></ul><div class="actions"><p>Full Leaderboard &amp; Scoring</p></div></a></li></ul><ul class="leaderboard players"></ul></div>');
+            buf.push('<div class="workspace"><ul><li class="event"><a' + jade.attr("href", "/tournament/" + model.id, true, false) + '><div class="title">' + jade.escape(null == (jade_interp = model.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = model.course.name) ? "" : jade_interp) + '</div><div class="date">' + jade.escape(null == (jade_interp = model.formatted_date) ? "" : jade_interp) + '</div><ul></ul><div class="actions"><p>Full Leaderboard &amp; Scoring</p></div></a></li></ul><ul class="leaderboard players"></ul></div>');
         }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined);
         return buf.join("");
     };
@@ -22923,6 +22923,12 @@ module.exports = Collection.extend({
     findByTeeTimeAndHole: function(tee_time_id, hole_id) {
       return this.findWhere({
         tee_time_id: parseInt(tee_time_id),
+        hole_id: parseInt(hole_id)
+      })
+    },
+
+    findByHole: function(hole_id) {
+      return this.findWhere({
         hole_id: parseInt(hole_id)
       })
     }
@@ -23646,6 +23652,10 @@ var Tournament  = require('../../models/tournament');
 
 var Hole = View.extend({
   template: templates.tee_time.hole,
+
+  initialize: function(options){
+    this.score = options.tee_time.scores.findByHole(this.model.id);
+  }
 });
 
 module.exports = View.extend({
@@ -23692,7 +23702,8 @@ module.exports = View.extend({
 
   renderHole: function(hole){
     var view = new Hole({
-      model: hole
+      model: hole,
+      tee_time: this.tee_time
     });
 
     this.renderSubview(view, "ul.holes");

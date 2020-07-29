@@ -8,6 +8,10 @@ var Tournament  = require('../../models/tournament');
 
 var Hole = View.extend({
   template: templates.tee_time.hole,
+
+  initialize: function(options){
+    this.score = options.tee_time.scores.findByHole(this.model.id);
+  }
 });
 
 module.exports = View.extend({
@@ -54,7 +58,8 @@ module.exports = View.extend({
 
   renderHole: function(hole){
     var view = new Hole({
-      model: hole
+      model: hole,
+      tee_time: this.tee_time
     });
 
     this.renderSubview(view, "ul.holes");

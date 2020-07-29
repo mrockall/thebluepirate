@@ -1,11 +1,6 @@
-[class^='col is-']{
+[class^='col']{
   box-sizing: border-box;
-  padding-right: 8px;
-  padding-bottom: 8px;
-
-  &:last-child{
-    padding-right: 0px;
-  }
+  padding: 0 0.5em;
 
   &.will-truncate{
     overflow: hidden;
@@ -76,5 +71,13 @@
   &.is-80{
     width: 80%;
     min-width: 80%; 
+  }
+
+  &.will-grow{
+    flex-grow: 1;
+  }
+
+  &.is-right-aligned {
+    text-align: right;
   }
 }
