@@ -1,0 +1,7 @@
+li 
+  .col.is-15= model.number
+  .col.is-15= model.par
+  .col.is-15= model.index
+  .col.will-grow.is-right-aligned
+    span.score(class= score ? 'is-' + score.points + '-points' : '')= score ? score.score : ''
+  .col.is-10.is-right-aligned= score ? score.points : ''

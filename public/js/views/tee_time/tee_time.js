@@ -6,12 +6,24 @@ var Tournament  = require('../../models/tournament');
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-var Hole = View.extend({
-  template: templates.tee_time.hole,
+var RowTitles = View.extend({
+  template: templates.tee_time.row_titles
+});
+var RowHole = View.extend({
+  template: templates.tee_time.row_hole,
 
   initialize: function(options){
     this.score = options.tee_time.scores.findByHole(this.model.id);
   }
+});
+var RowFrontNineSummary = View.extend({
+  template: templates.tee_time.row_front_nine_summary
+});
+var RowBackNineSummary = View.extend({
+  template: templates.tee_time.row_back_nine_summary
+});
+var RowOverallSummary = View.extend({
+  template: templates.tee_time.row_overall_summary
 });
 
 module.exports = View.extend({
@@ -52,14 +64,53 @@ module.exports = View.extend({
   },
 
   afterFetchSuccess: function(){
+    this.front_nine = this.tournament.course.holes.frontNine();
+    this.back_nine = this.tournament.course.holes.backNine();
+
     this.renderWithTemplate(this, templates.tee_time.tee_time);
-    this.tournament.course.holes.each(_.bind(this.renderHole, this));
+    this.renderTitles();
+
+    this.front_nine.each(_.bind(this.renderHole, this));
+    this.renderFrontNineSummary();
+
+    this.back_nine.each(_.bind(this.renderHole, this));
+    this.renderBackNineSummary();
+    this.renderOverallSummary();
+  },
+
+  renderTitles: function(){
+    var view = new RowTitles();
+    this.renderSubview(view, "ul.holes");
   },
 
   renderHole: function(hole){
-    var view = new Hole({
+    var view = new RowHole({
       model: hole,
       tee_time: this.tee_time
+    });
+
+    this.renderSubview(view, "ul.holes");
+  },
+
+  renderFrontNineSummary: function(){
+    var view = new RowFrontNineSummary({
+      model: this.tee_time
+    });
+
+    this.renderSubview(view, "ul.holes");
+  },
+
+  renderBackNineSummary: function(){
+    var view = new RowBackNineSummary({
+      model: this.tee_time
+    });
+
+    this.renderSubview(view, "ul.holes");
+  },
+
+  renderOverallSummary: function(){
+    var view = new RowOverallSummary({
+      model: this.tee_time
     });
 
     this.renderSubview(view, "ul.holes");

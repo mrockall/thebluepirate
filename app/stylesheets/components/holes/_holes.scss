@@ -8,17 +8,59 @@
     margin-bottom: 1em;
     align-items: center;
 
-    text-align: right;
-
     font-size: 1.25rem;
+
+    &.is-titles {
+      font-size: 1rem;
+      color: #999;
+    }
 
     .hole_number{
       font-size: 1.25em;
     }
 
     .score{
+      position: relative;
+      display: inline-block;
+      height: 1.5em;
+      min-width: 1.5em;
+      text-align: center;
       font-size: 1.5em;
-      font-family: 'Indie Flower';
+      line-height: 1.6;
+      font-family: 'Indie Flower', cursive;
+
+      &.is-3-points:after{
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        box-sizing: border-box;
+      }
+
+      &.is-0-points{ 
+        border-width: 6px;
+        border-style: double;
+        border-color: darken($bogey_red, 10%); 
+      }
+      &.is-1-points{ 
+        border-width: 3px;
+        border-style: solid;
+        border-color: $bogey_red; 
+      }
+      &.is-3-points{ 
+        border-width: 3px;
+        border-style: solid;
+        border-color: $birdie_blue; 
+        border-radius: 50%;
+      }
+      &.is-4-points{ 
+        border-width: 6px;
+        border-style: double;
+        border-color: lighten($birdie_blue, 10%); 
+        border-radius: 50%;
+      }
     }
   }
 }

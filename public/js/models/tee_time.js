@@ -16,17 +16,6 @@ module.exports = AmpersandModel.extend({
     through: ['integer', true, 0],
     score: ['integer', true, 0],
     points: ['integer', true, 0],
-    putts: ['integer', false, 0],
-    fairways: ['integer', false, 0],
-    greens_played: ['integer', false, 0],
-    fairways_played: ['integer', false, 0],
-    greens_hit: ['integer', false, 0],
-    fairways_hit: ['integer', false, 0],
-    time_parsed: ['string']
-  },
-
-  session: {
-    expanded: ['boolean', true, false]
   },
 
   children: {
@@ -38,16 +27,6 @@ module.exports = AmpersandModel.extend({
   },
 
   derived: {
-    course: {
-      fn: function(){
-        return this.tournament.course;
-      }
-    },
-    player_url: {
-      fn: function(){
-        return '/leaderboard/' + this.player_id;
-      }
-    },
     golf_score: {
       deps: ['points', 'through'],
       fn: function(){
@@ -55,6 +34,7 @@ module.exports = AmpersandModel.extend({
         return this.through*2 - this.points;
       }
     },
+
     golf_score_pretty: {
       deps: ['points', 'through', 'golf_score'],
       fn: function(){
@@ -63,30 +43,11 @@ module.exports = AmpersandModel.extend({
         if(this.points < this.through*2) return '+' + (this.through*2 - this.points);
       }
     },
-    fairway_percentage: {
-      deps: ['fairways_hit', 'fairways_played'],
-      fn: function(){
-        if(this.fairways_played == 0) return 0;
-        return (this.fairways_hit/this.fairways_played)*100;
-      }
-    },
-    green_percentage: {
-      deps: ['greens_hit', 'greens_played'],
-      fn: function(){
-        if(this.greens_played == 0) return 0;
-        return (this.greens_hit/this.greens_played)*100;
-      }
-    },
+
     pretty_score: {
       deps: ['through', 'golf_score'],
       fn: function(){
         return this.through > 0 ? this.golf_score_pretty : "";
-      }
-    },
-    is_expanded: {
-      deps: ['expanded'],
-      fn: function(){
-        return this.expanded ? 'expanded' : '';
       }
     }
   },
@@ -106,22 +67,15 @@ module.exports = AmpersandModel.extend({
     return this.through > 0 ? this.position() : "-"
   },
 
-  findAllTeeTimes: function(){
-    return app.tee_times.findByTime(this.time);
-  },
-
-  scores: function(){
-    var scores = app.scores.findByTeeTime(this.id);
-    return _(scores).sortBy(function(m){ return m.hole_id });
-  },
-
   score_on_hole: function(hole_id){
-    var score = app.scores.findByTeeTimeAndHole(this.id, hole_id);
-    return score;
+    return this.scores.findByHole(hole_id);
   },
 
   get_totals: function(name) {
-    var scores = this.scores();
+    var scores = this.scores.sortBy(function(score){ 
+      return score.hole_id 
+    });
+
     if(name == "Front 9"){
       return {
         strokes: this.get_stroke_total(scores.slice(0,9)),

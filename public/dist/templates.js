@@ -221,16 +221,36 @@
         return '<div class="max-width-wrapper"><p>Player</p></div>';
     };
 
-    // tee_time/hole.jade compiled template
-    templatizer["tee_time"]["hole"] = function tmpl_tee_time_hole(locals) {
+    // tee_time/row_back_nine_summary.jade compiled template
+    templatizer["tee_time"]["row_back_nine_summary"] = function tmpl_tee_time_row_back_nine_summary() {
+        return '<li class="is-titles"><div class="col is-50">IN</div><div class="col will-grow is-right-aligned"><span>4</span></div><div class="col is-10 is-right-aligned">18</div></li>';
+    };
+
+    // tee_time/row_front_nine_summary.jade compiled template
+    templatizer["tee_time"]["row_front_nine_summary"] = function tmpl_tee_time_row_front_nine_summary() {
+        return '<li class="is-titles"><div class="col is-50">OUT</div><div class="col will-grow is-right-aligned"><span></span></div><div class="col is-10 is-right-aligned">PTS</div></li>';
+    };
+
+    // tee_time/row_hole.jade compiled template
+    templatizer["tee_time"]["row_hole"] = function tmpl_tee_time_row_hole(locals) {
         var buf = [];
         var jade_mixins = {};
         var jade_interp;
         var locals_for_with = locals || {};
         (function(model, score) {
-            buf.push('<li> <div class="col is-10 hole_number">' + jade.escape(null == (jade_interp = model.number) ? "" : jade_interp) + '</div><div class="col is-10">' + jade.escape(null == (jade_interp = model.par) ? "" : jade_interp) + '</div><div class="col is-10">' + jade.escape(null == (jade_interp = model.index) ? "" : jade_interp) + '</div><div class="col is-10">' + jade.escape(null == (jade_interp = model.length) ? "" : jade_interp) + '</div><div class="col will-grow"><span' + jade.cls([ "score", score ? "is-" + score.points + "-points" : "" ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score ? score.score : "") ? "" : jade_interp) + '</span></div><div class="col is-10">' + jade.escape(null == (jade_interp = score ? score.points : "") ? "" : jade_interp) + "</div></li>");
+            buf.push('<li> <div class="col is-15">' + jade.escape(null == (jade_interp = model.number) ? "" : jade_interp) + '</div><div class="col is-15">' + jade.escape(null == (jade_interp = model.par) ? "" : jade_interp) + '</div><div class="col is-15">' + jade.escape(null == (jade_interp = model.index) ? "" : jade_interp) + '</div><div class="col will-grow is-right-aligned"><span' + jade.cls([ "score", score ? "is-" + score.points + "-points" : "" ], [ null, true ]) + ">" + jade.escape(null == (jade_interp = score ? score.score : "") ? "" : jade_interp) + '</span></div><div class="col is-10 is-right-aligned">' + jade.escape(null == (jade_interp = score ? score.points : "") ? "" : jade_interp) + "</div></li>");
         }).call(this, "model" in locals_for_with ? locals_for_with.model : typeof model !== "undefined" ? model : undefined, "score" in locals_for_with ? locals_for_with.score : typeof score !== "undefined" ? score : undefined);
         return buf.join("");
+    };
+
+    // tee_time/row_overall_summary.jade compiled template
+    templatizer["tee_time"]["row_overall_summary"] = function tmpl_tee_time_row_overall_summary() {
+        return '<li class="is-titles"><div class="col is-50">TOTAL</div><div class="col will-grow is-right-aligned"><span>4</span></div><div class="col is-10 is-right-aligned">18</div></li>';
+    };
+
+    // tee_time/row_titles.jade compiled template
+    templatizer["tee_time"]["row_titles"] = function tmpl_tee_time_row_titles() {
+        return '<li class="is-titles"><div class="col is-15">#</div><div class="col is-15">IDX</div><div class="col is-15">PAR</div><div class="col will-grow is-right-aligned"><span>SCORE</span></div><div class="col is-10 is-right-aligned">PTS</div></li>';
     };
 
     // tee_time/tee_time.jade compiled template

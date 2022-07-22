@@ -77,6 +77,10 @@
     flex-grow: 1;
   }
 
+  &.is-left-aligned {
+    text-align: left;
+  }
+
   &.is-right-aligned {
     text-align: right;
   }

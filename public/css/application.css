@@ -1021,6 +1021,8 @@ h3 {
     min-width: 80%; }
   [class^='col'].will-grow {
     flex-grow: 1; }
+  [class^='col'].is-left-aligned {
+    text-align: left; }
   [class^='col'].is-right-aligned {
     text-align: right; }
 
@@ -1059,13 +1061,47 @@ header {
     display: flex;
     margin-bottom: 1em;
     align-items: center;
-    text-align: right;
     font-size: 1.25rem; }
+    .holes li.is-titles {
+      font-size: 1rem;
+      color: #999; }
     .holes li .hole_number {
       font-size: 1.25em; }
     .holes li .score {
+      position: relative;
+      display: inline-block;
+      height: 1.5em;
+      min-width: 1.5em;
+      text-align: center;
       font-size: 1.5em;
-      font-family: 'Indie Flower'; }
+      line-height: 1.6;
+      font-family: 'Indie Flower', cursive; }
+      .holes li .score.is-3-points:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        box-sizing: border-box; }
+      .holes li .score.is-0-points {
+        border-width: 6px;
+        border-style: double;
+        border-color: #9b4848; }
+      .holes li .score.is-1-points {
+        border-width: 3px;
+        border-style: solid;
+        border-color: #b56161; }
+      .holes li .score.is-3-points {
+        border-width: 3px;
+        border-style: solid;
+        border-color: #3c6ba1;
+        border-radius: 50%; }
+      .holes li .score.is-4-points {
+        border-width: 6px;
+        border-style: double;
+        border-color: #5284be;
+        border-radius: 50%; }
 
 .tournament {
   overflow: hidden;
